@@ -1,0 +1,30 @@
+{extend name="layout/main" /}
+
+{block name="header"}
+
+{/block}
+
+{block name="content"}
+<section class="panel">
+    <header class="panel-heading">
+        <h4>处理GC提币-处理结果</h4>
+    </header>
+    <div class="panel-body" style="padding-bottom: 50px">
+        {if $status==1}
+        <h2>通过！</h2>
+        <p>冻结用户的GC已经扣除，请确保以线下处理完成。</p>
+        {elseif $status==2 /}
+        <h2>驳回！</h2>
+        <p>冻结用户的GC已退回。</p>
+        {/if}
+        <button type="button" onclick="javascript:history.back(-1);" class="btn btn-warning">
+            返回
+        </button>
+    </div>
+    
+</section>
+{/block}
+
+{block name="footer"}
+    <script src="/admin/vendor/fuelux/checkbox.js"></script>
+{/block}

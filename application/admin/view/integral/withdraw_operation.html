@@ -1,0 +1,88 @@
+{extend name="layout/main" /}
+
+{block name="header"}
+
+{/block}
+
+{block name="content"}
+<section class="panel">
+    <header class="panel-heading">
+        <h4>处理GC提币</h4>
+    </header>
+    <div class="panel-body" style="padding-bottom: 50px">
+        <form class="form-horizontal" method="post" onsubmit="return false" role="form">
+            <div class="form-group">
+                <label class="col-sm-2 control-label">ID</label>
+                <div class="col-sm-5">
+                    <input type="text" value="{$info.id}" disabled class="form-control">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">用户</label>
+                <div class="col-sm-5">
+                    <input type="text" value="(ID:{$info.uid}) {$info.nick_name}" disabled class="form-control">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">钱包地址</label>
+                <div class="col-sm-5">
+                    <input type="text" value="{$info.wallet_address}" disabled class="form-control">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">总扣除金额</label>
+                <div class="col-sm-5">
+                    <input type="text" value="{$info.total_amount}" disabled class="form-control">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">提币金额</label>
+                <div class="col-sm-5">
+                    <input type="text" value="{$info.amount}" disabled class="form-control">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">手续费</label>
+                <div class="col-sm-5">
+                    <input type="text" value="{$info.commission}" disabled class="form-control">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">提交时间</label>
+                <div class="col-sm-5">
+                    <input type="text" value="{$info.create_time}" disabled class="form-control">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">状态</label>
+                <div class="col-sm-5">
+                    <input type="text" value="{if $info.status==0}等待处理{elseif $info.status==1/}成功提币{else /}请求被驳回{/if}" disabled class="form-control">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    {if $info.status==0}
+                    <a href="{:url('withdraw_operation_success',['id'=>$info.id])}" class="btn btn-success">
+                        通过
+                    </a>
+                    &nbsp;
+                    <a href="{:url('withdraw_operation_fail',['id'=>$info.id])}" class="btn btn-danger">
+                        驳回
+                    </a>
+                    {/if}
+                    &nbsp;
+                    <button type="button" onclick="javascript:history.back(-1);" class="btn btn-warning">
+                        返回
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+    
+</section>
+{/block}
+
+{block name="footer"}
+    <script src="/admin/vendor/fuelux/checkbox.js"></script>
+{/block}

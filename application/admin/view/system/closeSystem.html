@@ -1,0 +1,112 @@
+{extend name="layout/main" /}
+
+{block name="header"}
+{/block}
+
+{block name="content"}
+<script src="__PUBLIC__/admin/js/laydate/laydate.js"></script>
+<section class="panel">
+    <header class="panel-heading">
+        <h4>关闭系统</h4>
+    </header>
+    <div class="panel-body" style="padding-bottom: 50px">
+        <table class="table table-bordered table-striped no-margin">
+            <thead>
+            <tr>
+                <th class="text-center">序号</th>
+                <th class="text-center">维护提示</th>
+                <th class="text-center">手机号白名单</th>
+                <th class="text-center">维护开始时间</th>
+                <th class="text-center">维护截止时间</th>
+                <th class="text-center">上次维护日期</th>
+                <th class="text-center">状态</th>
+                <th class="text-center">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="text-center" style="vertical-align: middle; "><input type="hidden" id="configID" value="{$info->id}"/>1</td>
+                    <td class="text-center" style="vertical-align: middle; ">
+                        <input type="text" id="tipsContent" style="text-align: center" class="form-control"
+                               value="{$info->content}">
+                    </td>
+                    <td class="text-center" style="vertical-align: middle;">
+                            <!-- <input type="text" id="phoneWhiteList" style="text-align: center;" class="form-control"
+                            value="{$info->phone_white_list}" placeholder="请输入手机号,以;隔开"> -->
+                            {$info->phone_white_list}
+                    </td>
+                    <td class="text-center" style="vertical-align: middle; ">
+                        <input type="text" {empty name="$info->start_time"} value="" {else /} value="{$info->start_time|date="Y-m-d H:i:s",###}" {/empty} style="text-align: center" name="startTime" id="startTime" class="form-control" placeholder="请输入开始时间">
+                    </td>
+                    <td class="text-center" style="vertical-align: middle; ">
+                        <input type="text" {empty name="$info->end_time"} value="" {else /} value="{$info->end_time|date="Y-m-d H:i:s",###}" {/empty} style="text-align: center" name="endTime" id="endTime" class="form-control" placeholder="请输入截止时间">
+                    </td>
+                    <td class="text-center" style="vertical-align: middle; ">
+                        {empty name="$info->edit_time"} <span>暂无</span> {else /} <span>{$info->edit_time|date="Y-m-d",###}</span> {/empty}
+                    </td>
+                    {if $info->status == '1'}
+                        <td class="text-center" style="vertical-align: middle; ">
+                            <span class="btn btn-xs btn-danger">已关闭</span>
+                        </td>
+                        <td class="text-center" style="vertical-align: middle; ">
+                            <a onclick="updateConfig(this);" data-key="on" class="btn btn-xs btn-primary">确认开启</a>
+                            <a href="{:url('System/editWhiteList')}" class="btn btn-xs btn-success">修改白名单</a>
+                        </td>
+                        {else /}
+                        <td class="text-center" style="vertical-align: middle; ">
+                            <span class="btn btn-xs btn-success">正常</span>
+                        </td>
+                        <td class="text-center" style="vertical-align: middle; ">
+                            <a onclick="updateConfig(this);" data-key="close" class="btn btn-xs btn-primary">确认关闭</a>
+                            <a href="{:url('System/editWhiteList',['id' => $info->id])}" class="btn btn-xs btn-success">修改白名单</a>
+                        </td>
+                    {/if}
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+</section>
+{/block}
+
+
+{block name="footer"}
+<script>
+    function updateConfig(obj) {
+        var key = $(obj).attr('data-key');
+        var configID = $("#configID").val();
+        var tipsContent = $("#tipsContent").val();
+        var startTime = $("#startTime").val();
+        var endTime = $("#endTime").val();
+        // console.log(key,tipsContent,startTime,endTime);
+        $.post("{:url('System/saveCloseSystem')}", 
+            {
+                key: key, 
+                configID: configID,
+                tipsContent: tipsContent,
+                startTime: startTime,
+                endTime: endTime
+            }, 
+            function (data) {
+                if (data.code == 1) {
+                    main.waringAlert(data.message);
+                } else {
+                    main.waringAlert(data.message);
+                    window.location.reload();
+                }
+            }, 
+            'json')
+    }
+</script>
+
+<script>
+    laydate.render({
+        elem: '#startTime',
+        type: 'datetime'
+    });
+    laydate.render({
+        elem: '#endTime',
+        type: 'datetime'
+    });
+</script>
+{/block}

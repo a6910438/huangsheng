@@ -1,0 +1,49 @@
+{extend name="layout/main" /}
+
+{block name="header"}
+
+{/block}
+
+{block name="content"}
+<section class="panel">
+    <header class="panel-heading">
+        <h4>存款</h4>
+    </header>
+    <div class="panel-body" style="padding-bottom: 50px">
+        <form class="form-horizontal" method="post" onsubmit="return false" role="form">
+            <div class="form-group">
+                <label class="col-sm-2 control-label">存款类型</label>
+                <div class="col-sm-5">
+                    <select name="types" class="form-control">
+                        <option value="">--请选择--</option>
+                        {foreach $types as $key=>$item}
+                        <option {if $Request.get.types == $key}selected{/if} value="{$key}">{$item}</option>
+                        {/foreach}
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">存款金额</label>
+                <div class="col-sm-5">
+                    <input type="text" name="num" class="form-control" placeholder="请输入存款金额">
+                    <input type="hidden" name="uid" value="{$list->id}">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" onclick="main.ajaxPosts(this)" data-url="{:url('admin/finance/doManageStoreUser')}"
+                            class="btn btn-primary">提交
+                    </button>
+                    <button type="button" onclick="javascript:history.back(-1);" class="btn btn-warning">返回
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+{/block}
+
+
+{block name="footer"}
+    <script src="/admin/vendor/fuelux/checkbox.js"></script>
+{/block}

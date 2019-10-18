@@ -1,0 +1,139 @@
+{extend name="layout/main" /}
+
+{block name="header"}
+
+{/block}
+
+{block name="content"}
+<style type="text/css">
+    .link-th {
+        color: blue;
+    }
+</style>
+<section class="panel">
+    <header class="panel-heading">
+        <h4>封号历史</h4>
+    </header>
+    <div class="panel-body" style="padding-bottom: 50px">
+        <form class="form-horizontal" action="{:url('admin/user/title_history_list')}">
+            <div class="form-group">
+                <div class="col-xs-1 no-pd-r">
+                    <select name="type" id="type" class="form-control">
+                        <option {if $Request.get.type==
+                        'nick_name'} selected {/if} value="nick_name">用户名</option>
+                        <option {if $Request.get.type==
+                        'mobile'} selected {/if} value="mobile">手机号</option>
+                        <option {if $Request.get.type==
+                        'ids'} selected {/if} value="ids">ID</option>
+                    </select>
+                </div>
+                <div class="col-xs-3 no-pd-l">
+                    <input type="text" id="keyword" value="{$Request.get.keyword}" name="keyword" class="form-control"
+                           placeholder="请输入关键词搜索">
+                </div>
+                <button type="submit" class="btn btn-color">搜索</button>
+                <!--<button type="button" class="btn btn-success" id="export">导出</button>-->
+                <!--<a type="button" href="/admin/user/create" class="btn btn-info">添加会员</a>-->
+            </div>
+        </form>
+        <table class="table table-bordered table-striped no-margin">
+            <thead>
+            <tr class="top_fixed">
+                <th class="text-center">会员ID 测试要看的</th>
+                <th class="text-center">ID</th>
+                <th class="text-center">会员昵称</th>
+                <th class="text-center">等级</th>
+                <th class="text-center">手机号</th>
+                <th class="text-center">上级信息</th>
+                <th class="text-center">直推人数</th>
+                <th class="text-center">团队总人数</th>
+                <th class="text-center">封号开始时间</th>
+                <th class="text-center">封号结束时间</th>
+                <th class="text-center">解封原因</th>
+                <th class="text-center">封号原因</th>
+                <th class="text-center">操作人</th>
+            </tr>
+            </thead>
+            <tbody>
+            {if !empty($list)}
+            {foreach $list as $entity}
+            <tr>
+                <td style="vertical-align: middle" class="text-center">
+                    {$entity->id}<br>
+                </td>
+                <td style="vertical-align: middle" class="text-center">
+                    <a href="{:url('user/userDetail',['id'=>$entity->id])}">{$entity->getInviteCode()}</a>
+                </td>
+                <td style="vertical-align: middle" class="text-center">
+                    <a href="{:url('user/userDetail',['id'=>$entity->id])}">{$entity->nick_name}</a>
+                </td>
+
+                <td style="vertical-align: middle" class="text-center">
+                    {$entity->lv|user_lv_status}<br>
+                </td>
+                <td style="vertical-align: middle" class="text-center">
+                    {$entity->mobile}<br>
+                </td>
+                <td style="vertical-align: middle" class="text-center">
+                    {$entity->getInviteCode($entity->pid)}
+
+                </td>
+                <td style="vertical-align: middle" class="text-center">{$entity->getZT}</td>
+
+                <td style="vertical-align: middle" class="text-center">
+                    {$entity->teamCount}
+                </td>
+                <td style="vertical-align: middle" class="text-center">
+                    {$entity->getStime()}
+                </td>
+                <td style="vertical-align: middle" class="text-center">
+                    {$entity->getNtime()}
+                </td>
+                <td style="vertical-align: middle" class="text-center">
+                    {if $entity->type == 1}
+                    {$entity->reason}
+                    {else/}
+
+                    {/if}
+                </td>
+                <td style="vertical-align: middle" class="text-center">
+                    {if $entity->type == 0}
+                    {$entity->reason}
+                    {else/}
+
+                    {/if}
+                </td>
+                <td style="vertical-align: middle" class="text-center">
+                    {$entity->source}
+                </td>
+            </tr>
+            {/foreach}
+            {else /}
+            <tr class="text-center">
+                <td colspan="9">暂无数据</td>
+            </tr>
+            {/if}
+            </tbody>
+        </table>
+        <div class="page">
+            {:htmlspecialchars_decode($list->render())}
+        </div>
+    </div>
+</section>
+<script>
+    /*$('.content-wrap ').scroll(function(){
+        var scroH = $('.content-wrap ').scrollTop();  //滚动高度
+        var viewH = $(window).height();  //可见高度
+        var contentH = $(document).height();  //内容高度
+        var hh = $(".panel").offset().top;
+
+        if(scroH >100){  //距离顶部大于100px时
+            $('.top_fixed').css({'position':'fixed','top':'50px','background':'#fff'})
+        }
+    })*/
+</script>
+{/block}
+{block name="footer"}
+
+
+{/block}

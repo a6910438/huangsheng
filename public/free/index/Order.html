@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>My Order</title>
+		<link rel="icon" href="free.ico" type="image/x-icon"/> 
+		<link rel="stylesheet" href="../css/style.css" />
+		<script type="text/javascript" src="../js/jquery.js" ></script>
+		<script type="text/javascript" src="../build/flexible_css.js" ></script>
+		<script type="text/javascript" src="../build/flexible.js" ></script>
+		<script src="../js/template.js"></script>
+		<script src="../js/layer.js"></script>
+		<style>
+			html,body{ background: #F5F5F5;}
+			.tab{ width: 100%; height: 1.2rem; line-height: 1.2rem; background: #fff; }
+			.tab ul li{  width: 33.3%; float: left; text-align: center; font-size: 0.4rem; color: #999; }
+			.tab ul li.action{ color: #191F58; }
+			.tab ul li.action:after{ content: ""; display: block; width: 100%; border: 1px solid #191F58; }
+			.m-box{ padding: 0.15rem; }
+			.box ul li{ width: 100%; background: #fff; border-radius: 0.3rem; padding: 0.2rem 0.3rem; font-size: 0.35rem; margin-bottom: 0.3rem; }
+			.box ul li p{ height: 0.8rem; line-height: 0.8rem; }
+			.box ul li p i.icon{ display:inline-block; height: 0.8rem; width: 0.8rem; vertical-align: -0.25rem; background: url(../images/match_ru_icon.png)no-repeat center center; background-size:auto 80% ; }
+			.box ul li p i.icon1{ background: url(../images/order_chu_icon.png)no-repeat center center; background-size:auto 80% ; }
+			.box ul li p.info{ height: 0.7rem; line-height: 0.7rem;  }
+			.box ul li p.btn{ height: 0.6rem; line-height: 0.6rem; }
+			.box ul li a.btn{min-width: 2.4rem; border: 1px solid #F24D4D; font-size: 0.3rem; height: 0.6rem; color: #F24D4D; line-height: 0.6rem; border-radius: .4rem; padding: 0 0.2rem; }
+			.box ul li a.hs-btn{min-width: 2.4rem; border: 1px solid #191F58; font-size: 0.3rem; height: 0.6rem; color: #191F58; line-height: 0.6rem; border-radius: .4rem; padding: 0 0.2rem; }
+			.box ul li .item{ width: 100%; color: #999; font-size: 0.3rem; }
+			.box ul li p.Countdown{ font-size: 0.3rem; line-height: 0.5rem; }
+			.red{ color: #F24D4D; }
+			.orange{ color:#E77E51}
+			.ly{ position: fixed; height: 100%; width: 100%; background: rgba(0,0,0,0.3); top: 0; left: 0; display: none; }
+			.m-megess{ width: 90%;height:70%; background: #fff; position: fixed; z-index: 99; border-radius: 0.3rem; left: 5%; top: 26%;  padding: 0.3rem; display: none;overflow: scroll }
+			.look_img{ width: 90%;height: 70%; background: #fff; position: fixed; z-index: 99; border-radius: 0.3rem; left: 5%; top: 30%;  padding: 0.3rem; display: none; overflow: scroll}
+			.confirm1{ width: 90%;height: 70%; background: #fff; position: fixed; z-index: 99; border-radius: 0.3rem; left: 5%; top: 30%;   padding: 0.3rem; display: none;overflow: scroll }
+			.m-megess .title{ height: 0.7rem; font-size: 0.4rem; line-height: 0.7rem; position: relative; }
+			.m-megess .title i{ display: block; width: 0.7rem; height: 0.7rem; position: absolute; right: 0; background: url(../images/shutdown.png) no-repeat center center; background-size:auto 100% ; }
+			.m-input label{ height: 0.8rem; line-height: 0.8rem; font-size: 0.4rem; display: block; }
+			.m-input input{ width: 100%; height: 1rem; line-height: 1rem; background: #F5F5F5; border: none; padding: 0 0.2rem; font-size: 0.35rem; }
+			#payment{ height: 1.2rem; width: 60%; margin: 0.5rem auto 0.4rem; font-size: 0.5rem; border: none; background: #262F86; display: block; color: #fff; border-radius: 0.3rem; }
+			.Conf-btn{ height: 1.2rem; width: 60%; margin: 0.5rem auto 0.4rem; font-size: 0.5rem; border: none; background: #262F86; display: block; color: #fff; border-radius: 0.3rem; }
+			.set-file{
+            display: block;
+            position: absolute;
+            opacity: 0;
+            top: 0;
+            right: 0;
+            width: .586667rem;
+            height: .586667rem;
+				}
+			.topping{
+				width: 20%;
+				font-size: 0.4rem;
+				height: 0.6rem;
+				color: #F24D4D;
+			}
+			.img-item img{width: 100%;height: 2rem;}
+			.look_img img{width: 80%;margin-left: 10%;}
+			.confirm1 .m-btn{ width: 100%; height: 1rem; line-height: 1rem; border-top: 1px solid  #ccc; }
+			.confirm1 .m-btn >.item{ width: 50%; float: left; border-right: 1px solid #ccc;  font-size: 0.4rem;  }
+			.confirm1 .m-btn >.item:last-child{border: none;}
+			.to-load {
+				text-align: center;
+				height: 2rem;
+				line-height: 2rem;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				width: 100%;
+			}
+			.to-load .load-tip {
+				font-size: 0.4rem;
+				width: 100%;
+				height: 100%;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				color: #191F58;
+			}
+			.to-load img {
+				width: 1rem;
+				height: 1rem;
+				object-fit: contain;
+				margin-right: 0.3rem;
+				display: none;
+			}
+			span, img {
+				vertical-align: middle;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="m-head">
+			<a href="Trading.html" class="return"></a>
+			<h3>My Order</h3>
+		</div>
+		<div class="m-body">
+			<div class="tab clearfix">
+				<ul>
+					<li class="action">Order</li>
+					<li>Match</li>
+					<li>Withdraw</li>
+				</ul>
+			</div>
+			<div class="m-box">
+				<div class="box clearfix get_order">
+					<ul>
+						
+					</ul>
+				</div>
+				<div class="box clearfix" style="display: none;">
+					<ul class="match">
+						
+					</ul>
+				</div>
+				<div class="box clearfix withdraw" style="display: none;">
+					<ul class="withdraw1">
+						
+					</ul>
+					<!-- 是否加载更多 -->
+					<div class="to-load">
+					<div class="load-tip">
+					<img id="loading_img" src="../images/loader.gif" alt="" />
+					<span class="end_line" id="tip-text">All contents loaded</span>
+					</div>
+					</div>
+				</div>
+				
+			</div>
+		</div>
+		<div class="ly"></div>
+		<div class="m-megess" data-img="">
+			<div class="title"><i class="close"></i></div>
+          <div class="m-input">
+				<label>Accound</label>
+				<input class="nick_name" type="text" readonly />
+			</div>
+			<div class="m-input">
+				<label>Wallet address</label>
+				<input class="get_wallet" type="text" readonly/>
+			</div>
+			<div class="m-input">
+				<label>Money</label>
+				<input class="money1" type="text" readonly />
+			</div>
+			<div class="m-input">
+				<label>Remarks</label>
+				<input class="remark1" type="text" readonly/>
+			</div>
+			<div class="m-input">
+					<label>Social media</label>
+					<input class="social" type="text" readonly/>
+			</div>
+			<div class="m-input" style="position:relative;margin-top: .2rem">
+				<input type="text" class="item-value" value="Select a Picture" readonly>
+                <input type="file" accept="image/jpeg,image/jpg,image/png" id="upload" class="set-file">
+			</div>
+			<p class="img_error" style="display: none; margin-top:.1rem;color: #F24D4D;font-size: .32rem"><span class="tishi">!</span>Payment Voucher cannot be empty</p>                
+			<div class="img-box left clearfix"></div>
+			<input type="button" id="payment" value="payment" />
+		</div>
+		<div class="look_img" data-id="">
+			<div class="title"><i class="close"></i></div>
+			<img src="" alt="" >
+			<input type="button" class="Conf-btn consk" value="Confirm Receipt" />
+		</div>
+		<div class="confirm1">
+				<div class="megess">
+					<div class="title">Safety Verification</div>
+					<div class="info">Level-2 Password:</div>
+					<input class="get_pass1" type="password" placeholder="Password" id="password"  />
+				</div>
+				<div class="m-btn">
+					<div class="item" id="submit2">Submit</div>
+					<div class="item" id="cancel">cancel</div>
+				</div>
+		</div>
+	</body>
+	<script type="text/html" id="get_order">
+		{{each info.line.data val}}	
+			<li class="dakuan">
+				<p class="line_id" data-line="{{val.id}}"><img style="vertical-align:text-top" src="../images/match_ru_icon.png" alt="">Order Serial Number：{{val.order_num}}</p>
+				<p class="info">
+						{{if val.status==1}}
+						Status：in the line
+						{{else if val.status==2}} 
+						Status：Partial deposit
+						{{else if val.status==3}} 
+						Status：Full deposit
+						{{else if val.status==4}} 
+						Status：Returned
+						{{else if val.status==5}} 
+						Status：Matching
+						{{/if}}	
+				<a href="#" class="right btn send" style="margin-top: -.2rem;">Amounts：${{val.num}}</a></p>
+				<a href="#" class="right hs-btn">Balance：${{val.overmoney}}</a>
+                {{if val.status==2}}
+				<p><span class="topping">Topping</span><span style="font-size:.26rem">&nbsp; (You can spend three stars on top)</span></p>
+                {{else}}
+                
+                {{/if}}
+				<div class="item" style="margin-top: .4rem;">Order Time：{{val.create_time}}</div>
+			</li>
+		{{/each}}
+		{{each info.withdraw.data val}}	
+			<li class="shoukuan">
+				<p><img style="vertical-align:text-top" src="../images/order_chu_icon.png" alt="">Order Serial Number：{{val.order_num}}</p>
+				<p class="info">
+						{{if val.status==1}}
+						Status：in the line
+						{{else if val.status==2}} 
+						Status：Partial withdrawal
+						{{else if val.status==3}} 
+						Status：Full withdrawal
+						{{/if}}
+				<a href="#" class="right btn send" style="margin-top: -.2rem;">Amounts：${{val.total}}</a></p>
+				<a href="#" class="right hs-btn">Balance：${{val.overplus}}</a>
+				<div class="item" style="margin-top: .4rem;">Order Time：{{val.create_time}}</div>
+			</li>
+		{{/each}}
+	</script>
+	<script type="text/html" id="match">
+		{{each store_info.data val index}}	
+			<li>
+				<!-- <p><img style="vertical-align:text-top" src="../images/match_ru_icon.png" alt=""> Order Serial Number：{{val.order_num}}</p> -->
+				<p class="info">
+					{{if val.status==1}}
+						Status：In the fight
+						{{else if val.status==2}} 
+						Status：Match
+						{{else if val.status==3}} 
+						Status：Timeout not paid
+						{{else if val.status==4}} 
+						Status：Timeout not received
+						{{/if}}
+				</p>
+				<p class="hq_time" data-time="{{val.over_store_time}}" style="display:none;"></p>
+				<p >Countdown：<span class="set_data" style="color:#F35656"></span> </p>
+				<p style="color:#E77E51">
+				{{if val.prove}}
+				{{else}}
+				<a href="#" class="send1" data-amount="{{val.money}}">Upload Image</a>
+				{{/if}}
+					<a href="#" class="right btn" data-amount="{{val.money}}">Amounts：${{val.money}}</a>
+				</p>
+				<div class="item">Order Time：{{val.create_time}}</div>
+				<p class="get_id" data-id="{{val.id}}" style="display:none"></p>
+			</li>
+		{{/each}}
+		{{each withdraw_list.data val index}}	
+			<li>
+					<!-- <p><img style="vertical-align:text-top" src="../images/order_chu_icon.png" alt=""> Order Serial Number：{{val.order_num}}</p> -->
+				<p class="info">
+						{{if val.status==1}}
+						Status：In the fight
+						{{else if val.status==2}} 
+						Status：Match
+						{{else if val.status==3}} 
+						Status：Timeout not paid
+						{{else if val.status==4}} 
+						Status：Timeout not received
+						{{/if}}
+				</p>
+				<p class="hq_time" data-time="{{val.over_ok_time}}" style="display:none;"></p>
+				<p >Countdown：<span class="set_data" style="color:#F35656"></span> </p>								
+					{{if !val.prove}}
+					{{else}}
+					<a href="#" style="color:#E77E51" class="view_img" data-acid="{{val.id}}" data-pic="{{val.prove}}" data-amount="{{val.money}}">View Image</a>
+					{{/if}}
+					<a href="#" class="right btn"  data-amount="{{val.money}}">Amounts：${{val.money}}</a>
+				<p>Account：{{val.nick_name}}</p>
+				<p>Social Media:{{val.chat_num}}</p>
+				<div class="item">Order Time：{{val.create_time}}</div>
+			</li>
+		{{/each}}
+	</script>
+	<script type="text/html" id="withdraw">
+		{{each info.data val}}	
+			<li>
+				<p>Order Serial Number：{{val.order_num}}</p>
+				<p class="info">
+						{{if val.status==1}}
+						Status：Frozen
+						{{else if val.status==2}} 
+						Status：To be released
+						{{else if val.status==3}} 
+						Status：Released
+						{{/if}}
+					<a href="#" class="right btn send">Amounts：${{val.num}}</a></p>
+				<p class="hq_time1" data-time1="{{val.my_end_time}}" style="display:none;"></p>
+				<p >Countdown：<span class="set_data1" style="color:#F35656"></span> </p>
+				<p class="btn"><a href="#" class="right hs-btn">Interest：${{val.interest}}</a></p>
+				<p>Operating：<span data-djid="{{val.id}}" class="con_dj" style="color:#E77E51">Confirm</span></p>
+				<div class="item">Order Time：{{val.create_time}}</div>
+			</li>
+		{{/each}}
+	</script>
+	<script>
+		$(function () {
+			var status=true;
+			var param1 = {
+		    	page: 1,
+				limit: 10,
+			};
+			var param2 = {
+		    	page: 1,
+				limit: 10,
+				status:2
+			};
+			var param3 = {
+		    	page: 1,
+				limit: 10,
+				status:3
+			};
+			$('#upload').on('change', function(){
+		            var file = $(this)[0];
+		            var formData = new FormData();
+		            formData.append('file', file.files[0]);
+		            $.ajax({
+		                url: "../../index.php/index/Upload/uploadImg",
+		                type: 'POST',
+		                data: formData,
+		                contentType: false, // 注意这里应设为false
+		                processData: false,
+		                success: function(res){
+		                    if(res.code==0){
+								var m_img=`
+		                        <div class="img-item">
+							        <img src="${res.data}" alt="">
+							    </div>`
+                                $('.img-box').append(m_img);
+                                $(".m-megess").data("img",res.data);                          
+		                        var lenth = $('.img-box .img-item').length;
+		                        if(lenth>=1){
+		                            $('.set-file').hide();
+		                        } 
+		                        $('#img-total').html(lenth);
+		                        file.value = '';
+		                        layer.open({
+                                content: 'Upload success',
+                                skin: 'msg',
+                                time: 2
+                            });
+							}
+							else{
+		                        layer.open({
+                                content: 'upload failed',
+                                skin: 'msg',
+                                time: 2
+                            });
+		                    }
+		                },
+		                error: function(XHR, textStatus, errorThrown) {
+							layer.open({
+                                content: 'upload failed',
+                                skin: 'msg',
+                                time: 2
+                            });
+		                }
+		            });
+				});
+				function loadList1(){
+				$.ajax({
+                url: "../../index.php/index/Match/order",
+				data:param1,
+				type: 'GET',
+                dataType: 'json',
+                success: function(res){
+                    console.log(res)
+                    if(res.code=='0'){
+						$('.get_order ul').html(template('get_order',res));
+						$('.topping').off().on('click',function(){
+							var store_id=$('.line_id').data('line');
+							$.ajax({
+							url: "../../index.php/index/Match/stick",
+							type: 'POST',
+							data:{store_id:store_id},
+							dataType: 'json',
+							success: function(res){
+								if(res.code=='0'){
+									layer.open({
+										content: res.msg,
+										skin: 'msg',
+										time: 2
+									});
+									}
+								else if (res.code == 1 && res.url == "login") {
+										layer.open({
+											content: 'You are not logged in',
+											skin: 'msg',
+											time: 2
+										})
+										setTimeout(function(){
+											window.location.href='introduce.html';
+										},500)
+									}
+								else{
+									console.log(res)
+									layer.open({
+										content: res.msg,
+										skin: 'msg',
+										time: 2
+									});
+									}
+							},
+						});
+						})
+
+						var ul = $(".match");
+						var lis = [];
+
+						lis = $(".match li");
+						var ux = [];
+						//循环提取时间，并调用排序方法进行排序
+						for (var i = 0; i < lis.length; i++) {
+							var tmp = {};
+							tmp.dom = lis.eq(i);
+							tmp.date = new Date(lis.eq(i).find('div').html().replace(/-/g, '/'));
+							ux.push(tmp);
+						}
+						//数组排序，支持年的比较
+						ux.sort(function(a, b) {
+							var myDate = new Date();
+							var year = myDate.getYear();
+							if (a.date.getYear < year && b.date.getYear == year) {
+								return true;
+							}
+							return b.date - a.date;
+						});
+						//移除原先顺序错乱的li内容
+						$('.match li').remove();
+						//重新填写排序好的内容
+						for (var i = 0; i < ux.length; i++) {
+							ul.append(ux[i].dom);
+						}
+						
+							//隐藏
+							$(".close,.ly").click(function(){
+								$(".ly,.m-megess").hide();
+								$('.match li').removeClass('active');
+							})
+						
+                        }
+                    else{
+                        layer.open({
+                            content: res.msg,
+                            skin: 'msg',
+                            time: 2
+                        });
+                        }
+                },
+			});
+				}
+			function loadList2(){
+			$.ajax({
+                url: "../../index.php/index/Match/order",
+				type: 'GET',
+				data:param2,
+                dataType: 'json',
+                success: function(res){
+                    console.log(res)
+                    if(res.code=='0'){
+						$('.match').html(template('match',res));
+						var ul = $(".match");
+						var lis = [];
+						lis = $(".match li");
+						var ux = [];
+						//循环提取时间，并调用排序方法进行排序
+						for (var i = 0; i < lis.length; i++) {
+							var tmp = {};
+							tmp.dom = lis.eq(i);
+							tmp.date = new Date(lis.eq(i).find('div').html().replace(/-/g, '/'));
+							ux.push(tmp);
+						}
+						//数组排序，支持年的比较
+						ux.sort(function(a, b) {
+							var myDate = new Date();
+							var year = myDate.getYear();
+							if (a.date.getYear < year && b.date.getYear == year) {
+								return true;
+							}
+							return b.date - a.date;
+						});
+						//移除原先顺序错乱的li内容
+						$('.match li').remove();
+						//重新填写排序好的内容
+						for (var i = 0; i < ux.length; i++) {
+							ul.append(ux[i].dom);
+						}
+						$('.consk').off().on('click',function(){
+							var active_id=$('.view_img.active').data('acid');
+							// console.log(active_id);
+							$.ajax({
+							url: "../../index.php/index/Match/okMoney",
+							async:false,
+							type: 'POST',
+							data:{active_id:active_id},
+							dataType: 'json',
+							success: function(res){
+								if(res.code=='0'){
+									layer.open({
+										content: res.msg,
+										skin: 'msg',
+										time: 10
+									});
+									location.reload();
+									}
+								else{
+									layer.open({
+										content: res.msg,
+										skin: 'msg',
+										time: 2
+									});
+									}
+							},
+						});
+						})
+						$('.view_img').off().on('click',function(){
+							var pic=$(this).data('pic');
+							$(this).addClass('active');
+							$('.look_img img').attr('src',pic);
+							$('.look_img,.ly').show();
+						})
+						//隐藏
+						$(".close,.ly").click(function(){
+							$('.look_img').hide();
+							$('.view_img').removeClass('active');
+							})
+							//隐藏
+							$(".close,.ly").click(function(){
+								$(".ly,.m-megess").hide();
+								$('.match li').removeClass('active');
+							})
+						$('.send1').off().on('click',function(){
+							$(this).parent().parent().addClass('active');
+							$(this).addClass('active');
+							$(".ly,.m-megess").show();
+							var active_id=$('.match li.active .get_id').data('id');
+							var num=$('.match li.active .send1').data('amount');
+							var pic=$(".m-megess").data("img");
+							$.ajax({
+							url: "../../index.php/index/Match/makeMoney",
+							type: 'GET',
+							data:{active_id:active_id},
+							dataType: 'json',
+							success: function(res){
+								if(res.code=='0'){
+									console.log(res)
+									$('.get_wallet').val(res.info.trade_address);
+									$('.remark1').val(res.info.remake);
+                                 	$('.nick_name').val(res.info.nick_name);
+                                  	$('.money1').val(res.info.money);
+									$('.social').val(res.info.chat_num);
+									}
+								else{
+									console.log(res)
+									layer.open({
+										content: res.msg,
+										skin: 'msg',
+										time: 2
+									});
+									}
+							},
+						});
+						})							
+
+							//隐藏
+							$(".close,.ly").click(function(){
+								$(".ly,.m-megess").hide();
+								$('.match li').removeClass('active');
+							})
+						
+                        }
+                    else{
+                        layer.open({
+                            content: res.msg,
+                            skin: 'msg',
+                            time: 2
+                        });
+                        }
+                },
+			});
+			}
+			setInterval(() => {
+				for(var i=0;i<$('.match li').length;i++)
+					{
+						var timestamp = new Date();
+						var strtime = $('.hq_time').eq(i).data('time');
+						var date = new Date(strtime);
+						// var str1=strtime.getTime();
+						var getdata=parseInt((date.getTime()-timestamp.getTime())/1000);
+							//天数
+						var days = Math.floor(getdata / (60 * 60 * 24));
+						//取模（余数）
+						var modulo = getdata % (60 * 60 * 24);
+						//小时数
+						var hours = Math.floor(modulo / (60 * 60));
+						modulo = modulo % (60 * 60);
+						//分钟
+						var minutes = Math.floor(modulo / 60);
+						//秒
+						var seconds = modulo % 60;
+						//输出到页
+						var get_get= days + "d" + hours + "h" + minutes + "m" + seconds + "s";
+                      	if(getdata>0){
+						$('.set_data').eq(i).html (get_get);
+                        }else{$('.set_data').eq(i).html ("0d0h0m0s");}
+					}
+			}, 1000);	
+			function loadList3(){		
+			$.ajax({
+                url: "../../index.php/index/Match/order",
+				type: 'GET',
+				data:param3,
+                dataType: 'json',
+                success: function(res){
+                    console.log(res)
+                    if(res.code=='0'){
+						$('.withdraw1').append(template('withdraw',res));
+						if(!res.info || res.info.length<param3.limit){  
+						$('#loading_img').hide();
+                          $("#tip-text").text('All contents loaded');
+                          $("#tip-text").addClass('end_line');                      
+                            status=false;
+                          }
+						var ul = $(".withdraw1");
+						var lis = [];
+
+						lis = $(".withdraw li");
+						var ux = [];
+						//循环提取时间，并调用排序方法进行排序
+						for (var i = 0; i < lis.length; i++) {
+							var tmp = {};
+							tmp.dom = lis.eq(i);
+							tmp.date = new Date(lis.eq(i).find('div').html().replace(/-/g, '/'));
+							ux.push(tmp);
+						}
+						//数组排序，支持年的比较
+						ux.sort(function(a, b) {
+							var myDate = new Date();
+							var year = myDate.getYear();
+							if (a.date.getYear < year && b.date.getYear == year) {
+								return true;
+							}
+							return b.date - a.date;
+						});
+						//移除原先顺序错乱的li内容
+						$('.withdraw li').remove();
+						//重新填写排序好的内容
+						for (var i = 0; i < ux.length; i++) {
+							ul.append(ux[i].dom);
+						}
+						$('.con_dj').off().on('click',function(){
+							var active_id=$(this).data('djid');
+							$.ajax({
+							url: "../../index.php/index/Match/click",
+							type: 'GET',
+							data:{id:active_id},
+							dataType: 'json',
+							success: function(res){
+								if(res.code=='0'){
+									layer.open({
+										content: res.msg,
+										skin: 'msg',
+										time: 2
+									});
+									setTimeout(() => {
+										location.reload();
+										$('.tab ul li').eq(2).addClass('action');
+									}, 2000);
+									}
+								else{
+									layer.open({
+										content: res.msg,
+										skin: 'msg',
+										time: 2
+									});
+									}
+							},
+						});
+						})
+                      setInterval(() => {
+                      for(var i=0;i<$('.withdraw1 li').length;i++)
+                          {
+                              var timestamp = new Date();
+                              var strtime = $('.hq_time1').eq(i).data('time1');
+                              var date = new Date(strtime);
+                              // var str1=strtime.getTime();
+                              var getdata=parseInt((date.getTime()-timestamp.getTime())/1000);
+                                  //天数
+                              var days = Math.floor(getdata / (60 * 60 * 24));
+                              //取模（余数）
+                              var modulo = getdata % (60 * 60 * 24);
+                              //小时数
+                              var hours = Math.floor(modulo / (60 * 60));
+                              modulo = modulo % (60 * 60);
+                              //分钟
+                              var minutes = Math.floor(modulo / 60);
+                              //秒
+                              var seconds = modulo % 60;
+                              //输出到页
+                              var get_get= days + "d" + hours + "h" + minutes + "m" + seconds + "s";
+							  if(getdata>0){
+								  $('.con_dj').hide();
+							  }else{ $('.con_dj').show();}
+                             if(getdata>0){
+                              $('.set_data1').eq(i).html (get_get);
+                              }else{$('.set_data1').eq(i).html ("0d0h0m0s");}
+                                }
+                  }, 1000);							
+
+							//隐藏
+							$(".close,.ly").click(function(){
+								$(".ly,.m-megess").hide();
+								$('.send1').removeClass('active');
+								$('.send2').removeClass('active');
+								$('.send3').removeClass('active');
+							})
+						
+                        }
+                    else{
+                        layer.open({
+                            content: res.msg,
+                            skin: 'msg',
+                            time: 2
+                        });
+                        }
+                },
+			});
+			}
+			loadList1();
+			loadList2();
+			loadList3();
+			$(window).off("scroll").on("scroll", function(e){
+		    var totalheight = parseFloat($(this).height()) + parseFloat($(this).scrollTop());
+			
+		    if (($(document).height()<=totalheight && status)){
+				$('#loading_img').show();
+				$("#tip-text").text('Loading, please wait').css({'color':'#867AFB'});
+				$("#tip-text").removeClass('end_line');
+           		status=true;
+		        param1.page++;
+            	loadList1();
+		    }
+    		});
+			$(window).off("scroll").on("scroll", function(e){
+		    var totalheight = parseFloat($(this).height()) + parseFloat($(this).scrollTop());
+			
+		    if (($(document).height()<=totalheight && status)){
+				$('#loading_img').show();
+				$("#tip-text").text('Loading, please wait').css({'color':'#867AFB'});
+				$("#tip-text").removeClass('end_line');
+           		status=true;
+		        param2.page++;
+            	loadList2();
+		    }
+    		});
+			$(window).off("scroll").on("scroll", function(e){
+		    var totalheight = parseFloat($(this).height()) + parseFloat($(this).scrollTop());
+			
+		    if (($(document).height()<=totalheight && status)){
+				$('#loading_img').show();
+				$("#tip-text").text('Loading, please wait').css({'color':'#867AFB'});
+				$("#tip-text").removeClass('end_line');
+           		status=true;
+		        param3.page++;
+            	loadList3();
+		    }
+    		});
+		});
+	</script>
+	<script>
+		$(function(){
+			$('.tab ul li').click(function(){
+				$('.tab ul li').removeClass("action");
+				$(this).addClass("action");
+				$(".box").hide();
+				$(".box").eq($('.tab ul li').index(this)).show();
+			});
+			var active_id=$('.match li.active .get_id').data('id');
+			$("#payment").off().on('click',function(){
+				var pic=$(".m-megess").data("img");
+				var active_id=$('.match li.active .get_id').data('id');
+				var num=$('.match li.active .send1').data('amount');
+				var money_address=$('.get_wallet').val();
+				$.ajax({
+                url: "../../index.php/index/Match/makeMoney",
+				type: 'POST',
+				data:{active_id:active_id,nums:num,money_address:money_address,pic:pic},
+                dataType: 'json',
+                success: function(res){
+                    console.log(res)
+                    if(res.code=='0'){
+						layer.open({
+                            content: res.msg,
+                            skin: 'msg',
+                            time: 2
+					   });
+						setTimeout(() => {
+							//隐藏
+							$(".ly,.m-megess").hide();
+						}, 1000);
+						location.reload()
+                        }
+                    else{
+                        layer.open({
+                            content: res.msg,
+                            skin: 'msg',
+                            time: 2
+                        });
+                        }
+                },
+			});
+			})
+		})
+	</script>
+</html>

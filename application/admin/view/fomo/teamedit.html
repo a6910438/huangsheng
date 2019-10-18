@@ -1,0 +1,76 @@
+{extend name="layout/main" /}
+
+{block name="header"}
+
+{/block}
+
+{block name="content"}
+<link rel="stylesheet" href="http://cdn.staticfile.org/webuploader/0.1.5/webuploader.css">
+<script type="text/javascript" src='http://cdn.staticfile.org/webuploader/0.1.5/webuploader.min.js'></script>
+<script src="/zhao/public/admin/vendor/fuelux/radio.js"></script>
+<style type="text/css">
+    
+</style>
+<section class="panel">
+    <header class="panel-heading">
+        <h4>添加队伍</h4>
+    </header>
+    <div class="panel-body" style="padding-bottom: 50px">
+        <form class="form-horizontal" method="post" onsubmit="return false" role="form">
+            
+            <div class="form-group">
+                <label class="col-sm-2 control-label">选择队伍</label>
+                <div class="col-sm-5">
+                    <select  name="teamid" class="form-control">
+                        {if $team}
+                        {foreach $team as $key=>$item}
+                            <option value="{$item['id']}">{$item['title']}</option>
+                        {/foreach}
+                        {else}
+                            <option value="">暂无队伍</option>
+                        {/if}
+                    </select>
+                </div>
+                <div class="col-sm-5 help-block">
+                        
+                </div>
+            </div>
+            <input type="hidden" name="id" value="{$id}">
+             <div class="form-group">
+                <label class="col-sm-2 control-label">奖池比例（%）</label>
+                <div class="col-sm-5">
+                    <input type="text" value="" name="pond_scale" class="form-control"
+                           placeholder="请输入分红比例">
+                </div>
+                <div class="col-sm-5 help-block">
+                        设置奖池比例（%），不设置为所选队伍默认比例
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">分红比例（%）</label>
+                <div class="col-sm-5">
+                    <input type="text" value="" name="bonus_scale" class="form-control"
+                           placeholder="请输入分红比例">
+                </div>
+                <div class="col-sm-5 help-block">
+                        设置团队分红比例（%），不设置为所选队伍默认比例
+                </div>
+            </div>
+        
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" data-url="{:url('admin/fomo/addteam')}"
+                            onclick="main.ajaxPosts(this)" class="btn btn-primary">确定提交
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+    
+</section>
+{/block}
+
+
+{block name="footer"}
+ 
+{/block}

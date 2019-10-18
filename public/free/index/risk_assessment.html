@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Risk Assessment</title>
+    <link rel="icon" href="free.ico" type="image/x-icon"/> 
+    <link rel="stylesheet" href="../css/public.css">
+    <script src="../build/flexible.js"></script>
+    <script src="../build/flexible_css.js"></script>
+    <script src="../js/layer.js"></script>
+    <script src="../js/jquery.js"></script>
+    <script src="../js/template.js"></script>
+    <style>
+        html, body {background: #F5F5F5;}
+        .header {position: fixed;top: 0px;left: 0px;width: 100%;height: 1.173333rem;line-height: 1.173333rem;text-align: center;color: #fff;background: linear-gradient(to left, #2A3176, #0A0F3E);z-index: 99999;}
+        .header span {font-size: .48rem;font-weight: bold;}
+        .goback {position: absolute;top: 0;left: .106667rem;display: flex;align-items: center;height: inherit;}
+        .goback img {width: .586667rem;}
+        .main {padding: 1.173333rem 0rem 1.333333rem;}
+        .item {padding: .213333rem .373333rem .4rem;background: #fff;}
+        .item:nth-child(2n) {background: #F5F5F5;}
+        .question {font-size: .346667rem;color: #333;}
+        .option-box {margin-top: .266667rem;}
+        .option-item {display: flex;align-items: center;margin-bottom: .4rem;}
+        .option-box .option-item:last-child {margin-bottom: 0;}
+        .circle {position: relative;width: .373333rem;height: .373333rem;border-radius: 50%;border: 1px solid #191F58;}
+        .circle-type {position: absolute;top: .053333rem;left: .053333rem;width: .213333rem;height: .213333rem;border-radius: 50%;background: transparent;}
+        .active {background: #191F58;}
+        .option-value {height: .373333rem;line-height: .373333rem;margin-left: .16rem;font-size: .32rem;color: #191F58;}
+        .agree-box {display: flex;align-items: center;margin-top: 2.266667rem;padding: 0rem .853333rem;}
+        .agree {display: flex;align-items: center;}
+        .choice img {height: .506667rem;vertical-align: bottom;}
+        .agree-content {margin-left: .133333rem;font-size: .346667rem;color: #333;}
+        .btn-box {margin-top: .24rem;display: flex;justify-content: center;}
+        .confirm {padding: 0rem .32rem;width: 54%;height: 1.173333rem;line-height: 1.173333rem;font-size: .48rem;color: #fff;border: none;background: #262F86;}
+		.ly{ position: fixed; height: 100%; width: 100%; background: rgba(0,0,0,0.3); top: 0; left: 0; display: none; }
+        .m-megess{ width: 90%;height: auto; background: #fff; position: fixed; display: none; z-index: 99; text-align: center; border-radius: 0.3rem; left: 5%; top: 50%; }
+        .m-megess .title{ height: 0.9rem; font-size: 0.4rem; line-height: 0.9rem; padding: 0 0.35rem; text-align: left; position: relative; border-bottom: 1px solid #E0E0E0; }
+        .m-megess .title i{ position: absolute; height: 0.9rem; width: 0.9rem; background: url(../images/shutdown.png) no-repeat center center; background-size:auto 70%; right: 0.25rem;  }
+        .m-megess .list{ width: 100%; padding: 0 0.35rem;  }
+        .m-megess .list .top span{ display: block; width: 50%; font-size: 0.35rem; color: #666; text-align: left; float: left; height: 0.8rem; line-height: 0.8rem; }
+        .m-megess .list .top span:nth-child(2n){ text-align: right; }
+    </style>
+<body>
+    <header class="header">
+        <a href="javascript:history.back(-1);" class="goback">
+            <img src="../images/nav_arrow_icon@2x.png" alt="">
+        </a>
+        <span>Risk Assessment</span>
+    </header>
+    <main class="main">
+        <div class="list">
+                
+            
+            
+        </div>
+        <div class="agree-box">
+            <div class="agree" data-img="1">
+                <div class="choice">
+                    <img src="../images/xuanze_icon@2x.png" alt="">
+                </div>
+                <div class="agree-content">I understand all the investment risks</div>
+            </div>
+        </div>
+        <div class="btn-box">
+            <button class="confirm">submit</button>
+        </div>
+        <div class="ly"></div>
+        <div class="m-megess">
+				<div class="title">investment risks<i class="close"></i> </div>
+				<div style="width: 90%;margin: auto;text-align: center;padding: .2rem 0;">
+                        You should carefully consider whether this investment is suitable for you in light of your knowledge and experience in financial and business matters, investment objectives, financial means and the risks that you are prepared to take. 
+				</div>
+		</div>
+    </main>
+    <script type="text/html" id="assessment">
+        {{each info.test.data val}}
+        <div class="item">
+                <div class="question">{{val.title}}</div>
+                <div class="option-box">
+                    {{each val.answer value}}
+                    <div class="option-item">
+                        <span class="circle">
+                            <i class="circle-type" data-score1="{{value.score}}"></i>
+                        </span>
+                        <span class="option-value">{{value.content}}</span>
+                    </div>
+                    {{/each}}
+                </div>
+            </div>
+        {{/each}}
+    </script>
+    <script>
+
+            $(function () {
+               $.ajax({
+                   url: "../../index.php/index/publics/registerProblem",
+                   type: 'GET',
+                   data: {},
+                   dataType: 'json',
+                   success: function(res){
+                       if(res.code=='0'){ 
+                            $('.list').html(template("assessment", res));
+                            $('.agree-content').off().on('click',function(event){
+                                event.stopPropagation();
+                                $('.m-megess,.ly').show();
+                            })
+                            //隐藏
+                            $(".ly,.close").click(function(){
+                                $(".ly,.m-megess").hide();
+                            })
+                            let optionItem = document.querySelectorAll('.option-item');
+                            let agree = document.querySelector('.agree');
+                            optionItem.forEach(item => {
+                                item.addEventListener('click', ()=> {
+                                    let arr = item.parentNode.children;
+                                    for (let ele of arr) {
+                                        ele.children[0].children[0].classList.remove('active');
+                                    }
+                                    item.children[0].children[0].classList.add('active');
+                                });
+                            });
+                            agree.addEventListener('click', function() {
+                                if (this.getAttribute('data-img') == 0) {
+                                    this.setAttribute('data-img', '1');
+                                    this.children[0].innerHTML = `<img src="../images/xuanze_icon@2x.png" alt="">`;
+                                } else {
+                                    this.setAttribute('data-img', '0');
+                                    this.children[0].innerHTML = `<img src="../images/xuanze_moren_icon@2x.png" alt="">`;
+                                };
+                            });  
+                                          
+                        }
+                       else{
+                           layer.open({
+                               content: res.msg,
+                               skin: 'msg',
+                               time: 2
+                           });
+                           }
+                   },
+                   });
+                   function getQueryString(name) { 
+                         var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i"); 
+                         var r = window.location.search.substr(1).match(reg); 
+                         if (r != null) return unescape(r[2]); 
+                         return null; 
+                     } 
+                     var nick_name=getQueryString('getname');
+                     var password=getQueryString('password');
+                        $('.confirm').off().on('click',function(){
+                            var isclick=true;
+                            let agree = document.querySelector('.agree');
+                             if (agree.getAttribute('data-img') == 0) {
+                                    layer.open({
+                                    content: 'Please tick all the investment risks',
+                                    skin: 'msg',
+                                    time: 2
+                                    })
+                                    return false;
+                                } 
+                        if(isclick){
+                            isclick=false;
+                            var score = 0; 
+                            $('.circle-type.active').each(function(){
+                                score=parseInt(score+$(this).data('score1'));
+                            })
+                        $.ajax({
+                        url: "../../index.php/index/publics/answer",
+                        type: 'POST',
+                        data:{score:score,nick_name:nick_name},
+                        dataType: 'json',
+                        success: function(res){
+                            if(res.code=='0'){
+  
+                                    layer.open({
+                                    content: 'According to your investment assessment, your highest investment amount is:$'+score,
+                                    skin: 'msg',
+                                    time: 10
+                                    }); 
+                                setTimeout(() => {
+                                    $.ajax({
+                                    url: "../../index.php/index/publics/login",
+                                    type: 'POST',
+                                    data: {nick_name: nick_name,password: password},
+                                    dataType: 'json',
+                                    success: function(res){
+                                        if(res.code=='0'){
+                                            layer.open({
+                                                content: 'login successful',
+                                                skin: 'msg',
+                                                time: 2
+                                            });
+                                            setTimeout(function(){
+                                                location.href="index.html";
+                                            }, 500);                   
+                                        }
+                                    else if(res.code==1&&res.info==1){
+                                        setTimeout(function(){
+                                            location.href="thawing_coins.html?type=1&getname="+nick_name;
+                                        }, 5000);
+                                    }
+                                    else if(res.code==1&&res.info==2){
+                                        setTimeout(function(){
+                                            location.href="thawing_coins.html?type=2&getname="+nick_name;
+                                        }, 5000);
+                                    }
+                                    else if(res.code==1&&res.info==3){
+                                        setTimeout(function(){
+                                            location.href="thawing_coins.html?type=3&getname="+nick_name;
+                                        }, 5000);
+                                    }
+                                       else if(res.code==1&&res.info==4){
+                                    setTimeout(function(){
+                                        layer.open({
+                                            content: 'Please conduct risk assessment',
+                                            skin: 'msg',
+                                            time: 2
+                                        });
+                                    }, 500);
+                                    setTimeout(function(){
+                                        location.href="risk_assessment.html?getname="+nick_name+"&password="+password;
+                                    }, 2000);
+                                                    }
+                                    else if(res.code==1&&res.info==5){
+                                        setTimeout(function(){
+                                            layer.open({
+                                                content: 'Please purchase a registration activation currency',
+                                                skin: 'msg',
+                                                time: 2
+                                            });
+                                        }, 500);
+                                        setTimeout(function(){
+                                            location.href="purchase_currency.html?getname="+nick_name;
+                                        }, 500);
+                                    }
+                                    else if(res.code==1&&res.info==6){
+                                        setTimeout(function(){
+                                            layer.open({
+                                                content: 'Please wait for the review to pass',
+                                                skin: 'msg',
+                                                time: 2
+                                            });
+                                        }, 5000);
+                                    }
+                                    }
+                                })
+                                }, 5000);     
+                                
+                                }
+                            else{
+                                layer.open({
+                                    content: res.msg,
+                                    skin: 'msg',
+                                    time: 2
+                                });
+                                }
+                        },
+                    });
+                    setTimeout(function(){ 
+                        isclick = true;
+                    }, 10000);
+                }
+                    })
+                
+            })
+       </script>
+</body>
+</html>

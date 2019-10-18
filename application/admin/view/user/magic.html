@@ -1,0 +1,77 @@
+{extend name="layout/main" /}
+
+{block name="header"}
+
+{/block}
+
+{block name="content"}
+<section class="panel">
+    <header class="panel-heading">
+        <h4>会员充值明细列表</h4>
+    </header>
+    <div class="panel-body" style="padding-bottom: 50px">
+        <form class="form-horizontal" action="">
+            <div class="form-group">
+                <div class="col-xs-3">
+                    <input type="text" value="{$Request.get.keyword}" name="keyword" class="form-control" placeholder="请输入用户名搜索">
+                </div>
+                <button type="submit" class="btn btn-color">搜索</button>
+            </div>
+        </form>
+        <table class="table table-bordered table-striped no-margin">
+            <thead>
+            <tr>
+                <th class="text-center">id</th>
+                <th class="text-center">用户名</th>
+                <th class="text-center">钱包类型</th>
+                <th class="text-center">充值数量</th>
+                <th class="text-center">变化前</th>
+                <th class="text-center">变化后</th>
+                <th class="text-center">钱包地址</th>
+                <th class="text-center">创建时间</th>
+            </tr>
+            </thead>
+            <tbody>
+            {if !empty($list)}
+            {foreach $list as $entity}
+            <tr>
+                <form class="form-horizontal" method="post" onsubmit="return false" role="form">
+                    <td class="text-center">{$entity->id}</td>
+                    <td class="text-center">{$entity->email}</td>
+                    <td class="text-center">
+                        {if $entity->types == 1 }
+                        BTC
+                        {elseif $entity->types == 2 }
+                        ETH
+                        {elseif $entity->types == 3 }
+                        EOS
+                        {elseif $entity->types == 4 }
+                        余额
+                        {/if}
+                    </td>
+                    <td class="text-center">{$entity->num}</td>
+                    <td class="text-center">{$entity->old}</td>
+                    <td class="text-center">{$entity->new}</td>
+                    <td class="text-center">{$entity->from_address}</td>
+                    <td class="text-center">{$entity->create_time}</td>
+                </form>
+            </tr>
+            {/foreach}
+            {else /}
+            <tr class="text-center">
+                <td colspan="7">暂无数据</td>
+            </tr>
+            {/if}
+            </tbody>
+        </table>
+        <div class="page">
+            {:htmlspecialchars_decode($list->render())}
+        </div>
+    </div>
+</section>
+{/block}
+
+
+{block name="footer"}
+
+{/block}

@@ -1,0 +1,525 @@
+{extend name='main'}
+
+{block name='body'}
+<div class="fish-head">
+    <a href="javascript:window.history.back();" class="head-back"><span>返回</span></a>
+    <h3 class="head-tit">
+        <span v-if="type==1">领取详情</span>
+        <span v-else-if="type==2">转让详情</span>
+        <span v-else>房产详情</span>
+    </h3>
+    <!-- <a href="javascript:;" class="head-menu"><span>提交</span></a> -->
+</div>
+<div class="fish-main" v-cloak>
+    <div style="padding:12px;">
+        <div class="detail-top clearfix" v-if="pay_type">
+            <div class="fl">
+                <i v-if="pay_type.status==1" class="icon detail-status01"></i>
+                <i v-if="pay_type.status==2" class="icon detail-status02"></i>
+                <i v-if="pay_type.status==3" class="icon detail-status03"></i>
+                <i v-if="pay_type.status==4 || pay_type.status==-4" class="icon detail-status04"></i>
+                {{pay_type.status_name}}
+            </div>
+            <!--待转让-->
+            <div class="fr" v-if="pay_type.status==3 || pay_type.status==4 || pay_type.status==-4">
+                <span v-if="(pay_type.status==4  ||  pay_type.status==3) && type == 2">
+                    <a v-if="pay_type.appeal_status" href="javascript:;">{{pay_type.appeal_status_name}}</a>
+                    <a v-else href="#modal1">投诉</a>
+                </span>
+                <!--待领取-->
+                <span v-if="pay_type.status==4 && type == 1">
+                    <a v-if="pay_type.appeal_status" href="javascript:;">{{pay_type.appeal_status_name}}</a>
+                    <a v-else href="#modal1">投诉</a>
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="detail-info" v-if="fish_msg">
+        <div class="info-top" v-if="order_number">编号：{{order_number}}</div>
+        <div class="info-box clearfix">
+            <div class="col-4 info-img">
+                <img :src="fish_msg.img" alt="">
+            </div>
+            <div class="col-8">
+                <h3 class="clearfix">
+                    <div class="fl">
+                        {{fish_msg.name}}
+                    </div>
+                    <!--
+                    <div class="fr"  v-if="fish_msg.is_show_lock == 1 || type==3 ">
+                        <a v-if="fish_msg.is_ok_lock==1 && type!=2" href="javascript:;" style="background-color:#00D6E2;font-size:14px;padding:5px 12px;border-radius:5px;" @click="lockFun()">锁仓</a>
+                        <a v-if="fish_msg.is_ok_lock==2 && type!=2" href="javascript:;" style="background-color:#999999;font-size:14px;padding:5px 12px;border-radius:5px;color:#0D1414">已锁仓</a>
+                    </div>
+                    -->
+                </h3>
+                <div v-if="pay_type.status == 3 || pay_type.status == 4">区块金额：{{purchase_msg.worth}}</div>
+                <div v-else>区块金额：{{fish_msg.worth}}</div>
+                <div>智能合约收益：{{fish_msg.contract_time/24}}天/{{fish_msg.profit}}%</div>
+                <div>装修消耗GTC：{{fish_msg.bait}}</div>
+            </div>
+        </div>
+    </div>
+    <!--付款方式-->
+    <!--
+    <div class="detail-list" v-if="pay_type.status==2">
+        <div class="list-title"><span>选择付款方式</span></div>
+        <div class="list-box">
+            <div class="clearfix pay-fangshi">
+                <div class="col-6">
+                    <button type="button" v-bind:class="{active: pay_fangshi==1 }" v-on:click="switchPayFangshi(1)">线下转账</button>
+                </div>
+                <div class="col-6">
+                    <button type="button" v-bind:class="{active: pay_fangshi==2 }"  v-on:click="switchPayFangshi(2)">GTC支付</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    -->
+    <!--付款方式结束-->
+    <!--转让方信息-->
+    <div class="detail-list" v-if="turn_msg" v-show="pay_fangshi==1||pay_type.status==4">
+        <div class="list-title"><span>转让方信息</span></div>
+        <div class="list-box">
+            <div class="clearfix" v-if="turn_msg.buy_time">
+                <div class="col-3">转让时间</div>
+                <div class="col-9">{{turn_msg.buy_time}}</div>
+            </div>
+            <div class="clearfix">
+                <div class="col-3">转让方</div>
+                <div class="col-9">{{turn_msg.nick_name}}</div>
+            </div>
+            <div class="clearfix">
+                <div class="col-3">转让方电话</div>
+                <div class="col-9">{{turn_msg.mobile}}</div>
+            </div>
+            <div v-if="smsglist && smsglist.length>0 && type==1">
+                <div class="clearfix">
+                    <div class="col-3">账户类型</div>
+                    <div class="col-9">
+                        <select @change="smsgFun()" v-model="smsgDetail">
+                            <option v-for="(vo,index) in smsglist" :value="index">{{vo.bank_name}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="clearfix">
+                    <div class="col-3">账户名称</div>
+                    <div class="col-9">{{smsg.names}}</div>
+                </div>
+                <div class="clearfix">
+                    <div class="col-3">账户</div>
+                    <div class="col-9">{{smsg.account_num}}</div>
+                </div>
+                <div class="clearfix" v-if="smsg.imgs">
+                    <div class="col-3">收款二维码</div>
+                    <div class="col-9 qrcode-img">
+                        <img :src="smsg.imgs" alt="" @click="bigImg(smsg.imgs)">
+                    </div>
+                </div>
+            </div>
+            <div v-else>
+                <div class="clearfix" v-if="turn_msg.bank_name">
+                    <div class="col-3">账户类型</div>
+                    <div class="col-9">{{turn_msg.bank_name}}</div>
+                </div>
+                <div class="clearfix" v-if="turn_msg.names">
+                    <div class="col-3">账户名称</div>
+                    <div class="col-9">{{turn_msg.names}}</div>
+                </div>
+                <div class="clearfix" v-if="turn_msg.account_num">
+                    <div class="col-3">账户</div>
+                    <div class="col-9">{{turn_msg.account_num}}</div>
+                </div>
+                <div class="clearfix" v-if="turn_msg.imgs">
+                    <div class="col-3">收款二维码</div>
+                    <div class="col-9 qrcode-img"><img :src="turn_msg.imgs" alt="" @click="bigImg(turn_msg.imgs)"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--转让方信息结束-->
+    <div class="detail-list" v-if="purchase_msg" v-show="pay_fangshi==1||pay_type.status==4">
+        <div class="list-title"><span>领取方信息</span></div>
+        <div class="list-box">
+            <div class="clearfix">
+                <div class="col-3">付款时间</div>
+                <div class="col-9">
+                    <span style="color:red" v-if="pay_type.status==2">{{pay_type.status_name}}</span>
+                    <span v-else>{{purchase_msg.buy_time}}</span>
+                </div>
+                <!--<div class="col-9">-->
+                <!--<span style="color:red" v-if="pay_type.status==2">{{pay_type.status_name}}</span>-->
+                <!--<span v-else>{{pay_type.status_name}}</span>-->
+                <!--</div>-->
+            </div>
+            <div class="clearfix">
+                <div class="col-3">领取方</div>
+                <div class="col-9">{{purchase_msg.nick_name}}</div>
+            </div>
+            <div class="clearfix">
+                <div class="col-3">领取方电话</div>
+                <div class="col-9">{{purchase_msg.mobile}}</div>
+            </div>
+            <div class="clearfix">
+                <div class="col-3">付款凭证</div>
+                <div class="col-9">
+                    <div class="pay-img">
+                        <img :src="purchase_msg.pay_imgs || '/fish/img/pay-example.png'" alt="" v-on:click="bigImg(purchase_msg.pay_imgs || '/fish/img/pay-example.png')">
+                    </div>
+                    <div v-if="pay_type.status==2 && type==1">
+                        <div style="color:#666;padding:5px 0;">*请上传带有付款日期的支付凭证</div>
+                        <div class="pay-file">
+                            <input type="file" accept="image/jpeg,image/jpg,image/png" id="upload" class="set-file" @change="upload()">
+                            <a href="javascript:;" class="btn">点击上传支付凭证</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="clearfix" v-if="pay_type.status==2 && type==1">
+                <div class="col-3">交易密码</div>
+                <div class="col-9">
+                    <input type="password" placeholder="请输入交易密码" v-model="pwd">
+                </div>
+                <div class="col-12 foot-btn">
+                    <a href="javascript:;" class="btn" @click="send()">确认付款</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--GTC支付-->
+    <div class="detail-list" v-if="type!=3 && pay_fangshi==2">
+        <div class="list-title"><span>GTC支付信息</span></div>
+        <div>
+            <div class="list-box">
+                <div class="clearfix">
+                    <div class="col-3">交易密码</div>
+                    <div class="col-9">
+                        <input type="password" placeholder="请输入交易密码" v-model="gtc_pwd">
+                    </div>
+                </div>
+            </div>
+            <div class="list-box foot-btn">
+                <button type="button" class="btn" style="width: 100%" v-on:click="payConfirmByGTC">确认付款</button>
+            </div>
+        </div>
+    </div>
+    <!--确认收款-->
+    <div class="detail-list" v-if="type==2 && pay_type.status==3">
+        <div class="list-title"><span>线下转账确认收款</span></div>
+        <div>
+            <div class="list-box">
+                <div class="clearfix">
+                    <div class="col-3">交易密码</div>
+                    <div class="col-9">
+                        <input type="password" placeholder="请输入交易密码" v-model="payPassword">
+                    </div>
+                </div>
+            </div>
+            <div class="list-box foot-btn">
+                <button type="button" class="btn" style="width: 100%" v-on:click="payConfirm">确认收款</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="modal1" class="modal">
+    <div class="modal-content">
+        <div class="core-dialog" style="position:relative;display:block;margin:0;width:100%;">
+            <div class="dialog-hd">
+                <strong class="dialog-title text-ellipsis">申诉理由</strong>
+            </div>
+            <div class="dialog-bd">
+                <textarea rows="5" placeholder="请输入你的申诉理由" v-model="content" style="width:100%;display:block;text-align:left;"></textarea>
+            </div>
+            <div class="dialog-ft" data-bg="core-1">
+                <a href="javascript:;" class="dialog-btn dialog-btn-default" @click="appeal(1)">取消</a>
+                <a href="javascript:;" class="dialog-btn dialog-btn-primary" @click="appeal(2)">确认</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="modal2" class="modal">
+    <img src="#" alt="" width="100%">
+</div>
+<!--
+<div id="modal3" class="modal bottom-sheet" style="background-color:#182121">
+    <div style="padding:15px">
+        <div class="modal-title">确认收款</div>
+        <div class="modal-content">
+            <div class="modal-info">收款金额</div>
+            <div class="modal-pic" v-text="purchase_msg.worth">0.00</div>
+            <div class="input-item clearfix">
+                <div class="input-label col-3"><label for="">交易密码</label></div>
+                <div class="input-box col-9">
+                    <input type="password" placeholder="请输入交易密码" v-model="payPassword">
+                </div>
+            </div>
+            <div class="foot-btn" style="position:relative;max-width:100%;">
+                <button type="button" class="btn" style="width: 100%" v-on:click="payConfirm">确认</button>
+            </div>
+        </div>
+    </div>
+</div>
+-->
+{include file='menu'}
+{/block}
+
+{block name='script'}
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            pay_fangshi: 2,
+            fish_msg: '',
+            turn_msg: '',
+            purchase_msg: '',
+            order_number: '',
+            pay_type: '',
+            smsglist: '',
+            smsg: '',
+            smsgDetail: 0,
+            pwd: '',
+            gtc_pwd: '',
+            content: '',
+            id: core.getParame('id'),
+            type: core.getParame('type'),
+            imgPath: '',
+            payPassword: '',
+        },
+        computed: {
+
+        },
+        methods: {
+            switchPayFangshi: function (fangshi) {
+                this.pay_fangshi = fangshi;
+            },
+            payConfirm: function(){
+                console.log('ok');
+                if(!this.payPassword) core.toast('请输入交易密码');
+                core.load("{:url('index/my/over_order')}", {
+                    oid: this.fish_msg.order_id,
+                    trad_password: this.payPassword,
+                    pay_type: 0
+                }, function(res){
+                    
+                    if(res.code==0){
+                        setTimeout(function(){
+                            window.history.go(-1);
+                        }, 300);
+                    }
+                    core.toast(res.msg)
+                })
+            },
+            payConfirmByGTC: function(){
+                if(!this.gtc_pwd) core.toast('请输入交易密码');
+                core.load("{:url('index/my/over_order')}", {
+                    oid: this.fish_msg.order_id,
+                    trad_password: this.gtc_pwd,
+                    pay_type: 1,
+                }, function(res){
+                    
+                    if(res.code==0){
+                        setTimeout(function(){
+                            window.history.go(-1);
+                        }, 300);
+                    }
+                    core.toast(res.msg)
+                })
+            },
+            bigImg: function(img){
+                this.imgPath = img;
+                $('#modal2>img').attr('src',img);
+                $('#modal2').modal('open');
+            },
+            appeal: function(id){
+                if(id==2){
+                    var self = this;
+                    if(!self.content) return core.toast('请输入你的申诉理由');
+
+                    core.load("{:url('index/my/appeal')}", {
+                        fid: self.id,
+                        content: self.content,
+                    }, function(res){
+                        if(res.code==0){
+                            $('#modal1').modal('close');
+                            self.pay_type.status=-4;
+                            self.pay_type.appeal_status=-4;
+                            self.pay_type.appeal_status_name='申诉中';
+                            setTimeout(function(){
+                                // window.history.go(-1);
+                            }, 300);
+                        }
+                        core.toast(res.msg);
+                    });
+                }else{
+                    $('#modal1').modal('close');
+                }
+            },
+            /*
+            lockFun: function(){
+                var self = this;
+                core.load("{:url('index/fish/lock_fish')}", {
+                    fid: self.fish_msg.fid,
+                }, function(res){
+                    
+                    if(res.code==0){
+                        self.fish_msg.is_ok_lock=2;
+                    }
+                    core.toast(res.msg);
+                })
+            },
+            */
+            upload: function(){
+                var self = this;
+                var file = $('#upload')[0];
+                if (file.value == '' || file.value == null) {
+                    return core.toast("请上传图片");
+                }
+                if (!/\.(gif|jpg|jpeg|png|GIF|JPG|PNG)$/.test(file.value)) {
+                    file.value = "";
+                    return core.toast("图片类型必须是[.gif,jpeg,jpg,png]中的一种");
+                }
+                if (file.files[0].size > 6*1024*1024) {
+                    file.value = "";
+                    return core.toast("图片大小不能超过2M");
+                }
+                var formData = new FormData();
+                formData.append('file', file.files[0]);
+                formData.append('token', localStorage.uid);
+                var id = '';
+
+                $.ajax({
+                    url: "{:url('/index/upload/uploadimg')}",
+                    type: 'POST',
+                    data: formData,
+                    contentType: false, // 注意这里应设为false
+                    processData: false,
+                    beforeSend: function(){id=core.loading();},
+                    complete: function(){core.rmLoading(id);},
+                    success: function(res){
+                        
+                        if(res.code=='0'){
+                            file.value = '';
+                            self.purchase_msg.pay_imgs = res.info.url;
+                        }
+                        core.toast(res.msg);
+                        if(res.code=='1'){
+                            setTimeout(function(){
+                                window.history.go(0);
+                            }, 1000);
+
+                        }
+                    },
+                    error: function(XHR, textStatus, errorThrown) {
+                        core.toast('网络错误！');
+                    }
+                });
+            },
+            smsgFun: function(){
+                this.smsg=this.smsglist[this.smsgDetail];
+            },
+            receivable: function(id){
+                core.load("{:url('index/setup/receivablesmsglist')}", { id: id }, (res)=>{
+                    //
+                    if(res.code==0){
+                        this.smsglist=res.info;
+                        this.smsg=res.info[0];
+                    }else{
+                        core.toast(res.msg);
+                    }
+                })
+            },
+            fishDetail: function(){
+                core.load("{:url('index/my/turn_msg')}", { fid: this.id }, (res) => {
+                    //
+                    if(res.code == 0){
+                        this.fish_msg = res.info.fish_msg;
+                        this.turn_msg = res.info.turn_msg;
+                        this.purchase_msg = res.info.purchase_msg;
+                        this.order_number = res.info.order_number;
+                        this.pay_type = res.info.pay_type;
+                        //
+                        if(res.info.pay_type.status == 2){
+                            this.receivable(res.info.purchase_msg.f_uid);
+                        }
+                    }else{
+                        core.toast(res.msg);
+                    }
+                })
+            },
+            send: function(){
+                var self = this;
+                if(!self.purchase_msg.pay_imgs) return core.toast('请上传支付凭证');
+                if(!self.pwd) return core.toast('请输入交易密码');
+                if(!self.smsglist || self.smsglist.length<=0) return core.toast('对方未添加支付信息');
+
+                core.load("{:url('index/my/payorder')}", {
+                    pwd: self.pwd,
+                    id: self.purchase_msg.foid,
+                    cid: self.smsglist[self.smsgDetail].id,
+                    pay_imgs: self.purchase_msg.pay_imgs,
+                }, function(res){
+                    
+                    if(res.code==0){
+                        setTimeout(function(){
+                            window.history.go(-1);
+                        }, 300);
+                    }
+                    core.toast(res.msg);
+                })
+            }
+        },
+        mounted: function(){
+            if(this.id){
+                $('.modal').modal();
+                this.fishDetail();
+            }else{
+                core.toast('参数错误');
+                setTimeout(function(){
+                    window.history.go(-1);
+                }, 300);
+            }
+        }
+    });
+</script>
+{/block}
+
+{block name="style"}
+<style>
+    .detail-status01{background-image:url('/fish/img/detail-status01.png');}
+    .detail-status02{background-image:url('/fish/img/detail-status02.png');}
+    .detail-status03{background-image:url('/fish/img/detail-status03.png');}
+    .detail-status04{background-image:url('/fish/img/detail-status04.png');}
+    .detail-top{background-color:#182121;padding:24px;border-radius:8px;}
+    .detail-top .fl{font-size:16px;}
+    .detail-top .fl i{height:30px;margin-right:5px;vertical-align:-10px;}
+    .detail-top .fr a{color:#00D6E2;display:inline-block;padding:2px 10px;border:1px solid #00D6E2;border-radius:3px;}
+    .detail-info{background-color:#182121;color:#ccc;}
+    .detail-info .info-top{padding:12px;border-bottom:1px solid #0D1414;}
+    .detail-info .info-box{padding:12px;}
+    .detail-info .info-box h3{font-size:16px;color:#fff;margin-bottom:5px;}
+    .detail-info .info-img img{width:100%;max-width:150px;display:block;margin:0 auto;}
+    .detail-list{margin-top:12px;background-color:#182121;color:#ccc;}
+    .detail-list .list-title{padding:12px;border-bottom:1px solid #0D1414;}
+    .detail-list .list-title span{border-left:2px solid #00D6E2;display:inline-block;padding-left:5px;height:15px;line-height:15px;}
+    .detail-list .list-box{padding:12px;}
+    .detail-list .list-box .clearfix{margin-bottom:12px;}
+    .detail-list .list-box .clearfix .qrcode-img img{height:120px;max-width:100%;}
+    .detail-list .list-box .clearfix:last-child{margin-bottom:0;}
+    .detail-list .list-box .clearfix input{background-color:#182121;color:#fff;}
+    .detail-list .list-box .clearfix .pay-img{border:1px dashed #666;}
+    .detail-list .list-box .clearfix .pay-img img{width:100%;display:block;/*max-height:140px;*/}
+    .pay-fangshi>div{padding: 0 5px;}
+    .pay-fangshi>div>button{width:100%;display:block;text-align:center;padding:12px;border-radius:5px;background-color:#32686d;font-size:16px;color: white}
+    .pay-fangshi>div>button.active{background-color:#F47C00;}
+    .pay-file{position:relative;}
+    .pay-file .set-file{display:block;position:absolute;opacity:0;top:0;left:0;width:100%;height:100%;z-index:123;}
+    .pay-file .btn{display:block;background-color:#F47C00;color:#fff;padding:8px;border-radius:24px;width:60%;text-align:center;}
+    .foot-btn{padding:12px;}
+    .foot-btn .btn{display:block;text-align:center;padding:12px;border-radius:5px;background-color:#00D6E2;font-size:16px;}
+    .modal-title{font-size:18px;text-align:center;}
+    .modal-info{color:#999;text-align:center;margin-top:24px;}
+    .modal-pic{text-align:center;font-size:30px;font-weight:bold;margin-bottom:12px;}
+    .input-item{margin-bottom:15px;line-height:39px;}
+    .input-box{position:relative;}
+    .input-box input{padding:12px 0;display:block;width:100%;background-color:#0D1414;padding-left:12px;color:#fff;}
+</style>
+{/block}

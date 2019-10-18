@@ -1,0 +1,90 @@
+{extend name="layout/main" /}
+
+{block name="header"}
+
+{/block}
+
+{block name="content"}
+<script src="__PUBLIC__/admin/js/laydate/laydate.js"></script>
+<section class="panel">
+    <header class="panel-heading">
+        <h4>银行列表</h4>
+    </header>
+    <div class="panel-body" style="padding-bottom: 50px">
+        <form class="form-horizontal" action="">
+            <div class="form-group">
+                <div class="col-xs-1 no-pd-r">
+
+                </div>
+
+
+                <a type="button" href="{:url('createBank')}" class="btn btn-info">添加银行</a>
+            </div>
+        </form>
+        <table class="table table-bordered table-striped no-margin">
+            <thead>
+            <tr>
+                <th class="text-center">ID</th>
+                <th class="text-center">银行</th>
+
+                <th class="text-center">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            {if !empty($list)}
+            {foreach $list as $k=> $entity}
+            <tr>
+                <td class="text-center">{$entity.id}</td>
+                <td class="text-center">{$entity.bank_name}</td>
+
+                <td class="text-center">
+                    <a href="{:url('updateBank',['id'=>$entity.id])}" class="btn btn-xs btn-info">编辑</a>
+                    <a data-url="{:url('delAdmin',['id'=>$entity.id])}" onclick="main.ajaxDelete(this)"
+                       data-msg="确定要删除吗？" class="btn btn-xs btn-danger">删除</a>
+                </td>
+            </tr>
+            {/foreach}
+            {else /}
+            <tr class="text-center">
+                <td colspan="5">暂无数据</td>
+            </tr>
+            {/if}
+            </tbody>
+        </table>
+        <div class="page">
+            {:htmlspecialchars_decode($list->render())}
+        </div>
+    </div>
+</section>
+{/block}
+
+
+{block name="footer"}
+<script>
+    laydate.render({
+        elem: '#startTime',
+        type: 'datetime'
+    });
+    laydate.render({
+        elem: '#endTime',
+        type: 'datetime'
+    });
+</script>
+<script>
+    function showContent(e){
+        $.dialog({
+            title: '答案列表',
+            content: $(e).attr('data-content')
+        });
+    }
+    ws1 = new WebSocket("wss://real.okex.com:10442/ws/v3");
+    ws1.onopen = function() {
+        console.log("连接成功");
+        ws1.send('{"op": "subscribe", "args": ["swap/trade:BTC-USD-SWAP"]}');
+
+    };
+    ws1.onmessage = function(e) {
+        console.log( e);
+    };
+</script>
+{/block}

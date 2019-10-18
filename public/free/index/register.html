@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>register</title>
+    <link rel="icon" href="free.ico" type="image/x-icon"/> 
+    <link rel="stylesheet" href="../css/news.css">
+    <script src="../build/flexible.js"></script>
+    <script src="../build/flexible_css.js"></script>
+    <script src="../js/layer.js"></script>
+    <script src="../js/jquery.js"></script>
+    <style>
+        html{background: #fff!important;}
+        .tishi{    border: 1px solid #F24D4D;
+                    display: inline-block;
+                    width: .35rem;
+                    height: .35rem;
+                    border-radius: .32rem;
+                    text-align: center;
+                    line-height: .3rem;
+                    margin-right: .1rem;
+                }
+    </style>
+</head>
+<body>
+    <!-- Centered page -->
+    <div class="login">
+        <div class="close_login"><a href="introduce.html"><img src="../images/nav_XX_icon.png" alt=""></a></div>
+        <div class="login_form">
+            <div class="login_title">Hello</div>
+            <div class="sm_title">Welcome to Freedom Eagle</div>
+            <form class="send_login" action="">
+                <p><label for="account">Account:</label></p>
+                <input class="login_input account1" type="text" name="" placeholder="Please enter your account number">
+                <p class="account_error" style="display: none; margin-top:.1rem;color: #F24D4D;font-size: .32rem"><span class="tishi">!</span>Account number should have 6 to 10 alphanumeric or characters</p>
+
+                <p><label for="SocialMedia">Social Media:</label></p>
+                <input class="login_input social1" type="text" name="" placeholder="Please enter your social Media">
+                <p class="social_error" style="display: none; margin-top:.1rem;color: #F24D4D;font-size: .32rem"><span class="tishi">!</span>Social Media cannot be empty</p>
+
+                <p><label for="Wallet Address">Wallet Address:</label></p>
+                <input class="login_input wallet" type="text" name="" placeholder="Please enter your Wallet Address">
+                <p class="wallet_error" style="display: none; margin-top:.1rem;color: #F24D4D;font-size: .32rem"><span class="tishi">!</span>Wallet Address cannot be empty</p>
+
+                <p><label for="Note">Note:</label></p>
+                <input class="login_input note" type="text" name="" placeholder="Please enter your NotePlease enter your Note">
+                <p class="note_error" style="display: none; margin-top:.1rem;color: #F24D4D;font-size: .32rem"><span class="tishi">!</span>note cannot be empty</p>
+
+                <p><label for="password:">Password:</label></p>
+                <input class="login_input password" type="password" name="" placeholder="Please enter your password">
+                <p class="password_error" style="display: none; margin-top:.1rem;color: #F24D4D;font-size: .32rem"><span class="tishi">!</span>                  
+                    The password should have 6 to 10 alphanumeric characters
+                </p>
+
+                <p><label for="conpassword">Password:</label></p>
+                <input class="login_input conpassword" type="password" name="" placeholder="Please enter your password">
+                <p class="conpassword_error" style="display: none; margin-top:.1rem;color: #F24D4D;font-size: .32rem"><span class="tishi">!</span>
+                    Two passwords are inconsistent
+                </p>
+
+                <p><label for="Level-2">Level-2 Password: </label></p>
+                <input class="login_input level1" type="password" name="" placeholder="Please enter your Level-2 Password">
+                <p class="level1_error" style="display: none; margin-top:.1rem;color: #F24D4D;font-size: .32rem"><span class="tishi">!</span>
+                    Password cannot be less than 6 digits
+                </p>
+
+                <p><label for="Level-2">Level-2 Password: </label></p>
+                <input class="login_input level2" type="password" name="" placeholder="Please enter your Level-2 Password">
+                <p class="level2_error" style="display: none; margin-top:.1rem;color: #F24D4D;font-size: .32rem"><span class="tishi">!</span>
+                    Two passwords are inconsistent
+                </p>
+
+                <p><label class="question1" data-id="" for="Security"></label></p>
+                <input class="login_input security" type="text" name="" placeholder="Please enter a confidential answer">
+                <p class="security_error" style="display: none; margin-top:.1rem;color: #F24D4D;font-size: .32rem"><span class="tishi">!</span>Security Question cannot be empty</p>
+
+                <p><label class="question2" data-id="" for="Question"></label></p>
+                <input class="login_input question" type="text" name="" placeholder="Please enter a confidential answer">
+                <p class="question_error" style="display: none; margin-top:.1rem;color: #F24D4D;font-size: .32rem"><span class="tishi">!</span>Security Question cannot be empty</p>
+
+                <div id="register" class="blue_btn">Registered</div>
+            </form>
+        </div>
+    </div>
+    <!-- end -->
+    <script>
+            $(function () {
+                $.ajax({
+                        url: "../../index.php/index/publics/registerProblem",
+                        type: 'GET',
+                        dataType: 'json',
+                        success: function(res){
+                            console.log(res)
+                            if(res.code=='0'){
+                                   $('.question1').html(res.info.question[0].title);
+                                   $('.question2').html(res.info.question[1].title);
+                                   $('.question1').data("id",res.info.question[0].id);
+                                   $('.question2').data("id",res.info.question[1].id);
+                                }
+                            else{
+                                layer.open({
+                                    content: res.msg,
+                                    skin: 'msg',
+                                    time: 2
+                                });
+                                }
+                        },
+                    })
+                $('.account1').focus(function(){
+                    $('.account_error').hide();
+				});
+                $('.social1').focus(function(){
+                    $('.social_error').hide();
+				});
+                $('.wallet').focus(function(){
+                    $('.wallet_error').hide();
+				});
+                $('.note').focus(function(){
+                    $('.note_error').hide();
+				});
+                $('.password').focus(function(){
+                    $('.password_error').hide();
+				});
+                $('.conpassword').focus(function(){
+                    $('.conpassword_error').hide();
+				});
+                $('.level1').focus(function(){
+                    $('.level1_error').hide();
+				});
+                $('.level2').focus(function(){
+                    $('.level2_error').hide();
+				});
+                $('.security').focus(function(){
+                    $('.security_error').hide();
+				});
+                $('.question').focus(function(){
+                    $('.question_error').hide();
+				});
+                $('#register').off().on('click',function(){
+                    var reg=/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,10}$/;
+                    var nick_name=$('.account1').val();
+                    var password=$('.password').val();
+                    var re_password=$('.conpassword').val();
+                    var trad_password=$('.level1').val();
+                    var re_trad_password=$('.level2').val();
+                    var trade_address=$('.wallet').val();
+                    var chat_num=$('.social1').val();
+                    var remake=$('.note').val();
+                    var qid1=$('.question1').data("id");
+                    var qid2=$('.question2').data("id");
+                    var answer1=$('.security').val();
+                    var answer2=$('.question').val();
+                    var an3={[qid1]:answer1,[qid2]:answer2}
+                    if(!reg.test(nick_name)) return $('.account_error').show();
+                    if(!chat_num) return $('.social_error').show();
+                    if(!trade_address) return $('.wallet_error').show();
+                    if(!remake) return $('.note_error').show();
+                    if(!reg.test(password)) return $('.password_error').show();
+                    if(password!=re_password) return $('.conpassword_error').show();
+                    if(trad_password.length<6) return $('.level1_error').show();
+                    if(trad_password!=re_trad_password) return $('.level2_error').show();
+                    if(!answer1) return $('.security_error').show();
+                    if(!answer2) return $('.question_error').show();
+                    function getQueryString(name) { 
+                        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i"); 
+                        var r = window.location.search.substr(1).match(reg); 
+                        if (r != null) return unescape(r[2]); 
+                        return null; 
+                    } 
+                    var invite_code=getQueryString('invite_code');
+                    $.ajax({
+                        url: "../../index.php/index/publics/doRegister?invite_code="+invite_code,
+                        type: 'POST',
+                        data: {
+                            nick_name: nick_name,password: password,re_password:re_password,
+                            trad_password:trad_password,re_trad_password:re_trad_password,
+                            trade_address:trade_address,chat_num:chat_num,remake:remake,
+                            answer:an3
+                        },
+                        dataType: 'json',
+                        success: function(res){
+                            if(res.code=='0'){
+                                    layer.open({
+                                                content: 'registration success',
+                                                skin: 'msg',
+                                                time: 2
+                                            });
+                                     setTimeout(function(){
+                                         window.location.href="login.html?types=1";
+                                     }, 1000);
+                                }
+                            else{
+                                layer.open({
+                                    content: res.msg,
+                                    skin: 'msg',
+                                    time: 2
+                                });
+                                }
+                        },
+                        })
+                })
+                
+            });
+        </script>
+</body>
+</html>

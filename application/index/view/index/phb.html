@@ -1,0 +1,91 @@
+<html id="register">
+<head>
+    <meta charset="utf-8">
+    <title>排行榜</title>
+    {include file="layout/head" /}
+    <style>
+        .phb-box {
+            padding: 0;
+            margin: 0;
+        }
+
+        .phb-box .phb-list {
+            margin: 0;
+            padding: 10px;
+            background: #fff;
+            border-bottom: 1px solid #eee;
+        }
+
+        .phb-box .phb-list .phb-list-item {
+            padding: 0;
+        }
+
+        .phb-box .phb-list .phb-list-item .top-icon {
+            width: 16px;
+            vertical-align: middle;
+        }
+
+        .phb-box .phb-list .phb-list-item .top-header {
+            width: 46px;
+            vertical-align: middle;
+            margin-left: 10px;
+        }
+
+        .phb-box .phb-list .phb-list-item .nick_name {
+            margin-left: 10px;
+        }
+
+        .phb-box .phb-list .phb-list-item p {
+            font-size: 12px;
+            padding: 0;
+            margin: 0;
+        }
+
+        .phb-box .phb-list .phb-list-item p:first-child {
+            color: #ffce1b;
+        }
+    </style>
+</head>
+<body>
+<header class="mui-bar mui-bar-nav my-header">
+    <a href="/" class="mui-icon mui-icon-left-nav mui-pull-left"></a>
+
+    <h1 class="mui-title">排行榜</h1>
+</header>
+<div style="top: 44px;z-index: 50;position: fixed"
+     class="mui-segmented-control mui-segmented-control-inverted mui-segmented-control-primary my-tabs">
+    <a class="mui-control-item mui-active" id="income">
+        总排行
+    </a>
+</div>
+<div class="mui-content">
+    <div class="mui-scroll-wrapper" >
+        <div class="mui-scroll" style="top:85px;padding-bottom: 70px">
+            <ul class="phb-box">
+                {foreach $list as $key=>$val}
+                <div class="mui-row phb-list">
+                    <div class="mui-col-xs-7 mui-col-sm-7 phb-list-item">
+                        {if $key < 3}
+                            <img class="top-icon" src="/static/img/top{$key+1}.png">
+                            {else /}
+                            <span>{$key+1}</span>
+                        {/if}
+                        <img class="top-header" src="{$val->avatar ? $val->avatar : '/static/img/headphoto.png'}">
+                        <span class="nick_name">{$val->nick_name}</span>
+                    </div>
+                    <div class="mui-col-xs-5 mui-col-sm-5 phb-list-item" style="text-align: center">
+                        <p>{$val->product_rate} kb/s</p>
+
+                        <p>总的开采率</p>
+                    </div>
+                </div>
+                {/foreach}
+            </ul>
+        </div>
+    </div>
+
+</div>
+</body>
+{include file="layout/footer" /}
+
+</html>

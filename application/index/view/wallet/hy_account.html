@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+	<title>合约账户</title>
+	<script type="text/javascript" src="../build/flexible_css.js"></script>
+    <script type="text/javascript" src="../build/flexible.js"></script>
+    <script type="text/javascript" src="../js/jquery.js"></script>
+	<link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="../css/hy_account.css">
+</head>
+<body>
+	<header class="head">
+		<div class="goback"><img src="../images/goback.png"></div>
+		<span class="hy_account">合约账户</span>
+	</header>
+	<div class="content">
+		<div class="valuation">
+			<img class="can_see" src="../images/can_see_w.png">
+			<div class="hy_valuation">合约资产估值</div>
+			<div class="hy_value_box">
+				<span class="bi">฿</span><span class="hy_value">0.13362961</span>
+			</div>
+			<div class="value_of_rmb">$≈5895.17</div>
+		</div>
+		<div class="capital_box">
+			<div class="capital_transfer">
+				<img class="transfer_icon" src="../images/transfer.png"><br>
+				<span>资金划转</span>
+			</div>
+			<div class="jg_record">
+				<img src="../images/jg_record@2x.png" alt="" class="jg_record_icon"><br>
+				<span>交割记录</span>
+			</div>
+			<div class="contract_bill">
+				<img src="../images/bill@2x.png" alt="" class="contract_bill_icon"><br>
+				<span>合约账单</span>
+			</div>
+		</div>
+		<div class="gay_block"></div>
+		<div class="item_box">
+			<div class="asset_detail">
+				<div>资产明细</div>
+			</div>
+			<div class="item">
+				<span class="item_name">USDT</span>
+				<span class="item_value">896.18141429</span>
+				<span class="frozen_value">冻结 0</span>
+			</div>
+			<div class="item">
+				<span class="item_name">BTC</span>
+				<span class="item_value">0</span>
+				<span class="frozen_value">冻结 0</span>
+			</div>
+			<div class="item">
+				<span class="item_name">ETH</span>
+				<span class="item_value">0</span>
+				<span class="frozen_value">冻结 0</span>
+			</div>
+			<div class="item">
+				<span class="item_name">ETC</span>
+				<span class="item_value">0</span>
+				<span class="frozen_value">冻结 0</span>
+			</div>
+			<div class="item">
+				<span class="item_name">LTC</span>
+				<span class="item_value">0</span>
+				<span class="frozen_value">冻结 0</span>
+			</div>
+			<div class="item">
+				<span class="item_name">EOS</span>
+				<span class="item_value">0</span>
+				<span class="frozen_value">冻结 0</span>
+			</div>
+			<div class="item">
+				<span class="item_name">BCH</span>
+				<span class="item_value">0</span>
+				<span class="frozen_value">冻结 0</span>
+			</div>
+		</div>
+	</div>
+</body>
+<script type="text/javascript">
+	// 头部右上角图标点击 显示/隐藏 账户币数量跟币价值
+	var hy_value = $('.hy_value').eq(0).text();
+	var value_of_rmb = $('.value_of_rmb').eq(0).text();
+	$('.can_see').click(function () {
+		if ($('.hy_value').eq(0).text() === '****') {
+			$('.can_see').attr('src','../images/can_see_w.png')
+			$('.hy_value').eq(0).text(hy_value);
+			$('.value_of_rmb').eq(0).text(value_of_rmb);
+		} else {
+			$('.can_see').attr('src','../images/hide_w@2x.png')
+			$('.hy_value').text('****');
+			$('.value_of_rmb').text('≈****');
+		}
+	})
+</script>
+</html>

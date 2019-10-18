@@ -1,0 +1,172 @@
+{extend name="layout/main" /}
+
+{block name="header"}
+
+{/block}
+
+{block name="content"}
+<section class="panel">
+    <header class="panel-heading">
+        <h4>交易明细</h4>
+    </header>
+    <div class="panel-body" style="padding-bottom: 50px">
+
+          <section class="panel">
+            <header class="panel-heading">
+                <h5>订单信息</h5>
+            </header>
+            <div class="panel-body" >
+                <table class="table table-bordered table-striped no-margin">
+                    <thead>
+                        <tr>
+                            <th class="text-center">ID</th>
+                            <th class="text-center">订单号</th>
+                            <th class="text-center">类型</th>
+                            <th class="text-center">交易币类型</th>
+                            <th class="text-center">数量</th>
+                            <th class="text-center">交易单价</th>
+                            <th class="text-center">交易总额</th>
+                            <th class="text-center">交易状态</th>
+                            <th class="text-center">买入方式</th>
+                            <th class="text-center">挂单时间</th>
+                            <th class="text-center">成交时间</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="text-center">{$order->id}</td>
+                            <td class="text-center">{$order->cdsn}</td>
+                            <td class="text-center">
+                                {$order->getType()}
+                            </td>
+                            <td class="text-center">
+                                {$order->cointype}
+                            </td>
+                            
+                            <td class="text-center">
+                                挂单量：{:number_format($order->number,8)}<br>
+                                未交易：{:number_format($order->remnant,8)}
+                            </td>
+                            <td class="text-center">
+                                {:number_format($order->price,8)}
+                            </td>
+                            <td class="text-center">
+                                {:number_format($order->sumprice,8)}
+                            </td>
+                             <td class="text-center">
+                                {$order->getStatus()}
+                            </td>
+                            <td class="text-center">
+                                {$order->getDealway()}
+                            </td>
+                            <td class="text-center">
+                                {$order->getTime()}
+                            </td>
+                            <td class="text-center">
+                                {if $order->maketime}
+                                    {:date('Y-m-d H:i:s',$order->maketime) }
+                                {/if}
+                            </td>
+                        
+                          
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+
+
+
+        <section class="panel">
+             <header class="panel-heading">
+                <h5>交易明细</h5>
+            </header>
+
+            <div class="panel-body" >
+                <table class="table table-bordered table-striped no-margin">
+                    <thead>
+                        <tr>
+                            <th class="text-center">订单号</th>
+                            <th class="text-center">用户信息</th>
+                            <th class="text-center">类型</th>
+                            <th class="text-center">交易币类型</th>
+                            <th class="text-center">成交数量</th>
+                            <th class="text-center">成交金额</th>
+                            <th class="text-center">成交总额</th>
+                            <th class="text-center">匹配交易ID</th>
+                            <th class="text-center">买入方式</th>
+                            <th class="text-center">挂单时间</th>
+                            <th class="text-center">成交时间</th>
+                
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                    {if $list}
+                        {foreach $list as $order}
+                        <tr>
+                            <td class="text-center">{$order->cdsn}</td>
+                            <td class="text-center">
+                                昵称：{$order->nick_name}<br>
+                                电话：{$order->mobile}
+                            </td>
+                            <td class="text-center">
+                                {$order->getType()}
+                            </td>
+                            <td class="text-center">
+                                {$order->cointype}
+                            </td>
+                            
+                            <td class="text-center">
+                                {:number_format($order->number,8)}
+                            </td>
+                            <td class="text-center">
+                                {:number_format($order->makeprice,8)}
+                            </td>
+                            <td class="text-center">
+                                {:number_format($order->makesumprice,8)}
+                            </td>
+                             <td class="text-center">
+                                {$order->makeid}
+                            </td>
+                            <td class="text-center">
+                                {$order->getDealway()}
+                            </td>
+                            <td class="text-center">
+                                {$order->getTime()}
+                            </td>
+                            <td class="text-center">
+                                {if $order->maketime}
+                                    {:date('Y-m-d H:i:s',$order->maketime) }
+                                {/if}
+                            </td>
+
+                             
+                        </tr>
+                        {/foreach}
+                        {else /}
+                            <tr class="text-center">
+                                <td colspan="8">暂无数据</td>
+                            </tr>
+                        {/if}
+
+                    </tbody>
+                </table>
+                
+                <div class="page">
+                    {:htmlspecialchars_decode($list->render())}
+                </div>
+
+            </div>
+        </section>
+     
+      
+    </div>
+</section>
+{/block}
+
+{block name="footer"}
+
+
+{/block}

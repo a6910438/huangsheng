@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{block name="title"}{$title|default=''}{/block}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <!-- <link rel="shortcut icon" href=""> -->
+    <!-- css -->
+    <link href="/fish/css/style.css?date=2019072240001" rel="stylesheet">
+	{block name="style"}{/block}
+    <!-- js -->
+    <!--<script src="/fish/js/fastclick.js"></script>-->
+    <script src="/fish/js/vue.min.js"></script>
+    <script src="/fish/js/jquery.min.js"></script>
+    <script src="/fish/js/core.js?date=201907172346"></script>
+</head>
+<body>
+    <div id="app" v-cloak>
+        {block name='body'}{/block}
+    </div>
+    <!-- js -->
+    {block name='script'}{/block}
+    <script>
+        /*
+    $(function() {
+        let u = navigator.userAgent;
+        let isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+        if(isIOS){
+            FastClick.attach(document.body);
+            window.fastClickReady = true;
+        }else{
+            window.fastClickReady = false;
+        }
+    });
+    */
+    </script>
+</body>
+</html>

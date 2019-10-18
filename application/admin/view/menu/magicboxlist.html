@@ -1,0 +1,174 @@
+{extend name="layout/main" /}
+
+{block name="header"}
+
+{/block}
+
+{block name="content"}
+
+<section class="panel">
+    <header class="panel-heading">
+        <h4>会员金矿列表</h4>
+    </header>
+    <div class="panel-body" style="padding-bottom: 50px">
+        <form class="form-horizontal" action="">
+            <div class="form-group">
+                <div class="col-xs-2 no-pd-2">
+                <select name="product_id" id="product_id" class="form-control">
+                    <option value="">茶园类型</option>
+                    {foreach $productList as $productList}
+                    <option {if $Request.get.product_id == $productList->id} selected {/if} value="{$productList->id}">{$productList->product_name}</option>
+                    {/foreach}
+                </select>
+                </div>
+                <div class="col-xs-1 no-pd-l">
+                <select name="type" id="type" class="form-control">
+                    <option value="">来源</option>
+                    <option {if $Request.get.type == 1} selected {/if} value="1">后台发放</option>
+                    <option {if $Request.get.type == 2} selected {/if} value="2">购买</option>
+                    <option {if $Request.get.type == 3} selected {/if} value="3">升级赠送</option>
+                    <option {if $Request.get.type == 4} selected {/if} value="4">注册赠送</option>
+                    <option {if $Request.get.type == 5} selected {/if} value="5">认证赠送</option>
+                </select>
+                </div>
+                <div class="col-xs-1 no-pd-l">
+                <select name="status" id="status" class="form-control">
+                    <option value="-1">全部状态</option>
+                    <option {if $Request.get.status == 1} selected {/if} value="1">运行中</option>
+                    <option {if $Request.get.status == 2} selected {/if} value="2">已过期</option>
+                </select>
+                </div>
+                <div class="col-xs-3 no-pd-l">
+                    <input type="text" id="keyword" value="{$Request.get.keyword}" name="keyword" class="form-control" placeholder="请输入会员手机搜索">
+                </div>
+                <button type="submit" class="btn btn-color">搜索</button>
+                <button type="button" class="btn btn-success" id="export">导出</button>
+            </div>
+        </form>
+        <div>
+            <div style="padding: 10px;">租赁统计：</div>
+            <table class="table table-bordered table-striped no-margin">
+                <thead>
+                    <tr>
+                        <th class="text-center">茶园名称</th>
+                        <th class="text-center">总数</th>
+                        <th class="text-center">后台发放</th>
+                        <th class="text-center">购买</th>
+                        <th class="text-center">升级赠送</th>
+                        <th class="text-center">注册赠送</th>
+                        <th class="text-center">认证赠送</th>
+                    </tr>
+                 </thead>
+                 <tbody>
+                {foreach $dataList as $info}
+                <tr>
+                    <td>{$info['name']}</td>
+                    <td>{:array_sum($info['countList'])}</td>
+                    <td>{:isset($info['countList'][1]) ? $info['countList'][1] : 0}</td>
+                    <td>{:isset($info['countList'][2]) ? $info['countList'][2] : 0}</td>
+                    <td>{:isset($info['countList'][3]) ? $info['countList'][3] : 0}</td>
+                    <td>{:isset($info['countList'][4]) ? $info['countList'][4] : 0}</td>
+                    <td>{:isset($info['countList'][5]) ? $info['countList'][5] : 0}</td>
+                </tr>
+                {/foreach}
+                 </tbody>
+            </table>
+        </div>
+        <div style="padding: 10px;">购买明细：</div>
+        <table class="table table-bordered table-striped no-margin">
+            <thead>
+            <tr>
+                <th class="text-center">产品number</th>
+                <th class="text-center">会员账号</th>
+                <th class="text-center">金矿类型</th>
+                <th class="text-center">购买时间</th>
+                <th class="text-center">到期时间</th>
+                <th class="text-center">开采率(kb/s)</th>
+                <th class="text-center">日产量(金币)</th>
+                <th class="text-center">收益</th>
+                <th class="text-center">收益天数</th>
+                <th class="text-center">状态</th>
+                <th class="text-center">来源</th>
+                <!--<th class="text-center">操作</th>-->
+            </tr>
+            </thead>
+            <tbody>
+            {if !empty($list)}
+                {foreach $list as $entity}
+                <tr>
+                <form class="form-horizontal" method="post" onsubmit="return false" role="form">
+                    <td class="text-center">{$entity->product_number}</td>
+                    <td class="text-center">{$entity->mobile}</td>
+                    <td class="text-center">{$entity->product_name}</td>
+                    <td class="text-center">{$entity->getBuyTime()}</td>
+                    <td class="text-center">{$entity->getEndTime()}</td>
+                    <td class="text-center">
+                        {$entity->rate_min}-{$entity->rate_max}
+                    </td>
+                    <td class="text-center">
+                        {$entity->yield_min}-{$entity->yield_max}
+                    </td>
+                    <td class="text-center">
+                        昨日收益：{$entity->yestoday ? $entity->yestoday : 0}<br>
+                        总收益：{$entity->total ? $entity->total : 0}
+                    </td>
+                    <td class="text-center">
+                        已收益天数：{$entity->balance_day}<br>
+                        总天数：{$entity->period}
+                    </td>
+                    <td class="text-center">{if $entity->status == 1}运行中{else /}已过期{/if}</td>
+                    <td class="text-center">{if $entity->types == 1}后台发放<a class="btn btn-xs btn-info recancel" data-id="{$entity->id}">撤销</a>{elseif $entity->types == 2}购买{elseif $entity->types == 3}升级赠送{elseif $entity->types == 4}注册赠送{elseif $entity->types == 5}认证赠送{/if}</td>
+                    <!--<td class="text-center"></td>-->
+                    </form>
+                </tr>
+                {/foreach}
+            {else /}
+            <tr class="text-center">
+                <td colspan="7">暂无数据</td>
+            </tr>
+            {/if}
+            </tbody>
+        </table>
+        <div class="page">
+            {:htmlspecialchars_decode($list->render())}
+        </div>
+    </div>
+</section>
+{/block}
+
+
+{block name="footer"}
+<form action="{:url('admin/user/exportMagic')}" id="exportForm">
+    <input type="hidden" name="type" id="e_type">
+    <input type="hidden" name="keyword" id="e_keyword">
+    <input type="hidden" name="product_id" id="e_product_id">
+    <input type="hidden" name="status" id="e_status">
+</form> 
+<script>
+    $("#export").click(function(){
+        var product_id = $("#product_id").val();
+        var keyword = $("#keyword").val();
+        var type = $("#type").val();
+        var status = $("#status").val();
+        $('#e_product_id').val(product_id);
+        $('#e_keyword').val(keyword);
+        $('#e_type').val(type);
+        $('#e_status').val(status);
+        $("#exportForm").submit();
+    })
+    $('.recancel').click(function(){
+        var id = $(this).attr('data-id');
+        if(!confirm('确认撤销？')){
+            return false;
+        }
+        $.post("{:url('user/deleteUserProduct')}",{id:id},function(response){
+            if(response.code == 1){
+                main.waringAlert(response.message)
+            }else{
+                window.location.reload();
+                return false;
+            }
+        },'json')
+    })
+</script>
+{/block}

@@ -1,0 +1,36 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>公告详情</title>
+    {include file="layout/head" /}
+</head>
+<style type="text/css">
+    .font {
+        width: 72%;
+        height: auto;
+        margin: 0 auto;
+    }
+</style>
+<body style="background:white;">
+<header class="mui-bar mui-bar-nav my-header" >
+    <a href="{:url('member/index')}" class="mui-icon mui-icon-left-nav mui-pull-left"></a>
+    <h1 id="title" class="mui-title">系统公告</h1>
+</header>
+<div class="mui-content" style="background: white;">
+    <ul class="mui-table-view content" style="margin-top: 10px;">
+        {foreach $list as $c}
+        <li class="mui-table-view-cell mui-media gg">
+            <a href="/index/index/articleinfo?articleId={$c->article_id}">
+                <div class="mui-media-body">
+                    {$c->title}
+                    <p class='mui-ellipsis'>{$c->create_time}</p>
+                </div>
+            </a>
+        </li>
+        {/foreach}
+    </ul>
+</div>
+{include file="layout/footer" /}
+</body>
+</html>

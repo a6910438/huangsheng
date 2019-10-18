@@ -1,0 +1,150 @@
+{extend name="layout/main" /}
+
+{block name="header"}
+
+{/block}
+
+{block name="content"}
+
+
+{include file="coindeal/menu" /}
+
+<section class="panel">
+    <!-- <header class="panel-heading">
+        <h4>{if $type == 1}求购订单{/if}{if $type == 2}出售订单{/if}</h4>
+    </header> -->
+    <div class="panel-body" style="padding-bottom: 50px">
+        <form class="form-horizontal"  action="{:url('admin/coindeal/index')}" >
+            <input type="hidden" name="types" class="form-control" value="{$type}">
+            <input type="hidden" name="reality" class="form-control" value="{$reality}">
+
+            <div class="form-group">
+                <div class="col-xs-1 no-pd-r">
+                    <select name="status" class="form-control">
+                        <option  value="0">全部状态</option>
+                        <option {if $Request.get.status == 1} selected {/if} value="1">等待成交</option>
+                        <option {if $Request.get.status == 2} selected {/if} value="2">交易成功</option>
+                    </select>
+                </div>
+                <div class="col-xs-3 no-pd-l">
+                    <input type="text" value="{$Request.get.cdsn}" name="cdsn" class="form-control" placeholder="请输入订单号">
+                </div>
+            
+                <div class="col-xs-3 no-pd-l">
+                    <input type="text" value="{$Request.get.keyword}" name="keyword" class="form-control" placeholder="请输入会员手机号">
+                </div>
+                <button type="submit" class="btn btn-color">搜索</button>
+            </div>
+        </form>
+        <table class="table table-bordered table-striped no-margin">
+            <thead>
+                <tr>
+                    <th class="text-center">ID</th>
+                    <th class="text-center">订单号</th>
+                    <th class="text-center">用户信息</th>
+                    <th class="text-center">类型</th>
+                    <th class="text-center">交易币类型</th>
+                    <th class="text-center">数量</th>
+                    <th class="text-center">交易单价</th>
+                    <th class="text-center">交易总额</th>
+                    <th class="text-center">交易状态</th>
+                    <th class="text-center">买入方式</th>
+                    <th class="text-center">挂单时间</th>
+                    <th class="text-center">成交时间</th>
+                    <th class="text-center">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+            {if $list}
+                {foreach $list as $order}
+    
+                    <tr>
+                        <td class="text-center">{$order->id}</td>
+                        <td class="text-center">{$order->cdsn}</td>
+                        <td class="text-center">
+                            昵称：{$order->nick_name}<br>
+                            电话：{$order->mobile}
+                        </td>
+                        <td class="text-center">
+                            {$order->getType()}
+                        </td>
+                        <td class="text-center">
+                            {$order->cointype}
+                        </td>
+                        
+                        <td class="text-center">
+                           
+                            {if $Request.get.reality==1}
+                                {:number_format($order->number,8)}
+                            {else}
+                                挂单量：{:number_format($order->number,8)}<br>
+                                未交易：{:number_format($order->remnant,8)}
+                            {/if}
+
+                        </td>
+                        <td class="text-center">
+                            {if $Request.get.reality==1}
+                                {:number_format($order->makeprice,8)}
+                            {else}
+                                {:number_format($order->price,8)}
+                            {/if}
+                        </td>
+                        <td class="text-center">
+                            {if $Request.get.reality==1}
+                                {:number_format($order->makesumprice,8)}
+                            {else}
+                                {:number_format($order->sumprice,8)}
+                            {/if}
+                        </td>
+                         <td class="text-center">
+                            {$order->getStatus()}
+                        </td>
+                        <td class="text-center">
+                            {$order->getDealway()}
+                        </td>
+                        <td class="text-center">
+                            {$order->getTime()}
+                        </td>
+                        
+                        <td class="text-center">
+                            {if $order->maketime}
+                                {:date('Y-m-d H:i:s',$order->maketime) }
+                            {/if}
+                        </td>
+
+
+
+                        <td class="text-center">
+                            <a class="btn btn-xs btn-primary" href="{:url('coindeal/detail',['id'=>$order->id])}">详细</a>
+                            <!--  {if $order->status == 1 || $order->status == 2}
+                                <a class="btn btn-xs btn-danger" data-msg="确定要取消此订单吗" onclick="main.ajaxDelete(this)"  data-url="{:url('order/delete',['id'=>$order->id])}">取消订单</a>
+                            {/if}
+                            {if $order->status == 3}
+                                <a class="btn btn-xs btn-danger" data-msg="确定进行此操作吗" onclick="main.ajaxDelete(this)" data-url="{:url('order/update',['id'=>$order->id])}">确认收款</a>
+                                <a class="btn btn-xs btn-danger" data-msg="确定取消订单吗" onclick="main.ajaxDelete(this)" data-url="{:url('order/update',['id'=>$order->id,'do'=>'cancel'])}">取消订单</a>
+                            {/if}  -->
+                        </td>
+                    </tr>
+                {/foreach}
+            {else /}
+                <tr class="text-center">
+                    <td colspan="8">暂无数据</td>
+                </tr>
+            {/if}
+            </tbody>
+        </table>
+        <div class="page">
+            {:htmlspecialchars_decode($list->render())}
+        </div>
+    </div>
+</section>
+
+
+
+
+
+{/block}
+
+{block name="footer"}
+
+{/block}

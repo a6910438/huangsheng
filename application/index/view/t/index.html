@@ -1,0 +1,96 @@
+<!doctype html>
+<html>
+
+    <head>
+        <meta charset="UTF-8">
+        <title>首页</title>
+        {include file="t/head" /}
+        <link rel="stylesheet" type="text/css" href="/t/css/index.css"/>
+    </head>
+    <style type="text/css">
+        .mui-icon-home:before {
+            content: none;
+        }
+        .mui-icon-email:before {
+            content: none;
+        }
+        .mui-bar {
+            position: fixed;
+            z-index: 10;
+            right: 0;
+            left: 0;
+            height: 44px;
+            padding-right: 10px;
+            padding-left: 10px;
+            border-bottom: 0;
+            background-color: #f7f7f7;
+            -webkit-box-shadow: 0 0 1px rgba(142,206,245,.85); 
+            box-shadow: 0 0 1px rgba(142,206,245,.85); 
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+        }
+    </style>
+    <body style="background: white;">
+        <header class="mui-bar mui-bar-nav mui-bar-nav-bg" style="background-color: rgba(8,153,255,.5)">
+            <!--<a id="icon-menu" class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>-->
+            <h1 class="mui-title">首页</h1>
+        </header>
+        <div class="baner">
+            <img src="/t/img/banner.png"/>
+        </div>
+        <div class="mui-content" style="background: #ffffff;margin-top: -5px;height: 80px;">
+            <div class="m_tu">
+                <div>
+                    <img src="/t/img/id.png"/>
+                    <p>ID</p>
+                </div>
+                <div>
+                    <img src="/t/img/dengji.png"/>
+                    <p>等级</p>
+                </div>
+                <div>
+                    <img src="/t/img/renz.png"/>
+                    <p>认证状态</p>				
+                </div>
+                <div>
+                    <img src="/t/img/out.png"/>
+                    <p>退出</p>
+                </div>
+            </div>
+            <div style="height: 10px;background: #e8f5ff;margin-top: 30%;"></div>
+            <p style="border-left: 5px solid #14acff;margin: 10px 10px;padding-left: 8px;">公告</p>
+            <div class="m-ul">
+                <ul>
+                    <li>
+                        <p>商城：现金购买商品或者众享币兑换商品</p>
+                        <span>05-10</span>
+                    </li>
+                    <li>
+                        <p>商城：现金购买商品或者众享</p>
+                        <span>05-10</span>
+                    </li>
+                    <li>
+                        <p>商城：现金购买商品或</p>
+                        <span>05-10</span>
+                    </li>
+                    <li>
+                        <p>商城：现金购买商品或者</p>
+                        <span>05-10</span>
+                    </li>
+                    <li>
+                        <p>商城：现金购买商品或者众</p>
+                        <span>05-10</span>
+                    </li>
+                    <li>
+                        <p>商城：现金购买商品或者</p>
+                        <span>05-10</span>
+                    </li>
+                </ul>
+            </div>
+            <div style="height: 60px;"></div>
+        </div>
+
+        {include file="t/nav" /}
+    </body>
+    
+</html>

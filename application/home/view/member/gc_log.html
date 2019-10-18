@@ -1,0 +1,302 @@
+﻿{extend name='main'}
+
+{block name='body'}
+<div class="fish-head">
+    <a href="javascript:window.history.back();" class="head-back"><span>返回</span></a>
+    <h3 class="head-tit"><span>{$title}</span></h3>
+    <a href="#coin-modal" class="head-menu"><span>充币</span></a>
+</div>
+<div class="fish-main" v-cloak>
+    <div id="bait-top" class="content-box">
+        <div class="top-text">当前 GC</div>
+        <div class="top-num">{{info.gc || '0.00'}}</div>
+    </div>
+    <div class="content-box">
+        <ul class="tabs">
+            <li class="tab"><a @click="typeFun(1)" href="#test1">全部</a></li>
+            <li class="tab"><a @click="typeFun(2)" href="#test2">收入</a></li>
+            <li class="tab"><a @click="typeFun(3)" href="#test3">支出</a></li>
+        </ul>
+        <div id="test1">
+            <ul class="bait-list">
+                <li v-if="list1.length>0" v-for="vo in list1" class="clearfix">
+                    <div>
+                        <div><span>数量 : </span>{{vo.type_des}}{{vo.amount}}</div>
+                        <div><span>备注 : </span>{{vo.remark}}</div>
+                        <div><span>日期时间 : </span>{{vo.create_time}}</div>
+                    </div>
+                </li>
+            </ul>
+            <div class="dialog-bottom"></div>
+        </div>
+        <div id="test2">
+            <ul class="bait-list">
+                <li v-if="list2.length>0" v-for="vo in list2" class="clearfix">
+                    <div>
+                        <div><span>数量 : </span>{{vo.type_des}}{{vo.amount}}</div>
+                        <div><span>备注 : </span>{{vo.remark}}</div>
+                        <div><span>日期时间 : </span>{{vo.create_time}}</div>
+                    </div>
+                </li>
+            </ul>
+            <div class="dialog-bottom"></div>
+        </div>
+        <div id="test3">
+            <ul class="bait-list">
+                <li v-if="list3.length>0" v-for="vo in list3" class="clearfix">
+                    <div>
+                        <div><span>数量 : </span>{{vo.type_des}}{{vo.amount}}</div>
+                        <div><span>备注 : </span>{{vo.remark}}</div>
+                        <div><span>日期时间 : </span>{{vo.create_time}}</div>
+                    </div>
+                </li>
+            </ul>
+            <div class="dialog-bottom"></div>
+        </div>
+    </div>
+</div>
+<div id="coin-modal" class="modal" style="color:#182121;">
+    <div class="modal-content">
+        <header>
+            <h2>GC-Wallet</h2>
+            <h5>{{info.gc_address || 'null'}}</h5>
+            <input id="gc-address" type="text" readonly v-bind:value="info.gc_address">
+        </header>
+        <h3>请转入 GC</h3>
+        <div>
+            <img  v-bind:src="info.gc_address ? '/home/tools/qrcode.html?code='+info.gc_address : '#'" alt="二维码"/>
+        </div>
+        <footer>
+            <a v-on:click="copyGcAddress">点击复制钱包地址</a>
+        </footer>
+    </div>
+</div>
+{include file='menu'}
+{/block}
+
+{block name='script'}
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            info: '',
+            type: 1,
+            list1: [],
+            page1: 1,
+            status1: true,
+            list2: [],
+            page2: 1,
+            status2: true,
+            list3: [],
+            page3: 1,
+            status3: true,
+            feed: ''
+        },
+        computed: {
+            
+        },
+        methods: {
+            member: function(){
+                core.load("{:url('/index/setup/index')}", {}, (res)=>{
+                    if(res.code==0){
+                        this.info=res.info;
+                    }else{
+                        core.toast(res.msg);
+                    }
+                })
+            },
+            typeFun: function(id){
+                if(this.type==id) return;
+                this.type = id;
+                if( this.type==1 ){
+                    if( this.page1!=1 ) return;
+                }else if( this.type==2 ){
+                    if( this.page2!=1 ) return;
+                }else if( this.type==3 ){
+                    if( this.page3!=1 ) return;
+                };
+                this.loadList();
+            },
+            selectText: function(textbox, startIndex, stopIndex) {
+                if (textbox.createTextRange) {
+                    //ie
+                    const range = textbox.createTextRange();
+                    range.collapse(true);
+                    range.moveStart('character', startIndex);//起始光标
+                    range.moveEnd('character', stopIndex - startIndex);//结束光标
+                    range.select();//不兼容苹果
+                } else {
+                    //firefox/chrome
+                    textbox.setSelectionRange(startIndex, stopIndex);
+                    textbox.focus();
+                }
+            },
+            copyGcAddress: function() {
+                if(!this.info.gc_address){
+                    core.toast('未获取到钱包地址');
+                    return;
+                };
+                var input = document.getElementById('gc-address');
+                const len = input.value.length;
+                if (input.createTextRange) {
+                    //ie
+                    const range = input.createTextRange();
+                    range.collapse(true);
+                    range.moveStart('character', 0);//起始光标
+                    range.moveEnd('character', len);//结束光标
+                    range.select();//不兼容苹果
+                } else {
+                    //firefox/chrome
+                    input.setSelectionRange(0, len);
+                    input.focus();
+                }
+                //input.select();
+                if(document.execCommand("copy")){
+                    core.toast('复制钱包地址成功');
+                }else{
+                    core.toast('复制钱包地址失败');
+                };
+            },
+            loadList: function(){
+                var page = '';
+                if(this.type==1){
+                    if(!this.status1) return;
+                    page = this.page1;
+                    this.page1 = ++this.page1;
+                }else if(this.type==2){
+                    if(!this.status2) return;
+                    page = this.page2;
+                    this.page2 = ++this.page2;
+                }else if(this.type==3){
+                    if(!this.status3) return;
+                    page = this.page3;
+                    this.page3 = ++this.page3;
+                }
+                var data = {
+                    type: this.type-1,
+                    limit: 5,
+                    page: page
+                };
+                core.load("{:url('index/gc/list')}", data, (res)=>{
+                    if(res.code=='0'){
+                        if(this.type==1){
+                            if(res.info.data.length>0) this.list1 = this.list1.concat(res.info.data);
+                            if( res.info.last_page <= res.info.current_page ){
+                                this.status1 = false;
+                                $('.dialog-bottom').eq(0).html('已经加载全部数据');
+                            }else{
+                                $('.dialog-bottom').eq(0).html('正在加载...');
+                            }
+                        }else if(this.type==2){
+                            if(res.info.data.length>0) this.list2 = this.list2.concat(res.info.data);
+                            if( res.info.last_page <= res.info.current_page ){
+                                this.status2 = false;
+                                $('.dialog-bottom').eq(1).html('已经加载全部数据');
+                            }else{
+                                $('.dialog-bottom').eq(1).html('正在加载...');
+                            } 
+                        }else if(this.type==3){
+                            if(res.info.data.length>0) this.list3 = this.list3.concat(res.info.data);
+                            if( res.info.last_page <= res.info.current_page ){
+                                this.status3 = false;
+                                $('.dialog-bottom').eq(2).html('已经加载全部数据');
+                            }else{
+                                $('.dialog-bottom').eq(2).html('正在加载...');
+                            }
+                        }
+                    }else{
+                        core.toast(res.msg);
+                    }
+                })
+            },
+        },
+        mounted: function(){
+            $('.modal').modal();
+            $('ul.tabs').tabs();
+            //this.feedFun();
+            this.member();
+            this.loadList();
+            // 下拉加载
+            $(window).off("scroll").on("scroll", (e)=>{
+                var totalheight = parseFloat($(this).height()) + parseFloat($(this).scrollTop());
+                if (($(document).height()-100<=totalheight)){
+                    this.loadList()
+                }
+            });
+        }
+    });
+</script>
+{/block}
+
+
+{block name="style"}
+<style>
+    #bait-top{
+        text-align: center;
+        position: relative;
+        padding: 2rem 1rem;
+    }
+    #bait-top .top-text{
+        font-size:1rem;
+    }
+    #bait-top .top-num{
+        font-size:3rem;
+        font-weight:bold;
+    }
+    #bait-top .top-icon{
+        position:absolute;
+        top:1rem;
+        right:1rem;
+    }
+    #bait-top .icon-mark{background-image:url('/fish/img/icon-mark.png');height:30px;width:30px;}
+    
+    .content-list>li>div:last-child{
+        margin-left: auto;
+        font-size: 1rem;
+    }
+    .content-list>li>div:first-child{
+        font-weight: bold
+    }
+    .content-list>li>div:first-child>.list-tit{
+        font-size: 1rem
+    }
+    .content-list>li>div:first-child>.list-tip{
+        font-size: 0.8rem
+    }
+    .bait-list{position:relative;}
+    .bait-list li{padding:12px;border-top:1px solid rgba(0, 0, 0, 0.1);}
+    .bait-list li .list-tit{font-size:16px;}
+    .bait-list li .list-tip{color:#bbb;}
+    .bait-list li .fr{font-size:16px;margin-top:10px;}
+    .bait-list li .green{color:#00D6E2;}
+    .bait-list li .red{color:#E02737;}
+
+    .dialog-bottom{
+        color: #E02737;
+    }
+
+
+    .modal{border-radius: 0.8rem;top: 10% !important;max-width: 30rem}
+    .modal-content{text-align: center}
+    .modal-content>header{background-color: #c38e00;padding: 1rem;color: white}
+    .modal-content>header>h2{font-weight: 600;font-size: 1rem}
+    .modal-content>header>h5{word-break: break-all;font-size: 0.6rem;display: none}
+    .modal-content>header>input{
+        word-break: break-all;font-size: 0.7rem;background-color: transparent;border: none;width: 100%;text-align: center;color: white;
+        -webkit-user-select:initial;
+        -webkit-user-select:text;
+        -moz-user-select:text;
+        -ms-user-select:text;
+        user-select:text;
+    }
+    .modal-content>header>input::selection {
+        color:#fff;
+        background-color: transparent ;
+    }
+    .modal-content>h3{font-size: 1.2rem;margin: 1rem 0}
+    .modal-content>div{display: flex;align-items: center;justify-content: center;}
+    .modal-content>div>img{box-sizing:border-box; ;width:12rem;height: 12rem}
+    .modal-content>footer{margin: 1rem 0;}
+    .modal-content>footer>a{color: #c38e00;}
+</style>
+{/block}

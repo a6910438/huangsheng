@@ -1,0 +1,98 @@
+{extend name="layout/main" /}
+
+{block name="header"}
+
+{/block}
+
+{block name="content"}
+<div class="row">
+    <div class="col-lg-3 col-md-3" style="padding-left: 0">
+        <section class="panel ">
+            <header class="panel-heading">
+                <h4>总数</h4>
+            </header>
+            <div class="panel-body">
+                <h3>{$count}</h3>
+            </div>
+        </section>
+    </div>
+    <div class="col-lg-3 col-md-3" style="padding-left: 0">
+        <section class="panel ">
+            <header class="panel-heading">
+                <h4>有效</h4>
+            </header>
+            <div class="panel-body">
+                <h3>{$valid}</h3>
+            </div>
+        </section>
+    </div>
+    <div class="col-lg-3 col-md-3">
+        <section class="panel">
+            <header class="panel-heading">
+                <h4>无效</h4>
+            </header>
+            <div class="panel-body">
+                <h3>{$invalid}</h3>
+            </div>
+        </section>
+    </div>
+
+
+</div>
+<section class="panel">
+    <header class="panel-heading">
+        <h4>手机号归属地统计</h4>
+    </header>
+    <div class="panel-body" style="padding-bottom: 50px">
+        <form class="form-horizontal" action="{:url('Tongji/index')}">
+            <div class="form-group">
+                <div class="col-xs-2">
+                    <select name="type" class="form-control">
+                        <option value="0">全部分类</option>
+                        {foreach $cate as $key=>$item}
+                        <option >{$item['province']}</option>
+                        {/foreach}
+                    </select>
+                </div>
+
+
+                    <button type="submit" class="btn btn-color"  onclick="search()">搜索</button>
+                </div>
+        </form>
+
+
+        <table class="table table-bordered table-striped no-margin">
+        <thead>
+        <tr>
+            <th class="text-center">ID</th>
+            <th class="text-center">手机号码</th>
+            <th class="text-center">地区</th>
+            <th class="text-center">是否有效</th>
+        </tr>
+        </thead>
+        <tbody>
+        {if !empty($list)}
+        {foreach $list as $entity}
+        <tr>
+            <td class="text-center">{$entity['id']}</td>
+            <td class="text-center">{$entity['mobile']}</td>
+            <td class="text-center">{$entity['province']} &nbsp&nbsp{$entity['city']}</td>
+            <td class="text-center">{if $entity['status']==1 && $entity['is_active']==1}是{else/}否{/if}</td>
+        </tr>
+        {/foreach}
+        {else /}
+        <tr class="text-center">
+            <td colspan="4">暂无数据</td>
+        </tr>
+        {/if}
+        </tbody>
+    </table>
+        <div class="page">
+            {:htmlspecialchars_decode($list->render())}
+        </div>
+    </div>
+</section>
+{/block}
+
+
+{block name="footer"}

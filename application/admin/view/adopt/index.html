@@ -1,0 +1,111 @@
+{extend name="layout/main" /}
+
+{block name="header"}
+
+{/block}
+
+{block name="content"}
+<style type="text/css">
+    .link-th{
+        color:blue;
+    }
+</style>
+<section class="panel">
+    <header class="panel-heading">
+        <h4>领取统计</h4>
+    </header>
+    <div class="panel-body" style="padding-bottom: 50px">
+
+       <form class="form-horizontal" action="{:url('index')}" >
+           <div class="form-group">
+<!--               <div class="col-xs-1 no-pd-r">-->
+<!--                   <select name="type" id="type" class="form-control">-->
+<!--                       <option {if $Request.get.type == 'nick_name'} selected {/if} value="nick_name">用户名</option>-->
+<!--                   </select>-->
+<!--               </div>-->
+<!--               <div class="col-xs-3 no-pd-l">-->
+<!--                   <input type="text" id="keyword" value="{$Request.get.keyword}" name="keyword" class="form-control" placeholder="请输入关键词搜索">-->
+<!--               </div>-->
+               <div class="col-xs-1 no-pd-r">
+               <span class="form-control">开始时间</span>
+               </div>
+               <div class="col-xs-3 no-pd-l">
+
+                 <input type="date" value="{$Request.get.stime}" name="stime" class="form-control">
+               </div>
+               <div class="col-xs-1 no-pd-r">
+                   <span class="form-control"> 结束时间</span>
+               </div>
+               <div class="col-xs-3 no-pd-l">
+                   <input type="date" value="{$Request.get.ntime}" name="ntime" class="form-control">
+               </div>
+               <button type="submit" class="btn btn-color">搜索</button>
+
+            </div>
+        </form>
+
+        <table class="table table-bordered table-striped no-margin">
+			<thead style="font-weight:bold;">
+				<tr>
+					<td style="vertical-align: middle" class="text-center" rowspan="2" colspan="2">总计</td>
+					<td class="text-center">预约总计</td>
+					<td class="text-center">领取总计</td>
+					<td class="text-center">合约总计</td>
+				</tr>
+				<tr>
+					<td class="text-center">{$make}</td>
+					<td class="text-center">{$adopt}</td>
+					<td class="text-center">{$contract}</td>
+				</tr>
+            </thead>
+            <thead>
+            <tr>
+                <th class="text-center">ID</th>
+                <th class="text-center">名称</th>
+                <th class="text-center">预约统计</th>
+                <th class="text-center">领取统计</th>
+                <th class="text-center">合约统计</th>
+
+            </tr>
+            </thead>
+            <tbody>
+            {if !empty($list)}
+            {foreach $list as $entity}
+            <tr>
+                <td style="vertical-align: middle" class="text-center">
+                    {$entity->id}
+                </td>
+                <td style="vertical-align: middle" class="text-center">
+                    {$entity->name}
+                </td>
+                <td style="vertical-align: middle" class="text-center">
+                    总数：{$entity->MakeAllNum}| <a href="{:url('make_statistics')}?id={$entity->id}&stime={$Request.get.stime}&ntime={$Request.get.ntime}">详情</a>
+                </td>
+                <td style="vertical-align: middle" class="text-center">
+                    总数：{$entity->AdoptAllNum}| <a href="{:url('adopt_statistics')}?id={$entity->id}&stime={$Request.get.stime}&ntime={$Request.get.ntime}">详情</a>
+                </td>
+                <td style="vertical-align: middle" class="text-center">
+                    总数：{$entity->ContractAllNum}| <a href="{:url('contrac_statistics')}?id={$entity->id}&stime={$Request.get.stime}&ntime={$Request.get.ntime}">详情</a>
+                </td>
+
+
+            </tr>
+            {/foreach}
+            {else /}
+            <tr class="text-center">
+                <td colspan="9">暂无数据</td>
+            </tr>
+            {/if}
+            </tbody>
+        </table>
+        <div class="page">
+            {:htmlspecialchars_decode($list->render())}
+        </div>
+    </div>
+</section>
+{/block}
+{block name="footer"}
+
+
+
+{/block}

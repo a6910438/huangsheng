@@ -1,0 +1,153 @@
+{extend name="layout/main" /}
+
+{block name="header"}
+
+{/block}
+
+{block name="content"}
+<style>
+    .listli{
+           background-color: #fff;
+    }
+    .select {
+        color: #ffffff;
+        background-color: #1ec3c8;
+        border-color: #1ec3c8;
+    }
+    .select:hover{
+        color: #fff;
+    }
+</style>
+<!-- <div>
+    <ul>
+        <a href="{:url('admin/legal/index')}"><li class="btn listli ">收购订单</li></a>
+        <a href="{:url('admin/legal/sale')}"><li class="btn listli ">出售订单</li></a>
+        <a href="{:url('admin/legal/deal')}"><li class="btn listli ">交易订单</li></a>
+        <a href="{:url('admin/legal/iserror')}"><li class="btn listli select">错误订单</li></a>
+    </ul>
+</div> -->
+<script src="/zhao/public/admin/js/laydate/laydate.js"></script>
+<section class="panel">
+    <header class="panel-heading">
+        <h4>购买记录</h4>
+    </header>
+    <div class="panel-body" style="padding-bottom: 50px">
+        <form class="form-horizontal" action="{:url('admin/fomo/buy')}">
+            <div class="form-group">
+
+                <div class="col-xs-1 no-pd-r">
+                    <select name="status" class="form-control">
+                        <option  value="0">全部状态</option>
+                        <option {if $Request.get.status == -1} selected {/if} value="-1">未付款</option>
+                        <option {if $Request.get.status == 1} selected {/if} value="1">已付款</option>
+                    </select>
+                </div>
+               
+                <div class="col-xs-1 no-pd-r">
+                    <select name="type" class="form-control">
+                        <option {if $Request.get.type == 'periods'} selected {/if} value="periods">按期数</option>
+                        <option {if $Request.get.type == 'mobile'} selected {/if} value="mobile">购买者电话</option>
+                        <option {if $Request.get.type == 'title'} selected {/if} value="title">队伍名称</option>
+                    </select>
+                </div>
+                
+                <div class="col-xs-3 no-pd-l">
+                    <input type="text" value="{$Request.get.keyword}" name="keyword" class="form-control" placeholder="请输入相应搜索关键词">
+                </div>
+
+                <div class="col-xs-2 no-pd-2">
+                    <input type="text" value="{$Request.get.startTime}" name="startTime" id="startTime" class="form-control" placeholder="请输入开始时间">
+                </div>
+                <div class="col-xs-2 no-pd-2">
+                    <input type="text" value="{$Request.get.endTime}" name="endTime" id="endTime" class="form-control" placeholder="请输入结束时间">
+                </div>
+                <button type="submit" class="btn btn-color">搜索</button>
+            </div>
+        </form>
+        <table class="table table-bordered table-striped no-margin">
+            <thead>
+                <tr>
+                    <th class="text-center">序号</th>
+                    <th class="text-center">期数</th>
+                    <th class="text-center">用户信息</th>
+                    <th class="text-center">数量(KEY)</th>
+                    <th class="text-center">价值(ETH)</th>
+                    <th class="text-center">队伍信息</th>
+                    <th class="text-center">奖池贡献值</th>
+                    <th class="text-center">分红贡献值</th>
+                    <th class="text-center">交易状态</th>
+                    <th class="text-center">创建时间</th>
+                    <!-- <th class="text-center">操作</th> -->
+                </tr>
+            </thead>
+            <tbody>
+            {if $list}
+                {foreach $list as $order}
+                    <tr>
+                        <td class="text-center">{$order->id}</td>
+                        <td class="text-center">{$order->periods}期</td>
+                        <td class="text-center">
+                            昵称：{$order->nick_name}<br>
+                            电话：{$order->mobile}
+                        </td>
+                        <td class="text-center">
+                            {$order->keynum}
+                        </td>
+                         <td class="text-center">
+                            {$order->expense}
+                        </td>    
+                         <td class="text-center">
+                            <img src="{$order->image}" width=30 alt=""><br>
+                            {$order->title}
+                        </td>
+                        <td class="text-center">
+                            {$order->capital}
+                        </td>
+                        <td class="text-center">
+                            {$order->bonus}
+                        </td>
+                        <td class="text-center">
+                            {$order->getStatus()}
+                        </td>
+                        <td class="text-center">
+                            {$order->getCreatetime()}
+                        </td>
+                        <!--<td class="text-center">
+                            <a class="btn btn-xs btn-primary" href="{:url('order/detail',['id'=>$order->id])}">详细</a>
+                             {if $order->status == 1 || $order->status == 2}
+                                <a class="btn btn-xs btn-danger" data-msg="确定要取消此订单吗" onclick="main.ajaxDelete(this)"  data-url="{:url('order/delete',['id'=>$order->id])}">取消订单</a>
+                            {/if}
+                            {if $order->status == 3}
+                                <a class="btn btn-xs btn-danger" data-msg="确定进行此操作吗" onclick="main.ajaxDelete(this)" data-url="{:url('order/update',['id'=>$order->id])}">确认收款</a>
+                                <a class="btn btn-xs btn-danger" data-msg="确定取消订单吗" onclick="main.ajaxDelete(this)" data-url="{:url('order/update',['id'=>$order->id,'do'=>'cancel'])}">取消订单</a>
+                            {/if} 
+                        </td>-->
+                    </tr>
+                {/foreach}
+            {else /}
+                <tr class="text-center">
+                    <td colspan="8">暂无数据</td>
+                </tr>
+            {/if}
+            </tbody>
+        </table>
+        <div class="page">
+            {:htmlspecialchars_decode($list->render())}
+        </div>
+    </div>
+</section>
+<script>
+laydate.render({
+  elem: '#startTime',
+  type: 'datetime'
+});
+laydate.render({
+  elem: '#endTime',
+  type: 'datetime'
+});
+</script>
+
+{/block}
+{block name="footer"}
+
+{/block}

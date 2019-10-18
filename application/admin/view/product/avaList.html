@@ -1,0 +1,91 @@
+{extend name="layout/main" /}
+
+{block name="header"}
+
+{/block}
+
+{block name="content"}
+<section class="panel">
+    <header class="panel-heading">
+        <h4>用户头像审核列表</h4>
+    </header>
+    <div class="panel-body" style="padding-bottom: 50px">
+        <form class="form-horizontal" action="">
+            <div class="form-group">
+                <div class="col-xs-1 no-pd-r">
+                    <select name="type" id="type" class="form-control">
+                        <option {if $Request.get.type == 'email'} selected {/if} value="email">用户名</option>
+                        <option {if $Request.get.type == 'nick_name'} selected {/if} value="nick_name">用户ID</option>
+                    </select>
+                </div>
+                <div class="col-xs-3 no-pd-l">
+                    <input type="text" id="keyword" value="{$Request.get.keyword}" name="keyword" class="form-control" placeholder="请输入关键词搜索">
+                </div>
+                <button type="submit" class="btn btn-color">搜索</button>
+                <!--<a type="button" href="{:url('/admin/article/create')}" class="btn btn-info">添加文章</a>-->
+            </div>
+        </form>
+        <table class="table table-bordered table-striped no-margin">
+            <thead>
+            <tr>
+                <th class="text-center">序号</th>
+                <th class="text-center">用户名</th>
+                <th class="text-center">用户ID</th>
+                <th class="text-center">头像</th>
+                <th class="text-center">审核状态</th>
+                <th class="text-center">创建时间</th>
+                <th class="text-center">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            {if !empty($list)}
+            {foreach $list as $entity}
+            <tr>
+                <td class="text-center">{$entity->id}</td>
+                <td class="text-center">{$entity->email}</td>
+                <td class="text-center">{$entity->nick_name}</td>
+                <td class="text-center"><img src="__PUBLIC__{$entity.avatar}" width="100px" height="100px"></td>
+                <td class="text-center">
+                    {if $entity->status == 1}
+                    <a class="btn btn-xs btn-primary">审核通过</a>
+                    {elseif $entity->status == 0 /}
+                    <a class="btn btn-xs btn-default">待审核</a>
+                    {elseif $entity->status == 2 /}
+                    <a class="btn btn-xs btn-danger">不通过</a>
+                    {/if}
+
+                </td>
+                <td class="text-center">{$entity->create_time}</td>
+                <td class="text-center">
+                    {if $entity->status == 0}
+                    <a data-url="{:url('avaYes',['id'=>$entity->id ])}" onclick="main.ajaxDelete(this)"
+                       data-msg="确定通过该头像吗？" class="btn btn-xs btn-info">通过</a>
+                    <a data-url="{:url('avaNo',['id'=>$entity->id ])}" onclick="main.ajaxDelete(this)"
+                       data-msg="确定通过该头像吗？" class="btn btn-xs btn-info">不通过</a>
+                    <a data-url="{:url('avaDel',['id'=>$entity->id ])}" onclick="main.ajaxDelete(this)"
+                       data-msg="确定要删除该头像吗？" class="btn btn-xs btn-danger">删除</a>
+                    {else}
+                    <a data-url="{:url('avaDel',['id'=>$entity->id ])}" onclick="main.ajaxDelete(this)"
+                       data-msg="确定要删除该头像吗？" class="btn btn-xs btn-danger">删除</a>
+                    {/if}
+                </td>
+            </tr>
+            {/foreach}
+            {else /}
+            <tr class="text-center">
+                <td colspan="5">暂无数据</td>
+            </tr>
+            {/if}
+            </tbody>
+        </table>
+        <div class="page">
+            {:htmlspecialchars_decode($list->render())}
+        </div>
+    </div>
+</section>
+{/block}
+
+
+{block name="footer"}
+
+{/block}

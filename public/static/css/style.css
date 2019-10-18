@@ -1,0 +1,323 @@
+*{margin: 0; padding: 0; /* overflow: hidden;*/ box-sizing: border-box;}
+a{text-decoration: none; color: inherit;/* 解决点击高亮*/ -webkit-tap-highlight-color: transparent; cursor:pointer;}
+a:link{text-decoration:none;} /* 指正常的未被访问过的链接*/
+a:visited{text-decoration:none;}/*指已经访问过的链接*/
+a:hover{text-decoration:none;}/*指鼠标在链接*/}
+a:active{text-decoration:none;}/* 指正在点的链接*/
+ul{list-style: none;}
+.clearfix:after{display: block; content: ""; height: 0; clear: both;}
+ * { touch-action: pan-y; } 
+.white{ color: #fff; }
+.main-color{ color: #111420;}
+.pr{position: relative;}
+.pa{position: absolute;}
+.fs10{font-size: 10px;}
+.fs12{font-size: 12px;}
+.fs13{font-size: 13px;}
+.fs14{font-size: 14px;}
+.fs15{font-size: 15px;}
+.fs16{font-size: 16px;}
+.fs18{font-size: 18px;}
+.fw500{ font-weight: 500; }
+.fw600{ font-weight: 600; }
+
+
+
+.hs-head{ height: 48px; line-height: 48px; box-shadow:none; background: #111420;z-index: 99; }
+.hs-head .mui-title{ color: #fff;  line-height: 48px;}
+.hs-head .hs-menu{ width: 48px; height: 48px;display: block; margin-left: -10px; background: url(../images/menu.png) no-repeat center center; background-size: auto 60%;  } 
+.hs-head .hs-return{width: 48px; height: 48px; display: block; margin-left: -10px; background: url(../images/return.png) no-repeat center center; background-size: auto 60%;  } 
+.mui-content{ padding-top: 48px !important; padding-bottom: 55px; background: #000; position: relative; left: 0%; transition:0.5s; z-index: 9;}
+.mui-content.action{position: relative; left: 80%; animation:myfirst 0.5s;animation-direction: alternate;}
+.mui-content.actions{ }
+@keyframes myfirst
+{
+   from {left:0%;}
+    to {left: 80%;}
+}
+
+
+.swiper-container{ background: #01000f;  padding-top: 10px; margin-bottom: 10px; margin-top: 8px;}
+.swiper-container .swiper-slide{ padding-top: 5px;  }
+.swiper-container .swiper-slide img{width: 100%; height: 80% !important; border-radius: 8px;  transform: scale(0.9);  }
+.hs-img{ border-radius: 8px; width: 100%; overflow: hidden; }
+.swiper-container .swiper-slide-active {padding: 0;}
+.swiper-container .swiper-slide-active img{ width: 100%; transform: scale(1.6);  border-radius: 8px;}
+
+
+/*首页遮盖层*/
+.hs-lay{ width: 80%; height: 100%;  position: fixed; top: 48px; left: 0; background: #212638; z-index: 2; }
+.hs-lay .logo{ height: 100px; margin-bottom: 30px; line-height: 100px; text-align: center; color: #fff; font-size: 50px;}
+.hs-lay .list{ width: 100% }
+.hs-lay .list ul li{ height: 45px; line-height: 45px; border-bottom: 1px solid #000; color: #fff; text-align: center; }
+.hs-lay .list ul li span:before{ display: block; content: ""; position: absolute; width: 10px; height: 10px; right: -20px; top: 50%; margin-top: -5px; background: url(../images/arrt.png) no-repeat center center; background-size:auto 50% ; }
+.hs-lay .list ul li:last-child,.hs-lay .list ul li:first-child{border-bottom:none ;}
+.hs-lay .list ul li a{ color: #fff; display: block; font-size:18px ;}
+.hs-lay .list ul li .language{ width: 50%; margin: 0 auto; background: #212638; position: relative; z-index: 99; }
+.hs-lay .list ul li .language.action{ background: #111420;}
+.hs-lay .list ul li .language em{ font-style: normal; display: block; height: 45px; border-top:1px solid #535353; }
+.hs-lay .list ul li .language .la-list{ width: 100%; padding: 0 5px; display: none; position: relative;  z-index: 999;}
+.hs-lay .list ul li .language .la-list.action{display: block !important;}
+
+
+
+.hs-lay .bottom-btn{ margin-top: 25px; }
+.hs-lay .bottom-btn span{display: block; width: 50%; float: left; padding: 2px; }
+.hs-lay .bottom-btn span a{ width: 50%; padding: 5px 0; color: #fff;border-radius: 2px !important; display: inline-block; text-align: center;  border: 1px solid #fff; border-radius: 5px; }
+/*底部*/
+#nav{ height: 50px; background: #111420;  position: fixed; bottom: 0; left: 0; transition:0.5s; width: 100%; z-index: 99999; padding-top: 1px; }
+#nav.action{left: 80%;animation:myfirst 0.5s;animation-direction: alternate;}
+#nav ul li{ width: 25%; float: left; text-align: center;  }
+#nav ul li i.icon{margin: 0 auto; display: block; width: 30px; line-height: 30px; height: 30px; }
+#nav ul li i.icon1{ background: url(../images/hoem_1.png) no-repeat center center; background-size: auto 90%; }
+#nav ul li i.icon2{ background: url(../images/game_1.png) no-repeat center center; background-size: auto 90%; }
+#nav ul li i.icon3{ background: url(../images/comm_1.png) no-repeat center center; background-size: auto 90%; }
+#nav ul li i.icon4{ background: url(../images/user_1.png) no-repeat center center; background-size: auto 90%; }
+#nav ul li span{ color: #adadad; font-size: 10px; display: block; margin-top: -2px; }
+#nav ul li.action i.icon1{ background: url(../images/hoem_01.png) no-repeat center center; background-size: auto 90%; }
+#nav ul li.action i.icon2{ background: url(../images/game_01.png) no-repeat center center; background-size: auto 90%; }
+#nav ul li.action i.icon3{ background: url(../images/comm_01.png) no-repeat center center; background-size: auto 90%; }
+#nav ul li.action i.icon4{ background: url(../images/user_01.png) no-repeat center center; background-size: auto 90%; }
+#nav ul li.action span{ color: #ffc200; }
+
+.hs-betting{ width: 100%; height: auto; padding: 15px; background: #111420; }
+.hs-betting > .bg{ width: 100%; background:url(../images/betting_bg.png)no-repeat top center; background-size:cover ;}
+.hs-betting .number{font-size: 34px; color: #FFC200; text-align: center; height: 60px; line-height: 30px; }
+.hs-betting p{ height: 45px; line-height: 60px; text-align: center; font-size: 12px; color: #ddd; }
+
+.hs-index-list{ width: 100%; padding: 12px; height: auto; background: #000; border-bottom: 1px solid #292c37; border-top: 1px solid #292c37; } 
+.hs-index-list ul li{ color: #fff;  width: 33.3%; float: left; text-align: center; position: relative; }
+.hs-index-list ul li span{ display: block; font-size: 15px; }
+.hs-index-list ul li span.sp1{ color: #ddd; font-size: 12px; }
+.hs-index-list ul li span.sp2{  font-size: 12px;}
+.hs-index-list ul li span.sp2.clolr1{ color: #49bd67; }
+.hs-index-list ul li span.sp2.clolr2{ color: #f14d58; padding-top: 5px; }
+.hs-index-list ul li.first:after{ content: ""; display: block; width: 1px; height: 60%; position: absolute; top: 20%; left: 0; background: #292c37;  }
+.hs-notice{ width: 100%; height: 23px; padding: 0 10px; line-height: 23px; background: #111420; }
+.hs-notice i{ display: block;  width: 23px; height: 23px; background: url(../images/notice.png) no-repeat center center; background-size: cover; float: left; }
+.hs-notice .list{ width: 100%; padding-left: 33px;  }
+.hs-notice .list ul li{ color: #fff; font-size: 12px; width: 100%; height: 23px; overflow: hidden; }
+
+.hs-index-data{ padding: 20px; }
+.hs-index-data >.box{width: 48%; border: 1px solid #404350; border-radius: 5px; }
+.hs-index-data >.box .title{ width: 100%; height: 30px; line-height: 30px; border-bottom: 1px solid #404350; }
+.hs-index-data >.box .title span,.hs-index-data >.box .list ul li span{ display: block; width: 50%; float: left; color: #fff; font-size: 12px; text-align: center;}
+.hs-index-data >.box .list{width: 100%; height: auto; }
+.hs-index-data >.box .list ul li{ height: 30px; line-height: 30px;  }
+.hs-index-data >.box .list ul li span{color:#efefef; font-size: 10px;}
+.hs-index-data >.box .list ul li span em{ font-style: normal; color: #FFC200; }
+/*个人中心*/
+.hs-info{ padding: 20px;  }
+.hs-info .img{ height: 80px; line-height: 80px; }
+.hs-info .txt{ width: 100%; padding-left: 90px;   } 
+.hs-info .txt p,.hs-info .txt span{ color: #fff; font-size: 15px; }
+.hs-info .txt p{ margin-top: 15px; margin-bottom: 5px; }
+.hs-info-nva{ width: 100%; }
+.hs-info-nva ul li{ height: 45px; line-height: 45px; padding: 0; background: #000; color: #fff;}
+.hs-info-nva ul li:nth-child(2n+1){ background: #111420; }
+.hs-info-nva .mui-navigate-right:after, .hs-info-nva .mui-push-right:after{ display: block; height: 45px; width: 45px; content:""; background: url(../images/right_arrow.png) no-repeat center center; background-size: auto 70%; margin-right: -20px; }
+.hs-info-nva .mui-table-view-cell:after,.hs-info-nva .mui-table-view:before,.hs-info-nva .mui-table-view:after{background: #000 !important; }
+.hs-info-nva ul li span{ color: #ffc200; font-size: 12px; float: right; padding-right: 10px; }
+.hs-info-nva ul li a{ padding: 0 20px !important; margin: 0 !important; font-size: 15px; position: relative; }
+.hs-info-nva ul li a i.icon{ display: block; width: 45px; height: 45px; float: left; margin-left: -10px; margin-right: 8px; }
+.hs-info-nva ul li a i.icon1{ background: url(../images/icon_01.png) no-repeat center center; background-size: auto 55%; }
+.hs-info-nva ul li a i.icon2{ background: url(../images/icon_02.png) no-repeat center center; background-size: auto 55%; }
+.hs-info-nva ul li a i.icon3{ background: url(../images/icon_03.png) no-repeat center center; background-size: auto 55%; }
+.hs-info-nva ul li a i.icon4{ background: url(../images/icon_04.png) no-repeat center center; background-size: auto 55%; }
+.hs-info-nva ul li a i.icon5{ background: url(../images/icon_05.png) no-repeat center center; background-size: auto 55%; }
+.hs-info-nva ul li a i.icon6{ background: url(../images/icon_06.png) no-repeat center center; background-size: auto 55%; }
+.hs-info-nva ul li a i.icon7{ background: url(../images/icon_07.png) no-repeat center center; background-size: auto 55%; }
+.hs-info-nva ul li a i.icon8{ background: url(../images/release_icon@2x.png) no-repeat center center; background-size: auto 55%; }
+.hs-info-nva ul li a i.icon9{ background: url(../images/sys_notice_icon@2x.png) no-repeat center center; background-size: auto 55%; }
+
+
+/*游戏*/
+.hs-game-nav{ width: 100%; padding: 10px 20px; text-align: center; }
+.hs-game-nav ul li{ width: 50%; float: left; margin-bottom: 10px;  }
+.hs-game-nav ul li span{ width: 100%; display: block; color: #fff; font-size: 15px;  }
+.hs-game-nav ul li img{ width: 65%;}
+.hs-game-box{ width: 70%; margin: 0 auto; border: 1px solid #404350; border-radius: 10px; }
+.hs-game-box .title{ height: 60px; line-height: 60px; color: #fff; padding: 0 10px; }
+.hs-game-box .title span,.hs-game-box .list ul li span{ display: block; width: 50%; float: left; text-align: center;}
+.hs-game-box .title span{ border-bottom: 1px solid #404350;} 
+.hs-game-box .list ul li span{ font-size: 12px; color: #fff; height: 35px; line-height: 35px; }
+
+/*设置*/
+.set_nav{ width: 100%; height: auto; }
+.set_nav ul li{  height: 45px; line-height: 45px; border-bottom:1px solid #404350 ; padding: 0 15px 0 65px; position: relative; color: #fff; font-size: 15px; }
+.set_nav ul li:last-child{ border-bottom: none; }
+.set_nav ul li:after{ display: block; content: "";  height: 45px; width: 45px; position: absolute; right: 0; top: 0; background: url(../images/right_arrow.png)no-repeat center center; background-size: auto 70%; }
+.set_nav ul li i.icon{ width: 45px; height: 45px; display: block; position: absolute; left: 10px; top: 0; }
+.set_nav ul li i.icon1{ background: url(../images/set_01.png) no-repeat center center; background-size: auto 60%; }
+.set_nav ul li i.icon2{ background: url(../images/set_02.png) no-repeat center center; background-size: auto 60%; }
+.set_nav ul li i.icon3{ background: url(../images/set_03.png) no-repeat center center; background-size: auto 60%; }
+.set_nav ul li span{ font-size: 10px; float: right; padding-right: 20px; color: #adadad; }
+.hs-info-nva .mui-table-view-cell > a:not(.mui-btn).mui-active{ background: none; }
+.logout{ width: 100%; height: 44px; line-height: 44px; background: #111420; position: fixed; bottom: 0; left: 0; text-align: center; }
+.logout a{ display: block; width: 100%; height: 44px;  line-height: 44px; color: #fff; font-size: 18px; }
+
+
+.team-banner{  width: 100%;}
+.team-banner img{width: 100%;}
+
+.team-box{ padding: 10px; width: 100%; height: auto; }
+.team-box .team-nav{  width: 100%;  margin-bottom: 30px; height: auto; }
+.team-box .team-nav ul li{ width: 48%; background: #111420;  height: 46px; line-height: 46px; }
+.team-box .team-nav ul li a{display: block;}
+.team-box .team-nav ul li a i{ display: inline-block; height: 18px; width: 18px; background: url(../images/team01.png)no-repeat center center; background-size: cover; margin-right: 10px; vertical-align: -3px; }
+.team-box .team-nav ul li a i.icon2{  background: url(../images/team02.png)no-repeat center center; background-size: cover;}
+.team-box .team-nav .text{ height: 46px; background: #111420;line-height: 46px; margin-top: 10px; }
+.team-box .team-nav .text span{ display: block; float: left; width: 50%; color: #fff; font-size: 12px; }
+.team-box .team-nav .text span:first-child{ border-right: 1px solid #000; }
+.team-box .team-text{ color: #fff;}
+.team-box .team-text p{ color: #fff; font-size: 12px;}
+.team-box .team-text em{ font-style: normal; font-size: 12px; color: #fff; }
+
+
+
+
+/*.pro_fit{ width: 100%; height: auto; padding: 30px 0 ;  }
+.pro_fit span{display: block; color: #fff; text-align: center; }
+.pro_fit span.sp1{ font-size: 20px; height: 30px; line-height: 30px; margin-bottom: 10px; }
+.pro_fit span.sp2{ font-size: 50px; height: 60px; line-height: 60px; }*/
+
+.pro_tab{ width: 100%; height: 50px; line-height: 50px; margin-bottom: 2px; }
+.pro_tab #segmentedControl a{ height: 50px; line-height: 50px; color: #fff; font-size: 12px; }
+.pro_tab #segmentedControl a.mui-control-item.mui-active{ font-size: #fff; font-size: 15px; border-bottom: 1px solid #fff}
+.pro_control .mui-table-view{ background: #000; }
+.pro_control .mui-table-view-cell.mui-active{ background: #000; }
+.pro_control #item1 #top,.pro_control #item2 #top2{ width: 100%; background: #111420; height: 50px; line-height: 25px;  color: #fff; font-size: 14px; border-bottom: 1px solid #404350; }
+.pro_control #item1 span,.pro_control #item2 span{ width: 25%; float: left; display: block; font-size: 14px; color: #fff; overflow: hidden; }
+.pro_control #item1 span.sp1{ width: 15%; }
+.pro_control #item1 span.sp2{ width: 30%; }
+.pro_control #item1 span.sp3{ width: 25%; }
+.pro_control #item1 span.sp4{ width: 30%;}
+
+.pro_control #item2 span.sp1{ width: 50%;font-size: 12px; }
+.pro_control #item2 span.sp2{ width: 50%; text-align: right;font-size: 12px; }
+
+.pro_control #item1 .center,.pro_control #item2 .center{ width: 100%; font-size: 10px; height: 52px; line-height: 30px; }
+.pro_control #item2 .center em{  color: #FFC200; font-size: 12px; font-style: normal;}
+.pro_control #item1 .center span{ font-size:10px ;}
+.pro_control #item1 .center span p{ height: 15px; line-height: 15px; font-size: 10px;  color: #fff;}
+.pro_control #item1 .center span em{ font-size: 10px; font-style: normal; display: block; height: 15px; line-height: 15px; }
+.pro_control .mui-table-view-cell:after,.pro_control .mui-table-view:after{  left: 0; background: #404350;}
+
+
+
+
+/*.pro_control #item1 #top span:first-child{ width: ; }*/
+.pro_control .mui-table-view:before{ background: none; }
+.hs-footer{text-align: center; background: #01000f; font-size: 10px; color: #ddd; height: 40px; line-height: 40px;  }
+
+
+/*登录*/
+.login-box .logo{ width: 100%; padding: 30px; margin-bottom:20px ; }
+.login-box .logo .logo-top,.login-box .logo .logo-bottom{ width: 60%; margin: 0 auto; }
+.login-box .logo .logo-bottom{ margin-top: 20px; }
+.find-box .logo{ margin-bottom: 0; }
+.reg-box .logo{margin-bottom: 0;  padding: 30px 30px 0px;}
+.login-box .logo .logo-top img{width: 20%; }
+.login-box .logo .logo-bottom img{ width: 60%;}
+
+.login-box .box{ padding: 0 10px; }
+.login-box .box .item{ width: 100%; height: auto; }
+.login-box .box .item:first-child{ margin-bottom: 15px; }
+.login-box .box .item label{ font-size: 15px; color: #fff; display: block; margin-bottom: 5px;}
+.login-box .box .item input{ background: #111420; font-size: 15px; color: #fff; height: 45px; line-height: 45px; padding: 0 10px; }
+.login-box .box .item.pr input[type=button]{ height: 45px; border: none; color: #FFC200; position: absolute; top: 26px; right: 0; } 
+
+.login-box .box .hs-btn{ width: 100%; height: 40px; margin-top: 40px;  }
+.login-box .box .hs-btn input{ height: 45px; line-height: 33px; width: 100%; background: #111420; font-size: 15px; border-color: #111420; color: #BEBEBE; }
+.login-box .box .find-pwd{ width: 100%; margin-top: 35px; border-bottom: 1px solid #404350; text-align: center; height: 50px; color: #BEBEBE; line-height: 35px; font-size:15px; }
+.login-box .box .find-pwd>a{color: #BEBEBE; font-size: 15px; display: block; width: 100%; height: 100%; }
+.login-box .box .reg{ height: 40px; line-height: 40px; color: #BEBEBE; font-size: 12px; text-align: center; }
+.login-box .box .reg>a{ color: #FFC200;}
+.login-box .box .mui-icon-eye:before{ content: ""; display: block; background: url(../images/pwd_hide.png)no-repeat center center; height: 30px; background-size:auto 50%;   }
+.login-box .box .mui-icon-eye.mui-active:before{content: ""; display: block; background: url(../images/pwd_show.png)no-repeat center center; height: 30px; background-size:auto 50%;  }
+
+.login-box .box .clause{ height: 25px; width: 100%; padding-left: 20px; line-height: 25px; color: #BEBEBE; font-size: 12px; }
+.login-box .box .clause span{ display: block; top: 5px; left: 2px;z-index: 99; width: 14px; height: 14px; background:url(../images/reg_chek.png)no-repeat center center; background-size: auto 100%; }
+.login-box .box .clause span.aciton{ background: url(../images/reg_chek2.png) no-repeat center center; background-size: auto 100%; }
+.login-box .box .clause  em{ font-style: normal; color: #FFC200; }
+.login-box .box .clause input{ vertical-align: -3px;  }
+
+.reg-box .box .hs-btn{ width: 100%; height: 40px; margin-top: 10px;  }
+
+
+/*公会公告*/
+.hs-guild{ width: 100%; height: auto; }
+.hs-guild ul li{ height: 50px; line-height: 50px; width: 100%; padding: 0 10px; font-size: 12px; border-bottom: 1px solid #404350; }
+.hs-guild ul li a{ color: #FFF; position: relative; display: block; width: 100%; height: 40px; }  
+.hs-guild ul li a .title{ width:100%; height: 50px; overflow: hidden; padding-right: 120px; text-overflow:ellipsis;white-space: nowrap; }
+.hs-guild ul li a .time{ font-size: 10px; position: absolute; right: 0; top: 0; }
+.hs-guild-btn{ width: 100%; height: 50px; line-height: 50px; background: #111420; position: fixed; bottom: 0; left: 0; }
+.hs-guild-btn a{ color: #fff; display: block; width: 100%; height: 50px; font-size: 15px; }
+
+/*公告详情*/
+.hs-noticeDetails{ width: 100%; height: auto; }
+.hs-noticeDetails h4{ height: 40px; line-height: 40px; font-size: 12px; color: #fff; padding: 0 12px; overflow: hidden; }
+.hs-noticeDetails .hs-text{ padding: 0 12px; color: #fff; font-size: 12px; }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

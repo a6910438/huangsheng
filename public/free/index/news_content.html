@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>News</title>
+    <link rel="icon" href="free.ico" type="image/x-icon"/> 
+    <link rel="stylesheet" href="../css/news.css">
+    <link rel="stylesheet" href="../css/news.css">
+    <script src="../build/flexible.js"></script>
+    <script src="../build/flexible_css.js"></script>
+    <script src="../js/jquery.js"></script>
+    <script src="../js/news.js"></script>
+    <script src="../js/template.js"></script>
+    <script src="../js/layer.js"></script>
+    <style>
+        #page .left_panel img {
+            width: 0.5945rem;
+            height: 0.5945rem;
+        }
+
+        .head_title .left_panel {
+            position: absolute;
+            top: 0.3rem;
+            left: .4rem;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Centered page -->
+    <div id="page">
+        <div class="head_title">
+            <p>News</p>
+            <div class="left_panel">
+                <a href="news.html"><img src="../images/left_jt.png" alt=""></a>
+            </div>
+        </div>
+    </div>
+    <!-- content -->
+    <div class="content_block">
+        
+    </div>
+    <!-- end -->
+</body>
+<script type="text/html" id="new_content">
+    <div class="white_block">
+            <p class="news_title">{{info.title}}</p>
+            <p class="news_time">{{info.create_time}}</p>
+            <p class="news_content">{{@info.content}}</p>
+        </div>
+</script>
+<script>
+        $(function () {
+            function getQueryString(name) { 
+					var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i"); 
+					var r = window.location.search.substr(1).match(reg); 
+					if (r != null) return unescape(r[2]); 
+					return null; 
+                    } 
+            var article_id = getQueryString('id');
+            $.ajax({
+                    url: "../../index.php/index/Article/articleDetail",
+                    type: 'GET',
+                    data:{article_id:article_id},
+                    dataType: 'json',
+                    success: function(res){
+                        console.log(res)
+                        if(res.code=='0'){
+                                $('.content_block').html(template('new_content',res));
+                            }
+                        else{
+                            layer.open({
+                                content: res.message,
+                                skin: 'msg',
+                                time: 2
+                            });
+                            }
+                    },
+            })
+        });
+    </script>
+</html>

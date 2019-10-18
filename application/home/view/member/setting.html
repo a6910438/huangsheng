@@ -1,0 +1,99 @@
+{extend name='main'}
+
+{block name='body'}
+<div class="fish-head">
+    <a href="javascript:window.history.back();" class="head-back"><span>返回</span></a>
+    <h3 class="head-tit"><span>设置</span></h3>
+    <!-- <a href="javascript:;" class="head-menu"><span>提交</span></a> -->
+</div>
+<div class="fish-main" v-cloak>
+    <div class="content-box">
+        <div class="content-list">
+            <a href="{:url('home/member/modifyName')}">
+                <label class="content-label">用户名</label>
+                <span>{{info.nick_name}}</span>
+                <i></i>
+            </a>
+            <a href="javascript:;">
+                <label class="content-label">当前账户</label>
+                <span>{{info.mobile}}</span>
+            </a>
+            <a href="{:url('home/member/revisePw')}?type=1">
+                <label class="content-label">登录密码</label>
+                <i></i>
+            </a>
+            <a href="{:url('home/member/revisePw')}?type=2">
+                <label class="content-label">支付密码</label>
+                <i></i>
+            </a>
+            <!--
+            <a href="{:url('home/member/collection')}">
+                <label class="content-label">收款账户</label>
+                <i></i>
+            </a>
+            -->
+            <a href="{:url('home/member/customer')}">
+                <label class="content-label">客服中心</label>
+                <i></i>
+            </a>
+            <a href="{:url('home/member/about')}">
+                <label class="content-label">关于我们</label>
+                <i></i>
+            </a>
+        </div>
+    </div>
+    <div class="content-view">
+        <button class="content-btn" type="button" v-on:click="send()">退出登录</button>
+    </div>
+</div>
+{include file='menu'}
+{/block}
+
+{block name='script'}
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            info: '',
+        },
+        computed: {
+            
+        },
+        methods: {
+            member: function(){
+                var self = this;
+                core.load("{:url('/index/setup/index')}", {}, function(res){
+                    
+                    if(res.code==0){
+                        self.info=res.info;
+                    }else{
+                        core.toast(res.msg);
+                    }
+                })
+            },
+            send: function(){
+                localStorage.uid='';
+                //localStorage.clear();
+                core.toast('成功退出登录！');
+                // 跳转到首页
+                setTimeout(function(){
+                    window.location.href = "{:url('home/publics/login')}";
+                }, 300);
+            },
+        },
+        mounted: function(){
+            this.member();
+        }
+    });
+</script>
+{/block}
+
+{block name="style"}
+<style>
+    .set-list{padding-top:12px;}
+    .set-list li{border-bottom:1px solid #0D1414;}
+    .set-list li a{display:block;padding:12px;background:#182121;}
+    .set-list li a .fr span{color:#ccc;}
+    .set-foot .btn{padding:12px;display:block;background:#182121;text-align:center;margin:24px 12px;border-radius:5px;}
+</style>
+{/block}

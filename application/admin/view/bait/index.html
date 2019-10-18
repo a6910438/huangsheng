@@ -1,0 +1,96 @@
+{extend name="layout/main" /}
+
+{block name="header"}
+
+{/block}
+
+{block name="content"}
+<style type="text/css">
+    .link-th{
+        color:blue;
+    }
+</style>
+<section class="panel">
+    <header class="panel-heading">
+        <h4>所有户型数量统计</h4>
+    </header>
+    <div class="panel-body" style="padding-bottom: 50px">
+
+       <form class="form-horizontal" action="{:url('index')}" >
+           <div class="form-group">
+
+               <div class="col-xs-1 no-pd-r">
+               <span class="form-control">开始时间</span>
+               </div>
+               <div class="col-xs-3 no-pd-l">
+
+                 <input type="date" value="{$Request.get.stime}" name="stime" class="form-control">
+               </div>
+               <div class="col-xs-1 no-pd-r">
+                   <span class="form-control"> 结束时间</span>
+               </div>
+               <div class="col-xs-3 no-pd-l">
+                   <input type="date" value="{$Request.get.ntime}" name="ntime" class="form-control">
+               </div>
+               <button type="submit" class="btn btn-color">搜索</button>
+
+            </div>
+        </form>
+
+
+
+
+        <table class="table table-bordered table-striped no-margin">
+            <thead>
+            <tr>
+                <td colspan="2">今日 - GTC：{$list.to_money}  数量:{$list.to_num}</td>
+                <td colspan="3"> 明天 - GTC：{$list.tom_money}  数量:{$list.tom_num}</td>
+            </tr>
+            </thead>
+            <thead>
+            <tr>
+                <th class="text-center">ID</th>
+                <th class="text-center">名称</th>
+                <th class="text-center">GTC</th>
+                <th class="text-center">数量</th>
+
+            </tr>
+            </thead>
+            <tbody>
+            {if !empty($list.list)}
+            {foreach $list.list as $entity}
+            <tr>
+                <td style="vertical-align: middle" class="text-center">
+                    {$entity->id}
+                </td>
+                <td style="vertical-align: middle" class="text-center">
+                    {$entity->name}
+                </td>
+                <td style="vertical-align: middle" class="text-center">
+                    总数：{$entity->MakeOverMoney}
+                </td>
+                <td style="vertical-align: middle" class="text-center">
+                    总数：{$entity->MakeOverNum}
+                </td>
+
+
+            </tr>
+            {/foreach}
+            {else /}
+            <tr class="text-center">
+                <td colspan="9">暂无数据</td>
+            </tr>
+            {/if}
+            </tbody>
+        </table>
+        <div class="page">
+            {:htmlspecialchars_decode($list.list->render())}
+        </div>
+    </div>
+</section>
+{/block}
+{block name="footer"}
+
+
+
+{/block}

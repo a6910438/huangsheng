@@ -1,0 +1,204 @@
+.language-baifencai::before {
+    content: '百分彩';
+}
+.language-daletou::before {
+    content: '大乐透';
+}
+.language-touziyouxi::before {
+    content: '骰子游戏';
+}
+.language-laohuji::before {
+    content: '老虎机';
+}
+.language-zuixinzhongjiang::before {
+    content: '最新中奖';
+}
+.language-zhongjiangjine::before {
+    content: '中奖金额';
+}
+.language-shouye::before {
+    content: '首页';
+}
+.language-qukuailianyouxi::before {
+    content: '区块链游戏';
+}
+.language-shequ::before {
+    content: '社区';
+}
+.language-gerenzhongxin::before {
+    content: '个人中心';
+}
+.language-benqijiangchi::before {
+    content: '本期奖池';
+}
+.language-benqiyitouzhuliang::before {
+    content: '本期已投注量';
+}
+.language-qishumaohao::before {
+    content: '期数：';
+}
+.language-woyaotouzhumaohao::before {
+    content: '我要投注：';
+}
+.language-querentouzhu::before {
+    content: '确认投注';
+}
+.language-touzhujilu::before {
+    content: '投注记录';
+}
+.language-kaijiangjilu::before {
+    content: '开奖记录';
+}
+.language-qishu::before {
+    content: '期数';
+}
+.language-kaijiangshijian::before {
+    content: '开奖时间';
+}
+.language-gengduo::before {
+    content: '更多';
+}
+.language-xuanzebizhong::before {
+    content: '请选择投注币种';
+}
+.language-benqihaiketouzhu::before {
+    content: '本期距开奖还可投注量';
+}
+.language-youxi::before {
+    content: '游戏';
+}
+.language-xiazhushijian::before {
+    content: '下注时间';
+}
+.language-kaijiangzhuangtai::before {
+    content: '开奖状态';
+}
+.language-weikaijiang::before {
+    content: '未开奖';
+}
+.language-weizhongjiang::before {
+    content: '未中奖';
+}
+.language-zhongjiang::before {
+    content: '中奖';
+}
+.language-caipiaoxuliehao::before {
+    content: '彩票序列号';
+}
+.language-touzhujine::before {
+    content: '投注金额';
+}
+.language-gong::before {
+    content: '共';
+}
+.language-zhu::before {
+    content: '注';
+}
+.language-zhongjianxuliehao::before {
+    content: '中奖序列号';
+}
+.language-zhongjiangdengji::before {
+    content: '中奖等级';
+}
+.language-zhongjiangyonghu::before {
+    content: '中奖用户';
+}
+.language-zhongjiangzongjine::before {
+    content: '中奖总金额';
+}
+.language-chakangengduo::before {
+    content: '查看更多';
+}
+.language-yidengjiang::before {
+    content: '一等奖';
+}
+.language-erdengjiang::before {
+    content: '二等奖';
+}
+.language-sandengjiang::before {
+    content: '三等奖';
+}
+.language-xingyunjiang::before {
+    content: '幸运奖';
+}
+.language-kaijiangxiangqing::before {
+    content: '开奖详情';
+}
+.language-benqizongjiangchi::before {
+    content: '本期总奖池';
+}
+.language-zhongjieshijianmaohao::before {
+    content: '本期投注终结时间：';
+}
+.language-zhongjiegaodumaohao::before {
+    content: '投注终结时以太坊区块高度：';
+}
+.language-kaijianggaodumaohao::before {
+    content: '开奖以太坊高度：';
+}
+.language-kaijianghaxizhimaohao::before {
+    content: '开奖以太坊哈希值：';
+}
+.language-yonghuming::before {
+    content: '用户名';
+}
+.language-yonghuid::before {
+    content: '用户ID';
+}
+.language-zhongjiangxuliehao::before {
+    content: '中奖序列号';
+}
+.language-jiangxiang::before {
+    content: '奖项';
+}
+.language-jiangjin::before {
+    content: '奖金';
+}
+.language-meiyougengduoshujule::before {
+    content: '没有更多数据了';
+}
+.language-baifencaikaijiangxiangqing::before {
+    content: '百分彩开奖详情';
+}
+.language-youxigonglue::before {
+    content: '游戏攻略';
+}
+.language-guanyuwomen::before {
+    content: '关于我们';
+}
+.language-fabugonggao::before {
+    content: '发布公告';
+}
+.language-bunengxiaoyuyi::before {
+    content: '投注数量不能小于1';
+}
+.language-bunengweixiaoshu::before {
+    content: '投注数量不能为小数';
+}
+.language-zuiduoyibai::before {
+    content: '每次投注量最多只能为100';
+}
+.language-zhengzaitouzhu::before {
+    content: '正在投注，请等待……';
+}
+.language-gongxininzhongdedaletou::before {
+    content: '恭喜您中得大乐透';
+}
+.language-dianjichakan::before {
+    content: '点击查看';
+}
+.language-qingxiandenglu::before {
+    content: '请先登录';
+}
+.language-qudenglu::before {
+    content: '去登录';
+}
+.language-quxiao::before {
+    content: '取消';
+}
+.language-gongxininzhongdebaifencai::before {
+    content: '恭喜您中得百分彩';
+}
+.language-dengdaikaijiangzhong::before {
+    content: '等待开奖中';
+}

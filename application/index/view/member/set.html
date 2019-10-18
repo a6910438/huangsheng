@@ -1,0 +1,92 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>设置</title>
+    <!--head-->
+    {include file="layout/head" /}
+</head>
+<body>
+<header class="mui-bar mui-bar-nav my-header">
+    <a href="/index/member/index" class="mui-icon mui-icon-left-nav mui-pull-left"></a>
+    <h1 id="title" class="mui-title">设置</h1>
+</header>
+<div class="mui-content">
+    <ul class="mui-table-view my-view" style="margin-top: 10px;">
+        <li class="mui-table-view-cell mine-list-item">
+            <a href="/index/member/password" class="mui-navigate-right " >
+                <span>修改密码</span>
+            </a>
+        </li>
+    </ul>
+    <ul class="mui-table-view my-view" style="margin-top: 10px;">
+        <li class="mui-table-view-cell mine-list-item">
+            <a href="/index/member/certification" class="mui-navigate-right " >
+                <span class="left">实名认证</span>
+                {if $list->is_certification == 1}
+		        	<span class="right info">已认证</span>
+		        	{elseif $list->is_certification == -1/}
+		        	<span class="right info">未认证</span>
+                    {elseif $list->is_certification == 2/}
+                    <span class="right info">认证失败</span>
+		        {/if}
+            </a>
+        </li>
+        <li class="mui-table-view-cell mine-list-item mobile">
+            <a class="mui-navigate-right " >
+                <span class="left">手机号码</span>
+                <span class="right ">{$list->mobile}</span>
+            </a>
+        </li>
+    </ul>
+    <ul class="mui-table-view my-view" style="margin-top: 10px;">
+        <li class="mui-table-view-cell mine-list-item">
+            <a href="/index/member/card" class="mui-navigate-right " >
+                <span class="left">银行卡</span>
+                {if $list->card_name && $list->card}
+		        	<span class="right info">已绑定</span>
+		        	{else /}
+		        	<span class="right info">未绑定</span>
+		        {/if}
+            </a>
+        </li>
+        <li class="mui-table-view-cell mine-list-item ">
+            <a href="/index/member/wx" class="mui-navigate-right " >
+                <span class="left">微信</span>
+                {if $list->wx || $list->wx_image_url}
+		        	<span class="right info">已绑定</span>
+		        	{else /}
+		        	<span class="right info">未绑定</span>
+		        {/if}
+            </a>
+        </li>
+        <li class="mui-table-view-cell mine-list-item ">
+            <a href="/index/member/zfb" class="mui-navigate-right " >
+                <span class="left">支付宝</span>
+                {if $list->zfb || $list->zfb_image_url}
+		        	<span class="right info">已绑定</span>
+		        	{else /}
+		        	<span class="right info">未绑定</span>
+		        {/if}
+            </a>
+        </li>
+        <li class="mui-table-view-cell mine-list-item ">
+            <a href="/index/member/money" class="mui-navigate-right " >
+                <span class="left">钱包地址</span>
+                {if $list->money_address}
+                    <span class="right info">已绑定</span>
+                    {else /}
+                    <span class="right info">未绑定</span>
+                {/if}
+            </a>
+        </li>
+    </ul>
+    <button onclick="logout()" class="my-btn mui-btn" style="color: #fff">退出登录</button>
+</div>
+</body>
+<script>
+    function logout(){
+        window.location.href = "{:url('member/logout')}";
+    }
+</script>
+</html>

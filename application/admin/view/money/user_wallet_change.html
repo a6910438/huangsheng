@@ -1,0 +1,161 @@
+{extend name="layout/main" /}
+
+{block name="header"}
+
+{/block}
+
+{block name="content"}
+<script src="__PUBLIC__/admin/js/laydate/laydate.js"></script>
+<section class="panel">
+    <header class="panel-heading">
+        <h4>会员账变明细</h4>
+    </header>
+    <div class="panel-body" style="padding-bottom: 50px">
+        <form class="form-horizontal" action="{:url('admin/Money/user_wallet_change')}" >
+            <div class="form-group">
+                <div class="col-xs-1 no-pd-r">
+                    <select name="types" class="form-control">
+                        <option  value="0">全部类型</option>
+                        {foreach $types as $i=>$m}
+                        <option {if $Request.get.types == $i}selected{/if} value="{$i}">{$m}</option>
+                        {/foreach}
+                    </select>
+                </div>
+                <div class="col-xs-1 no-pd-r">
+                    <select name="numtypes" class="form-control">
+                        <option  value="0">数据类型</option>
+                        <option {if $Request.get.numtypes == 1}selected{/if} value="1">添加</option>
+                        <option {if $Request.get.numtypes == 2}selected{/if} value="2">扣除</option>
+                    </select>
+                </div>
+				<div class="col-xs-1 no-pd-r">
+                    <select name="logtypes" class="form-control">
+                        <option  value="0">账变类型</option>
+                        <option {if $Request.get.logtypes == 1}selected{/if} value="1">GTC</option>
+                        <option {if $Request.get.logtypes == 2}selected{/if} value="2">卖房产收益</option>
+						<option {if $Request.get.logtypes == 3}selected{/if} value="3">推广收益</option>
+						<option {if $Request.get.logtypes == 4}selected{/if} value="4">团队收益</option>
+                    </select>
+                </div>
+                <div class="col-xs-1 no-pd-r">
+                    <select name="type" class="form-control">
+                        <option {if $Request.get.type == 'nick_name'} selected {/if} value="nick_name">用户名称</option>
+                    </select>
+                </div>
+                <div class="col-xs-3 no-pd-l">
+                    <input type="text" value="{$Request.get.keyword}" name="keyword" class="form-control" placeholder="请输入关键词搜索">
+                </div>
+                <div class="col-xs-2 no-pd-2">
+                    <input type="text" value="{$Request.get.startTime}" name="startTime" id="startTime" class="form-control" placeholder="请输入开始时间">
+                </div>
+                <div class="col-xs-2 no-pd-2">
+                    <input type="text" value="{$Request.get.endTime}" name="endTime" id="endTime" class="form-control" placeholder="请输入结束时间">
+                </div>
+                <button type="submit" class="btn btn-color">搜索</button>
+            </div>
+        </form>
+        <table class="table table-bordered table-striped no-margin">
+            <thead>
+                <tr>
+                    <th class="text-center">序号</th>
+                    <th class="text-center">用户昵称</th>
+                    <th class="text-center">用户状态</th>
+                    <th class="text-center">变化数量</th>
+					<th class="text-center">变化前</th>
+					<th class="text-center">变化后</th>
+                    <th class="text-center">账户类型</th>
+                    <th class="text-center">备注</th>
+                    <th class="text-center">创建时间</th>
+                </tr>
+            </thead>
+            <tbody>
+            {if $list}
+				{if $log eq 1}
+                {foreach $list as $order}
+                    <tr>
+                        <td class="text-center">{$order->id}</td>
+                        <td class="text-center">
+                            {$order->nick_name}
+                        </td>
+                        <td class="text-center">
+                            {$query->getStatus($order->ustatus)}
+                        </td>
+                        <td class="text-center">
+                            {$order->number}
+                        </td>
+						<td class="text-center">
+                            {$order->now}
+                        </td>
+						<td class="text-center">
+                            {$order->future}
+                        </td>
+                        <td class="text-center">
+                            {$order->getType($order->types)}
+                        </td>
+                        <td class="text-center">
+                            {$order->remark}
+                        </td>
+                        <td class="text-center">
+                           {$order->create_time}
+                        </td>
+                    </tr>
+                {/foreach}
+				{else /}
+					{foreach $list as $order}
+						<tr>
+							<td class="text-center">{$order.id}</td>
+							<td class="text-center">
+								{$order.nick_name}
+							</td>
+							<td class="text-center">
+								{$query->getStatus($order.ustatus)}
+							</td>
+							<td class="text-center">
+								{$order.number}
+							</td>
+							<td class="text-center">
+								{$order.now}
+							</td>
+							<td class="text-center">
+								{$order.future}
+							</td>
+							<td class="text-center">
+								
+							</td>
+							<td class="text-center">
+								{$order.remark}
+							</td>
+							<td class="text-center">
+							   {$order.create_time}
+							</td>
+						</tr>
+					{/foreach}
+				{/if}
+            {else /}
+                <tr class="text-center">
+                    <td colspan="8">暂无数据</td>
+                </tr>
+            {/if}
+            </tbody>
+        </table>
+        <div class="page">
+            {:htmlspecialchars_decode($list->render())}
+        </div>
+    </div>
+</section>
+<script>
+    laydate.render({
+        elem: '#startTime',
+        type: 'datetime'
+    });
+    laydate.render({
+        elem: '#endTime',
+        type: 'datetime'
+    });
+</script>
+{/block}
+
+
+{block name="footer"}
+
+{/block}

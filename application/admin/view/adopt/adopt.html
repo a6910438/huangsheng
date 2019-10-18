@@ -1,0 +1,108 @@
+{extend name="layout/main" /}
+
+{block name="header"}
+
+{/block}
+
+{block name="content"}
+<style type="text/css">
+    .link-th{
+        color:blue;
+    }
+</style>
+<section class="panel">
+    <header class="panel-heading">
+        <h4>领取统计</h4>
+    </header>
+    <div class="panel-body" style="padding-bottom: 50px">
+
+       <form class="form-horizontal" action="{:url('make_statistics')}" >
+           <div class="form-group">
+<!--               <div class="col-xs-1 no-pd-r">-->
+<!--                   <select name="type" id="type" class="form-control">-->
+<!--                       <option {if $Request.get.type == 'nick_name'} selected {/if} value="nick_name">用户名</option>-->
+<!--                   </select>-->
+<!--               </div>-->
+<!--               <div class="col-xs-3 no-pd-l">-->
+<!--                   <input type="text" id="keyword" value="{$Request.get.keyword}" name="keyword" class="form-control" placeholder="请输入关键词搜索">-->
+<!--               </div>-->
+               <input type="hidden" name="id" value="{$Request.param.id}">
+               <div class="col-xs-1 no-pd-r">
+               <span class="form-control">开始时间</span>
+               </div>
+               <div class="col-xs-3 no-pd-l">
+
+                 <input type="date" value="{$Request.get.stime}" name="stime" class="form-control">
+               </div>
+               <div class="col-xs-1 no-pd-r">
+                   <span class="form-control"> 结束时间</span>
+               </div>
+               <div class="col-xs-3 no-pd-l">
+                   <input type="date" value="{$Request.get.ntime}" name="ntime" class="form-control">
+               </div>
+               <button type="submit" class="btn btn-color">搜索</button>
+
+            </div>
+        </form>
+
+        <table class="table table-bordered table-striped no-margin">
+            <thead>
+            <tr>
+                <th class="text-center">房产名称</th>
+                <th class="text-center">领取方ID</th>
+                <th class="text-center">领取方手机号</th>
+                <th class="text-center">转让方ID</th>
+                <th class="text-center">转让方手机号</th>
+                <th class="text-center">预约时间</th>
+                <th class="text-center">状态</th>
+
+
+            </tr>
+            </thead>
+            <tbody>
+            {if !empty($list)}
+            {foreach $list as $entity}
+            <tr>
+                <td style="vertical-align: middle" class="text-center">
+                   {$entity.name}
+                </td>
+                <td style="vertical-align: middle" class="text-center">
+                    {$entity.nick_name}
+                </td>
+                <td style="vertical-align: middle" class="text-center">
+                 {$entity.mobile}
+                </td>
+                <td style="vertical-align: middle" class="text-center">
+                    {$entity.fnick_name}
+                </td>
+                <td style="vertical-align: middle" class="text-center">
+                    {$entity.fmobile}
+                </td>
+                <td style="vertical-align: middle" class="text-center">
+                    {$entity.create_time|date='Y-m-d H:i',###}
+                </td>
+                <td style="vertical-align: middle" class="text-center">
+                  {$entity.status|getAUStatus}
+                </td>
+
+
+            </tr>
+            {/foreach}
+            {else /}
+            <tr class="text-center">
+                <td colspan="9">暂无数据</td>
+            </tr>
+            {/if}
+            </tbody>
+        </table>
+        <div class="page">
+            {:htmlspecialchars_decode($list->render())}
+        </div>
+    </div>
+</section>
+{/block}
+{block name="footer"}
+
+
+
+{/block}

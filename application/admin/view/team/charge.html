@@ -1,0 +1,101 @@
+{extend name="layout/main" /}
+
+{block name="header"}
+
+{/block}
+
+{block name="content"}
+<script src="/admin/js/laydate/laydate.js"></script>
+<section class="panel">
+    <header class="panel-heading">
+        <h4>订单手续费记录</h4>
+    </header>
+    <div class="panel-body" style="padding-bottom: 50px">
+        <form class="form-horizontal" action="{:url('admin/order/charge')}">
+            <div class="form-group">
+                <div class="col-xs-2 no-pd-2">
+                    <input type="text" value="{$Request.get.startTime}" name="startTime" id="startTime" class="form-control" placeholder="请输入开始时间">
+                </div>
+                <div class="col-xs-2 no-pd-2">
+                    <input type="text" value="{$Request.get.endTime}" name="endTime" id="endTime" class="form-control" placeholder="请输入结束时间">
+                </div>
+                <button type="submit" class="btn btn-color">搜索</button>
+                <span class="tips">总量：<m style="font-size: 16px;color: #f00;">{$total}</m></span>
+            </div>
+        </form>
+        <table class="table table-bordered table-striped no-margin">
+            <thead>
+                <tr>
+                    <th class="text-center">订单number</th>
+                    <th class="text-center">用户信息</th>
+                    <th class="text-center">数量（金币）</th>
+                    <th class="text-center">交易单价</th>
+                    <th class="text-center">交易总额</th>
+                    <th class="text-center">手续费</th>
+                    <th class="text-center">创建时间</th>
+                    <th class="text-center">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+            {if $list}
+                {foreach $list as $order}
+                    <tr>
+                        <td class="text-center">{$order->order_number}</td>
+                        <td class="text-center">
+                            昵称：{$order->nick_name}<br>
+                            电话：{$order->mobile}
+                        </td>
+                        <td class="text-center">
+                            {$order->number}
+                        </td>
+                        <td class="text-center">
+                            {$order->price}
+                        </td>
+                        <td class="text-center">
+                            {$order->total_price_china} CNY
+                        </td>
+                        <td class="text-center">
+                            {$order->charge_number}
+                        </td>
+                        <td class="text-center">
+                            {$order->create_time}
+                        </td>
+                        <td class="text-center">
+                            <a class="btn btn-xs btn-primary" href="{:url('order/detail',['id'=>$order->id])}">详细</a>
+                            {if $order->status == 1 || $order->status == 2}
+                                <a class="btn btn-xs btn-danger" data-msg="确定要取消此订单吗" onclick="main.ajaxDelete(this)"  data-url="{:url('order/delete',['id'=>$order->id])}">取消订单</a>
+                            {/if}
+                            {if $order->status == 3}
+                                <a class="btn btn-xs btn-danger" data-msg="确定进行此操作吗" onclick="main.ajaxDelete(this)" data-url="{:url('order/update',['id'=>$order->id])}">确认收款</a>
+                            {/if}
+                        </td>
+                    </tr>
+                {/foreach}
+            {else /}
+                <tr class="text-center">
+                    <td colspan="8">暂无数据</td>
+                </tr>
+            {/if}
+            </tbody>
+        </table>
+        <div class="page">
+            {:htmlspecialchars_decode($list->render())}
+        </div>
+    </div>
+</section>
+<script>
+laydate.render({
+  elem: '#startTime',
+  type: 'datetime'
+});
+laydate.render({
+  elem: '#endTime',
+  type: 'datetime'
+});
+</script>
+{/block}
+
+
+{block name="footer"}
+
+{/block}

@@ -1,0 +1,104 @@
+{extend name="layout/main" /}
+
+{block name="header"}
+
+{/block}
+
+{block name="content"}
+<section class="panel">
+    <header class="panel-heading">
+        <h4>我的收益列表</h4>
+    </header>
+    <div class="panel-body" style="padding-bottom: 50px">
+        <form class="form-horizontal" action="">
+            <div class="form-group">
+                <div class="col-xs-3">
+                    <input type="text" value="{$Request.get.keyword}" name="keyword" class="form-control" placeholder="请输入用户名搜索">
+                    
+                </div>
+                <button type="submit" class="btn btn-color">搜索</button>
+            </div>
+        </form>
+        <table class="table table-bordered table-striped no-margin">
+            <thead>
+            <tr>
+                <th class="text-center">id</th>
+                <th class="text-center">用户名</th>
+                <th class="text-center">类型</th>
+                <th class="text-center">游戏类型</th>
+                <th class="text-center">期数</th>
+                <th class="text-center">奖项</th>
+                <th class="text-center">奖金</th>
+                <th class="text-center">创建时间</th>
+            </tr>
+            </thead>
+            <tbody>
+            {if !empty($list)}
+            {foreach $list as $entity}
+            <tr>
+                <form class="form-horizontal" method="post" onsubmit="return false" role="form">
+                    <td class="text-center">{$entity->id}</td>
+                    <td class="text-center">{$entity->email}</td>
+                    <td class="text-center">
+                        {if $entity->types == 1 }
+                        投注收益
+                        {elseif $entity->types == 2 }
+                        下级分红返佣
+                        {elseif $entity->types == 3 }
+                        YEKES分红
+                        {/if}
+                    </td>
+                    <td class="text-center">
+                        {if $entity->game_types == 1 }
+                        百分彩
+                        {elseif $entity->game_types == 2 }
+                        大乐透
+                        {elseif $entity->game_types == 3 }
+                        老虎机
+                        {elseif $entity->game_types == 4 }
+                        摇骰子
+                        {/if}
+                    </td>
+                    <td class="text-center">{$entity->date1}</td>
+                    <td class="text-center">
+                        {if $entity->prize == 1}
+                        一等奖
+                        {elseif $entity->prize == 2}
+                        二等奖
+                        {elseif $entity->prize == 3}
+                        三等奖
+                        {elseif $entity->prize == 4}
+                        幸运奖
+                        {/if}
+                    </td>
+                    <td class="text-center">{$entity->bonus}
+                        {if $entity->money_type == 1}
+                        BTC
+                        {elseif $entity->money_type == 2}
+                        ETH
+                        {elseif $entity->money_type == 3}
+                        EOS
+                        {/if}
+                    </td>
+                    <td class="text-center">{$entity->create_time}</td>
+                </form>
+            </tr>
+            {/foreach}
+            {else /}
+            <tr class="text-center">
+                <td colspan="7">暂无数据</td>
+            </tr>
+            {/if}
+            </tbody>
+        </table>
+        <div class="page">
+            {:htmlspecialchars_decode($list->render())}
+        </div>
+    </div>
+</section>
+{/block}
+
+
+{block name="footer"}
+
+{/block}

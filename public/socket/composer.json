@@ -1,0 +1,12 @@
+{
+    "name"  : "workerman/gatewayclient",
+    "type"  : "library",
+    "homepage": "http://www.workerman.net",
+    "license" : "MIT",
+    "autoload": {
+        "psr-4": {"GatewayClient\\": "./"}
+    },
+    "require": {
+        "workerman/gatewayclient": "^3.0"
+    }
+}

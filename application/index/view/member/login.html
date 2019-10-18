@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html id="change-password">
+<head>
+    <meta charset="utf-8">
+    <title>登录交易市场</title>
+    {include file="layout/head" /}
+</head>
+
+<body class="login-body">
+<header class="mui-bar mui-bar-nav my-header">
+    <a class="mui-icon mui-icon-left-nav mui-pull-left" href="{:url('member/index')}"></a>
+
+    <h1 class="mui-title">登录交易市场</h1>
+    <a class="mui-icon mui-icon-home mui-pull-right" href="{:url('product/index')}"></a>
+</header>
+<div class="mui-content container">
+    <form action="{:url('member/login')}" onsubmit="return false" class="mui-input-group" id="login-form" method="post">
+        <div class="mui-input-row my-input-row">
+            <label>交易密码</label>
+            <input type="password" class="mui-input-password" placeholder="请输入交易密码" name="password">
+        </div>
+    </form>
+    <button type="submit" data-form="login-form" onclick="ajaxPost(this)" class="mui-btn mui-btn-warning my-btn">确定登录
+    </button>
+</div>
+{include file="layout/footer" /}
+</body>
+</html>

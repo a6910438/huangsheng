@@ -1,0 +1,193 @@
+{extend name="layout/main" /}
+
+{block name="header"}
+
+{/block}
+
+{block name="content"}
+<link rel="stylesheet" href="__PUBLIC__/static/webuploader/webuploader.css">
+<script type="text/javascript" src='__PUBLIC__/static/webuploader/webuploader.js'></script>
+<section class="panel">
+    {if isset($info)}
+    <header class="panel-heading">
+        <h4>编辑图片</h4>
+    </header>
+    <div class="panel-body" style="padding-bottom: 50px">
+        <form class="form-horizontal" method="post" onsubmit="return false" role="form">
+            <div class="form-group">
+                <label class="col-sm-2 control-label">标题</label>
+
+                <div class="col-sm-5">
+                    <input type="text" value="{$info.title}" name="title" class="form-control"
+                           placeholder="标题">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">展示图片</label>
+                <div class="col-sm-5">
+                    <div id="fileList" class="uploader-list" style="float:right">
+                        <div class="file-item thumbnail draggable-element " style="position:relative;">
+                            <img src="__PUBLIC__{$info.pic}">
+                            <a class="file-panel" href="javascript:;" onclick="remove(this)">
+                                <span class="fa fa-close"></span>
+                            </a>
+                            <input type="hidden" id="data_photo" name="photo" value="{$info.pic}">
+                        </div>
+                    </div>
+                    <div id="imgPicker" style="float:left">添加图片</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">排序</label>
+
+                <div class="col-sm-5">
+                    <input type="text" value="{$info.sort ? $info.sort : 100}" name="sort" class="form-control"
+                           placeholder="排序">
+                </div>
+                <div class="col-sm-5 help-block">
+                    数字越小，排到最前面
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" data-url="{:url('admin/article/updimage',['id'=>$info.id])}"
+                            onclick="main.ajaxPosts(this)" class="btn btn-primary">确定修改
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+    {else /}
+    <header class="panel-heading">
+        <h4>添加图片</h4>
+    </header>
+    <div class="panel-body" style="padding-bottom: 50px">
+        <form class="form-horizontal" method="post" onsubmit="return false" role="form">
+            <div class="form-group">
+                <label class="col-sm-2 control-label">标题</label>
+
+                <div class="col-sm-5">
+                    <input type="text" value="" name="title" class="form-control"
+                           placeholder="标题">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">展示图片</label>
+                <div class="col-sm-5">
+                    <div id="fileList" class="uploader-list" style="float:right">
+
+                    </div>
+                    <div id="imgPicker" style="float:left">添加图片</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">排序</label>
+
+                <div class="col-sm-5">
+                    <input type="text" value="100" name="sort" class="form-control"
+                           placeholder="排序">
+                </div>
+                <div class="col-sm-5 help-block">
+                    数字越小，排到最前面
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" onclick="main.ajaxPosts(this)" data-url="{:url('admin/article/saveimage')}"
+                            class="btn btn-primary">提交
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+    {/if}
+</section>
+{/block}
+
+
+{block name="footer"}
+
+<script >
+    var $list = $('#fileList');
+    var uploader = WebUploader.create({
+        auto: true,// 选完文件后，是否自动上传。
+        swf: '/static/webuploader/Uploader.swf',// swf文件路径 换成你的接收路径
+        server: "{:url('upload/uploadImg')}",// 文件接收服务端 换成你的接收路径
+        duplicate :true,// 重复上传图片，true为可重复false为不可重复
+        pick: '#imgPicker',// 选择文件的按钮
+        accept: {
+            title: 'Images',
+            extensions: 'gif,jpg,jpeg,bmp,png',
+            mimeTypes: 'image/jpg,image/jpeg,image/png'
+        },
+
+        'onUploadSuccess': function(file, data, response) {
+            var up_src = data._raw.replace("\\", "\/");
+            var ph_src = JSON.parse(up_src);
+            console.log(ph_src);
+            ph_src = ph_src.data[0].replace("\/\/", "\/");
+            ph_src = ph_src.replace("\\", "\/");
+
+            //上传成功后显示图片
+            var $li = $(
+                '<div id="' + file.id + '" class="file-item thumbnail draggable-element d-"'+file.id.substr(file.id.length-1,1)+' style="position:relative;">' +
+                '<img>' +
+                '<a class="file-panel" href="javascript:;" onclick="remove(this)">' +
+                '<span class="fa fa-close"></span>' +
+                '</a>' +
+                '<input type="hidden" id="data_photo" name="photo" value="'+ph_src+'">' +
+                '</div>'
+                ),
+                $img = $li.find('img');
+
+            // $list为容器jQuery实例
+            $list.append( $li );
+
+            // 创建缩略图 如果为非图片文件，可以不用调用此方法 100（宽） x 100（高）
+            uploader.makeThumb( file, function( error, src ) {
+                if ( error ) {
+                    $img.replaceWith('<span>不能预览</span>');
+                    return;
+                }
+                $img.attr( 'src', src );
+            }, 100, 100 );
+        }
+    });
+
+
+    // 当有文件添加进来的时候
+    uploader.on( 'fileQueued', function( file ) {
+
+    });
+
+    // 文件上传成功
+    uploader.on( 'uploadSuccess', function( file ) {
+        $( '#'+file.id ).find('p.state').text('上传成功！');
+    });
+
+    // 文件上传失败，显示上传出错。
+    uploader.on( 'uploadError', function( file ) {
+        $( '#'+file.id ).find('p.state').text('上传出错!');
+    });
+
+    /**
+     * [remove 移除图片]
+     * @post  [file]  [文件名 （必填）]
+     * @post  [obj]  [操作对象] [前台操作数据 移除dom标志]
+     *
+     * @return
+     * @Author[summer 1012684399@qq.com] THINK MORE DO LESS
+     */
+    function remove(obj){
+        // console.log(12);
+
+        $(obj).parent('div').remove();
+        var html = '<input type="hidden" id="data_photo" name="remove[]" value="">';
+        $('#fileList').append(html);
+    }
+</script>
+{/block}

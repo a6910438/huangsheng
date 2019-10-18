@@ -1,0 +1,1770 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+	<title>法币</title>
+	<script type="text/javascript" src="/static/build/flexible_css.js"></script>
+    <script type="text/javascript" src="/static/build/flexible.js"></script>
+    <script type="text/javascript" src="/static/js/jquery.js"></script>
+    <script src="/static/js/mescroll.min.js"></script>
+    <link href="/static/css/mescroll.min.css" rel="stylesheet">
+    <!-- <script type="text/javascript" src="/static/js/tpl.js"></script> -->
+    
+	<link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="/static/css/legal_tender.css">
+	{include file="layout/head" /}
+	
+</head>
+<body>
+	<header class="head">
+		<div class="head_top">
+			<div class="price_of_cny">CNY</div>
+			<div class="coin_type_box">
+				<span class="coin_type" >USDT/CNY</span>
+				<input type="hidden" id="moneytype" value="USDT" >
+				<img src="/static/images/goback@2x.png">
+			</div>
+			<div class="rmb">￥6.42</div>
+		</div>
+	</header>
+	<div class="coin_type_select">
+		<div class="coin_type_select_item" coin ="USDT" >
+			<div><img src="/static/images/USDT@2x.png"></div>
+			<div class="coin_name">USDT</div>
+		</div>
+		<div class="coin_type_select_item" coin ="BTC" >
+			<div><img src="/static/images/BTC@2x.png"></div>
+			<div class="coin_name">BTC</div>
+		</div>
+		<div class="coin_type_select_item" coin ="ETH" >
+			<div><img src="/static/images/ETH@2x.png"></div>
+			<div class="coin_name">ETH</div>
+		</div>
+		<div class="coin_type_select_item" coin ="ETC" >
+			<div><img src="/static/images/ETC@2x.png"></div>
+			<div class="coin_name">ETC</div>
+		</div>
+		<div class="coin_type_select_item" coin ="LTC" >
+			<div><img src="/static/images/LTC@2x.png"></div>
+			<div class="coin_name">LTC</div>
+		</div>
+		<div class="coin_type_select_item" coin ="EOS" >
+			<div><img src="/static/images/EOS@2x.png"></div>
+			<div class="coin_name">EOS</div>
+		</div>
+		<div class="coin_type_select_item" coin ="BCH" >
+			<div><img src="/static/images/BCH@2x.png"></div>
+			<div class="coin_name">BCH</div>
+		</div>
+		<div class="coin_type_select_item" coin ="QTUM" >
+			<div><img src="/static/images/QTUM@2x.png"></div>
+			<div class="coin_name">QTUM</div>
+		</div>
+		<div class="coin_type_select_item" coin ="NEO" >
+			<div><img src="/static/images/NEO@2x.png"></div>
+			<div class="coin_name">NEO</div>
+		</div>
+		<div class="coin_type_select_item" coin ="XUC" >
+			<div><img src="/static/images/XUC@2x.png"></div>
+			<div class="coin_name">XUC</div>
+		</div>
+	</div>
+	<div class="content">
+		<div class="content_nav">
+			<!-- <a class="mui-control-item" href="{:url('Legal/index',array('type'=>1))}"><div class="nav_item {if $type==1}check_buy{/if}">购买</div></a>
+			<a class="mui-control-item" href="{:url('Legal/index',array('type'=>2))}"><div class="nav_item {if $type==2}check_sell{/if}" >出售</div></a>
+			<a class="mui-control-item" href="{:url('Legal/index',array('type'=>3))}"><div class="nav_item {if $type==3}check_trade_sheet{/if}" >交易单</div></a> -->
+
+			<div class="nav_item check_buy" i ='2'>购买</div>
+			<div class="nav_item " i ='1'>出售</div>
+			<div class="nav_item " i ='3'>交易单</div>
+			<div class="nav_item " >订单</div>
+		</div>
+		<div class="content_item_box">
+			<div class="buy_content">
+				<div class="available_and_freeze" onclick="window.location.href='capital_transfer.html'">
+					<span class="available">可用：0.00USDT</span>
+					<span class="freeze">冻结：0.00USDT</span>
+					<a href="javascript:;" class="capital_transfer"><img src="/static/images/goback2@2x.png"></a>
+				</div>
+				<div class="content_ways">
+					<div class="rz_business">
+						<span class="check_buy_business"><img src=""></span>
+						<span>认证商家</span>
+					</div>
+					<div class="all_amount">
+						<span>所有金额</span>
+						<img class="more_icon" src="/static/images/goback@2x.png">
+					</div>
+					<div class="all_ways">
+						<span>所有方式</span>
+						<img class="more_icon" src="/static/images/goback@2x.png">
+					</div>
+				</div>
+				<div class="buy_all_amount_content">
+					<div class="check_buy_money">所有金额</div>
+					<div>5万以上</div>
+					<div>10万以上</div>
+					<div>20万以上</div>
+				</div>
+				<div class="buy_all_ways_content">
+					<div class="check_buy_ways">
+						<span>
+							<img src="/static/images/all_way@2x.png">
+						</span>
+						<span>所有方式</span>
+					</div>
+					<div>
+						<span>
+							<img src="/static/images/bank_card_g@2x.png">
+						</span>
+						<span>银行转账</span>
+					</div>
+					<div>
+						<span>
+							<img src="/static/images/alipay_g@2x@2x.png">
+						</span>
+						<span>支付宝</span>
+					</div>
+					<div>
+						<span>
+							<img src="/static/images/wechat_g@2x.png">
+						</span>
+						<span>微信</span>
+					</div>
+				</div>
+				<div id="list_area">
+				
+				</div>
+				<div id="mescroll" class="mescroll">
+					<div id="dataList" class="data-list"></div>
+				</div>
+					<!-- <div class="content_item">
+						<div class="item_left_box">
+							<div class="user_message">
+								<span class="type_block gay_type"></span>
+								<span class="username">吕斯文</span>
+								<img class="vip_sign" src="/static/images/vip_g@2x.png">
+							</div>
+							<div class="deal_num_and_rate">已交易6625/成交率97%</div>
+							<div class="can_payment_method">
+								<span><img src="/static/images/bank_card_g@2x.png" alt="" class="bank_card"></span>
+								<span><img src="/static/images/alipay_g@2x.png" alt="" class="alipay"></span>
+							</div>
+						</div>
+						<div class="item_right_box">
+							<div class="cny_box">
+								<span class="cny_num">6.68</span>
+								<span class="cny_sign">CNY</span>
+							</div>
+							<div class="quota_and_num">
+								<div class="quota">
+									<span>限额</span>
+									<span class="quota_num">5000-50000</span>
+								</div>
+								<div class="coin_num_box">
+									<span>数量</span>
+									<span class="coin_num">2346.98</span>
+								</div>
+							</div>
+						</div>
+					</div> -->
+
+			</div>
+			
+			<div class="trade_sheet_content"></div>
+		</div>
+	</div>
+	<div class="addIcon" onclick="send()"><img src="/static/images/bug@2x.png" alt=""></div>
+	{include file="legal/nav" /}
+</body>
+
+{include file="layout/footer" /}
+
+<script type="text/javascript" charset="utf-8">
+	$(function(){
+		//创建MeScroll对象,内部已默认开启下拉刷新,自动执行up.callback,刷新列表数据;
+		
+		var mescroll = new MeScroll("mescroll", { 
+			//上拉加载的配置项
+			up: {
+				callback: getListData, //上拉回调,此处可简写; 相当于 callback: function (page) { getListData(page); }
+				isBounce: false,
+				noMoreSize: 5, //如果列表已无数据,可设置列表的总数量要大于半页才显示无更多数据;避免列表数据过少(比如只有一条数据),显示无更多数据会不好看; 默认5
+				empty: {
+					icon: "", //图标,默认null
+					tip: "", //提示
+					btntext: "暂无相关数据", //按钮,默认""
+					btnClick: function(){
+						return false;
+						//点击按钮的回调,默认null
+						// alert("点击了按钮,具体逻辑自行实现");
+					} 
+				},
+				clearEmptyId: "dataList", //相当于同时设置了clearId和empty.warpId; 简化写法;默认null
+				toTop:{ //配置回到顶部按钮
+					src : "", //默认滚动到1000px显示,可配置offset修改
+					//html: null, //html标签内容,默认null; 如果同时设置了src,则优先取src
+					//offset : 1000
+				}
+			}
+		});
+		
+		var business = 0;
+		$('.check_buy_business').click(function () {
+			// 点击勾选
+			if (business === 0) {
+				$(this).find('img').attr('src', '/static/images/right@2x.png');
+				business++;
+			} else if (business === 1) { // 点击不勾选
+				$(this).find('img').attr('src', '');
+				business--;
+			}
+			//重置列表数据
+			mescroll.resetUpScroll();
+		})
+
+		/*初始化菜单*/
+		var pdType=$('.check_buy').attr('i');
+		
+		$('.nav_item').unbind('click').click(function(){
+			pdType = $(this).attr('i');
+			$('.nav_item').removeClass('check_buy');
+			$(this).addClass('check_buy');
+			mescroll.resetUpScroll();
+		})
+		
+			
+		/*初始化交易类型*/
+		var money_type = $('.coin_type_select_item:first').attr('coin');
+		
+		$('.coin_type_select_item').click(function (){
+			money_type = $(this).attr('coin');
+			$('#moneytype').val(money_type);
+			$('.coin_type').html(money_type+'/CNY');
+			mescroll.resetUpScroll();
+		})
+
+
+		//page 默认 page.num = 1,page.size = 10 , time = null;
+		function getListData(page){
+			//联网加载数据
+			getListDataFromNet(pdType, page.num,business,money_type, function(curPageData,totalSize){
+				
+				console.dir(curPageData);
+				console.dir(totalSize);
+				//mescroll会根据传的参数,自动判断列表如果无任何数据,则提示空;列表无下一页数据,则提示无更多数据;
+				// console.log("pdType="+pdType+", page.num="+page.num+", curPageData.length="+curPageData.length+", totalSize = "+totalSize);
+				
+				//方法一(推荐): 后台接口有返回列表的总页数 totalPage
+				// mescroll.endByPage(curPageData.length, totalPage); //必传参数(当前页的数据个数, 总页数)
+				
+				//方法二(推荐): 后台接口有返回列表的总数据量 totalSize
+				mescroll.endBySize(curPageData.length, totalSize); //必传参数(当前页的数据个数, 总数据量)
+				
+				//方法三(推荐): 您有其他方式知道是否有下一页 hasNext
+				//mescroll.endSuccess(curPageData.length, hasNext); //必传参数(当前页的数据个数, 是否有下一页true/false)
+				
+				//方法四 (不推荐),会存在一个小问题:比如列表共有20条数据,每页加载10条,共2页.如果只根据当前页的数据个数判断,则需翻到第三页才会知道无更多数据,如果传了hasNext,则翻到第二页即可显示无更多数据.
+				// mescroll.endSuccess(curPageData.length);
+				
+				//设置列表数据
+				setListData(curPageData);
+
+			}, function(){
+				//联网失败的回调,隐藏下拉刷新和上拉加载的状态;
+                mescroll.endErr();
+			});
+		}
+		
+		/*设置列表数据*/
+		function setListData(curPageData){
+			var listDom=document.getElementById("dataList");
+
+			for (var i = 0; i < curPageData.length; i++) {
+				var pd=curPageData[i];
+				if(pd.type==1){
+					var url = "{:url('legal/sellcoin')}?id="+pd.order_id;
+				}else{
+					var url = "{:url('legal/buycoin')}?id="+pd.order_id;
+				}
+				var str='<a href="'+url+'"><div class="content_item">';
+					str+='<div class="item_left_box">';
+					str+='<div class="user_message">';
+					str+='<span class="type_block green_type"></span>';
+					str+='<span class="username username_b">'+pd.nick_name+'</span>';
+					str+='<img class="vip_sign" src="/static/images/vip_bl@2x.png">'
+					str+='</div>';
+					str+='<div class="deal_num_and_rate can_deal">已交易6625/成交率97%</div>';
+					str+='<div class="can_payment_method"><span><img src="/static/images/bank_card@2x.png" alt="" class="bank_card"></span>';
+					str+='<span><img src="/static/images/wechat_pay@2x.png" alt="" class="wechat"></span></div>';
+					str+='</div>';
+					str+='<div class="item_right_box">';
+					str+='<div class="cny_box dark_grey"><span class="cny_num cny_num_g">'+pd.price+'</span><span class="cny_sign">CNY</span></div>';
+					str+='<div class="quota_and_num">';
+					str+='<div class="quota dark_grey"><span>限额</span><span class="quota_num">5000-100000</span></div>';
+					str+='<div class="coin_num_box dark_grey"><span>数量</span><span class="coin_num">'+pd.number+'</span></div>';
+					str+='</div>';
+					str+='</div>';
+					str+='</div></a>';
+				var liDom=document.createElement("div");
+				liDom.innerHTML=str;
+				listDom.append(liDom);
+			}
+		}
+		
+		function getListDataFromNet(pdType,pageNum,business,money_type,successCallback,errorCallback) {
+			
+            // setTimeout(function () {
+            	if(pdType==1){
+            		var url  = "{:url('legal/buyList')}";
+            	}else if(pdType==2){
+            		var url  = "{:url('legal/saleList')}";
+            	}else if(pdType==3){
+            		var url  = "{:url('legal/dealList')}";
+            	}
+            	
+            	$.post(url,{page:pageNum,business:business,money_type:money_type}, function (response) {
+		            if (response.code == 0) {
+		                var data = response.data.data;
+		                var psize = response.data.psize;
+		                var totalSize =response.data.total;
+		                var listData=[];
+		                
+		                for (var i = 0; i < data.length; i++) {
+			            		listData.push(data[i]);
+			            }
+		           		//回调
+	                	successCallback(listData,totalSize);
+		            }
+		        }, 'json');
+            	
+            // },200)
+		}
+		
+	});
+</script>
+
+<script type="text/javascript">
+
+	function send(){
+		var money_type =$('#moneytype').val();
+		window.location.href="{:url('legal/bors')}?money_type="+money_type;
+	}
+	var coinTypeBox = 0;
+	$('.coin_type_box').click(function () {
+		if (coinTypeBox === 0) {
+			$(this).find('img').attr('src', '/static/images/goback_up@2x.png')
+			$('.coin_type_select').slideDown(200);
+			coinTypeBox++;
+		} else if (coinTypeBox === 1) {
+			$(this).find('img').attr('src', '/static/images/goback@2x.png')
+			$('.coin_type_select').slideUp(200);
+			coinTypeBox--;
+		}
+	})
+	$('.coin_type_select .coin_type_select_item').click(function () {
+		if (coinTypeBox === 1) {
+			$('.coin_type_box').find('img').attr('src', '/static/images/goback@2x.png')
+			$('.coin_type_select').slideUp(200);
+			coinTypeBox--;
+		}
+	})
+	// 头部 "购买 出售 交易单 订单" 导航栏点击事件
+	// $('.nav_item').click(function () {
+	// 	// 获取用户点击的导航栏菜单的下标
+	// 	var index = $(this).index();
+	// 	// 用户点击 "购买" 菜单
+	// 	if (index === 0) {
+	// 		// 判断，如果 "出售" 区间的 "金额筛选" 或者 "支付方式" 导航栏的下拉菜单已展开，本次点击效果为收起下拉菜单，再次点击，才能跳转到 "购买" 区间
+	// 		if (clickSellAllAmount === 1 || clickSellAllWays === 1) {
+	// 			// 判断，如果是 "出售" 区间的 "金额筛选" 导航栏的下拉菜单已展开
+	// 			if (clickSellAllAmount === 1) {
+	// 				clickSellAllAmount = 0;
+	// 				$('.sell_all_amount_content').slideUp(200);
+	// 				$('.all_amount').find("img").attr('src', '/static/images/goback@2x.png');
+	// 			} else if (clickSellAllWays === 1) { // 判断，如果是 "出售" 区间的 "支付方式" 导航栏的下拉菜单已展开
+	// 				clickSellAllWays = 0;
+	// 				$('.sell_all_ways_content').slideUp(200);
+	// 				$('.all_ways').find("img").attr('src', '/static/images/goback@2x.png');
+	// 			}
+	// 		} else {
+	// 			$(this).addClass('check_buy').siblings().removeClass('check_sell check_trade_sheet');
+	// 			$('.buy_content').show().siblings().hide();
+	// 		}
+	// 	}
+	// 	// 用户点击 "出售" 菜单
+	// 	if (index === 1) {
+	// 		// 判断，如果 "购买" 区间的 "金额筛选" 或者 "支付方式" 导航栏的下拉菜单已展开，本次点击效果为收起下拉菜单，再次点击，才能跳转到 "出售" 区间
+	// 		if (clickBuyAllAmount === 1 || clickBuyAllWays === 1) {
+	// 			// 判断，如果是 "购买" 区间的 "金额筛选" 导航栏的下拉菜单已展开
+	// 			if (clickBuyAllAmount === 1) {
+	// 				clickBuyAllAmount = 0;
+	// 				$('.buy_all_amount_content').slideUp(200);
+	// 				$('.all_amount').find("img").attr('src', '/static/images/goback@2x.png');
+	// 			} else if (clickBuyAllWays === 1) { // 判断，如果是 "购买" 区间的 "支付方式" 导航栏的下拉菜单已展开
+	// 				clickBuyAllWays = 0;
+	// 				$('.buy_all_ways_content').slideUp(200);
+	// 				$('.all_ways').find("img").attr('src', '/static/images/goback@2x.png');
+	// 			}
+	// 		} else {
+	// 			$(this).addClass('check_sell').siblings().removeClass('check_buy check_trade_sheet');
+	// 			$('.sell_content').show().siblings().hide();
+	// 		}
+	// 	}
+	// 	// 用户点击 "交易单" 菜单
+	// 	if (index === 2) {
+	// 		$(this).addClass('check_trade_sheet').siblings().removeClass('check_sell check_buy');
+	// 		$('.trade_sheet_content').show().siblings().hide();
+	// 	}
+	// })
+	// 用户点击 "购买" 区间 "认证商家" input选项框
+	// var checkBuy = 0;
+	// $('.check_buy_business').click(function () {
+	// 	// 点击勾选
+	// 	if (checkBuy === 0) {
+	// 		$(this).find('img').attr('src', '/static/images/right@2x.png');
+	// 		checkBuy++;
+	// 	} else if (checkBuy === 1) { // 点击不勾选
+	// 		$(this).find('img').attr('src', '');
+	// 		checkBuy--;
+	// 	}
+	// })
+	// 用户点击 "出售" 区间 "认证商家" input选项框
+	var checkSell = 0;
+	$('.check_sell_business').click(function () {
+		// 点击勾选
+		if (checkSell === 0) {
+			$(this).find('img').attr('src', '/static/images/right@2x.png');
+			checkSell++;
+		} else if (checkSell === 1) { // 点击不勾选
+			$(this).find('img').attr('src', '');
+			checkSell--;
+		}
+	})
+	// 用户点击 "购买" 区间 "金额筛选" 下拉菜单
+	var clickBuyAllAmount = 0;
+	$('.buy_content .all_amount').click(function () {
+		// 判断，"购买" 区间 "支付方式" 下拉菜单是否已展开，若已展开则先关闭 "支付方式" 下拉菜单，再次点击才会打开 "金额筛选" 下拉菜单
+		if (clickBuyAllWays === 1) {
+			clickBuyAllWays = 0;
+			$('.buy_all_ways_content').slideUp(200);
+			$('.all_ways').find("img").attr('src', '/static/images/goback@2x.png');
+		} else {
+			if (clickBuyAllAmount === 0) {
+				$('.buy_all_amount_content').slideDown(200);
+				$(this).find("img").attr('src', '/static/images/goback_up@2x.png');
+				clickBuyAllAmount++;
+			} else if (clickBuyAllAmount === 1) {
+				$('.buy_all_amount_content').slideUp(200);
+				$(this).find("img").attr('src', '/static/images/goback@2x.png');
+				clickBuyAllAmount--;
+			}
+		}
+	})
+	// 用户点击 "购买" 区间 "支付方式" 下拉菜单
+	var clickBuyAllWays = 0;
+	$('.buy_content .all_ways').click(function () {
+		// 判断，"购买" 区间 "金额筛选" 下拉菜单是否已展开，若已展开则先关闭 "金额筛选" 下拉菜单，再次点击才会打开 "支付方式" 下拉菜单
+		if (clickBuyAllAmount === 1) {
+			clickBuyAllAmount = 0;
+			$('.buy_all_amount_content').slideUp(200);
+			$('.all_amount').find("img").attr('src', '/static/images/goback@2x.png');
+		} else {
+			if (clickBuyAllWays === 0) {
+				$('.buy_all_ways_content').slideDown(200);
+				$(this).find("img").attr('src', '/static/images/goback_up@2x.png');
+				clickBuyAllWays++;
+			} else if (clickBuyAllWays === 1) {
+				$('.buy_all_ways_content').slideUp(200);
+				$(this).find("img").attr('src', '/static/images/goback@2x.png');
+				clickBuyAllWays--;
+			}
+		}
+	})
+	// 用户点击 "出售" 区间 "金额筛选" 下拉菜单
+	var clickSellAllAmount = 0;
+	$('.sell_content .all_amount').click(function () {
+		// 判断，"出售" 区间 "支付方式" 下拉菜单是否已展开，若已展开则先关闭 "支付方式" 下拉菜单，再次点击才会打开 "金额筛选" 下拉菜单
+		if (clickSellAllWays === 1) {
+			clickSellAllWays = 0;
+			$('.sell_all_ways_content').slideUp(200);
+			$('.all_ways').find("img").attr('src', '/static/images/goback@2x.png');
+		} else {
+			if (clickSellAllAmount === 0) {
+				$('.sell_all_amount_content').slideDown(200);
+				$(this).find("img").attr('src', '/static/images/goback_up@2x.png');
+				clickSellAllAmount++;
+			} else if (clickSellAllAmount === 1) {
+				$('.sell_all_amount_content').slideUp(200);
+				$(this).find("img").attr('src', '/static/images/goback@2x.png');
+				clickSellAllAmount--;
+			}
+		}
+	})
+	// 用户点击 "出售" 区间 "支付方式" 下拉菜单
+	var clickSellAllWays = 0;
+	$('.sell_content .all_ways').click(function () {
+		// 判断，"出售" 区间 "金额筛选" 下拉菜单是否已展开，若已展开则先关闭 "金额筛选" 下拉菜单，再次点击才会打开 "支付方式" 下拉菜单
+		if (clickSellAllAmount === 1) {
+			clickSellAllAmount = 0;
+			$('.sell_all_amount_content').slideUp(200);
+			$('.all_amount').find("img").attr('src', '/static/images/goback@2x.png');
+		} else {
+			if (clickSellAllWays === 0) {
+				$('.sell_all_ways_content').slideDown(200);
+				$(this).find("img").attr('src', '/static/images/goback_up@2x.png');
+				clickSellAllWays++;
+			} else if (clickSellAllWays === 1) {
+				$('.sell_all_ways_content').slideUp(200);
+				$(this).find("img").attr('src', '/static/images/goback@2x.png');
+				clickSellAllWays--;
+			}
+		}
+	})
+	// 定义一个空数组，用来储存 "购买" 区间的所有元素节点
+	var buyAllAmountDefault = [];
+	for (var i = 0; i < $('.buy_content .content_item').length; i++) {
+		buyAllAmountDefault.push($('.buy_content .content_item').eq(i));
+	}
+	// 定义一个空数组，用来储存 "购买" 区间的所有满足 "5万以上" 条件选项的元素
+	var moreThanFiftyThousand = [];
+	for(var i = 0; i < $('.buy_content .content_item').length; i++) {
+		var priceRange = $('.buy_content .content_item').eq(i).find('.quota_num').text();
+		var index = priceRange.lastIndexOf("\-");
+		priceRange = priceRange.substring(index+1, priceRange.length);
+		priceRange = Number(priceRange);
+		if (priceRange >= 50000) {
+			moreThanFiftyThousand.push($('.buy_content .content_item').eq(i));
+		}
+	}
+	// 定义一个空数组，用来储存 "购买" 区间的所有满足 "10万以上" 条件选项的元素
+	var moreThanShiWan = [];
+	for(var i = 0; i < $('.buy_content .content_item').length; i++) {
+		var priceRange = $('.buy_content .content_item').eq(i).find('.quota_num').text();
+		var index = priceRange.lastIndexOf("\-");
+		priceRange = priceRange.substring(index+1, priceRange.length);
+		priceRange = Number(priceRange);
+		if (priceRange >= 100000) {
+			moreThanShiWan.push($('.buy_content .content_item').eq(i));
+		}
+	}
+	// 定义一个空数组，用来储存 "购买" 区间的所有满足 "20万以上" 条件选项的元素
+	var moreThanErShiWan = [];
+	for(var i = 0; i < $('.buy_content .content_item').length; i++) {
+		var priceRange = $('.buy_content .content_item').eq(i).find('.quota_num').text();
+		var index = priceRange.lastIndexOf("\-");
+		priceRange = priceRange.substring(index+1, priceRange.length);
+		priceRange = Number(priceRange);
+		if (priceRange >= 200000) {
+			moreThanErShiWan.push($('.buy_content .content_item').eq(i));
+		}
+	}
+	// 定义一个空数组，用来储存 "购买" 区间的所有满足 "银行转账" 条件选项的元素
+	var bankTransfer = [];
+	for(var i = 0; i < $('.buy_content .content_item').length; i++) {
+		var bankCard = $('.buy_content .content_item').eq(i).find('img').is('.bank_card');
+		if (bankCard) {
+			bankTransfer.push($('.buy_content .content_item').eq(i));
+		}
+	}
+	// 定义一个空数组，用来储存 "购买" 区间的所有满足 "支付宝" 条件选项的元素
+	var alipayTransfer = [];
+	for(var i = 0; i < $('.buy_content .content_item').length; i++) {
+		var Alipay = $('.buy_content .content_item').eq(i).find('img').is('.alipay');
+		if (Alipay) {
+			alipayTransfer.push($('.buy_content .content_item').eq(i));
+		}
+	}
+	// 定义一个空数组，用来储存 "购买" 区间的所有满足 "微信" 条件选项的元素
+	var WeChatTransfer = [];
+	for(var i = 0; i < $('.buy_content .content_item').length; i++) {
+		var WeChat = $('.buy_content .content_item').eq(i).find('img').is('.wechat');
+		if (WeChat) {
+			WeChatTransfer.push($('.buy_content .content_item').eq(i));
+		}
+	}
+	// 定义一个变量，默认值为选择 "购买" 区间 "金额筛选" 下拉菜单的 "所有金额" 条件选项
+	var buyNumber = 0;
+	$('.buy_all_amount_content > div').click(function () {
+		buyNumber = $(this).index();
+		// 用户点击 "购买" 区间 "金额筛选" 下拉菜单的 "所有金额" 条件选项
+		if (buyNumber === 0) {
+			// 判断，"购买" 区间 "支付方式" 下拉菜单当前选中的条件选项为 "所有方式"
+			if (buyWaysIndex === 0) {
+				// 定义一个空数组，用来储存 "购买" 区间 "所有金额" 选项的元素
+				var allAmount = [];
+				for(var i = 0; i < buyAllAmountDefault.length; i++) {
+					var priceRange = buyAllAmountDefault[i].find('.quota_num').text();
+					var index = priceRange.lastIndexOf("\-");
+					priceRange = priceRange.substring(index+1, priceRange.length);
+					priceRange = Number(priceRange);
+					if (priceRange >= 0) {
+						allAmount.push(buyAllAmountDefault[i]);
+					}
+				}
+				$('.buy_content').children('.content_item').remove();
+				// 在页面渲染出来
+				for(var j = 0; j < allAmount.length; $('.buy_content').append(allAmount[j++]));
+			}
+			// 判断，"购买" 区间 "支付方式" 下拉菜单当前选中的条件选项为 "银行转账"
+			if (buyWaysIndex === 1) {
+				// 定义一个空数组，用来储存 "购买" 区间 "所有金额" 选项的元素
+				var allAmount = [];
+				for(var i = 0; i < bankTransfer.length; i++) {
+					var priceRange = bankTransfer[i].find('.quota_num').text();
+					var index = priceRange.lastIndexOf("\-");
+					priceRange = priceRange.substring(index+1, priceRange.length);
+					priceRange = Number(priceRange);
+					if (priceRange >= 0) {
+						allAmount.push(bankTransfer[i]);
+					}
+				}
+				$('.buy_content').children('.content_item').remove();
+				// 在页面渲染出来
+				for(var j = 0; j < allAmount.length; $('.buy_content').append(allAmount[j++]));
+			}
+			// 判断，"购买" 区间 "支付方式" 下拉菜单当前选中的条件选项为 "支付宝"
+			if (buyWaysIndex === 2) {
+				// 定义一个空数组，用来储存 "购买" 区间 "所有金额" 选项的元素
+				var allAmount = [];
+				for(var i = 0; i < alipayTransfer.length; i++) {
+					var priceRange = alipayTransfer[i].find('.quota_num').text();
+					var index = priceRange.lastIndexOf("\-");
+					priceRange = priceRange.substring(index+1, priceRange.length);
+					priceRange = Number(priceRange);
+					if (priceRange >= 0) {
+						allAmount.push(alipayTransfer[i]);
+					}
+				}
+				$('.buy_content').children('.content_item').remove();
+				// 在页面渲染出来
+				for(var j = 0; j < allAmount.length; $('.buy_content').append(allAmount[j++]));
+			}
+			// 判断，"购买" 区间 "支付方式" 下拉菜单当前选中的条件选项为 "微信"
+			if (buyWaysIndex === 3) {
+				// 定义一个空数组，用来储存 "购买" 区间 "所有金额" 选项的元素
+				var allAmount = [];
+				for(var i = 0; i < WeChatTransfer.length; i++) {
+					var priceRange = WeChatTransfer[i].find('.quota_num').text();
+					var index = priceRange.lastIndexOf("\-");
+					priceRange = priceRange.substring(index+1, priceRange.length);
+					priceRange = Number(priceRange);
+					if (priceRange >= 0) {
+						allAmount.push(WeChatTransfer[i]);
+					}
+				}
+				$('.buy_content').children('.content_item').remove();
+				// 在页面渲染出来
+				for(var j = 0; j < allAmount.length; $('.buy_content').append(allAmount[j++]));
+			}
+		}
+		// 用户点击 "购买" 区间 "金额筛选" 下拉菜单的 "5万以上" 条件选项
+		if (buyNumber === 1) {
+			// 判断，"购买" 区间 "支付方式" 下拉菜单当前选中的条件选项为 "所有方式"
+			if (buyWaysIndex === 0) {
+				// 定义一个空数组，用来储存 "购买" 区间 "5万以上" 选项的元素
+				var chaoguowuwan = [];
+				for(var i = 0; i < buyAllAmountDefault.length; i++) {
+					var priceRange = buyAllAmountDefault[i].find('.quota_num').text();
+					var index = priceRange.lastIndexOf("\-");
+					priceRange = priceRange.substring(index+1, priceRange.length);
+					priceRange = Number(priceRange);
+					if (priceRange >= 50000) {
+						chaoguowuwan.push(buyAllAmountDefault[i]);
+					}
+				}
+				$('.buy_content').children('.content_item').remove();
+				// 在页面渲染出来
+				for(var j = 0; j < chaoguowuwan.length; $('.buy_content').append(chaoguowuwan[j++]));
+			}
+			// 判断，"购买" 区间 "支付方式" 下拉菜单当前选中的条件选项为 "银行转账"
+			if (buyWaysIndex === 1) {
+				// 定义一个空数组，用来储存 "购买" 区间 "5万以上" 选项的元素
+				var chaoguowuwan = [];
+				for(var i = 0; i < bankTransfer.length; i++) {
+					var priceRange = bankTransfer[i].find('.quota_num').text();
+					var index = priceRange.lastIndexOf("\-");
+					priceRange = priceRange.substring(index+1, priceRange.length);
+					priceRange = Number(priceRange);
+					if (priceRange >= 50000) {
+						chaoguowuwan.push(bankTransfer[i]);
+					}
+				}
+				$('.buy_content').children('.content_item').remove();
+				// 在页面渲染出来
+				for(var j = 0; j < chaoguowuwan.length; $('.buy_content').append(chaoguowuwan[j++]));
+			}
+			// 判断，"购买" 区间 "支付方式" 下拉菜单当前选中的条件选项为 "支付宝"
+			if (buyWaysIndex === 2) {
+				// 定义一个空数组，用来储存 "购买" 区间 "5万以上" 选项的元素
+				var chaoguowuwan = [];
+				for(var i = 0; i < alipayTransfer.length; i++) {
+					var priceRange = alipayTransfer[i].find('.quota_num').text();
+					var index = priceRange.lastIndexOf("\-");
+					priceRange = priceRange.substring(index+1, priceRange.length);
+					priceRange = Number(priceRange);
+					if (priceRange >= 50000) {
+						chaoguowuwan.push(alipayTransfer[i]);
+					}
+				}
+				$('.buy_content').children('.content_item').remove();
+				// 在页面渲染出来
+				for(var j = 0; j < chaoguowuwan.length; $('.buy_content').append(chaoguowuwan[j++]));
+			}
+			// 判断，"购买" 区间 "支付方式" 下拉菜单当前选中的条件选项为 "微信"
+			if (buyWaysIndex === 3) {
+				// 定义一个空数组，用来储存 "购买" 区间 "5万以上" 选项的元素
+				var chaoguowuwan = [];
+				for(var i = 0; i < WeChatTransfer.length; i++) {
+					var priceRange = WeChatTransfer[i].find('.quota_num').text();
+					var index = priceRange.lastIndexOf("\-");
+					priceRange = priceRange.substring(index+1, priceRange.length);
+					priceRange = Number(priceRange);
+					if (priceRange >= 50000) {
+						chaoguowuwan.push(WeChatTransfer[i]);
+					}
+				}
+				$('.buy_content').children('.content_item').remove();
+				// 在页面渲染出来
+				for(var j = 0; j < chaoguowuwan.length; $('.buy_content').append(chaoguowuwan[j++]));
+			}
+		}
+		// 用户点击 "购买" 区间 "金额筛选" 下拉菜单的 "10万以上" 条件选项
+		if (buyNumber === 2) {
+			// 判断，"购买" 区间 "支付方式" 下拉菜单当前选中的条件选项为 "所有方式"
+			if (buyWaysIndex === 0) {
+				// 定义一个空数组，用来储存 "购买" 区间 "10万以上" 选项的元素
+				var chaoguoshiwan = [];
+				for(var i = 0; i < buyAllAmountDefault.length; i++) {
+					var priceRange = buyAllAmountDefault[i].find('.quota_num').text();
+					var index = priceRange.lastIndexOf("\-");
+					priceRange = priceRange.substring(index+1, priceRange.length);
+					priceRange = Number(priceRange);
+					if (priceRange >= 100000) {
+						chaoguoshiwan.push(buyAllAmountDefault[i]);
+					}
+				}
+				$('.buy_content').children('.content_item').remove();
+				// 在页面渲染出来
+				for(var j = 0; j < chaoguoshiwan.length; $('.buy_content').append(chaoguoshiwan[j++]));
+			}
+			// 判断，"购买" 区间 "支付方式" 下拉菜单当前选中的条件选项为 "银行转账"
+			if (buyWaysIndex === 1) {
+				// 定义一个空数组，用来储存 "购买" 区间 "10万以上" 选项的元素
+				var chaoguoshiwan = [];
+				for(var i = 0; i < bankTransfer.length; i++) {
+					var priceRange = bankTransfer[i].find('.quota_num').text();
+					var index = priceRange.lastIndexOf("\-");
+					priceRange = priceRange.substring(index+1, priceRange.length);
+					priceRange = Number(priceRange);
+					if (priceRange >= 100000) {
+						chaoguoshiwan.push(bankTransfer[i]);
+					}
+				}
+				$('.buy_content').children('.content_item').remove();
+				// 在页面渲染出来
+				for(var j = 0; j < chaoguoshiwan.length; $('.buy_content').append(chaoguoshiwan[j++]));
+			}
+			// 判断，"购买" 区间 "支付方式" 下拉菜单当前选中的条件选项为 "支付宝"
+			if (buyWaysIndex === 2) {
+				// 定义一个空数组，用来储存 "购买" 区间 "10万以上" 选项的元素
+				var chaoguoshiwan = [];
+				for(var i = 0; i < alipayTransfer.length; i++) {
+					var priceRange = alipayTransfer[i].find('.quota_num').text();
+					var index = priceRange.lastIndexOf("\-");
+					priceRange = priceRange.substring(index+1, priceRange.length);
+					priceRange = Number(priceRange);
+					if (priceRange >= 100000) {
+						chaoguoshiwan.push(alipayTransfer[i]);
+					}
+				}
+				$('.buy_content').children('.content_item').remove();
+				// 在页面渲染出来
+				for(var j = 0; j < chaoguoshiwan.length; $('.buy_content').append(chaoguoshiwan[j++]));
+			}
+			// 判断，"购买" 区间 "支付方式" 下拉菜单当前选中的条件选项为 "微信"
+			if (buyWaysIndex === 3) {
+				// 定义一个空数组，用来储存 "购买" 区间 "10万以上" 选项的元素
+				var chaoguoshiwan = [];
+				for(var i = 0; i < WeChatTransfer.length; i++) {
+					var priceRange = WeChatTransfer[i].find('.quota_num').text();
+					var index = priceRange.lastIndexOf("\-");
+					priceRange = priceRange.substring(index+1, priceRange.length);
+					priceRange = Number(priceRange);
+					if (priceRange >= 100000) {
+						chaoguoshiwan.push(WeChatTransfer[i]);
+					}
+				}
+				$('.buy_content').children('.content_item').remove();
+				// 在页面渲染出来
+				for(var j = 0; j < chaoguoshiwan.length; $('.buy_content').append(chaoguoshiwan[j++]));
+			}
+		}
+		// 用户点击 "购买" 区间 "金额筛选" 下拉菜单的 "20万以上" 条件选项
+		if (buyNumber === 3) {
+			// 判断，"购买" 区间 "支付方式" 下拉菜单当前选中的条件选项为 "所有方式"
+			if (buyWaysIndex === 0) {
+				// 定义一个空数组，用来储存 "购买" 区间 "20万以上" 选项的元素
+				var chaoguoershiwan = [];
+				for(var i = 0; i < buyAllAmountDefault.length; i++) {
+					var priceRange = buyAllAmountDefault[i].find('.quota_num').text();
+					var index = priceRange.lastIndexOf("\-");
+					priceRange = priceRange.substring(index+1, priceRange.length);
+					priceRange = Number(priceRange);
+					if (priceRange >= 200000) {
+						chaoguoershiwan.push(buyAllAmountDefault[i]);
+					}
+				}
+				$('.buy_content').children('.content_item').remove();
+				// 在页面渲染出来
+				for(var j = 0; j < chaoguoershiwan.length; $('.buy_content').append(chaoguoershiwan[j++]));
+			}
+			// 判断，"购买" 区间 "支付方式" 下拉菜单当前选中的条件选项为 "银行转账"
+			if (buyWaysIndex === 1) {
+				// 定义一个空数组，用来储存 "购买" 区间 "20万以上" 选项的元素
+				var chaoguoershiwan = [];
+				for(var i = 0; i < bankTransfer.length; i++) {
+					var priceRange = bankTransfer[i].find('.quota_num').text();
+					var index = priceRange.lastIndexOf("\-");
+					priceRange = priceRange.substring(index+1, priceRange.length);
+					priceRange = Number(priceRange);
+					if (priceRange >= 200000) {
+						chaoguoershiwan.push(bankTransfer[i]);
+					}
+				}
+				$('.buy_content').children('.content_item').remove();
+				// 在页面渲染出来
+				for(var j = 0; j < chaoguoershiwan.length; $('.buy_content').append(chaoguoershiwan[j++]));
+			}
+			// 判断，"购买" 区间 "支付方式" 下拉菜单当前选中的条件选项为 "支付宝"
+			if (buyWaysIndex === 2) {
+				// 定义一个空数组，用来储存 "购买" 区间 "20万以上" 选项的元素
+				var chaoguoershiwan = [];
+				for(var i = 0; i < alipayTransfer.length; i++) {
+					var priceRange = alipayTransfer[i].find('.quota_num').text();
+					var index = priceRange.lastIndexOf("\-");
+					priceRange = priceRange.substring(index+1, priceRange.length);
+					priceRange = Number(priceRange);
+					if (priceRange >= 200000) {
+						chaoguoershiwan.push(alipayTransfer[i]);
+					}
+				}
+				$('.buy_content').children('.content_item').remove();
+				// 在页面渲染出来
+				for(var j = 0; j < chaoguoershiwan.length; $('.buy_content').append(chaoguoershiwan[j++]));
+			}
+			// 判断，"购买" 区间 "支付方式" 下拉菜单当前选中的条件选项为 "微信"
+			if (buyWaysIndex === 3) {
+				// 定义一个空数组，用来储存 "购买" 区间 "20万以上" 选项的元素
+				var chaoguoershiwan = [];
+				for(var i = 0; i < WeChatTransfer.length; i++) {
+					var priceRange = WeChatTransfer[i].find('.quota_num').text();
+					var index = priceRange.lastIndexOf("\-");
+					priceRange = priceRange.substring(index+1, priceRange.length);
+					priceRange = Number(priceRange);
+					if (priceRange >= 200000) {
+						chaoguoershiwan.push(WeChatTransfer[i]);
+					}
+				}
+				$('.buy_content').children('.content_item').remove();
+				// 在页面渲染出来
+				for(var j = 0; j < chaoguoershiwan.length; $('.buy_content').append(chaoguoershiwan[j++]));
+			}
+		}
+		$(this).addClass('check_buy_money').siblings().removeClass('check_buy_money');
+		clickBuyAllAmount = 0;
+		$('.buy_all_amount_content').slideUp(200);
+		$('.all_amount').find("img").attr('src', '/static/images/goback@2x.png');
+	})
+	var ways0 = '/static/images/all_way@2x.png';
+	var ways1 = '/static/images/bank_card@2x.png';
+	var ways2 = '/static/images/Alipay@2x.png';
+	var ways3 = '/static/images/wechat_pay@2x.png';
+	var waysDefault0 = '/static/images/all_way_g@2x.png';
+	var waysDefault1 = '/static/images/bank_card_g@2x.png';
+	var waysDefault2 = '/static/images/alipay_g@2x.png';
+	var waysDefault3 = '/static/images/wechat_g@2x.png';
+	// 定义一个变量，默认值为选择 "购买" 区间 "支付方式" 下拉菜单的 "所有方式" 条件选项
+	var buyWaysIndex = 0;
+	$('.buy_all_ways_content > div').click(function () {
+		buyWaysIndex = $(this).index();
+		$(this).addClass('check_buy_ways').siblings().removeClass('check_buy_ways');
+		clickBuyAllWays = 0;
+		$('.buy_all_ways_content').slideUp(200);
+		$('.all_ways').find("img").attr('src', '/static/images/goback@2x.png');
+		// 用户点击 "购买" 区间 "支付方式" 下拉菜单的 "所有方式" 条件选项
+		if (buyWaysIndex === 0) {
+			$('.buy_all_ways_content').find("div").eq(0).find('img').attr('src', ways0);
+			$('.buy_all_ways_content').find("div").eq(1).find('img').attr('src', waysDefault1);
+			$('.buy_all_ways_content').find("div").eq(2).find('img').attr('src', waysDefault2);
+			$('.buy_all_ways_content').find("div").eq(3).find('img').attr('src', waysDefault3);
+			// 判断，"购买" 区间 "金额筛选" 下拉菜单当前选中的条件选项为 "所有金额"
+			if (buyNumber === 0) {
+				// 定义一个空数组，用来储存 "购买" 区间 "所有方式" 选项的元素
+				var allPayWays = [];
+				for(var i = 0; i < buyAllAmountDefault.length; i++) {
+					var payWays = buyAllAmountDefault[i].find('img');
+					if (payWays) {
+						allPayWays.push(buyAllAmountDefault[i]);
+					}
+				}
+				$('.buy_content').children('.content_item').remove();
+				// 在页面渲染出来
+				for(var j = 0; j < allPayWays.length; $('.buy_content').append(allPayWays[j++]));
+			}
+			// 判断，"购买" 区间 "金额筛选" 下拉菜单当前选中的条件选项为 "5万以上"
+			if (buyNumber === 1) {
+				// 定义一个空数组，用来储存 "购买" 区间 "所有方式" 选项的元素
+				var allPayWays = [];
+				for(var i = 0; i < moreThanFiftyThousand.length; i++) {
+					var payWays = moreThanFiftyThousand[i].find('img');
+					if (payWays) {
+						allPayWays.push(moreThanFiftyThousand[i]);
+					}
+				}
+				$('.buy_content').children('.content_item').remove();
+				// 在页面渲染出来
+				for(var j = 0; j < allPayWays.length; $('.buy_content').append(allPayWays[j++]));
+			}
+			// 判断，"购买" 区间 "金额筛选" 下拉菜单当前选中的条件选项为 "10万以上"
+			if (buyNumber === 2) {
+				// 定义一个空数组，用来储存 "购买" 区间 "所有方式" 选项的元素
+				var allPayWays = [];
+				for(var i = 0; i < moreThanShiWan.length; i++) {
+					var payWays = moreThanShiWan[i].find('img');
+					if (payWays) {
+						allPayWays.push(moreThanShiWan[i]);
+					}
+				}
+				$('.buy_content').children('.content_item').remove();
+				// 在页面渲染出来
+				for(var j = 0; j < allPayWays.length; $('.buy_content').append(allPayWays[j++]));
+			}
+			// 判断，"购买" 区间 "金额筛选" 下拉菜单当前选中的条件选项为 "20万以上"
+			if (buyNumber === 3) {
+				// 定义一个空数组，用来储存 "购买" 区间 "所有方式" 选项的元素
+				var allPayWays = [];
+				for(var i = 0; i < moreThanErShiWan.length; i++) {
+					var payWays = moreThanErShiWan[i].find('img');
+					if (payWays) {
+						allPayWays.push(moreThanErShiWan[i]);
+					}
+				}
+				$('.buy_content').children('.content_item').remove();
+				// 在页面渲染出来
+				for(var j = 0; j < allPayWays.length; $('.buy_content').append(allPayWays[j++]));
+			}
+		}
+		// 用户点击 "购买" 区间 "支付方式" 下拉菜单的 "银行转账" 条件选项
+		if (buyWaysIndex === 1) {
+			$('.buy_all_ways_content').find("div").eq(0).find('img').attr('src', waysDefault0);
+			$('.buy_all_ways_content').find("div").eq(1).find('img').attr('src', ways1);
+			$('.buy_all_ways_content').find("div").eq(2).find('img').attr('src', waysDefault2);
+			$('.buy_all_ways_content').find("div").eq(3).find('img').attr('src', waysDefault3);
+			// 判断，"购买" 区间 "金额筛选" 下拉菜单当前选中的条件选项为 "所有金额"
+			if (buyNumber === 0) {
+				// 定义一个空数组，用来储存 "购买" 区间 "银行转账" 选项的元素
+				var bankTransfer = [];
+				for(var i = 0; i < buyAllAmountDefault.length; i++) {
+					var bankCard = buyAllAmountDefault[i].find('img').is('.bank_card');
+					if (bankCard) {
+						bankTransfer.push(buyAllAmountDefault[i]);
+					}
+				}
+				$('.buy_content').children('.content_item').remove();
+				// 在页面渲染出来
+				for(var j = 0; j < bankTransfer.length; $('.buy_content').append(bankTransfer[j++]));
+			}
+			// 判断，"购买" 区间 "金额筛选" 下拉菜单当前选中的条件选项为 "5万以上"
+			if (buyNumber === 1) {
+				// 定义一个空数组，用来储存 "购买" 区间 "银行转账" 选项的元素
+				var bankTransfer = [];
+				for(var i = 0; i < moreThanFiftyThousand.length; i++) {
+					var bankCard = moreThanFiftyThousand[i].find('img').is('.bank_card');
+					if (bankCard) {
+						bankTransfer.push(moreThanFiftyThousand[i]);
+					}
+				}
+				$('.buy_content').children('.content_item').remove();
+				// 在页面渲染出来
+				for(var j = 0; j < bankTransfer.length; $('.buy_content').append(bankTransfer[j++]));
+			}
+			// 判断，"购买" 区间 "金额筛选" 下拉菜单当前选中的条件选项为 "10万以上"
+			if (buyNumber === 2) {
+				// 定义一个空数组，用来储存 "购买" 区间 "银行转账" 选项的元素
+				var bankTransfer = [];
+				for(var i = 0; i < moreThanShiWan.length; i++) {
+					var bankCard = moreThanShiWan[i].find('img').is('.bank_card');
+					if (bankCard) {
+						bankTransfer.push(moreThanShiWan[i]);
+					}
+				}
+				$('.buy_content').children('.content_item').remove();
+				// 在页面渲染出来
+				for(var j = 0; j < bankTransfer.length; $('.buy_content').append(bankTransfer[j++]));
+			}
+			// 判断，"购买" 区间 "金额筛选" 下拉菜单当前选中的条件选项为 "20万以上"
+			if (buyNumber === 3) {
+				// 定义一个空数组，用来储存 "购买" 区间 "银行转账" 选项的元素
+				var bankTransfer = [];
+				for(var i = 0; i < moreThanErShiWan.length; i++) {
+					var bankCard = moreThanErShiWan[i].find('img').is('.bank_card');
+					if (bankCard) {
+						bankTransfer.push(moreThanErShiWan[i]);
+					}
+				}
+				$('.buy_content').children('.content_item').remove();
+				// 在页面渲染出来
+				for(var j = 0; j < bankTransfer.length; $('.buy_content').append(bankTransfer[j++]));
+			}
+		}
+		// 用户点击 "购买" 区间 "支付方式" 下拉菜单的 "支付宝" 条件选项
+		if (buyWaysIndex === 2) {
+			$('.buy_all_ways_content').find("div").eq(0).find('img').attr('src', waysDefault0);
+			$('.buy_all_ways_content').find("div").eq(1).find('img').attr('src', waysDefault1);
+			$('.buy_all_ways_content').find("div").eq(2).find('img').attr('src', ways2);
+			$('.buy_all_ways_content').find("div").eq(3).find('img').attr('src', waysDefault3);
+			// 判断，"购买" 区间 "金额筛选" 下拉菜单当前选中的条件选项为 "所有金额"
+			if (buyNumber === 0) {
+				// 定义一个空数组，用来储存 "购买" 区间 "支付宝" 选项的元素
+				var alipayTransfer = [];
+				for(var i = 0; i < buyAllAmountDefault.length; i++) {
+					var alipay = buyAllAmountDefault[i].find('img').is('.alipay');
+					if (alipay) {
+						alipayTransfer.push(buyAllAmountDefault[i]);
+					}
+				}
+				$('.buy_content').children('.content_item').remove();
+				// 在页面渲染出来
+				for(var j = 0; j < alipayTransfer.length; $('.buy_content').append(alipayTransfer[j++]));
+			}
+			// 判断，"购买" 区间 "金额筛选" 下拉菜单当前选中的条件选项为 "5万以上"
+			if (buyNumber === 1) {
+				// 定义一个空数组，用来储存 "购买" 区间 "支付宝" 选项的元素
+				var alipayTransfer = [];
+				for(var i = 0; i < moreThanFiftyThousand.length; i++) {
+					var alipay = moreThanFiftyThousand[i].find('img').is('.alipay');
+					if (alipay) {
+						alipayTransfer.push(moreThanFiftyThousand[i]);
+					}
+				}
+				$('.buy_content').children('.content_item').remove();
+				// 在页面渲染出来
+				for(var j = 0; j < alipayTransfer.length; $('.buy_content').append(alipayTransfer[j++]));
+			}
+			// 判断，"购买" 区间 "金额筛选" 下拉菜单当前选中的条件选项为 "10万以上"
+			if (buyNumber === 2) {
+				// 定义一个空数组，用来储存 "购买" 区间 "支付宝" 选项的元素
+				var alipayTransfer = [];
+				for(var i = 0; i < moreThanShiWan.length; i++) {
+					var alipay = moreThanShiWan[i].find('img').is('.alipay');
+					if (alipay) {
+						alipayTransfer.push(moreThanShiWan[i]);
+					}
+				}
+				$('.buy_content').children('.content_item').remove();
+				// 在页面渲染出来
+				for(var j = 0; j < alipayTransfer.length; $('.buy_content').append(alipayTransfer[j++]));
+			}
+			// 判断，"购买" 区间 "金额筛选" 下拉菜单当前选中的条件选项为 "20万以上"
+			if (buyNumber === 3) {
+				// 定义一个空数组，用来储存 "购买" 区间 "支付宝" 选项的元素
+				var alipayTransfer = [];
+				for(var i = 0; i < moreThanErShiWan.length; i++) {
+					var alipay = moreThanErShiWan[i].find('img').is('.alipay');
+					if (alipay) {
+						alipayTransfer.push(moreThanErShiWan[i]);
+					}
+				}
+				$('.buy_content').children('.content_item').remove();
+				// 在页面渲染出来
+				for(var j = 0; j < alipayTransfer.length; $('.buy_content').append(alipayTransfer[j++]));
+			}
+		}
+		// 用户点击 "购买" 区间 "支付方式" 下拉菜单的 "微信" 条件选项
+		if (buyWaysIndex === 3) {
+			$('.buy_all_ways_content').find("div").eq(0).find('img').attr('src', waysDefault0);
+			$('.buy_all_ways_content').find("div").eq(1).find('img').attr('src', waysDefault1);
+			$('.buy_all_ways_content').find("div").eq(2).find('img').attr('src', waysDefault2);
+			$('.buy_all_ways_content').find("div").eq(3).find('img').attr('src', ways3);
+			// 判断，"购买" 区间 "金额筛选" 下拉菜单当前选中的条件选项为 "所有金额"
+			if (buyNumber === 0) {
+				// 定义一个空数组，用来储存 "购买" 区间 "微信" 选项的元素
+				var WeChatTransfer = [];
+				for(var i = 0; i < buyAllAmountDefault.length; i++) {
+					var WeChat = buyAllAmountDefault[i].find('img').is('.wechat');
+					if (WeChat) {
+						WeChatTransfer.push(buyAllAmountDefault[i]);
+					}
+				}
+				$('.buy_content').children('.content_item').remove();
+				// 在页面渲染出来
+				for(var j = 0; j < WeChatTransfer.length; j++){
+					$('.buy_content').append(WeChatTransfer[j]);
+				}
+			}
+			// 判断，"购买" 区间 "金额筛选" 下拉菜单当前选中的条件选项为 "5万以上"
+			if (buyNumber === 1) {
+				// 定义一个空数组，用来储存 "购买" 区间 "微信" 选项的元素
+				var WeChatTransfer = [];
+				for(var i = 0; i < moreThanFiftyThousand.length; i++) {
+					var WeChat = moreThanFiftyThousand[i].find('img').is('.wechat');
+					if (WeChat) {
+						WeChatTransfer.push(moreThanFiftyThousand[i]);
+					}
+				}
+				$('.buy_content').children('.content_item').remove();
+				// 在页面渲染出来
+				for(var j = 0; j < WeChatTransfer.length; $('.buy_content').append(WeChatTransfer[j++]));
+			}
+			// 判断，"购买" 区间 "金额筛选" 下拉菜单当前选中的条件选项为 "10万以上"
+			if (buyNumber === 2) {
+				// 定义一个空数组，用来储存 "购买" 区间 "微信" 选项的元素
+				var WeChatTransfer = [];
+				for(var i = 0; i < moreThanShiWan.length; i++) {
+					var WeChat = moreThanShiWan[i].find('img').is('.wechat');
+					if (WeChat) {
+						WeChatTransfer.push(moreThanShiWan[i]);
+					}
+				}
+				$('.buy_content').children('.content_item').remove();
+				// 在页面渲染出来
+				for(var j = 0; j < WeChatTransfer.length; $('.buy_content').append(WeChatTransfer[j++]));
+			}
+			// 判断，"购买" 区间 "金额筛选" 下拉菜单当前选中的条件选项为 "20万以上"
+			if (buyNumber === 3) {
+				// 定义一个空数组，用来储存 "购买" 区间 "微信" 选项的元素
+				var WeChatTransfer = [];
+				for(var i = 0; i < moreThanErShiWan.length; i++) {
+					var WeChat = moreThanErShiWan[i].find('img').is('.wechat');
+					if (WeChat) {
+						WeChatTransfer.push(moreThanErShiWan[i]);
+					}
+				}
+				$('.buy_content').children('.content_item').remove();
+				// 在页面渲染出来
+				for(var j = 0; j < WeChatTransfer.length; $('.buy_content').append(WeChatTransfer[j++]));
+			}
+		}
+	})
+
+
+	// 定义一个空数组，用来储存 "出售" 区间的所有元素节点
+	var sellAllAmountDefault = [];
+	for (var i = 0; i < $('.sell_content .content_item').length; i++) {
+		sellAllAmountDefault.push($('.sell_content .content_item').eq(i));
+	}
+	// 定义一个空数组，用来储存 "出售" 区间的所有满足 "5万以上" 条件选项的元素
+	var sellMoreThanFiftyThousand = [];
+	for(var i = 0; i < $('.sell_content .content_item').length; i++) {
+		var priceRange = $('.sell_content .content_item').eq(i).find('.quota_num').text();
+		var index = priceRange.lastIndexOf("\-");
+		priceRange = priceRange.substring(index+1, priceRange.length);
+		priceRange = Number(priceRange);
+		if (priceRange >= 50000) {
+			sellMoreThanFiftyThousand.push($('.sell_content .content_item').eq(i));
+		}
+	}
+	// 定义一个空数组，用来储存 "出售" 区间的所有满足 "10万以上" 条件选项的元素
+	var sellMoreThanShiWan = [];
+	for(var i = 0; i < $('.sell_content .content_item').length; i++) {
+		var priceRange = $('.sell_content .content_item').eq(i).find('.quota_num').text();
+		var index = priceRange.lastIndexOf("\-");
+		priceRange = priceRange.substring(index+1, priceRange.length);
+		priceRange = Number(priceRange);
+		if (priceRange >= 100000) {
+			sellMoreThanShiWan.push($('.sell_content .content_item').eq(i));
+		}
+	}
+	// 定义一个空数组，用来储存 "出售" 区间的所有满足 "20万以上" 条件选项的元素
+	var sellMoreThanErShiWan = [];
+	for(var i = 0; i < $('.sell_content .content_item').length; i++) {
+		var priceRange = $('.sell_content .content_item').eq(i).find('.quota_num').text();
+		var index = priceRange.lastIndexOf("\-");
+		priceRange = priceRange.substring(index+1, priceRange.length);
+		priceRange = Number(priceRange);
+		if (priceRange >= 200000) {
+			sellMoreThanErShiWan.push($('.sell_content .content_item').eq(i));
+		}
+	}
+	// 定义一个空数组，用来储存 "出售" 区间的所有满足 "银行转账" 条件选项的元素
+	var sellByBankTransfer = [];
+	for(var i = 0; i < $('.sell_content .content_item').length; i++) {
+		var bankCard = $('.sell_content .content_item').eq(i).find('img').is('.bank_card');
+		if (bankCard) {
+			sellByBankTransfer.push($('.sell_content .content_item').eq(i));
+		}
+	}
+	// 定义一个空数组，用来储存 "出售" 区间的所有满足 "支付宝" 条件选项的元素
+	var sellByAlipayTransfer = [];
+	for(var i = 0; i < $('.sell_content .content_item').length; i++) {
+		var Alipay = $('.sell_content .content_item').eq(i).find('img').is('.alipay');
+		if (Alipay) {
+			sellByAlipayTransfer.push($('.sell_content .content_item').eq(i));
+		}
+	}
+	// 定义一个空数组，用来储存 "出售" 区间的所有满足 "微信" 条件选项的元素
+	var sellByWeChatTransfer = [];
+	for(var i = 0; i < $('.sell_content .content_item').length; i++) {
+		var WeChat = $('.sell_content .content_item').eq(i).find('img').is('.wechat');
+		if (WeChat) {
+			sellByWeChatTransfer.push($('.sell_content .content_item').eq(i));
+		}
+	}
+	// 定义一个变量，默认值为选择 "出售" 区间 "金额筛选" 下拉菜单的 "所有金额" 条件选项
+	var sellNumber = 0;
+	$('.sell_all_amount_content > div').click(function () {
+		sellNumber = $(this).index();
+		// 用户点击 "出售" 区间 "金额筛选" 下拉菜单的 "所有金额" 条件选项
+		if (sellNumber === 0) {
+			// 判断，"出售" 区间 "支付方式" 下拉菜单当前选中的条件选项为 "所有方式"
+			if (sellWaysIndex === 0) {
+				// 定义一个空数组，用来储存 "出售" 区间 "所有金额" 选项的元素
+				var sellAllAmount = [];
+				for(var i = 0; i < sellAllAmountDefault.length; i++) {
+					var priceRange = sellAllAmountDefault[i].find('.quota_num').text();
+					var index = priceRange.lastIndexOf("\-");
+					priceRange = priceRange.substring(index+1, priceRange.length);
+					priceRange = Number(priceRange);
+					if (priceRange >= 0) {
+						sellAllAmount.push(sellAllAmountDefault[i]);
+					}
+				}
+				$('.sell_content').children('.content_item').remove();
+				// 在页面渲染出来
+				for(var j = 0; j < sellAllAmount.length; $('.sell_content').append(sellAllAmount[j++]));
+			}
+			// 判断，"出售" 区间 "支付方式" 下拉菜单当前选中的条件选项为 "银行转账"
+			if (sellWaysIndex === 1) {
+				// 定义一个空数组，用来储存 "出售" 区间 "所有金额" 选项的元素
+				var sellAllAmount = [];
+				for(var i = 0; i < sellByBankTransfer.length; i++) {
+					var priceRange = sellByBankTransfer[i].find('.quota_num').text();
+					var index = priceRange.lastIndexOf("\-");
+					priceRange = priceRange.substring(index+1, priceRange.length);
+					priceRange = Number(priceRange);
+					if (priceRange >= 0) {
+						sellAllAmount.push(sellByBankTransfer[i]);
+					}
+				}
+				$('.sell_content').children('.content_item').remove();
+				// 在页面渲染出来
+				for(var j = 0; j < sellAllAmount.length; $('.sell_content').append(sellAllAmount[j++]));
+			}
+			// 判断，"出售" 区间 "支付方式" 下拉菜单当前选中的条件选项为 "支付宝"
+			if (sellWaysIndex === 2) {
+				// 定义一个空数组，用来储存 "出售" 区间 "所有金额" 选项的元素
+				var sellAllAmount = [];
+				for(var i = 0; i < sellByAlipayTransfer.length; i++) {
+					var priceRange = sellByAlipayTransfer[i].find('.quota_num').text();
+					var index = priceRange.lastIndexOf("\-");
+					priceRange = priceRange.substring(index+1, priceRange.length);
+					priceRange = Number(priceRange);
+					if (priceRange >= 0) {
+						sellAllAmount.push(sellByAlipayTransfer[i]);
+					}
+				}
+				$('.sell_content').children('.content_item').remove();
+				// 在页面渲染出来
+				for(var j = 0; j < sellAllAmount.length; $('.sell_content').append(sellAllAmount[j++]));
+			}
+			// 判断，"出售" 区间 "支付方式" 下拉菜单当前选中的条件选项为 "微信"
+			if (sellWaysIndex === 3) {
+				// 定义一个空数组，用来储存 "出售" 区间 "所有金额" 选项的元素
+				var sellAllAmount = [];
+				for(var i = 0; i < sellByWeChatTransfer.length; i++) {
+					var priceRange = sellByWeChatTransfer[i].find('.quota_num').text();
+					var index = priceRange.lastIndexOf("\-");
+					priceRange = priceRange.substring(index+1, priceRange.length);
+					priceRange = Number(priceRange);
+					if (priceRange >= 0) {
+						sellAllAmount.push(sellByWeChatTransfer[i]);
+					}
+				}
+				$('.sell_content').children('.content_item').remove();
+				// 在页面渲染出来
+				for(var j = 0; j < sellAllAmount.length; $('.sell_content').append(sellAllAmount[j++]));
+			}
+		}
+		// 用户点击 "出售" 区间 "金额筛选" 下拉菜单的 "5万以上" 条件选项
+		if (sellNumber === 1) {
+			// 判断，"出售" 区间 "支付方式" 下拉菜单当前选中的条件选项为 "所有方式"
+			if (sellWaysIndex === 0) {
+				// 定义一个空数组，用来储存 "出售" 区间 "5万以上" 选项的元素
+				var sellWuWanYiShang = [];
+				for(var i = 0; i < sellAllAmountDefault.length; i++) {
+					var priceRange = sellAllAmountDefault[i].find('.quota_num').text();
+					var index = priceRange.lastIndexOf("\-");
+					priceRange = priceRange.substring(index+1, priceRange.length);
+					priceRange = Number(priceRange);
+					if (priceRange >= 50000) {
+						sellWuWanYiShang.push(sellAllAmountDefault[i]);
+					}
+				}
+				$('.sell_content').children('.content_item').remove();
+				// 在页面渲染出来
+				for(var j = 0; j < sellWuWanYiShang.length; $('.sell_content').append(sellWuWanYiShang[j++]));
+			}
+			// 判断，"出售" 区间 "支付方式" 下拉菜单当前选中的条件选项为 "银行转账"
+			if (sellWaysIndex === 1) {
+				// 定义一个空数组，用来储存 "出售" 区间 "5万以上" 选项的元素
+				var sellWuWanYiShang = [];
+				for(var i = 0; i < sellByBankTransfer.length; i++) {
+					var priceRange = sellByBankTransfer[i].find('.quota_num').text();
+					var index = priceRange.lastIndexOf("\-");
+					priceRange = priceRange.substring(index+1, priceRange.length);
+					priceRange = Number(priceRange);
+					if (priceRange >= 50000) {
+						sellWuWanYiShang.push(sellByBankTransfer[i]);
+					}
+				}
+				$('.sell_content').children('.content_item').remove();
+				// 在页面渲染出来
+				for(var j = 0; j < sellWuWanYiShang.length; $('.sell_content').append(sellWuWanYiShang[j++]));
+			}
+			// 判断，"出售" 区间 "支付方式" 下拉菜单当前选中的条件选项为 "支付宝"
+			if (sellWaysIndex === 2) {
+				// 定义一个空数组，用来储存 "出售" 区间 "5万以上" 选项的元素
+				var sellWuWanYiShang = [];
+				for(var i = 0; i < sellByAlipayTransfer.length; i++) {
+					var priceRange = sellByAlipayTransfer[i].find('.quota_num').text();
+					var index = priceRange.lastIndexOf("\-");
+					priceRange = priceRange.substring(index+1, priceRange.length);
+					priceRange = Number(priceRange);
+					if (priceRange >= 50000) {
+						sellWuWanYiShang.push(sellByAlipayTransfer[i]);
+					}
+				}
+				$('.sell_content').children('.content_item').remove();
+				// 在页面渲染出来
+				for(var j = 0; j < sellWuWanYiShang.length; $('.sell_content').append(sellWuWanYiShang[j++]));
+			}
+			// 判断，"出售" 区间 "支付方式" 下拉菜单当前选中的条件选项为 "微信"
+			if (sellWaysIndex === 3) {
+				// 定义一个空数组，用来储存 "出售" 区间 "5万以上" 选项的元素
+				var sellWuWanYiShang = [];
+				for(var i = 0; i < sellByWeChatTransfer.length; i++) {
+					var priceRange = sellByWeChatTransfer[i].find('.quota_num').text();
+					var index = priceRange.lastIndexOf("\-");
+					priceRange = priceRange.substring(index+1, priceRange.length);
+					priceRange = Number(priceRange);
+					if (priceRange >= 50000) {
+						sellWuWanYiShang.push(sellByWeChatTransfer[i]);
+					}
+				}
+				$('.sell_content').children('.content_item').remove();
+				// 在页面渲染出来
+				for(var j = 0; j < sellWuWanYiShang.length; $('.sell_content').append(sellWuWanYiShang[j++]));
+			}
+		}
+		// 用户点击 "出售" 区间 "金额筛选" 下拉菜单的 "10万以上" 条件选项
+		if (sellNumber === 2) {
+			// 判断，"出售" 区间 "支付方式" 下拉菜单当前选中的条件选项为 "所有方式"
+			if (sellWaysIndex === 0) {
+				// 定义一个空数组，用来储存 "出售" 区间 "10万以上" 选项的元素
+				var sellShiWanYiShang = [];
+				for(var i = 0; i < sellAllAmountDefault.length; i++) {
+					var priceRange = sellAllAmountDefault[i].find('.quota_num').text();
+					var index = priceRange.lastIndexOf("\-");
+					priceRange = priceRange.substring(index+1, priceRange.length);
+					priceRange = Number(priceRange);
+					if (priceRange >= 100000) {
+						sellShiWanYiShang.push(sellAllAmountDefault[i]);
+					}
+				}
+				$('.sell_content').children('.content_item').remove();
+				// 在页面渲染出来
+				for(var j = 0; j < sellShiWanYiShang.length; $('.sell_content').append(sellShiWanYiShang[j++]));
+			}
+			// 判断，"出售" 区间 "支付方式" 下拉菜单当前选中的条件选项为 "银行转账"
+			if (sellWaysIndex === 1) {
+				// 定义一个空数组，用来储存 "出售" 区间 "10万以上" 选项的元素
+				var sellShiWanYiShang = [];
+				for(var i = 0; i < sellByBankTransfer.length; i++) {
+					var priceRange = sellByBankTransfer[i].find('.quota_num').text();
+					var index = priceRange.lastIndexOf("\-");
+					priceRange = priceRange.substring(index+1, priceRange.length);
+					priceRange = Number(priceRange);
+					if (priceRange >= 100000) {
+						sellShiWanYiShang.push(sellByBankTransfer[i]);
+					}
+				}
+				$('.sell_content').children('.content_item').remove();
+				// 在页面渲染出来
+				for(var j = 0; j < sellShiWanYiShang.length; $('.sell_content').append(sellShiWanYiShang[j++]));
+			}
+			// 判断，"出售" 区间 "支付方式" 下拉菜单当前选中的条件选项为 "支付宝"
+			if (sellWaysIndex === 2) {
+				// 定义一个空数组，用来储存 "出售" 区间 "10万以上" 选项的元素
+				var sellShiWanYiShang = [];
+				for(var i = 0; i < sellByAlipayTransfer.length; i++) {
+					var priceRange = sellByAlipayTransfer[i].find('.quota_num').text();
+					var index = priceRange.lastIndexOf("\-");
+					priceRange = priceRange.substring(index+1, priceRange.length);
+					priceRange = Number(priceRange);
+					if (priceRange >= 100000) {
+						sellShiWanYiShang.push(sellByAlipayTransfer[i]);
+					}
+				}
+				$('.sell_content').children('.content_item').remove();
+				// 在页面渲染出来
+				for(var j = 0; j < sellShiWanYiShang.length; $('.sell_content').append(sellShiWanYiShang[j++]));
+			}
+			// 判断，"出售" 区间 "支付方式" 下拉菜单当前选中的条件选项为 "微信"
+			if (sellWaysIndex === 3) {
+				// 定义一个空数组，用来储存 "出售" 区间 "10万以上" 选项的元素
+				var sellShiWanYiShang = [];
+				for(var i = 0; i < sellByWeChatTransfer.length; i++) {
+					var priceRange = sellByWeChatTransfer[i].find('.quota_num').text();
+					var index = priceRange.lastIndexOf("\-");
+					priceRange = priceRange.substring(index+1, priceRange.length);
+					priceRange = Number(priceRange);
+					if (priceRange >= 100000) {
+						sellShiWanYiShang.push(sellByWeChatTransfer[i]);
+					}
+				}
+				$('.sell_content').children('.content_item').remove();
+				// 在页面渲染出来
+				for(var j = 0; j < sellShiWanYiShang.length; $('.sell_content').append(sellShiWanYiShang[j++]));
+			}
+		}
+		// 用户点击 "出售" 区间 "金额筛选" 下拉菜单的 "20万以上" 条件选项
+		if (sellNumber === 3) {
+			// 判断，"出售" 区间 "支付方式" 下拉菜单当前选中的条件选项为 "所有方式"
+			if (sellWaysIndex === 0) {
+				// 定义一个空数组，用来储存 "出售" 区间 "20万以上" 选项的元素
+				var sellErShiWanYiShang = [];
+				for(var i = 0; i < sellAllAmountDefault.length; i++) {
+					var priceRange = sellAllAmountDefault[i].find('.quota_num').text();
+					var index = priceRange.lastIndexOf("\-");
+					priceRange = priceRange.substring(index+1, priceRange.length);
+					priceRange = Number(priceRange);
+					if (priceRange >= 200000) {
+						sellErShiWanYiShang.push(sellAllAmountDefault[i]);
+					}
+				}
+				$('.sell_content').children('.content_item').remove();
+				// 在页面渲染出来
+				for(var j = 0; j < sellErShiWanYiShang.length; $('.sell_content').append(sellErShiWanYiShang[j++]));
+			}
+			// 判断，"出售" 区间 "支付方式" 下拉菜单当前选中的条件选项为 "银行转账"
+			if (sellWaysIndex === 1) {
+				// 定义一个空数组，用来储存 "出售" 区间 "20万以上" 选项的元素
+				var sellErShiWanYiShang = [];
+				for(var i = 0; i < sellByBankTransfer.length; i++) {
+					var priceRange = sellByBankTransfer[i].find('.quota_num').text();
+					var index = priceRange.lastIndexOf("\-");
+					priceRange = priceRange.substring(index+1, priceRange.length);
+					priceRange = Number(priceRange);
+					if (priceRange >= 200000) {
+						sellErShiWanYiShang.push(sellByBankTransfer[i]);
+					}
+				}
+				$('.sell_content').children('.content_item').remove();
+				// 在页面渲染出来
+				for(var j = 0; j < sellErShiWanYiShang.length; $('.sell_content').append(sellErShiWanYiShang[j++]));
+			}
+			// 判断，"出售" 区间 "支付方式" 下拉菜单当前选中的条件选项为 "支付宝"
+			if (sellWaysIndex === 2) {
+				// 定义一个空数组，用来储存 "出售" 区间 "20万以上" 选项的元素
+				var sellErShiWanYiShang = [];
+				for(var i = 0; i < sellByAlipayTransfer.length; i++) {
+					var priceRange = sellByAlipayTransfer[i].find('.quota_num').text();
+					var index = priceRange.lastIndexOf("\-");
+					priceRange = priceRange.substring(index+1, priceRange.length);
+					priceRange = Number(priceRange);
+					if (priceRange >= 200000) {
+						sellErShiWanYiShang.push(sellByAlipayTransfer[i]);
+					}
+				}
+				$('.sell_content').children('.content_item').remove();
+				// 在页面渲染出来
+				for(var j = 0; j < sellErShiWanYiShang.length; $('.sell_content').append(sellErShiWanYiShang[j++]));
+			}
+			// 判断，"出售" 区间 "支付方式" 下拉菜单当前选中的条件选项为 "微信"
+			if (sellWaysIndex === 3) {
+				// 定义一个空数组，用来储存 "出售" 区间 "20万以上" 选项的元素
+				var sellErShiWanYiShang = [];
+				for(var i = 0; i < sellByWeChatTransfer.length; i++) {
+					var priceRange = sellByWeChatTransfer[i].find('.quota_num').text();
+					var index = priceRange.lastIndexOf("\-");
+					priceRange = priceRange.substring(index+1, priceRange.length);
+					priceRange = Number(priceRange);
+					if (priceRange >= 200000) {
+						sellErShiWanYiShang.push(sellByWeChatTransfer[i]);
+					}
+				}
+				$('.sell_content').children('.content_item').remove();
+				// 在页面渲染出来
+				for(var j = 0; j < sellErShiWanYiShang.length; $('.sell_content').append(sellErShiWanYiShang[j++]));
+			}
+		}
+		$(this).addClass('check_sell_money').siblings().removeClass('check_sell_money');
+		clickSellAllAmount = 0;
+		$('.sell_all_amount_content').slideUp(200);
+		$('.all_amount').find("img").attr('src', '/static/images/goback@2x.png');
+	})
+	// 定义一个变量，默认值为选择 "出售" 区间 "支付方式" 下拉菜单的 "所有方式" 条件选项
+	var sellWaysIndex = 0;
+	$('.sell_all_ways_content > div').click(function () {
+		sellWaysIndex = $(this).index();
+		$(this).addClass('check_sell_ways').siblings().removeClass('check_sell_ways');
+		clickSellAllWays = 0;
+		$('.sell_all_ways_content').slideUp(200);
+		$('.all_ways').find("img").attr('src', '/static/images/goback@2x.png');
+		if (sellWaysIndex === 0) {
+			$('.sell_all_ways_content').find("div").eq(0).find('img').attr('src', ways0);
+			$('.sell_all_ways_content').find("div").eq(1).find('img').attr('src', waysDefault1);
+			$('.sell_all_ways_content').find("div").eq(2).find('img').attr('src', waysDefault2);
+			$('.sell_all_ways_content').find("div").eq(3).find('img').attr('src', waysDefault3);
+			// 判断，"出售" 区间 "金额筛选" 下拉菜单当前选中的条件选项为 "所有金额"
+			if (sellNumber === 0) {
+				// 定义一个空数组，用来储存 "出售" 区间 "所有方式" 选项的元素
+				var sellByAllPayWays = [];
+				for(var i = 0; i < sellAllAmountDefault.length; i++) {
+					var payWays = sellAllAmountDefault[i].find('img');
+					if (payWays) {
+						sellByAllPayWays.push(sellAllAmountDefault[i]);
+					}
+				}
+				$('.sell_content').children('.content_item').remove();
+				// 在页面渲染出来
+				for(var j = 0; j < sellByAllPayWays.length; $('.sell_content').append(sellByAllPayWays[j++]));
+			}
+			// 判断，"出售" 区间 "金额筛选" 下拉菜单当前选中的条件选项为 "5万以上"
+			if (sellNumber === 1) {
+				// 定义一个空数组，用来储存 "出售" 区间 "所有方式" 选项的元素
+				var sellByAllPayWays = [];
+				for(var i = 0; i < sellMoreThanFiftyThousand.length; i++) {
+					var payWays = sellMoreThanFiftyThousand[i].find('img');
+					if (payWays) {
+						sellByAllPayWays.push(sellMoreThanFiftyThousand[i]);
+					}
+				}
+				$('.sell_content').children('.content_item').remove();
+				// 在页面渲染出来
+				for(var j = 0; j < sellByAllPayWays.length; $('.sell_content').append(sellByAllPayWays[j++]));
+			}
+			// 判断，"出售" 区间 "金额筛选" 下拉菜单当前选中的条件选项为 "10万以上"
+			if (sellNumber === 2) {
+				// 定义一个空数组，用来储存 "出售" 区间 "所有方式" 选项的元素
+				var sellByAllPayWays = [];
+				for(var i = 0; i < sellMoreThanShiWan.length; i++) {
+					var payWays = sellMoreThanShiWan[i].find('img');
+					if (payWays) {
+						sellByAllPayWays.push(sellMoreThanShiWan[i]);
+					}
+				}
+				$('.sell_content').children('.content_item').remove();
+				// 在页面渲染出来
+				for(var j = 0; j < sellByAllPayWays.length; $('.sell_content').append(sellByAllPayWays[j++]));
+			}
+			// 判断，"出售" 区间 "金额筛选" 下拉菜单当前选中的条件选项为 "20万以上"
+			if (sellNumber === 3) {
+				// 定义一个空数组，用来储存 "出售" 区间 "所有方式" 选项的元素
+				var sellByAllPayWays = [];
+				for(var i = 0; i < sellMoreThanErShiWan.length; i++) {
+					var payWays = sellMoreThanErShiWan[i].find('img');
+					if (payWays) {
+						sellByAllPayWays.push(sellMoreThanErShiWan[i]);
+					}
+				}
+				$('.sell_content').children('.content_item').remove();
+				// 在页面渲染出来
+				for(var j = 0; j < sellByAllPayWays.length; $('.sell_content').append(sellByAllPayWays[j++]));
+			}
+		}
+		if (sellWaysIndex === 1) {
+			$('.sell_all_ways_content').find("div").eq(0).find('img').attr('src', waysDefault0);
+			$('.sell_all_ways_content').find("div").eq(1).find('img').attr('src', ways1);
+			$('.sell_all_ways_content').find("div").eq(2).find('img').attr('src', waysDefault2);
+			$('.sell_all_ways_content').find("div").eq(3).find('img').attr('src', waysDefault3);
+			// 判断，"出售" 区间 "金额筛选" 下拉菜单当前选中的条件选项为 "所有金额"
+			if (sellNumber === 0) {
+				// 定义一个空数组，用来储存 "出售" 区间 "银行转账" 选项的元素
+				var sellByBankTransfer = [];
+				for(var i = 0; i < sellAllAmountDefault.length; i++) {
+					var bankCard = sellAllAmountDefault[i].find('img').is('.bank_card');
+					if (bankCard) {
+						sellByBankTransfer.push(sellAllAmountDefault[i]);
+					}
+				}
+				$('.sell_content').children('.content_item').remove();
+				// 在页面渲染出来
+				for(var j = 0; j < sellByBankTransfer.length; $('.sell_content').append(sellByBankTransfer[j++]));
+			}
+			// 判断，"出售" 区间 "金额筛选" 下拉菜单当前选中的条件选项为 "5万以上"
+			if (sellNumber === 1) {
+				// 定义一个空数组，用来储存 "出售" 区间 "银行转账" 选项的元素
+				var sellByBankTransfer = [];
+				for(var i = 0; i < sellMoreThanFiftyThousand.length; i++) {
+					var bankCard = sellMoreThanFiftyThousand[i].find('img').is('.bank_card');
+					if (bankCard) {
+						sellByBankTransfer.push(sellMoreThanFiftyThousand[i]);
+					}
+				}
+				$('.sell_content').children('.content_item').remove();
+				// 在页面渲染出来
+				for(var j = 0; j < sellByBankTransfer.length; $('.sell_content').append(sellByBankTransfer[j++]));
+			}
+			// 判断，"出售" 区间 "金额筛选" 下拉菜单当前选中的条件选项为 "10万以上"
+			if (sellNumber === 2) {
+				// 定义一个空数组，用来储存 "出售" 区间 "银行转账" 选项的元素
+				var sellByBankTransfer = [];
+				for(var i = 0; i < sellMoreThanShiWan.length; i++) {
+					var bankCard = sellMoreThanShiWan[i].find('img').is('.bank_card');
+					if (bankCard) {
+						sellByBankTransfer.push(sellMoreThanShiWan[i]);
+					}
+				}
+				$('.sell_content').children('.content_item').remove();
+				// 在页面渲染出来
+				for(var j = 0; j < sellByBankTransfer.length; $('.sell_content').append(sellByBankTransfer[j++]));
+			}
+			// 判断，"出售" 区间 "金额筛选" 下拉菜单当前选中的条件选项为 "20万以上"
+			if (sellNumber === 3) {
+				// 定义一个空数组，用来储存 "出售" 区间 "银行转账" 选项的元素
+				var sellByBankTransfer = [];
+				for(var i = 0; i < sellMoreThanErShiWan.length; i++) {
+					var bankCard = sellMoreThanErShiWan[i].find('img').is('.bank_card');
+					if (bankCard) {
+						sellByBankTransfer.push(sellMoreThanErShiWan[i]);
+					}
+				}
+				$('.sell_content').children('.content_item').remove();
+				// 在页面渲染出来
+				for(var j = 0; j < sellByBankTransfer.length; $('.sell_content').append(sellByBankTransfer[j++]));
+			}
+		}
+		if (sellWaysIndex === 2) {
+			$('.sell_all_ways_content').find("div").eq(0).find('img').attr('src', waysDefault0);
+			$('.sell_all_ways_content').find("div").eq(1).find('img').attr('src', waysDefault1);
+			$('.sell_all_ways_content').find("div").eq(2).find('img').attr('src', ways2);
+			$('.sell_all_ways_content').find("div").eq(3).find('img').attr('src', waysDefault3);
+			// 判断，"出售" 区间 "金额筛选" 下拉菜单当前选中的条件选项为 "所有金额"
+			if (sellNumber === 0) {
+				// 定义一个空数组，用来储存 "出售" 区间 "支付宝" 选项的元素
+				var sellByAlipayTransfer = [];
+				for(var i = 0; i < sellAllAmountDefault.length; i++) {
+					var alipay = sellAllAmountDefault[i].find('img').is('.alipay');
+					if (alipay) {
+						sellByAlipayTransfer.push(sellAllAmountDefault[i]);
+					}
+				}
+				$('.sell_content').children('.content_item').remove();
+				// 在页面渲染出来
+				for(var j = 0; j < sellByAlipayTransfer.length; $('.sell_content').append(sellByAlipayTransfer[j++]));
+			}
+			// 判断，"出售" 区间 "金额筛选" 下拉菜单当前选中的条件选项为 "5万以上"
+			if (sellNumber === 1) {
+				// 定义一个空数组，用来储存 "出售" 区间 "支付宝" 选项的元素
+				var sellByAlipayTransfer = [];
+				for(var i = 0; i < sellMoreThanFiftyThousand.length; i++) {
+					var alipay = sellMoreThanFiftyThousand[i].find('img').is('.alipay');
+					if (alipay) {
+						sellByAlipayTransfer.push(sellMoreThanFiftyThousand[i]);
+					}
+				}
+				$('.sell_content').children('.content_item').remove();
+				// 在页面渲染出来
+				for(var j = 0; j < sellByAlipayTransfer.length; $('.sell_content').append(sellByAlipayTransfer[j++]));
+			}
+			// 判断，"出售" 区间 "金额筛选" 下拉菜单当前选中的条件选项为 "10万以上"
+			if (sellNumber === 2) {
+				// 定义一个空数组，用来储存 "出售" 区间 "支付宝" 选项的元素
+				var sellByAlipayTransfer = [];
+				for(var i = 0; i < sellMoreThanShiWan.length; i++) {
+					var alipay = sellMoreThanShiWan[i].find('img').is('.alipay');
+					if (alipay) {
+						sellByAlipayTransfer.push(sellMoreThanShiWan[i]);
+					}
+				}
+				$('.sell_content').children('.content_item').remove();
+				// 在页面渲染出来
+				for(var j = 0; j < sellByAlipayTransfer.length; $('.sell_content').append(sellByAlipayTransfer[j++]));
+			}
+			// 判断，"出售" 区间 "金额筛选" 下拉菜单当前选中的条件选项为 "20万以上"
+			if (sellNumber === 3) {
+				// 定义一个空数组，用来储存 "出售" 区间 "支付宝" 选项的元素
+				var sellByAlipayTransfer = [];
+				for(var i = 0; i < sellMoreThanErShiWan.length; i++) {
+					var alipay = sellMoreThanErShiWan[i].find('img').is('.alipay');
+					if (alipay) {
+						sellByAlipayTransfer.push(sellMoreThanErShiWan[i]);
+					}
+				}
+				$('.sell_content').children('.content_item').remove();
+				// 在页面渲染出来
+				for(var j = 0; j < sellByAlipayTransfer.length; $('.sell_content').append(sellByAlipayTransfer[j++]));
+			}
+		}
+		if (sellWaysIndex === 3) {
+			$('.sell_all_ways_content').find("div").eq(0).find('img').attr('src', waysDefault0);
+			$('.sell_all_ways_content').find("div").eq(1).find('img').attr('src', waysDefault1);
+			$('.sell_all_ways_content').find("div").eq(2).find('img').attr('src', waysDefault2);
+			$('.sell_all_ways_content').find("div").eq(3).find('img').attr('src', ways3);
+			// 判断，"出售" 区间 "金额筛选" 下拉菜单当前选中的条件选项为 "所有金额"
+			if (sellNumber === 0) {
+				// 定义一个空数组，用来储存 "出售" 区间 "微信" 选项的元素
+				var sellByWeChatTransfer = [];
+				for(var i = 0; i < sellAllAmountDefault.length; i++) {
+					var WeChat = sellAllAmountDefault[i].find('img').is('.wechat');
+					if (WeChat) {
+						sellByWeChatTransfer.push(sellAllAmountDefault[i]);
+					}
+				}
+				$('.sell_content').children('.content_item').remove();
+				// 在页面渲染出来
+				for(var j = 0; j < sellByWeChatTransfer.length; j++){
+					$('.sell_content').append(sellByWeChatTransfer[j]);
+				}
+			}
+			// 判断，"出售" 区间 "金额筛选" 下拉菜单当前选中的条件选项为 "5万以上"
+			if (sellNumber === 1) {
+				// 定义一个空数组，用来储存 "出售" 区间 "微信" 选项的元素
+				var sellByWeChatTransfer = [];
+				for(var i = 0; i < sellMoreThanFiftyThousand.length; i++) {
+					var WeChat = sellMoreThanFiftyThousand[i].find('img').is('.wechat');
+					if (WeChat) {
+						sellByWeChatTransfer.push(sellMoreThanFiftyThousand[i]);
+					}
+				}
+				$('.sell_content').children('.content_item').remove();
+				// 在页面渲染出来
+				for(var j = 0; j < sellByWeChatTransfer.length; $('.sell_content').append(sellByWeChatTransfer[j++]));
+			}
+			// 判断，"出售" 区间 "金额筛选" 下拉菜单当前选中的条件选项为 "10万以上"
+			if (sellNumber === 2) {
+				// 定义一个空数组，用来储存 "出售" 区间 "微信" 选项的元素
+				var sellByWeChatTransfer = [];
+				for(var i = 0; i < sellMoreThanShiWan.length; i++) {
+					var WeChat = sellMoreThanShiWan[i].find('img').is('.wechat');
+					if (WeChat) {
+						sellByWeChatTransfer.push(sellMoreThanShiWan[i]);
+					}
+				}
+				$('.sell_content').children('.content_item').remove();
+				// 在页面渲染出来
+				for(var j = 0; j < sellByWeChatTransfer.length; $('.sell_content').append(sellByWeChatTransfer[j++]));
+			}
+			// 判断，"出售" 区间 "金额筛选" 下拉菜单当前选中的条件选项为 "20万以上"
+			if (sellNumber === 3) {
+				// 定义一个空数组，用来储存 "出售" 区间 "微信" 选项的元素
+				var sellByWeChatTransfer = [];
+				for(var i = 0; i < sellMoreThanErShiWan.length; i++) {
+					var WeChat = sellMoreThanErShiWan[i].find('img').is('.wechat');
+					if (WeChat) {
+						sellByWeChatTransfer.push(sellMoreThanErShiWan[i]);
+					}
+				}
+				$('.sell_content').children('.content_item').remove();
+				// 在页面渲染出来
+				for(var j = 0; j < sellByWeChatTransfer.length; $('.sell_content').append(sellByWeChatTransfer[j++]));
+			}
+		}
+	})
+</script>
+</html>

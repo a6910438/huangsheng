@@ -1,0 +1,225 @@
+{extend name="layout/main" /}
+
+{block name="header"}
+
+{/block}
+{block name="left"}{/block}
+
+{block name="content"}
+<!-- <div class="row">
+    <div class="col-lg-6 col-sm-6" style="padding-left: 0">
+        <section class="panel ">
+            <header class="panel-heading">
+                <h4>会员等级分布图</h4>
+            </header>
+            <div class="panel-body">
+                <div id="user" style="width: 100%;height: 200px">
+
+                </div>
+            </div>
+        </section>
+    </div>
+
+</div> -->
+<div class="row">
+    <div class="col-lg-2 col-md-2" style="padding-left: 0">
+        <section class="panel ">
+            <header class="panel-heading">
+                <h4>会员数量</h4>
+            </header>
+            <div class="panel-body">
+                <h3>{$user['total'] ? $user['total'] : 0}</h3>
+            </div>
+        </section>
+    </div>
+    <div class="col-lg-2 col-md-2" style="padding-left: 0">
+        <section class="panel ">
+            <header class="panel-heading">
+                <h4>激活会员数量</h4>
+            </header>
+            <div class="panel-body">
+                <h3>{$user['use_total'] ? $user['use_total'] : 0}</h3>
+            </div>
+        </section>
+    </div>
+	<div class="col-lg-2 col-md-2" style="padding-left: 0">
+        <section class="panel ">
+            <header class="panel-heading">
+                <h4>交易会员总数</h4>
+            </header>
+            <div class="panel-body">
+                <h3>{$user['valid'] ? $user['valid'] : 0}</h3>
+            </div>
+        </section>
+    </div>
+    <div class="col-lg-2 col-md-2" style="padding-left: 0">
+        <section class="panel">
+            <header class="panel-heading">
+                <h4>今日会员注册数</h4>
+            </header>
+            <div class="panel-body">
+                <h3>{$user['today'] ? $user['today'] : 0}</h3>
+            </div>
+        </section>
+    </div>
+    <div class="col-lg-2 col-md-2" style="padding-left: 0">
+        <section class="panel">
+            <header class="panel-heading">
+                <h4>今日会员激活数</h4>
+            </header>
+            <div class="panel-body">
+                <h3>{$user['register_user'] ? $user['register_user'] : 0}</h3>
+            </div>
+        </section>
+    </div>
+    <div class="col-lg-2 col-md-2" style="padding-left: 0">
+        <section class="panel">
+            <header class="panel-heading">
+                <h4>未处理的提币请求</h4>
+            </header>
+            <div class="panel-body">
+                <h3>{$user['undone_withdraw'] ? $user['undone_withdraw'] : 0}</h3>
+            </div>
+        </section>
+    </div>
+    <div class="col-lg-2 col-md-2" style="padding-left: 0">
+        <section class="panel">
+            <header class="panel-heading">
+                <h4>未处理的申诉请求</h4>
+            </header>
+            <div class="panel-body">
+                <h3>{$user['appeal_user'] ? $user['appeal_user'] : 0}</h3>
+            </div>
+        </section>
+    </div>
+
+</div>
+<section class="panel">
+
+
+
+
+
+		
+	
+        <header class="panel-heading">
+            <h4>&nbsp;&nbsp;归属地统计</h4>
+        </header>
+        <div class="panel-body" style="padding-bottom: 50px">
+            <table class="table table-bordered table-striped no-margin">
+                <thead>
+                <tr>
+                    <th class="text-center">地区</th>
+                    <th class="text-center">总数</th>
+                    <th class="text-center">有效</th>
+                    <th class="text-center">无效</th>
+                </tr>
+                </thead>
+                <tbody>
+                {foreach $address_user as $k => $v}
+                <tr>
+
+                    <td class="text-center"> {$v['province']}</td>
+                    <td class="text-center">{$v['all']}</td>
+                    <td class="text-center">{$v['effective']}</td>
+                    <td class="text-center">{$v['invalid']}</td>
+
+                </tr>
+                {/foreach}
+                </tbody>
+            </table>
+
+
+<script>
+window.sessionStorage.clear();
+</script>
+</section>
+
+
+{/block}
+
+
+{block name="footer"}
+<script src="__PUBLIC__/admin/js/echarts.min.js"></script>
+
+<script>
+    var userChart = echarts.init(document.getElementById('user'));
+    var user = {
+        title: {
+            text: '会员等级分布图',
+            x: 'center'
+        },
+        tooltip: {
+            trigger: 'item',
+            formatter: "{a} <br/>{b} : {c} ({d}%)"
+        },
+        legend: {
+            orient: 'vertical',
+            left: 'left',
+            data: ['Lv1', 'Lv2', 'Lv3', 'Lv4', 'Lv5']
+        },
+        series: [
+            {
+                type: 'pie',
+                radius: '55%',
+                center: ['50%', '60%'],
+                data: [
+                    {value: '{$userLevel[1] ? $userLevel[1] : 0}', name: 'Lv1'},
+                    {value: '{$userLevel[2] ? $userLevel[2] : 0}', name: 'Lv2'},
+                    {value: '{$userLevel[3] ? $userLevel[3] : 0}', name: 'Lv3'},
+                    {value: '{$userLevel[4] ? $userLevel[4] : 0}', name: 'Lv4'},
+                    {value: '{$userLevel[5] ? $userLevel[5] : 0}', name: 'Lv5'}
+                ],
+                itemStyle: {
+                    emphasis: {
+                        shadowBlur: 10,
+                        shadowOffsetX: 0,
+                        shadowColor: 'rgba(0, 0, 0, 0.5)'
+                    }
+                }
+            }
+        ]
+    };
+    userChart.setOption(user);
+</script>
+<script>
+    var magicChart = echarts.init(document.getElementById('magic'));
+    var magic = {
+        title: {
+            text: '金矿分布图',
+            x: 'center'
+        },
+        tooltip: {
+            trigger: 'item',
+            formatter: "{a} <br/>{b} : {c} ({d}%)"
+        },
+        legend: {
+            orient: 'vertical',
+            left: 'left',
+            data: ['运行中', '已过期']
+        },
+        series: [
+            {
+                type: 'pie',
+                radius: '55%',
+                center: ['50%', '60%'],
+                data: [
+                    {value: "{$magic['running'] ? $magic['running'] : 0}", name: '运行中'},
+                    {value: "{$magic['stop'] ? $magic['stop'] : 0}", name: '已过期'}
+                ],
+                itemStyle: {
+                    emphasis: {
+                        shadowBlur: 10,
+                        shadowOffsetX: 0,
+                        shadowColor: 'rgba(0, 0, 0, 0.5)'
+                    }
+                }
+            }
+        ]
+    };
+    magicChart.setOption(magic);
+</script>
+<script>
+
+</script>
+{/block}

@@ -1,0 +1,163 @@
+{extend name="layout/main" /}
+
+{block name="header"}
+
+{/block}
+
+{block name="content"}
+<style>
+    .listli{
+           background-color: #fff;
+    }
+    .select {
+        color: #ffffff;
+        background-color: #1ec3c8;
+        border-color: #1ec3c8;
+    }
+    .select:hover{
+        color: #fff;
+    }
+</style>
+<!-- <div>
+    <ul>
+        <a href="{:url('admin/legal/index')}"><li class="btn listli ">收购订单</li></a>
+        <a href="{:url('admin/legal/sale')}"><li class="btn listli ">出售订单</li></a>
+        <a href="{:url('admin/legal/deal')}"><li class="btn listli ">交易订单</li></a>
+        <a href="{:url('admin/legal/iserror')}"><li class="btn listli select">错误订单</li></a>
+    </ul>
+</div> -->
+<script src="/zhao/public/admin/js/laydate/laydate.js"></script>
+<section class="panel">
+    <header class="panel-heading">
+        <h4>充值明细</h4>
+    </header>
+    <div class="panel-body" style="padding-bottom: 50px">
+        <form class="form-horizontal" action="{:url('admin/fomo/recharge')}">
+            <div class="form-group">
+
+                <div class="col-xs-1 no-pd-r">
+                    <select name="status" id="status" class="form-control">
+                        <option  value="0">全部状态</option>
+                        <option {if $Request.get.status == 1} selected {/if} value="1">钱包充值</option>
+                        <option {if $Request.get.status == 2} selected {/if} value="2">系统充值</option>
+                        <!-- <option {if $Request.get.status == 3} selected {/if} value="3">提取失败</option> -->
+                    </select>
+                </div>
+               
+                <div class="col-xs-1 no-pd-r">
+                    <select name="type" id="type" class="form-control">
+                        <option {if $Request.get.type == 'mobile'} selected {/if} value="mobile">用户电话</option>
+                        <!-- <option {if $Request.get.type == 'orderid'} selected {/if} value="wssn">充值编号</option> -->
+                    </select>
+                </div>
+                <div class="col-xs-3 no-pd-l">
+                    <input type="text" value="{$Request.get.keyword}" name="keyword" id="keyword" class="form-control" placeholder="请输入相应搜索关键词">
+                </div>
+
+                <div class="col-xs-2 no-pd-2">
+                    <input type="text" value="{$Request.get.startTime}" name="startTime" id="startTime" class="form-control" placeholder="请输入开始时间">
+                </div>
+                <div class="col-xs-2 no-pd-2">
+                    <input type="text" value="{$Request.get.endTime}" name="endTime" id="endTime" class="form-control" placeholder="请输入结束时间">
+                </div>
+                <button type="submit" class="btn btn-color">搜索</button>
+                <button type="button" class="btn btn-success" id="export">导出</button>
+            </div>
+        </form>
+        <table class="table table-bordered table-striped no-margin">
+            <thead>
+                <tr>
+                    <th class="text-center">序号</th>
+                    <!-- <th class="text-center">充值编号</th> -->
+                    <th class="text-center">用户信息</th>
+                    <th class="text-center">充值金额</th>
+                    <th class="text-center">充值前</th>
+                    <th class="text-center">充值后</th>
+
+                    <th class="text-center">充值地址</th>
+                    <th class="text-center">状态</th>
+                    <th class="text-center">创建时间</th>
+
+                    <th class="text-center">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+            {if $list}
+                {foreach $list as $order}
+                    <tr>
+                        <td class="text-center">{$order->id}</td>
+
+                        <td class="text-center">
+                            昵称：{$order->nick_name}<br>
+                            电话：{$order->mobile}
+                        </td>
+                        <td class="text-center">{$order->magic} ETH</td>
+                        <td class="text-center">{$order->old} ETH</td>
+                        <td class="text-center">{$order->new} ETH</td>
+                        <td class="text-center">{$order->trade_address}</td>
+                        <td class="text-center">
+                            {$order->remark}
+                        </td>
+                        <td class="text-center">{$order->create_time}</td>
+
+                        <td class="text-center">
+
+                        </td>
+
+
+                        
+
+                    </tr>
+                {/foreach}
+            {else /}
+                <tr class="text-center">
+                    <td colspan="8">暂无数据</td>
+                </tr>
+            {/if}
+            </tbody>
+        </table>
+        <div class="page">
+            {:htmlspecialchars_decode($list->render())}
+        </div>
+    </div>
+</section>
+<script>
+laydate.render({
+  elem: '#startTime',
+  type: 'datetime'
+});
+laydate.render({
+  elem: '#endTime',
+  type: 'datetime'
+});
+</script>
+
+{/block}
+{block name="footer"}
+<form action="{:url('admin/fomo/exportRecharge')}" id="exportForm">
+    <input type="hidden" name="type" id="e_type">
+    <input type="hidden" name="keyword" id="e_keyword">
+    <input type="hidden" name="startTime" id="e_startTime">
+    <input type="hidden" name="endTime" id="e_endTime">
+    <input type="hidden" name="status" id="e_status">
+
+</form> 
+<script>
+    //导出会员信息
+    $("#export").click(function(){
+        var keyword = $("#keyword").val();
+        var type = $("#type").val();
+        var startTime = $("#startTime").val();
+        var endTime = $("#endTime").val();
+        var status = $("#status").val();
+
+        $('#e_keyword').val(keyword);
+        $('#e_type').val(type);
+        $('#e_startTime').val(keyword);
+        $('#e_endTime').val(endTime);
+        $('#e_status').val(status);
+
+        $("#exportForm").submit();
+    })
+</script>
+{/block}

@@ -1,0 +1,863 @@
+{extend name="layout/main" /}
+
+{block name="header"}
+
+{/block}
+
+{block name="content"}
+<script src="__PUBLIC__/admin/js/laydate/laydate.js"></script>
+<link rel="stylesheet" href="__PUBLIC__/static/webuploader/webuploader.css">
+<script type="text/javascript" src='__PUBLIC__/static/webuploader/webuploader.js'></script>
+<section class="panel">
+    {if isset($info)}
+
+    <header class="panel-heading">
+        <h4>产品编辑</h4>
+    </header>
+    <div class="panel-body" style="padding-bottom: 50px">
+        <form class="form-horizontal" method="post" onsubmit="return false" role="form">
+            <div class="form-group">
+                <label class="col-sm-2 control-label">房产名</label>
+
+                <div class="col-sm-5">
+                    <input type="text" value="{$info->name}" name="name" class="form-control"
+                           placeholder="请输入房产名">
+                </div>
+                <div class="col-sm-3 help-block">
+                    添加后请勿随意修改房产名
+                </div>
+            </div>
+
+            <!-- 
+            <div class="form-group">
+                <label class="col-sm-2 control-label">节点等级（等级唯一）</label>
+
+                <div class="col-sm-5">
+                    <input type="number" value="{$info->lv}" name="lv" class="form-control"
+                           placeholder="节点等级（等级唯一）">
+
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label class="col-sm-2 control-label">锁仓倍数（单位 正整数）<span style="color: red">合约数据*锁仓倍数 = 锁仓数据</span></label>
+
+                <div class="col-sm-5">
+                    <input type="number" value="{$info->lock_position}" step="1" min="1" name="lock_position" class="form-control"
+                           placeholder="锁仓配置（单位 正整数）">
+
+                </div>
+            </div> 
+            -->
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">房产状态</label>
+
+                <div class="col-sm-5">
+                    <select name="status" class="form-control">
+                        <option value="0" {if $info->status == '0'} selected {/if}>（升级）</option>
+                        <option value="1" {if $info->status == '1'} selected {/if}>（拆分）</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">拆分瓶数</label>
+                <div class="col-sm-5">
+                    <input type="number" value="{$info->num}" name="num"  class="form-control" placeholder="请输入拆分瓶数">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">价值区间</label>
+
+                <div class="col-sm-5">
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">最小</label>
+                        <div class="col-sm-5">
+                            <input type="number" value="{$info->worth_min}" min="0" name="worth_min" class="form-control"
+                                   placeholder="最小值">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">最大</label>
+                        <div class="col-sm-5">
+                            <input type="number" value="{$info->worth_max}"  min="0" name="worth_max" class="form-control"
+                                   placeholder="最大值">
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">开始预约时间</label>
+                <div class="col-sm-5">
+                    <input type="text" value="<?php echo date('H:i:s',$info['about_start_time']) ?>" name="about_start_time" id="abouthosts" class="form-control" placeholder="请输入开始时间">
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">结束预约时间</label>
+                <div class="col-sm-5">
+                    <input type="text" value="<?php echo date('H:i:s',$info['about_end_time']) ?>" name="about_end_time" id="abouthostn" class="form-control" placeholder="请输入开始时间">
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">开始领取时间</label>
+                <div class="col-sm-5">
+                    <input type="text" value="<?php echo date('H:i:s',$info['start_time']) ?>" name="start_time" id="hosts" class="form-control" placeholder="请输入开始时间">
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">结束领取时间</label>
+                <div class="col-sm-5">
+                    <input type="text" value="<?php echo date('H:i:s',$info['end_time']) ?>" name="end_time" id="hostn" class="form-control" placeholder="请输入开始时间">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">装修消耗GTC</label>
+
+                <div class="col-sm-5">
+                    <input type="number" value="{$info->bait}" name="bait" min="0" step="0.01" class="form-control"
+                           placeholder="装修消耗GTC">
+
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">预约消耗GTC</label>
+
+                <div class="col-sm-5">
+                    <input type="number" value="{$info->subscribe_bait}" min="0" name="subscribe_bait" class="form-control"
+                           placeholder="预约消耗GTC">
+
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">即抢消耗GTC</label>
+
+                <div class="col-sm-5">
+                    <input type="number" value="{$info->rob_bait}" min="0" name="rob_bait" class="form-control"
+                           placeholder="即抢消耗GTC">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">领取失败返点</label>
+
+                <div class="col-sm-5">
+                    <input type="number" value="{$info->fail_return}" min="0" max="100" step="0.01" name="fail_return" class="form-control"
+                           placeholder="领取失败返回预约GTC百分比">
+
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">收益（单位% 数值0-100）</label>
+
+                <div class="col-sm-5">
+                    <input type="number" value="{$info->profit}" name="profit"  min="0" step="0.01" class="form-control"
+                           placeholder="收益（单位% 数值0-100）">
+
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">收益时间（小时，必须是24*天数）</label>
+
+                <div class="col-sm-5">
+                    <input type="number" value="{$info->contract_time}" name="contract_time" min="1" class="form-control"
+                           placeholder="收益时间（单位小时）">
+
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">开放状态</label>
+
+                <div class="col-sm-5">
+                    <select name="is_open" class="form-control">
+                        <option value="0" {if $info->is_open == '0'} selected {/if}>不开放（生成中）</option>
+                        <option value="1"  {if $info->is_open == '1'} selected {/if}>开放（用户可以预约抢房产）</option>
+                    </select>
+                </div>
+            </div>
+
+
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">备注</label>
+                <div class="col-sm-5">
+                    <input type="text" value="{$info->remarks}" name="remarks" class="form-control"
+                           placeholder="请输入备注说明">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">房产排序（越小越靠前）</label>
+                <div class="col-sm-5">
+                    <input type="number" value="{$info->sort}" name="sort" min="1" class="form-control"
+                           placeholder="房产排序（越小越靠前）">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">上传图片（不上传不修改）<br>建议270px*270px</label>
+
+                <div class="col-sm-5">
+                    <div id="filePicker" >选择并上传图片</div>
+                </div>
+                <input type="hidden" value="{$info->img}" name="path" id="path" class="form-control">
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label"></label>
+                <div class="col-sm-5">
+                    <div id="fileList" class="uploader-list">
+
+                    </div>
+                </div>
+            </div>
+
+            <hr>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">分配比例</label>
+
+                <div class="col-sm-5">
+                    <select name="open_section" class="form-control">
+                        <option value="0" {if $info->open_section == '0'} selected {/if}>自由分配</option>
+                        <option value="1" {if $info->open_section == '1'} selected {/if}>开通第一区间</option>
+                        <option value="2" {if $info->open_section == '2'} selected {/if}>开通第一至二区间</option>
+                        <option value="3" {if $info->open_section == '3'} selected {/if}>开通第一至三区间</option>
+                    </select>
+
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">第一区</label>
+
+                <div class="col-sm-5">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">最小值</label>
+                        <div class="col-sm-5">
+                            <input type="number" value="{$info->first_section_min}" min="0"  name="first_section_min" class="form-control"
+                                   placeholder="最小值">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">最大值</label>
+                        <div class="col-sm-5">
+                            <input type="number" value="{$info->first_section_max}" min="0"  name="first_section_max" class="form-control"
+                                   placeholder="最大值">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">比例</label>
+                        <div class="col-sm-5">
+                            <input type="number" value="{$info->first_section_percent}" min="0" step="0.01"  name="first_section_percent" class="form-control"
+                                   placeholder="分配比例">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">第二区</label>
+
+                <div class="col-sm-5">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">最小值</label>
+                        <div class="col-sm-5">
+                            <input type="number" value="{$info->second_section_min}" min="0"  name="second_section_min" class="form-control"
+                                   placeholder="最小值">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">最大值</label>
+                        <div class="col-sm-5">
+                            <input type="number" value="{$info->second_section_max}" min="0"  name="second_section_max" class="form-control"
+                                   placeholder="最大值">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">比例</label>
+                        <div class="col-sm-5">
+                            <input type="number" value="{$info->second_section_percent}" min="0" step="0.01"  name="second_section_percent" class="form-control"
+                                   placeholder="分配比例">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">第三区</label>
+
+                <div class="col-sm-5">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">最小值</label>
+                        <div class="col-sm-5">
+                            <input type="number" value="{$info->third_section_min}" min="0"   name="third_section_min" class="form-control"
+                                   placeholder="最小值">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">最大值</label>
+                        <div class="col-sm-5">
+                            <input type="number" value="{$info->third_section_max}" min="0"  name="third_section_max" class="form-control"
+                                   placeholder="最大值">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">比例</label>
+                        <div class="col-sm-5">
+                            <input type="number" value="{$info->third_section_percent}" min="0" step="0.01"  name="third_section_percent" class="form-control"
+                                   placeholder="分配比例">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <hr>
+
+
+
+
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" data-url="{:url('update',['id'=>$info->id])}"
+                            onclick="main.ajaxPosts(this)" class="btn btn-primary">确定修改
+                    </button>
+                    <button type="button" onclick="javascript:history.back(-1);" class="btn btn-warning">返回
+                    </button>
+                </div>
+            </div>
+        </form>-->
+    </div>
+
+
+    {else /}
+    <header class="panel-heading">
+        <h4>产品添加</h4>
+    </header>
+    <div class="panel-body" style="padding-bottom: 50px">
+        <form class="form-horizontal" method="post" onsubmit="return false" role="form">
+            <div class="form-group">
+                <label class="col-sm-2 control-label">房产名</label>
+
+                <div class="col-sm-5">
+                    <input type="text" value="" name="name" class="form-control"
+                           placeholder="请输入房产名">
+                </div>
+                <div class="col-sm-3 help-block">
+                    添加后请勿随意修改房产名
+                </div>
+            </div>
+
+            <!--<div class="form-group">-->
+                <!--<label class="col-sm-2 control-label">节点等级（等级唯一）</label>-->
+
+                <!--<div class="col-sm-5">-->
+                    <!--<input type="number" value="" name="lv" class="form-control"-->
+                           <!--placeholder="节点等级（等级唯一）">-->
+
+                <!--</div>-->
+            <!--</div>-->
+
+            <!--
+            <div class="form-group">
+                <label class="col-sm-2 control-label">锁仓倍数（单位 正整数）<span style="color: red">合约数据*锁仓倍数 = 锁仓数据</span></label>
+
+                <div class="col-sm-5">
+                    <input type="number" value="" step="0.01" min="0" name="lock_position" class="form-control"
+                           placeholder="锁仓倍数（单位 正整数）">
+
+                </div>
+            </div>
+            -->
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">房产状态</label>
+
+                <div class="col-sm-5">
+                    <select name="status" class="form-control">
+                        <option value="0">房产禁用（升级）</option>
+                        <option value="1">房产开启（拆分）</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">拆分瓶数</label>
+                <div class="col-sm-5">
+                    <input type="number" value="1" name="num"  class="form-control" placeholder="请输入拆分瓶数">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">价值区间</label>
+
+                <div class="col-sm-5">
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">最小</label>
+                        <div class="col-sm-5">
+                         <input type="number" value="" min="0" name="worth_min" class="form-control"
+                           placeholder="最小值">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">最大</label>
+                        <div class="col-sm-5">
+                            <input type="number" value=""  min="0" name="worth_max" class="form-control"
+                                   placeholder="最大值">
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">开始预约时间</label>
+                <div class="col-sm-5">
+                    <input type="text" value="<?php echo date('H:i:s') ?>" name="about_start_time" id="abouthosts" class="form-control" placeholder="请输入开始时间">
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">结束预约时间</label>
+                <div class="col-sm-5">
+                    <input type="text" value="<?php echo date('H:i:s') ?>" name="about_end_time" id="abouthostn" class="form-control" placeholder="请输入开始时间">
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">开始领取时间</label>
+                <div class="col-sm-5">
+                    <input type="text" value="<?php echo date('H:i:s') ?>" name="start_time" id="hosts" class="form-control" placeholder="请输入开始时间">
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">结束领取时间</label>
+                <div class="col-sm-5">
+                    <input type="text" value="<?php echo date('H:i:s') ?>" name="end_time" id="hostn" class="form-control" placeholder="请输入开始时间">
+                </div>
+            </div>
+
+
+
+
+
+
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">装修消耗GTC</label>
+
+                <div class="col-sm-5">
+                    <input type="number" value="" name="bait" min="0" step="0.01" class="form-control"
+                           placeholder="装修消耗GTC">
+
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">预约消耗GTC</label>
+
+                <div class="col-sm-5">
+                    <input type="number" value="" min="0" name="subscribe_bait" class="form-control"
+                           placeholder="预约消耗GTC">
+
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">即抢消耗GTC</label>
+
+                <div class="col-sm-5">
+                    <input type="number" value="" min="0" name="rob_bait" class="form-control"
+                           placeholder="即抢消耗GTC">
+
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">领取失败返点</label>
+
+                <div class="col-sm-5">
+                    <input type="number" value="" min="0" max="100" step="0.01" name="fail_return" class="form-control"
+                           placeholder="领取失败返回预约GTC百分比">
+
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">收益（单位% 数值0-100）</label>
+
+                <div class="col-sm-5">
+                    <input type="number" value="" name="profit"  min="0" step="0.01" class="form-control"
+                           placeholder="收益（单位% 数值0-100）">
+
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">收益时间（必须是24*天数）</label>
+
+                <div class="col-sm-5">
+                    <input type="number" value="" name="contract_time" min="1" class="form-control"
+                           placeholder="收益时间（单位小时）">
+
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">开放状态</label>
+
+                <div class="col-sm-5">
+                    <select name="is_open" class="form-control">
+                        <option value="0">不开放（生成中）</option>
+                        <option value="1">开放（用户可以预约抢房产）</option>
+                    </select>
+                </div>
+            </div>
+
+
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">备注</label>
+                <div class="col-sm-5">
+                    <input type="text" value="" name="remarks" class="form-control"
+                           placeholder="请输入备注说明">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">房产排序（越小越靠前）</label>
+                <div class="col-sm-5">
+                    <input type="number" value="" name="sort" min="1" class="form-control"
+                           placeholder="房产排序（越小越靠前）">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">上传图片<br>建议270px*270px</label>
+
+                <div class="col-sm-5">
+                    <div id="filePicker" >选择并上传图片</div>
+                </div>
+                <input type="hidden" value="" name="path" id="path" class="form-control">
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label"></label>
+                <div class="col-sm-5">
+                    <div id="fileList" class="uploader-list">
+
+                    </div>
+                </div>
+            </div>
+
+            <hr>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">分配比例</label>
+
+                <div class="col-sm-5">
+                    <select name="open_section" class="form-control">
+                        <option value="0">自由分配</option>
+                        <option value="1">开通第一区间</option>
+                        <option value="2">开通第一至二区间</option>
+                        <option value="3">开通第一至三区间</option>
+                    </select>
+
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">第一区</label>
+
+                <div class="col-sm-5">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">最小值</label>
+                        <div class="col-sm-5">
+                            <input type="number" value="" min="0"  name="first_section_min" class="form-control"
+                                   placeholder="最小值">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">最大值</label>
+                        <div class="col-sm-5">
+                            <input type="number" value="" min="0"  name="first_section_max" class="form-control"
+                                   placeholder="最大值">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">比例</label>
+                        <div class="col-sm-5">
+                            <input type="number" value="" min="0" step="0.01"  name="first_section_percent" class="form-control"
+                                   placeholder="分配比例">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">第二区</label>
+
+                <div class="col-sm-5">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">最小值</label>
+                        <div class="col-sm-5">
+                            <input type="number" value="" min="0"  name="second_section_min" class="form-control"
+                                   placeholder="最小值">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">最大值</label>
+                        <div class="col-sm-5">
+                            <input type="number" value="" min="0"  name="second_section_max" class="form-control"
+                                   placeholder="最大值">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">比例</label>
+                        <div class="col-sm-5">
+                            <input type="number" value="" min="0" step="0.01"  name="second_section_percent" class="form-control"
+                                   placeholder="分配比例">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">第三区</label>
+
+                <div class="col-sm-5">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">最小值</label>
+                        <div class="col-sm-5">
+                            <input type="number" value="" min="0"   name="third_section_min" class="form-control"
+                                   placeholder="最小值">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">最大值</label>
+                        <div class="col-sm-5">
+                            <input type="number" value="" min="0"  name="third_section_max" class="form-control"
+                                   placeholder="最大值">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">比例</label>
+                        <div class="col-sm-5">
+                            <input type="number" value="" min="0" step="0.01"  name="third_section_percent" class="form-control"
+                                   placeholder="分配比例">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <hr>
+
+
+
+
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" onclick="main.ajaxPosts(this)" data-url="{:url('save')}"
+                            class="btn btn-primary">提交
+                    </button>
+                    &nbsp;
+                    <button type="button" onclick="javascript:history.back(-1);" class="btn btn-warning">返回
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+    {/if}
+</section>
+{/block}
+
+
+{block name="footer"}
+<script src="/admin/vendor/fuelux/checkbox.js"></script>
+<script>
+    //时间选择器
+    laydate.render({
+        elem: '#hosts'
+        ,type: 'time'
+    });
+
+    laydate.render({
+        elem: '#hostn'
+        ,type: 'time'
+    });
+
+    laydate.render({
+        elem: '#abouthosts'
+        ,type: 'time'
+    });
+
+    laydate.render({
+        elem: '#abouthostn'
+        ,type: 'time'
+    });
+</script>
+<script>
+    // 初始化Web Uploader
+    var uploader = WebUploader.create({
+
+        // 选完文件后，是否自动上传。
+        auto: true,
+
+        // 文件接收服务端。
+        server: "{:url('upload/uploadImg')}",
+
+        // 选择文件的按钮。可选。
+        // 内部根据当前运行是创建，可能是input元素，也可能是flash.
+        pick: {
+            id:'#filePicker',
+            multiple:true
+        },
+
+        // 只允许选择图片文件。
+        accept: {
+            title: 'Images',
+            extensions: 'gif,jpg,jpeg,bmp,png',
+            mimeTypes: 'image/jpg,image/jpeg,image/png'
+        }
+    });
+    var $list = $('#fileList');
+    var thumbnailWidth =200;
+    var thumbnailHeight = 200;
+    // 当有文件添加进来的时候
+    uploader.on( 'fileQueued', function( file ) {
+        var $li = $(
+                '<div id="' + file.id + '" class="imgs">' +
+                '<img>' +
+                '<br><a href="javascript:;" onclick="deleteImag(this);">删除</a>' +
+                '</div>'
+            ),
+            $img = $li.find('img');
+
+
+        // $list为容器jQuery实例
+        $list.append( $li );
+
+        // 创建缩略图
+        // 如果为非图片文件，可以不用调用此方法。
+        // thumbnailWidth x thumbnailHeight 为 100 x 100
+        uploader.makeThumb( file, function( error, src ) {
+            if ( error ) {
+                $img.replaceWith('<span>不能预览</span>');
+                return;
+            }
+
+            $img.attr( 'src', src );
+        }, thumbnailWidth, thumbnailHeight );
+    });
+    // 文件上传过程中创建进度条实时显示。
+    uploader.on( 'uploadProgress', function( file, percentage ) {
+        var $li = $( '#'+file.id ),
+            $percent = $li.find('.progress span');
+
+        //alert(12121);
+        // 避免重复创建
+        if ( !$percent.length ) {
+            $percent = $('<p class="progress"><span></span></p>')
+                .appendTo( $li )
+                .find('span');
+        }
+
+        $percent.css( 'width', percentage * 100 + '%' );
+    });
+
+    // 文件上传成功，给item添加成功class, 用样式标记上传成功。
+    uploader.on( 'uploadSuccess', function( file ,data) {
+        if(data.errno == 0){
+            $( '#'+file.id ).addClass('upload-state-done');
+            $( '#'+file.id ).attr('data-id',data.data);
+            $('#path').val(data.data);
+            $('#filePicker').hide();
+        }
+    });
+
+    // 文件上传失败，显示上传出错。
+    uploader.on( 'uploadError', function( file ) {
+        var $li = $( '#'+file.id ),
+            $error = $li.find('div.error');
+
+        // 避免重复创建
+        if ( !$error.length ) {
+            $error = $('<div class="error"></div>').appendTo( $li );
+        }
+
+        $error.text('上传失败');
+    });
+
+    // 完成上传完了，成功或者失败，先删除进度条。
+    uploader.on( 'uploadComplete', function( file ) {
+        $( '#'+file.id ).find('.progress').remove();
+    });
+    //删除图片
+    function deleteImag(dom){
+        var _this = $(dom);
+        $.confirm({
+            title: '<strong style="color: #c7254e;font-size: 16px">温馨提示</strong>',
+            content: '<div class="text-center" style="border-top:1px solid #eee;padding-top: 20px">确定删除</div>',
+            confirmButton: '确定',
+            confirmButtonClass: 'btn btn-info',
+            cancelButton: '取消',
+            cancelButtonClass: 'btn btn-danger',
+            animation: 'scaleY',
+            theme: 'material',
+            confirm: function () {
+                $('#path').val('');
+                $('#filePicker').show();
+                $('.imgs').remove();
+            }
+
+        });
+
+    }
+
+</script>
+
+{/block}

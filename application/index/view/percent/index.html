@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>百分彩</title>
+    <link rel="stylesheet" href="/youxi/css/bootstrap.min.css">
+    <script src="/youxi/js/jquery.js"></script>
+    <script src="/youxi/build/flexible.js"></script>
+    <script src="/youxi/build/flexible_css.js"></script>
+    <script src="/youxi/js/layer.js"></script>
+
+    <style>
+        html, body {background: #000;}
+        blockquote, span, button, dd, dl, dt, fieldset, form, h1, h2, h3, h4, h5, h6, hr, input, legend, li, ol, p, pre, td, textarea, label, th, ul, ol, i {padding: 0px;margin: 0px;font-family: MicrosoftYaHei;}
+        li {list-style: none;}
+        label, i {font-style: normal;font-weight: normal;margin: 0;}
+        input::-webkit-input-placeholder {color: #999;}
+        textarea::-webkit-input-placeholder {color: #999;}
+        .header {position: fixed;top: 0px;left: 0px;width: 100%;height: 1.28rem;line-height: 1.28rem;text-align: center;color: #fff;background: #111420;z-index: 99999;}
+        .header span {font-size: .48rem;}
+        .goback {position: absolute;top: 0px;left: .32rem;}
+        .goback img {width: .666667rem;}
+        .main {padding: 1.28rem .32rem 1.333333rem;}
+        .balance {height: 2.266667rem;display: flex;align-items: center;}
+        .balance > div {width: 100%;}
+        .total-balance {font-size: .453333rem;color: #fff;text-align: center;}
+        .total-num {color: #FFC200;}
+        .total-balance i {font-size: .346667rem;}
+        .coin {display: flex;justify-content: space-between;margin-top: .453333rem;}
+        .coin-item {font-size: .32rem;color: #fff;}
+        .now-periods {height: .506667rem;line-height: .506667rem;margin-top: .48rem;font-size: .453333rem;color: #fff;text-align: center;}
+        .betting-title {height: 1.2rem;line-height: 1.2rem;font-size: .666667rem;color: #fff;text-align: center;}
+        .betting {display: flex;justify-content: space-between;align-items: center;width: 5.626667rem;margin: 0 auto;margin-top: .933333rem;}
+        .num {position: relative;width: 1.493333rem;height: 2.533333rem;color: #C5C6C9;background: #31343C;border-radius: .133333rem;border: 1px solid #3D434C;perspective: 150px;}
+        .upper {position: absolute;width: 100%;height: 1.173333rem;background: #515862;border-radius: .133333rem .133333rem 0 0;overflow-y: hidden;border-bottom: 1px solid #363A41;transform-origin: bottom;z-index: 100;}
+        .lower {position: absolute;top: 1.173333rem;width: 100%; height: 1.173333rem;background:#474C55;border-radius: 0 0 .133333rem .133333rem;box-shadow: inset 0 1px 1px #515862;overflow-y: hidden;border-top: 1px solid #363A41;}
+        .upper span {position: relative; top: 0%;width: 100%;height: 2.346667rem;display: flex;align-items: center;justify-content: center;font-size: 1.866667rem;}
+        .lower span {position: relative; top: -1.173333rem;width: 100%;height: 2.346667rem;display: flex;align-items: center;justify-content: center;font-size: 1.866667rem;}
+        .betting-content {}
+        .want-to-bet {margin-top: 1.066667rem;font-size: .48rem;color: #fff;}
+        .betting-num {margin-top: .533333rem;height: 1.28rem;display: flex;justify-content: space-between;align-items: center;}
+        .betting-num button {display: flex;justify-content: center;align-items: center;width: 18.23%;height: 1.28rem;border: none;background: #5C5479;}
+        .betting-num button img {width: .746667rem;}
+        .reduce-btn {border-radius: .133333rem 0rem 0rem .133333rem;}
+        .add-btn {border-radius: 0rem .133333rem .133333rem 0rem;}
+        .bets-num {width: 63.54%;font-size: 1.066667rem;color: #fff;height: 1.28rem;background: transparent;text-align: center;border: none;}
+        .confirm {margin-top: .933333rem;display: block;width: 100%;height: 1.28rem;background: #32B87D;font-size: .48rem;color: #fff;letter-spacing: .2em;border: none;border-radius: .133333rem;}
+        .betting-record {margin-top: .666667rem;height: 1.28rem;line-height: 1.28rem;font-size: .48rem;color: #fff;text-align: center;}
+        .lottery-record {margin-top: .933333rem;}
+        .lottery-title {height: 1.36rem;line-height: 1.36rem;font-size: .48rem;color: #fff;text-align: center;border-top: 1px solid #3C3E4B;border-radius: .24rem;}
+        .lottery-nav {display: flex;justify-content: space-between;}
+        .lottery-nav > div {width: 50%;height: 1.2rem;line-height: 1.2rem;text-align: center;font-size: .373333rem;color: #fff;}
+        .lottery-content {margin-top: .213333rem;}
+        .lottery-item {display: flex;justify-content: space-between;}
+        .lottery-item > div {width: 50%;height: 1.226667rem;line-height: 1.226667rem;text-align: center;font-size: .32rem;color: #fff;}
+        .record-number {margin-top: .4rem;height: 1.28rem;line-height: 1.28rem;text-align: center;font-size: .373333rem;color: #fff;}
+        .winner-box {position: fixed;bottom: 0px;left: 0px;width: 100%;height: 1.28rem;display: none;}
+        .winner {position: absolute;top: 150%;left: 0;z-index: 99999;display: flex;justify-content: space-between;align-items: center;padding-left: .426667rem;padding-right: .346667rem;width: 100%;height: 1.28rem;background: #111420;font-size: .32rem;color: #efefef;transition: top ease .5s;}
+        .winner img {width: .8rem;}
+        .check {height: .8rem;line-height: .746667rem;padding: 0rem .213333rem;border: 1px solid #FFC200;border-radius: .133333rem;font-size: .373333rem;color: #efefef;background: #111420;}
+        .close-winner {position: absolute;top: -0.266667rem;left: .32rem;}
+        .close-winner img {width: .426667rem;}
+        .winning-bg {position: fixed;top: 0;left: 0;width: 100%;height: 100%;display: none;z-index: 999999;}
+        .winning-box {position: absolute;top: -100%;left: 0;width: 100%;height: 100%;display: flex;justify-content: center;align-items: center;padding: 0rem .32rem;transition: ease top .5s;}
+        .winning {position: relative;width: 100%;background: rgba(33, 38, 56, .9);padding: .106667rem .4rem;border-radius: .24rem;}
+        .close-winning {position: absolute;top: .266667rem;right: .266667rem;}
+        .close-winning img {width: .426667rem;}
+        .winning-title {height: .693333rem;line-height: .693333rem;font-size: .4rem;color: #fff;text-align: center;}
+        .winning-periods {height: .693333rem;line-height: .693333rem;font-size: .32rem;color: #fff;}
+        .list-title, .winning-item {display: flex;justify-content: space-between;}
+        .list-title-item:first-child {width: 19%;text-align: left;}
+        .list-title-item:last-child {text-align: right;}
+        .list-title > div, .winning-item > div {width: 27%;height: .693333rem;line-height: .693333rem;text-align: center;font-size: .32rem;color: #fff;}
+        .winning-item .item-first {width: 19%;text-align: left;}
+        .winning-item .item-fourth {text-align: right;padding-right: .4rem;color: #FFC200;}
+    </style>
+</head>
+<body>
+    <header class="header">
+        <a href="javascript:history.back(-1)" class="goback"><img src="/youxi/images/icon_Return@2x.png" class="goback-icon" alt=""></a>
+        <span>百分彩</span>
+    </header>
+    <main class="main">
+        <div class="balance">
+            <div>
+                <div class="total-balance">账户总余额(<i>USDT</i>)≈<span class="total-num">105.02</span></div>
+                <div class="coin">
+                    <div class="coin-item">0.00000000BTC</div>
+                    <div class="coin-item">0.00000000ETH</div>
+                    <div class="coin-item">0.00000000EOS</div>
+                </div>
+            </div>
+        </div>
+        <div class="now-periods">当前期数: 
+            <span id="date">{$list['date']}</span>
+            _
+            <span id="num">{$list['num']}</span>
+        </div>
+        <div class="betting-title">当期已投注量</div>
+        <div class="betting">
+            <div id="hundred" class="num">
+                <div class="upper"></div>
+                <div class="base upper"></div>
+                <div class="lower"></div>
+            </div>
+            <div id="ten" class="num">
+                <div class="upper"></div>
+                <div class="base upper"></div>
+                <div class="lower"></div>
+            </div>
+            <div id="single" class="num">
+                <div class="upper"></div>
+                <div class="base upper"></div>
+                <div class="lower"></div>
+            </div>
+        </div>
+        <div class="betting-content">
+            <div class="want-to-bet">我要投注：</div>
+            <div class="betting-num">
+                <button class="reduce-btn"><img src="/youxi/images/icon_minus@2x.png" alt=""></button>
+                <input type="number" class="bets-num" value="1">
+                <button class="add-btn"><img src="/youxi/images/icon_Add@2x.png" alt=""></button>
+            </div>
+            <button class="confirm">确认投注</button>
+            <div class="betting-record">投注记录</div>
+        </div>
+        <div class="lottery-record">
+            <div class="lottery-title">开奖记录</div>
+            <div class="lottery-nav">
+                <div class="periods-title">期数</div>
+                <div class="lottery-time">开奖时间</div>
+            </div>
+            <div class="lottery-content">
+                <div class="lottery-item">
+                    <div class="lottery-periods">20180911-111</div>
+                    <div class="lottery-time">2018-09-11 20:24:54</div>
+                </div>
+                <div class="lottery-item">
+                    <div class="lottery-periods">20180911-111</div>
+                    <div class="lottery-time">2018-09-11 20:24:54</div>
+                </div>
+                <div class="lottery-item">
+                    <div class="lottery-periods">20180911-111</div>
+                    <div class="lottery-time">2018-09-11 20:24:54</div>
+                </div>
+                <div class="lottery-item">
+                    <div class="lottery-periods">20180911-111</div>
+                    <div class="lottery-time">2018-09-11 20:24:54</div>
+                </div>
+                <div class="lottery-item">
+                    <div class="lottery-periods">20180911-111</div>
+                    <div class="lottery-time">2018-09-11 20:24:54</div>
+                </div>
+            </div>
+        </div>
+        <div class="record-number">Copyright © 2018 Yekes, All Righs Reserved.</div>
+        <div class="winner-box">
+            <div class="winner">
+                <div class="close-winner">
+                    <img src="/youxi/images/icon_Close@2x.png" alt="">
+                </div>
+                <img src="/youxi/images/icon_Winning@2x.png" alt="">
+                <span class="awardee">恭喜您中得百分彩一等奖45USDT</span>
+                <button class="check">点击查看</button>
+            </div>
+        </div>
+    </main>
+    <div class="winning-bg">
+        <div class="winning-box">
+            <div class="winning">
+                <div class="close-winning"><img src="/youxi/images/icon_Close@2x.png" alt=""></div>
+                <div class="winning-title">百分彩开奖详情</div>
+                <div class="winning-periods">期数:H20181111-110</div>
+                <div class="list-title">
+                    <div class="list-title-item">奖项</div>
+                    <div class="list-title-item">中奖用户</div>
+                    <div class="list-title-item">彩票序列号</div>
+                    <div class="list-title-item">奖金(USDT)</div>
+                </div>
+                <div class="winning-list">
+                    <div class="winning-item">
+                        <div class="item-first">一等奖</div>
+                        <div class="item-second">0x925***</div>
+                        <div class="item-third">005</div>
+                        <div class="item-fourth">50.00</div>
+                    </div>
+                    <div class="winning-item">
+                        <div class="item-first">一等奖</div>
+                        <div class="item-second">0x925***</div>
+                        <div class="item-third">005</div>
+                        <div class="item-fourth">50.00</div>
+                    </div>
+                    <div class="winning-item">
+                        <div class="item-first">一等奖</div>
+                        <div class="item-second">0x925***</div>
+                        <div class="item-third">005</div>
+                        <div class="item-fourth">50.00</div>
+                    </div>
+                    <div class="winning-item">
+                        <div class="item-first">一等奖</div>
+                        <div class="item-second">0x925***</div>
+                        <div class="item-third">005</div>
+                        <div class="item-fourth">50.00</div>
+                    </div>
+                    <div class="winning-item">
+                        <div class="item-first">一等奖</div>
+                        <div class="item-second">0x925***</div>
+                        <div class="item-third">005</div>
+                        <div class="item-fourth">50.00</div>
+                    </div>
+                    <div class="winning-item">
+                        <div class="item-first">一等奖</div>
+                        <div class="item-second">0x925***</div>
+                        <div class="item-third">005</div>
+                        <div class="item-fourth">50.00</div>
+                    </div>
+                    <div class="winning-item">
+                        <div class="item-first">一等奖</div>
+                        <div class="item-second">0x925***</div>
+                        <div class="item-third">005</div>
+                        <div class="item-fourth">50.00</div>
+                    </div>
+                    <div class="winning-item">
+                        <div class="item-first">一等奖</div>
+                        <div class="item-second">0x925***</div>
+                        <div class="item-third">005</div>
+                        <div class="item-fourth">50.00</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    // 翻页特效
+    let total = 100, hundredNum = 1, tenNum = 0, singleNum = 0, time = 500;
+    setTimeVars();
+    function setTimeVars() {
+        total--;
+        if (total.length === 3) {
+            hundredNum = total.substr(0, 1);
+            tenNum = total.substr(1, 1);
+            singleNum = total.substr(2, 1);
+        }
+        if (total.length === 2) {
+            hundredNum = 0;
+            tenNum = total.substr(0, 1);
+            singleNum = total.substr(1, 1);
+        }
+        if (total.length === 1) {
+            hundredNum = 0;
+            tenNum = 0;
+            singleNum = total.substr(0, 1);
+        }
+    }
+    hundredNum = total.length > 2 ? total.substr(0, 1) : 0;
+    tenNum = total.length > 1 ? total.substr(0, 1) : 0;
+    hundred.children[0].innerHTML = hundred.children[1].innerHTML = hundred.children[2].innerHTML = "<span>" + hundredNum + "</span>";
+    ten.children[0].innerHTML = ten.children[1].innerHTML = ten.children[2].innerHTML = "<span>" + tenNum + "</span>";
+    single.children[0].innerHTML = single.children[1].innerHTML = single.children[2].innerHTML = "<span>" + singleNum + "</span>";
+    let interval = setInterval(function () {
+        setTimeVars();
+        paging(single, singleNum, time)
+        if (String(singleNum) > 9) {
+            tenNum++;
+            singleNum = 0;
+            paging(ten, tenNum, time)
+            if (String(tenNum) > 9) {
+                hundredNum++;
+                tenNum = 0;
+                paging(hundred, hundredNum, time)
+            }
+        }
+    }, 1000)
+    function paging(obj, num, time) {
+        obj.children[1].style.transition = "transform linear " + time + "ms";
+        obj.children[1].style.transform = "rotateX(-180deg)";
+        obj.children[1].innerHTML = "<span>" + String(num - 1).substr(-1, 1) + "</span>";
+        obj.children[0].innerHTML = "<span>" + String(num).substr(-1, 1) + "</span>";
+        setTimeout(function () {
+            obj.children[1].innerHTML = "<span>" + String(num).substr(-1, 1) + "</span>";
+            obj.children[1].children[0].style.transform = "rotateX(-180deg)";
+        }, time/2)
+        setTimeout(function () {
+            obj.children[1].style.transition = "none";
+            obj.children[1].style.transform = "rotateX(0deg)";
+            obj.children[1].children[0].style.transform = "rotateX(0deg)";
+            obj.children[2].innerHTML = "<span>" + String(num).substr(-1, 1) + "</span>";
+        }, time)
+    }
+</script>
+<script>
+    let reduceBtn = document.querySelector('.reduce-btn');
+    let addBtn = document.querySelector('.add-btn');
+    let betsNum = document.querySelector('.bets-num');
+    let betsVal = betsNum.value;
+    let winnerBox = document.querySelector('.winner-box');
+    let winner = document.querySelector('.winner');
+    let closeWinner = document.querySelector('.close-winner');
+    let winningBg = document.querySelector('.winning-bg');
+    let winningBox = document.querySelector('.winning-box');
+    let winning = document.querySelector('.winning');
+    let closeWinning = document.querySelector('.close-winning');
+    let lotteryItem = document.querySelectorAll('.lottery-item');
+    let lotteryItemLen = lotteryItem.length;
+    reduceBtn.addEventListener('click', function () {
+        betsVal--;
+        if (betsVal < 1) betsVal = 1;
+        betsNum.value = betsVal;
+    })
+    addBtn.addEventListener('click', function () {
+        betsVal++;
+        betsNum.value = betsVal;
+    })
+    betsNum.addEventListener('blur', function () {
+        if (this.value < 1) {
+            this.value = 1;
+            betsVal = this.value;
+        } else {
+            betsVal = this.value;
+        }
+    })
+    winnerBox.style.display = "block";
+    setTimeout(function () {
+        winner.style.top = "0";
+    },50)
+    closeWinner.addEventListener('click', function () {
+        winner.style.top = "150%";
+        setTimeout(function () {
+            winnerBox.style.display = "none";
+        }, 1000)
+    })
+    for (let i = 0; i < lotteryItemLen; i++) {
+        lotteryItem[i].addEventListener('click', function () {
+            winningBg.style.display = "block";
+            setTimeout(function () {
+                winningBox.style.top = "0";
+            },50)
+        })
+    }
+    // 阻止事件冒泡
+    winning.addEventListener('click', function (e) {
+        window.event ? window.event.cancelBubble = true : e.stopPropagation();
+    })
+    winningBox.addEventListener('click', function () {
+        winningBox.style.top = "-100%";
+        setTimeout(function () {
+            winningBg.style.display = "none";
+        }, 500)
+    })
+    closeWinning.addEventListener('click', function () {
+        winningBox.style.top = "-100%";
+        setTimeout(function () {
+            winningBg.style.display = "none";
+        }, 500)
+    })
+
+    $('.confirm').click(function(){
+
+        
+        var number = $('.bets-num').val();
+
+        var date  = $('#date').html();
+
+        var num  = $('#num').html();
+
+        if(number % 1 != 0){
+
+            layer.open({
+                content: '请输入整数！',
+                skin: 'msg',
+                time: 2
+            });
+        }
+        // console.log(number)
+
+            $.post("{:url('percent/betting')}", {date: date,num:num,number:number}, function (res) {
+
+                // that.attr('disabled', false);
+             
+                if (res.code == 0) {
+
+                    // mui.confirm('下单成功，请等待客服确认订单', '', ['确认', '取消'], function (e1) {
+                        mui.alert(res.message);
+
+                        window.location.reload();
+                    // }
+                   
+                }else{
+                    mui.alert(res.message);
+                }
+
+            },'json');
+
+    });
+
+</script>
+</html>

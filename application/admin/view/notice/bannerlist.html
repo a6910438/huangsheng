@@ -1,0 +1,59 @@
+{extend name="layout/main" /}
+
+{block name="header"}
+
+{/block}
+
+{block name="content"}
+<section class="panel">
+    <header class="panel-heading">
+        <h4>轮播图列表</h4>
+    </header>
+    <div class="panel-body" style="padding-bottom: 50px">
+        <form class="form-horizontal" action="{:url('article/index')}">
+            <div class="form-group">
+
+                <a type="button" href="{:url('/admin/article/banneradd')}" class="btn btn-info">添加轮播图</a>
+            </div>
+        </form>
+        <table class="table table-bordered table-striped no-margin">
+            <thead>
+            <tr>
+                <th class="text-center">ID</th>
+                <th class="text-center">图片</th>
+                <th class="text-center">排序</th>
+                <th class="text-center">创建时间</th>
+                <th class="text-center">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            {if !empty($list)}
+            {foreach $list as $entity}
+            <tr>
+                <td class="text-center">{$entity.id}</td>
+                <td class="text-center"><img src="__PUBLIC__{$entity.pic}" width="200px" height="200px"></td>
+                <td class="text-center">{$entity.sort}</td>
+                <td class="text-center">{:date('Y-m-d H:i:s',$entity.create_time)}</td>
+                <td class="text-center">
+                    <a href="{:url('article/banneredit',['id'=>$entity['id']])}" class="btn btn-xs btn-info">编辑</a>
+                    <a data-url="{:url('article/bannerdel',['id'=>$entity.id])}" onclick="main.ajaxDelete(this)"
+                       data-msg="确定要删除该公告吗？" class="btn btn-xs btn-danger">删除</a>
+                </td>
+            </tr>
+            {/foreach}
+            {else /}
+            <tr class="text-center">
+                <td colspan="5">暂无数据</td>
+            </tr>
+            {/if}
+            </tbody>
+        </table>
+
+    </div>
+</section>
+{/block}
+
+
+{block name="footer"}
+
+{/block}

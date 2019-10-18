@@ -1,0 +1,96 @@
+<!doctype html>
+<html style="height: 100%">
+<head>
+    <title>采茶</title>
+    {include file="layout/head" /}
+</head>
+<style type="text/css">
+    .p-info{
+        position: absolute;
+        bottom: 5%;
+        /*margin-bottom: 60px;*/
+        width: 100%;
+        height:100px;
+        line-height: 30px;
+    }
+    .p-info div{
+        color: #fff;
+        font-size: 20px;
+        font-weight: bold;
+    }
+    .mc{
+        margin-left: 10%;
+        height:100px;
+        background: #000;
+        opacity: 0.5;
+        position: absolute;
+        bottom: 5%;
+        width: 80%;
+    }
+    .voice-switch {
+        position: fixed; 
+        bottom: 0px;
+        width: 100%;
+        margin: 0px;
+        height: 50px;
+        background: #000!important;
+        padding-top: 9px;
+        font-size: 14px;
+        color: #fff;
+        text-align: center;
+    }
+    .bg-title{
+        font-size: 16px;
+    }
+    .open-bg{
+        display: inline-block;
+        margin-left: 20px;
+        padding: 5px 10px;
+        background: #eee;
+        font-size: 16px;
+        color: #000;
+        margin-bottom: 10px;
+        font-weight: bold;
+        border-radius: 5px;
+    }
+</style>
+<body style="height: 100%">
+<header class="mui-bar mui-bar-nav my-header">
+    <a href="{:url('member/magicbox')}" class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+    <h1 class="mui-title">采茶</h1>
+    <a class="mui-icon mui-icon-contact mui-pull-right" href="{:url('member/index')}"><span id="user-title">{$Think.session.username}</span></a>
+</header>
+<div class="mui-content">
+    <img src="/static/img/cc.gif" width="100%">
+</div>
+    <div class="mc"></div>
+    <div class="p-info">
+        <div class="mui-col-sm-12 mui-col-xs-12 mui-text-center">茶园名称：{$magicInfo->product_name}</div>
+        <div class="mui-col-sm-12 mui-col-xs-12 mui-text-center">总收益：{$magicInfo->total}{$moneyName}</div>
+        <div class="mui-col-sm-12 mui-col-xs-12 mui-text-center">剩余运行时间：{$magicInfo->hour}（小时）</div>
+    </div>
+<div class="voice-switch" style="background:none;opacity:0.6;">
+    <span class="bg-title">声音</span>
+    <audio src="/static/img/bg.mp3" id="audio" loop="loop"></audio>
+    <span class="open-bg" id="status_title" data-status="0">播放</span>
+</div>
+{include file="layout/footer" /}
+</body>
+<script type="text/javascript">
+    ;(function(){
+        $('#status_title').on('tap',function(){
+            var audio = $('#audio')[0]; 
+            if(audio!==null){
+                if(audio.paused){    
+                    $(this).text('暂停');
+                    audio.play();//播放  
+                }else{
+                    $(this).text('播放');
+                    audio.pause();//暂停
+                }
+            }
+        })
+        
+    })();
+</script>
+</html>

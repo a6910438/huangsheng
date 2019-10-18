@@ -1,0 +1,136 @@
+{extend name="layout/main" /}
+
+{block name="header"}
+
+{/block}
+
+{block name="content"}
+<script src="__PUBLIC__/admin/js/laydate/laydate.js"></script>
+<section class="panel">
+    <header class="panel-heading">
+        <h4>客服工单列表</h4>
+    </header>
+    <div class="panel-body" style="padding-bottom: 50px">
+        <form class="form-horizontal" action="{:url('admin/order/personService')}" >
+            <div class="form-group">
+                <div class="col-xs-1 no-pd-r">
+                    <select name="status" class="form-control">
+                        <option  value="0">全部状态</option>
+                        <option {if $Request.get.status == 1} selected {/if} value="1">待审核</option>
+                        <option {if $Request.get.status == 2} selected {/if} value="2">通过</option>
+                        <option {if $Request.get.status == 3} selected {/if} value="3">拒绝</option>
+                    </select>
+                </div>
+
+                <div class="col-xs-2 no-pd-2">
+                    <input type="text" value="{$Request.get.startTime}" name="startTime" id="startTime" class="form-control" placeholder="请输入开始时间">
+                </div>
+                <div class="col-xs-2 no-pd-2">
+                    <input type="text" value="{$Request.get.endTime}" name="endTime" id="endTime" class="form-control" placeholder="请输入结束时间">
+                </div>
+                <button type="submit" class="btn btn-color">搜索</button>
+            </div>
+        </form>
+        <table class="table table-bordered table-striped no-margin">
+            <thead>
+                <tr>
+                    <th class="text-center">id</th>
+                    <th class="text-center">用户信息</th>
+                    <th class="text-center">用户状态</th>
+                    <th class="text-center">类型</th>
+                    <th class="text-center">详细内容描述</th>
+                    <th class="text-center">图片描述</th>
+                    <th class="text-center">审核状态</th>
+                    <th class="text-center">回复内容</th>
+                    <th class="text-center">添加时间</th>
+                    <th class="text-center">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+            {if $list}
+                {foreach $list as $order}
+                    <tr>
+                        <td class="text-center">{$order->id}</td>
+                        <td class="text-center">
+                            ID：{$entry->getUserInfo($order->uid)['id']}<br>
+                            昵称：{$entry->getUserInfo($order->uid)['nick_name']}
+                        </td>
+                        <td class="text-center">
+                            {$entry->getStatus($entry->getUserInfo($order->uid)['status'])  }
+                        </td>
+                        <td class="text-center">
+                            {$order->getType($order->types)}
+                        </td>
+                        <td class="text-center">
+                            {$order->content}
+                        </td>
+
+                        <td class="text-center">
+                            {if $order->pic == ''}
+                            占无图片
+                            {else}
+                            <image src="__PUBLIC__{$order->pic}" width="200px" height="200px"></image>
+                            {/if}
+                        </td>
+                        <td class="text-center">
+                            {$order->getStatus($order->status)}
+                        </td>
+                        <td class="text-center">
+                            {if $order->status == 1}
+                            占未回复
+                            {else}
+                            {$order->reply}
+                            {/if}
+                        </td>
+                        <td class="text-center">
+                            {$order->create_time}
+                        </td>
+                        <td class="text-center">
+                            {if $order->status == 1 }
+                                <a class="btn btn-xs btn-danger" data-msg="确定拒绝此工单吗？" onclick="showContent(this)" data-content="{$order->getReply($order->id)}" data-url="{:url('order/passPerson',['id'=>$order->id])}">
+                                    拒绝
+                                </a>
+                                <a class="btn btn-xs btn-success" data-msg="确定激活此用户吗？" onclick="main.ajaxDelete(this)" data-url="{:url('order/passPerson',['id'=>$order->id])}">
+                                    激活用户
+                                </a>
+                            {/if}
+
+                        </td>
+                    </tr>
+                {/foreach}
+            {else /}
+                <tr class="text-center">
+                    <td colspan="8">暂无数据</td>
+                </tr>
+            {/if}
+            </tbody>
+        </table>
+        <div class="page">
+            {:htmlspecialchars_decode($list->render())}
+        </div>
+    </div>
+</section>
+<script>
+    laydate.render({
+        elem: '#startTime',
+        type: 'datetime'
+    });
+    laydate.render({
+        elem: '#endTime',
+        type: 'datetime'
+    });
+</script>
+<script>
+    function showContent(e){
+        $.dialog({
+            title: '拒绝理由',
+            content: $(e).attr('data-content')
+        });
+    }
+</script>
+{/block}
+
+
+{block name="footer"}
+
+{/block}

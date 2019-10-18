@@ -1,0 +1,198 @@
+{extend name="layout/main" /}
+
+{block name="header"}
+
+{/block}
+
+{block name="content"}
+<section class="panel">
+    <header class="panel-heading">
+        <h4>币种管理</h4>
+    </header>
+    <div class="panel-body" style="padding-bottom: 50px">
+        <table class="table table-bordered table-striped no-margin">
+            <thead>
+            <tr>
+                <th class="text-center">序号</th>
+                <th class="text-center">名称</th>
+                <th class="text-center">充值地址</th>
+                <th class="text-center">充值二维码</th>
+                <th class="text-center">是否法币</th>
+                <th class="text-center">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            {foreach $list as $key=>$config}
+            <tr>
+                <td class="text-center" style="vertical-align: middle; ">{$config->id}</td>
+                <td class="text-center" style="vertical-align: middle; ">
+                    <input type="text" id="{$config->id}-{$config->title}" style="text-align: center" class="form-control"
+                           value="{$config->title}">
+                </td>
+                <td class="text-center" style="vertical-align: middle; ">
+                    <input type="text" id="{$config->id}-{$config->address}" style="text-align: center" class="form-control"
+                           value="{$config->address}">
+                </td>
+                <td class="text-center" style="vertical-align: middle; ">
+                    
+                           {if !empty($config->imgs)}
+                           <img src="{$config->imgs}" class="imgs logo-img" did="logo" style="width:50px;height:50px">
+                           <input type="hidden" id="{$config->id}-{$config->imgs}" style="text-align: center" class="form-control"
+                           value="{$config->imgs}">
+                           {else}
+                            <div class="col-sm-2">
+                                <img src="/static/img/tj.png" class="imgs logo-img" did="logo" style="width:50px;height:50px">
+                            </div>
+                            <input type="hidden" name="imgs" id="logo">
+                            <input type="file" class="file logo" style="display: none;" did="logo">
+                           {/if}
+                </td>
+                <td class="text-center" style="vertical-align: middle; ">
+                    <input type="radio" name="{$config->id}-islegal-{$config->islegal}" style="text-align: center" 
+                           value="0" {if $config->islegal == 0}checked{/if}>否    
+                    <input type="radio" name="{$config->id}-islegal-{$config->islegal}" style="text-align: center" 
+                           value="1" {if $config->islegal == 1}checked{/if}>是
+                       
+                </td>
+                <td class="text-center" style="vertical-align: middle; ">
+                    <a onclick="updateConfig(this)" data-key="{$config->id}" data-title="{$config->title}" data-islegal="{$config->islegal}" class="btn btn-xs btn-primary">确认修改</a>
+                    <a onclick="deleted(this)" data-key="{$config->id}" class="btn btn-xs btn-primary">删除</a>
+                </td>
+            </tr>
+            {/foreach}
+            <tr>
+                <td class="text-center" style="vertical-align: middle; "></td>
+                <td class="text-center" style="vertical-align: middle; ">
+                    <input type="text"  style="text-align: center" name="title" class="form-control" value="">
+                </td>
+                <td class="text-center" style="vertical-align: middle; ">
+                    <input type="text"  style="text-align: center" name="address" class="form-control" value="">
+                </td>
+                <!-- <td class="text-center" style="vertical-align: middle; ">
+                    <input type="text"  style="text-align: center" id="imgs" class="form-control" value="">
+                </td> -->
+                <td>
+
+                    <div class="col-sm-2">
+                        <img src="/static/img/tj.png" class="imgs logo-img" did="logo" style="width:50px;height:50px">
+                    </div>
+                    <input type="hidden" name="imgs" id="logo">
+                    <input type="file" class="file logo" style="display: none;" did="logo">
+                
+                </td>
+
+                <td class="text-center" style="vertical-align: middle; ">
+                    <input type="radio" name="islegal" style="text-align: center" 
+                           value="0">否  
+                    <input type="radio" name="islegal" style="text-align: center" 
+                           value="1">是
+                         
+                </td>
+                
+                <td class="text-center" style="vertical-align: middle; ">
+                    <a onclick="addConfig(this)" class="btn btn-xs btn-primary">确认添加</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+    </div>
+</section>
+{/block}
+
+{block name="footer"}
+<script src="/admin/vendor/fuelux/checkbox.js"></script>
+<script>
+    $('.imgs').click(function () {
+        var did = $(this).attr('did');
+        $('.'+did).click();
+    })
+    $('.file').change(function () {
+        var did = $(this).attr("did");
+        var $this = $(this);
+        var file = this.files[0];
+        if(file.length == 0)
+        {
+            alert("请选择要上传的图片");
+            return false;
+        }
+        var data = new FormData();
+        data.append('image',file);
+        $.ajax({
+            url:"/admin/upload/uploadEditor",
+            type:"post",
+            data:data,
+            processData:false,
+            contentType:false,
+            dataType:'json',
+            success:function(data){
+                var url = data.data[0];
+                $("."+did+"-img").attr('src', url);
+                $('#'+did).val(url)
+            }
+        })
+    })
+</script>
+
+<script>
+    function addConfig(e) {
+        var title = $("input[name='title']").val();
+        var islegal = $("input[name='islegal']").val();
+        var address = $("input[name='address']").val();
+        var imgs = $("input[name='imgs']").val();
+
+        alert(imgs);
+
+        $.post("{:url('wallet/setadd')}", {title: title,islegal:islegal , address:address , imgs:imgs}, function (data) {
+
+            if (data.code == 1) {
+                main.waringAlert(data.message);
+            } else {
+                main.waringAlert(data.message);
+                setTimeout(function () {
+                    window.location.reload();
+                }, 2000);
+            }
+        }, 'json')
+    }
+    function updateConfig(e) {
+        var id = $(e).attr('data-key');
+        var title1 = $(e).attr('data-title');
+        var title = $("#" + id +'-'+ title1).val();
+        var islegal1 = $(e).attr('data-islegal');
+        var islegal2 = id +'-islegal-'+ islegal1;
+        var islegal = $("input[name="+islegal2+"]:checked").val();
+
+        var address1 = $(e).attr('data-address');
+        var address2 = id +'-address-'+ address1;
+        var address = $("input[name="+address2+"]:checked").val();
+        var imgs1 = $(e).attr('data-imgs');
+        var imgs2 = id +'-imgs-'+ imgs1;
+        var imgs = $("input[name="+imgs2+"]:checked").val();
+        
+        // alert(title);
+        $.post("{:url('wallet/edit')}", {id: id, title: title , islegal:islegal , address:address , imgs:imgs}, function (data) {
+            if (data.code == 1) {
+                main.waringAlert(data.message);
+            } else {
+                main.waringAlert(data.message);
+                setTimeout(function () {
+                    window.location.reload();
+                }, 2000);
+            }
+        }, 'json')
+    }
+    function deleted(e) {
+        var id = $(e).attr('data-key');
+
+        $.post("{:url('wallet/deleted')}", {id: id}, function (data) {
+            if (data.code == 1) {
+                main.waringAlert(data.message);
+            } else {
+                main.waringAlert(data.message);
+                window.location.reload();
+            }
+        }, 'json')
+    }
+</script>
+{/block}

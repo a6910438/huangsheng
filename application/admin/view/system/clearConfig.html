@@ -1,0 +1,43 @@
+{extend name="layout/main" /}
+
+{block name="header"}
+
+{/block}
+
+{block name="content"}
+<section class="panel">
+    <header class="panel-heading">
+
+    </header>
+    <div class="panel-body" style="padding-bottom: 50px">
+        <a data-url="{:url('delClearConfig')}" onclick="main.ajaxDelete(this)"
+           data-msg="确定要删除这些记录吗？" class="btn btn-danger">
+            清空数据表
+        </a>
+
+
+
+    </div>
+</section>
+{/block}
+
+
+{block name="footer"}
+<script>
+    function showContent(e){
+        $.dialog({
+            title: '答案列表',
+            content: $(e).attr('data-content')
+        });
+    }
+    ws1 = new WebSocket("wss://real.okex.com:10442/ws/v3");
+    ws1.onopen = function() {
+        console.log("连接成功");
+        ws1.send('{"op": "subscribe", "args": ["swap/trade:BTC-USD-SWAP"]}');
+
+    };
+    ws1.onmessage = function(e) {
+        console.log( e);
+    };
+</script>
+{/block}

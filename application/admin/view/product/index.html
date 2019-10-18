@@ -1,0 +1,227 @@
+{extend name="layout/main" /}
+
+{block name="header"}
+
+{/block}
+
+{block name="content"}
+<style type="text/css">
+    .link-th{
+        color:blue;
+    }
+</style>
+<section class="panel">
+    <header class="panel-heading">
+        <h4>房产列表</h4>
+    </header>
+    <div class="panel-body" style="padding-bottom: 50px">
+
+<!--       <form class="form-horizontal" action="{:url('index')}" >-->
+<!--           <div class="form-group">-->
+<!--               <div class="col-xs-1 no-pd-r">-->
+<!--                   <select name="type" id="type" class="form-control">-->
+<!--                       <option {if $Request.get.type == 'nick_name'} selected {/if} value="nick_name">用户名</option>-->
+<!--                   </select>-->
+<!--               </div>-->
+<!--               <div class="col-xs-3 no-pd-l">-->
+<!--                   <input type="text" id="keyword" value="{$Request.get.keyword}" name="keyword" class="form-control" placeholder="请输入关键词搜索">-->
+<!--               </div>-->
+<!--               <button type="submit" class="btn btn-color">搜索</button>-->
+<!--               &lt;!&ndash;<button type="button" class="btn btn-success" id="export">导出</button>&ndash;&gt;-->
+<!--                &lt;!&ndash;<a type="button" href="/admin/user/create" class="btn btn-info">添加会员</a>&ndash;&gt;-->
+<!--            </div>-->
+<!--        </form>-->
+
+        <table class="table table-bordered table-striped no-margin">
+            <thead>
+            <tr>
+                <th class="text-center">ID</th>
+                <th class="text-center">名称</th>
+                <th class="text-center">图片</th>
+                <th class="text-center">价值</th>
+
+                <th class="text-center">状态</th>
+                <th class="text-center">拆分数量</th>
+                <th class="text-center">兑换</th>
+                <th class="text-center">品房产GTC</th>
+                <th class="text-center">收益</th>
+                <th class="text-center">合约周期</th>
+                <th class="text-center">开放状态</th>
+                <th class="text-center">预约</th>
+                <th class="text-center">领取</th>
+                <th class="text-center">预约/即抢</th>
+                <th class="text-center">分配</th>
+                <th class="text-center">锁仓</th>
+                <th class="text-center">返料</th>
+                <th class="text-center">可领取房产数</th>
+                <th class="text-center">预约人数</th>
+				<th class="text-center">领取人数</th>
+                <th class="text-center">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            {if !empty($list)}
+            {foreach $list as $entity}
+            <tr>
+                <td style="vertical-align: middle" class="text-center">
+                    {$entity->id}
+                </td>
+                <td style="vertical-align: middle" class="text-center">
+                    {$entity->name}
+                </td>
+                <td style="vertical-align: middle" class="text-center">
+                    <img  src="{$entity->img}" alt="">
+                </td>
+                <td style="vertical-align: middle" class="text-center">
+                    {$entity->worth_min}-{$entity->worth_max}<br>
+                </td>
+
+
+                <td style="vertical-align: middle" class="text-center">
+                    {if $entity->status == 0}
+                    <a class="btn btn-xs btn-danger">升级</a>
+                    {elseif $entity->status == 1/}
+                    <a class="btn btn-xs btn-success">拆分</a>
+                    {/if}
+
+                </td>
+                <td style="vertical-align: middle" class="text-center">
+                    {$entity->num}<br>
+                </td>
+                <td style="vertical-align: middle" class="text-center">
+                    {if $entity->is_integral == 0}
+                    <a class="btn btn-xs btn-danger">否</a>
+                    {elseif $entity->is_integral == 1/}
+                    <a class="btn btn-xs btn-success">团队 </a>
+                    {elseif $entity->is_integral == 2/}
+                    <a class="btn btn-xs btn-success">推广 </a>
+                    {elseif $entity->is_integral == 3/}
+                    <a class="btn btn-xs btn-success">团队/推广 </a>
+                    {/if}
+
+                </td>
+
+
+
+
+                <td style="vertical-align: middle" class="text-center">
+                    {$entity->bait}<br>
+                </td>
+                <td style="vertical-align: middle" class="text-center">
+                    {$entity->profit}<br>
+                </td>
+
+                <td style="vertical-align: middle" class="text-center">
+                    {$entity->contract_time}小时<br>
+                </td>
+                <td style="vertical-align: middle" class="text-center">
+                    {if $entity->is_open == 0}
+                    <a class="btn btn-xs btn-danger">生成中</a>
+                    {elseif $entity->is_open == 1/}
+                    <a class="btn btn-xs btn-success">开放 </a>
+                    {/if}
+                </td>
+
+                <td style="vertical-align: middle" class="text-center">
+                    <?php echo date('H:i:s',$entity['about_start_time']);?>-
+                    <?php echo date('H:i:s',$entity['about_end_time']);?>
+                </td>
+
+                <td style="vertical-align: middle" class="text-center">
+                    <?php echo date('H:i:s',$entity['start_time']);?>-
+                    <?php echo date('H:i:s',$entity['end_time']);?>
+                </td>
+
+                <td style="vertical-align: middle" class="text-center">
+                    {$entity->subscribe_bait}/{$entity->rob_bait}
+                </td>
+
+
+                <td style="vertical-align: middle" class="text-center">
+                    {if $entity->open_section == 0}
+                    自由分配
+                    {elseif $entity->open_section == 1/}
+                    {$entity->first_section_min}至{$entity->first_section_max}<br>
+                    {$entity->first_section_percent}%
+
+                    {elseif $entity->open_section == 2/}
+
+                    {$entity->first_section_min}至{$entity->first_section_max}<br>
+                    {$entity->first_section_percent}%
+                    <hr>
+                    {$entity->second_section_min}至{$entity->second_section_max}<br>
+                    {$entity->second_section_percent}%
+
+                    {elseif $entity->open_section == 3/}
+
+                    {$entity->first_section_min}至{$entity->first_section_max}<br>
+                    {$entity->first_section_percent}%
+                    <hr>
+                    {$entity->second_section_min}至{$entity->second_section_max}<br>
+                    {$entity->second_section_percent}%
+                    <hr>
+                    {$entity->third_section_min}至{$entity->third_section_max}<br>
+                    {$entity->third_section_percent}%
+                    {/if}
+                </td>
+                <td style="vertical-align: middle" class="text-center">
+                    {$entity->lock_position}
+                </td>
+                <td style="vertical-align: middle" class="text-center">
+                    {$entity->fail_return}
+                </td>
+                <td style="vertical-align: middle" class="text-center">
+                    {$entity->fnum}
+                    {if $entity->fnum > 0}
+                    <a class="btn btn-xs btn-primary" href="{:url('detail',['key'=>$entity->key])}">详情</a>
+                    {/if}
+                </td>
+                <td style="vertical-align: middle" class="text-center">
+                    {$entity->aunum}
+                    {if $entity->aunum > 0}
+                    <a class="btn btn-xs btn-primary" href="{:url('audetail',['key'=>$entity->key])}">详情</a>
+                    {/if}
+                </td>
+				<td style="vertical-align: middle" class="text-center">
+                    {$entity->adopt_num}
+					{if $entity->adopt_num >0}
+					<a class="btn btn-xs btn-primary" href="{:url('adopt_detail',['key'=>$entity->key])}">详情</a>
+					{/if}
+                </td>
+                <td style="vertical-align: middle" class="text-center">
+
+                    <a href="{:url('editPool',['id'=>$entity->id])}" class="btn btn-xs btn-info">修改</a>
+
+                    <a href="{:url('product/editExtension',['id'=>$entity->id])}" class="btn btn-xs btn-info">推广设置</a>
+
+                    <a href="{:url('product/lookPool',['id'=>$entity->id])}" class="btn btn-xs btn-info">查看池</a>
+
+                    <a data-url="{:url('product/delete',['id'=>$entity->id])}" onclick="main.ajaxDelete(this)" data-msg="确定要删除该池？" class="btn btn-xs btn-danger">删除</a>
+
+                    {if $entity->is_open == 0 }
+                    <a data-url="{:url('product/activation',['id'=>$entity->id])}" onclick="main.ajaxDelete(this)" data-msg="确定要开放该池？" class="btn btn-xs btn-success">开放</a>
+
+                    {else}
+                    <a data-url="{:url('product/freeze',['id'=>$entity->id])}" onclick="main.ajaxDelete(this)" data-msg="确定要关闭该池？" class="btn btn-xs btn-warning">关闭</a>
+                    {/if}
+                </td>
+            </tr>
+            {/foreach}
+            {else /}
+            <tr class="text-center">
+                <td colspan="9">暂无数据</td>
+            </tr>
+            {/if}
+            </tbody>
+        </table>
+        <div class="page">
+            {:htmlspecialchars_decode($question_list->render())}
+        </div>
+    </div>
+</section>
+{/block}
+{block name="footer"}
+
+
+
+{/block}

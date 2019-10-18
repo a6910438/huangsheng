@@ -1,0 +1,44 @@
+{extend name="layout/main" /}
+
+{block name="header"}
+
+{/block}
+
+{block name="content"}
+<section class="panel">
+    <header class="panel-heading">
+        <h4>充值金币</h4>
+    </header>
+    <div class="panel-body" style="padding-bottom: 50px">
+        <form class="form-horizontal" method="post" onsubmit="return false" role="form">
+        <input type="hidden" name="id" class="form-control" value="{$info->id}">
+            <div class="form-group">
+                <label class="col-sm-2 control-label">数量</label>
+
+                <div class="col-sm-5">
+                    <input type="number" name="magic" class="form-control" placeholder="请输入充值金币数量">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">备注</label>
+
+                <div class="col-sm-5">
+                    <textarea class="form-control" rows="3" name="remark">系统充值</textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" data-url="{:url('admin/user/saveRecharge',['id'=>$info->id])}"
+                            onclick="main.ajaxPosts(this)" class="btn btn-primary">确定充值
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+{/block}
+
+
+{block name="footer"}
+    <script src="/admin/vendor/fuelux/checkbox.js"></script>
+{/block}

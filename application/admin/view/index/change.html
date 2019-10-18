@@ -1,0 +1,52 @@
+{extend name="layout/main" /}
+
+{block name="header"}
+
+{/block}
+
+{block name="content"}
+<section class="panel">
+    <header class="panel-heading">
+        <h4>修改密码</h4>
+    </header>
+    <div class="panel-body" style="padding-bottom: 50px">
+        <form class="form-horizontal" method="post" onsubmit="return false" role="form">
+            <div class="form-group">
+                <label class="col-sm-2 control-label">原登录密码</label>
+
+                <div class="col-sm-5">
+                    <input type="password" name="old_password" class="form-control" placeholder="原登录密码">
+                </div>
+
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">新登录密码</label>
+
+                <div class="col-sm-5">
+                    <input type="password" name="password" class="form-control" placeholder="新登录密码">
+                </div>
+
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">确认密码</label>
+
+                <div class="col-sm-5">
+                    <input type="password" name="password_confirmation" class="form-control" placeholder="确认密码">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" data-url="{:url('admin/index/updateInfo')}"
+                            onclick="main.ajaxPosts(this)" class="btn btn-primary">确定修改
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+{/block}
+
+
+{block name="footer"}
+<script src="/zhao/public/admin/vendor/fuelux/checkbox.js"></script>
+{/block}

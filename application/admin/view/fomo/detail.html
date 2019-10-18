@@ -1,0 +1,163 @@
+{extend name="layout/main" /}
+
+{block name="header"}
+
+{/block}
+
+{block name="content"}
+<section class="panel">
+    <header class="panel-heading">
+        <h4>订单详细</h4>
+    </header>
+    <div class="panel-body" style="padding-bottom: 50px">
+        <section class="panel">
+            <header class="panel-heading">
+                <h5>订单信息</h5>
+            </header>
+            <div class="panel-body" >
+                <table class="table table-bordered table-striped no-margin">
+                    <thead>
+                        <tr>
+                            <th class="text-center">订单number</th>
+                            <th class="text-center">数量（金币）</th>
+                            <th class="text-center">交易单价</th>
+                            <th class="text-center">交易总额</th>
+                            <th class="text-center">交易状态</th>
+                            <th class="text-center">交易手续费(金币)</th>
+                            <th class="text-center">创建时间</th>
+                            {if $order->status > 1}
+                            <th class="text-center">付款时间</th>
+                            {/if}
+                            {if $order->status > 2}
+                            <th class="text-center">收款时间</th>
+                            <th class="text-center">交易凭据</th>
+                            {/if}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="text-center">
+                                {$order->order_number}
+                            </td>
+                            <td class="text-center"> {$order->number}</td>
+                            <td class="text-center">{$order->price}</td>
+                            <td class="text-center">
+                                {$order->total_price_china} CNY
+                            </td>
+                            <td class="text-center">
+                                {$order->getStatus()}
+                            </td>
+                            <td class="text-center">
+                                {$order->charge_number}
+                            </td>
+                            <td class="text-center">
+                                {$order->create_time}
+                            </td>
+                            {if $order->status > 1}
+                            <td class="text-center">{:date('Y-m-d H:i:s',$order->pay_time)}</td>
+                            {/if}
+                            {if $order->status > 2}
+                            <td class="text-center">{:date('Y-m-d H:i:s',$order->finish_time)}</td>
+                            <td class="text-center">
+                                <a data-url="{$order->image}" class="btn btn-xs btn-primary look">查看</a>
+                            </td>
+                            {/if}
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+        <section class="panel">
+            <header class="panel-heading">
+                <h5>
+                    {if $order->types == 1}求购会员信息{/if}
+                    {if $order->types == 2}出售会员信息{/if}
+                </h5>
+            </header>
+            <div class="panel-body" >
+                <table class="table table-bordered table-striped no-margin">
+                    <thead>
+                        <tr>
+                            <th class="text-center">昵称</th>
+                            <th class="text-center">mobile</th>
+                            <th class="text-center">微信</th>
+                            <th class="text-center">支付宝</th>
+                            <th class="text-center">真实姓名</th>
+                            <th class="text-center">开户行</th>
+                            <th class="text-center">银行卡号</th>
+                            <th class="text-center">交易好评</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="text-center">{$userInfo->nick_name}</td>
+                            <td class="text-center">{$userInfo->mobile}</td>
+                            <td class="text-center">{$userInfo->wx}</td>
+                            <td class="text-center">{$userInfo->zfb}</td>
+                            <td class="text-center">{$userInfo->real_name}</td>
+                            <td class="text-center">{$userInfo->card_name}</td>
+                            <td class="text-center">{$userInfo->card}</td>
+                            <td class="text-center">{$userInfo->comment_rate} %</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+        {if $targetUser}
+        <section class="panel">
+            <header class="panel-heading">
+                <h5>
+                    {if $order->types == 2}求购会员信息{/if}
+                    {if $order->types == 1}出售会员信息{/if}
+                </h5>
+            </header>
+            <div class="panel-body" >
+                <table class="table table-bordered table-striped no-margin">
+                    <thead>
+                    <tr>
+                        <th class="text-center">昵称</th>
+                        <th class="text-center">mobile</th>
+                        <th class="text-center">微信</th>
+                        <th class="text-center">支付宝</th>
+                        <th class="text-center">真实姓名</th>
+                        <th class="text-center">开户行</th>
+                        <th class="text-center">银行卡号</th>
+                        <th class="text-center">交易好评</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td class="text-center">{$targetUser->nick_name}</td>
+                        <td class="text-center">{$targetUser->mobile}</td>
+                        <td class="text-center">{$targetUser->wx}</td>
+                        <td class="text-center">{$targetUser->zfb}</td>
+                        <td class="text-center">{$targetUser->real_name}</td>
+                        <td class="text-center">{$targetUser->card_name}</td>
+                        <td class="text-center">{$targetUser->card}</td>
+                        <td class="text-center">{$targetUser->comment_rate} %</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+        {/if}
+    </div>
+</section>
+{/block}
+
+{block name="footer"}
+    <script>
+        $(function(){
+            $(".look").click(function(){
+                var image = $(this).attr('data-url');
+                var content = "<img width='100%' src='"+image+"'>";
+                $.dialog({
+                    closeIcon: true,
+                    title: '交易凭据',
+                    content: content
+                });
+            })
+        })
+    </script>
+
+{/block}

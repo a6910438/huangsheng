@@ -1,0 +1,98 @@
+{extend name="layout/main" /}
+
+{block name="header"}
+
+{/block}
+
+{block name="content"}
+<section class="panel">
+    <header class="panel-heading">
+        <h4>超时领取警报列表</h4>
+    </header>
+    <div class="panel-body" style="padding-bottom: 50px">
+        <form class="form-horizontal" action="" >
+            <div class="form-group">
+
+                <div class="col-xs-1 no-pd-r">
+                    <select name="type" class="form-control">
+                        <option {if $Request.get.type == 'number'} selected {/if} value="number">订单编号</option>
+                        <option {if $Request.get.type == 'ids'} selected {/if} value="ids">ID</option>
+
+                    </select>
+                </div>
+                <div class="col-xs-3 no-pd-l">
+                    <input type="text" value="{$Request.get.keyword}" name="keyword" class="form-control" placeholder="请输入关键词搜索">
+                </div>
+                <button type="submit" class="btn btn-color">搜索</button>
+            </div>
+        </form>
+        <table class="table table-bordered table-striped no-margin">
+            <thead>
+                <tr>
+                    <th class="text-center">序号</th>
+                    <th class="text-center">订单号</th>
+                    <th class="text-center">取款人昵称</th>
+                    <th class="text-center">取款人状态</th>
+                    <th class="text-center">存款人昵称</th>
+                    <th class="text-center">存款人状态</th>
+                    <th class="text-center">打款数量</th>
+                    <th class="text-center" hidden>打款凭证</th>
+                    <th class="text-center">订单状态</th>
+                    <th class="text-center">添加时间</th>
+                    <th class="text-center" hidden>打款时间</th>
+                </tr>
+            </thead>
+            <tbody>
+            {if $list}
+                {foreach $list as $order}
+                    <tr>
+                        <td class="text-center">{$order.id}</td>
+                        <td class="text-center">{$order.order_number}</td>
+                        <td class="text-center">
+                            {$order.nick_name}
+                        </td>
+                        <td class="text-center">
+                            {$order.ustatus|getUserStatus}
+                        </td>
+                        <td class="text-center">
+                            {$order.f_nick_name}
+                        </td>
+                        <td class="text-center">
+                            {$order.f_ustatus|getUserStatus}
+                        </td>
+                        <td class="text-center">
+                            {$order.money}
+                        </td>
+                        <td class="text-center" hidden>
+                            <img src="{$order.pay_imgs}" alt="支付凭证" style="height: 100px;">
+
+                        </td>
+                        <td class="text-center">
+                            {$order.astatus|getAUStatus}
+                        </td>
+                        <td class="text-center">
+                           {$order.create_time|date='Y-m-d H:i',### }
+                        </td>
+                        <td class="text-center" hidden>
+                            {$order.buy_time|date='Y-m-d H:i',###}
+                        </td>
+                    </tr>
+                {/foreach}
+            {else /}
+                <tr class="text-center">
+                    <td colspan="8">暂无数据</td>
+                </tr>
+            {/if}
+            </tbody>
+        </table>
+        <div class="page">
+            {:htmlspecialchars_decode($list->render())}
+        </div>
+    </div>
+</section>
+{/block}
+
+
+{block name="footer"}
+
+{/block}

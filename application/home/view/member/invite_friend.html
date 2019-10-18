@@ -1,0 +1,288 @@
+{extend name='main'}
+
+{block name='body'}
+<div class="fish-head">
+    <a href="javascript:window.history.back();" class="head-back"><span>返回</span></a>
+    <h3 class="head-tit"><span>邀请好友</span></h3>
+    <!-- <a href="javascript:;" class="head-menu"><span>兑换</span></a> -->
+</div>
+<div class="fish-main" v-cloak>
+    <div id="bait-top" class="content-box">
+        <div class="top-text">我的邀请码</div>
+        <input type="text" readonly class="top-num" id="invite-code" :value="info.invite_code">
+    </div>
+    <div class="content-view">
+        <button class="content-btn btnCode" @click="copyInviteCode">复制邀请码</button>
+    </div>
+    <div id="qrcode-box" class="content-box" v-if="info.invite_code">
+        <img  v-bind:src="info.invite_code ? '/home/tools/qrcode.html?code='+location.protocol+'//'+location.host+'{:url('home/publics/register')}?code='+info.invite_code : '#'" alt="二维码"/>
+        <p>扫码即刻加入「大富豪」</p>
+    </div>
+    <!--
+    <div style="padding:12px;">
+        <div class="invite-top">
+            <div class="invite-code">
+                <div style="font-size:16px;">我的邀请码</div>
+                <div class="code" id="foo">{{info.invite_code}}</div>
+            </div>
+            <div class="invite-btn">
+               <a href="javascript:;" class="btn btnCode"data-clipboard-action="copy" data-clipboard-target="#foo">复制邀请码</a>
+               <a :href="'{:url('home/member/qrcode')}?code='+info.invite_code" class="btn" style="margin-top:10px;background:#E75C3F;">生成二维码海报</a>
+            </div>
+        </div>
+    </div>
+    -->
+    
+    <div class="content-view clearfix">
+        <div class="col-4">团队人数:{{info.teamnum}}</div>
+        <div class="col-4" style="text-align: center">直推人数:{{info.pushnum}}</div>
+        <div class="col-4" style="text-align: right">激活人数:{{info.activationnum}}</div>  
+    </div>
+    <div class="content-box">
+        <div class="invite-record">
+            <div class="record-tit">
+                <i class="icon icon-record"></i> 邀请记录
+            </div>
+            <ul class="tabs">
+                <li class="tab"><a @click="typeFun(1)" href="#test1">全部</a></li>
+                <li class="tab"><a @click="typeFun(2)" href="#test2">激活用户</a></li>
+                <li class="tab"><a @click="typeFun(3)" href="#test3">未激活用户</a></li>
+            </ul>
+            <div id="test1">
+                <ul class="content-list">
+                    <li v-if="list1.length>0" v-for="vo in list1">
+                        <div>{{vo.nick_name}}<span>（{{vo.mobile}}）</span></div>
+                        <div><span>{{vo.register_time}}</span></div>
+                    </li>
+                </ul>
+                <div class="dialog-bottom"></div>
+            </div>
+            <div id="test2">
+                <ul class="content-list">
+                    <li v-if="list2.length>0" v-for="vo in list2">
+                        <div>{{vo.nick_name}}<span>（{{vo.mobile}}）</span></div>
+                        <div><span>{{vo.register_time}}</span></div>
+                    </li>
+                </ul>
+                <div class="dialog-bottom"></div>
+            </div>
+            <div id="test3">
+                <ul class="content-list">
+                    <li v-if="list3.length>0" v-for="vo in list3">
+                        <div>{{vo.nick_name}}<span>（{{vo.mobile}}）</span></div>
+                        <div><span>{{vo.register_time}}</span></div>
+                    </li>
+                </ul>
+                <div class="dialog-bottom"></div>
+            </div>
+        </div>
+    </div>
+</div>
+{include file='menu'}
+{/block}
+
+{block name='script'}
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            info: '',
+            type: 1,
+            list1: [],
+            page1: 0,
+            status1: true,
+            list2: [],
+            page2: 0,
+            status2: true,
+            list3: [],
+            page3: 0,
+            status3: true,
+            type: 1
+        },
+        computed: {
+            
+        },
+        methods: {
+            member: function(){
+                var self = this;
+                core.load("{:url('index/setup/index')}", {}, function(res){
+                    if(res.code==0){
+                        self.info=res.info;
+                    }else{
+                        core.toast(res.msg);
+                    }
+                })
+            },
+            typeFun: function(id){
+                if(this.type==id) return;
+                this.type=id;
+                if(this.type==1){
+                    if(this.page1!=0) return;
+                }else if(this.type==2){
+                    if(this.page2!=0) return;
+                }else if(this.type==3){
+                    if(this.page3!=0) return;
+                }
+
+                this.loadList();
+            },
+            copyInviteCode: function() {
+                if(!this.info.invite_code){
+                    core.toast('未获取到邀请码');
+                    return;
+                };
+                var input = document.getElementById('invite-code');
+                const len = input.value.length;
+                if (input.createTextRange) {
+                    //ie
+                    const range = input.createTextRange();
+                    range.collapse(true);
+                    range.moveStart('character', 0);//起始光标
+                    range.moveEnd('character', len);//结束光标
+                    range.select();//不兼容苹果
+                } else {
+                    //firefox/chrome
+                    input.setSelectionRange(0, len);
+                    input.focus();
+                }
+                //input.select();
+                if(document.execCommand("copy")){
+                    core.toast('复制邀请码成功');
+                }else{
+                    core.toast('复制邀请码失败');
+                };
+            },
+            loadList: function(){
+                var self = this;
+                var page = '';
+
+                if(self.type==1){
+                    if(!self.status1) return;
+                    page = self.page1;
+                    self.page1 = ++self.page1;
+                }else if(self.type==2){
+                    if(!self.status2) return;
+                    page = self.page2;
+                    self.page2 = ++self.page2;
+                }else if(self.type==3){
+                    if(!self.status3) return;
+                    page = self.page3;
+                    self.page3 = ++self.page3;
+                }
+                var data = {
+                    type: (self.type-1),
+                    limit: 12,
+                    page: page,
+                };
+
+                core.load("{:url('index/my/invitationlist')}", data, function(res){
+                    
+                    if(res.code=='0'){
+                        if(self.type==1){
+                            if(res.info.length>0) { 
+                                self.list1 = self.list1.concat(res.info);
+                                setTimeout(function(){
+                                    $('.ado-list').eq(0).children('li').each(function(index, el) {
+                                        var that = $(this).find('.timer');
+                                        if(!that.text()){
+                                            self.countDown(that.data('time'), that);
+                                        }
+                                    });
+                                });
+                            }
+                            if(!res.info || (res.info.length<data.limit)){
+                                self.status1 = false;
+                                $('.dialog-bottom').eq(0).html('已经加载全部数据');
+                            }else{
+                                $('.dialog-bottom').eq(0).html('正在加载...');
+                            }
+                        }else if(self.type==2){
+                            if(res.info.length>0) self.list2 = self.list2.concat(res.info);
+                            if(!res.info || (res.info.length<data.limit)){
+                                self.status2 = false;
+                                $('.dialog-bottom').eq(1).html('已经加载全部数据');
+                            }else{
+                                $('.dialog-bottom').eq(1).html('正在加载...');
+                            }
+                        }else if(self.type==3){
+                            if(res.info.length>0) self.list3 = self.list3.concat(res.info);
+                            if(!res.info || (res.info.length<data.limit)){
+                                self.status3 = false;
+                                $('.dialog-bottom').eq(2).html('已经加载全部数据');
+                            }else{
+                                $('.dialog-bottom').eq(2).html('正在加载...');
+                            }
+                        }
+                    }else{
+                        core.toast(res.msg);
+                    }
+                })
+            },
+        },
+        mounted: function(){
+            $('ul.tabs').tabs();
+            var self = this;
+            self.member();
+            self.loadList()
+            // 下拉加载
+            $(window).off("scroll").on("scroll", function(e){
+                var totalheight = parseFloat($(this).height()) + parseFloat($(this).scrollTop());
+                if (($(document).height()<=totalheight)){
+                    self.loadList()
+                }
+            });
+        }
+    });
+</script>
+{/block}
+
+{block name="style"}
+<style>
+    .col-4{
+        padding: 0 0.5rem;
+    }
+    .record-tit{
+        text-align: center;
+        font-size: 1.1rem;
+        font-weight: bold;
+        line-height: 2rem;
+        color: #c4afa0;
+    }
+    .record-tit>.icon-record{
+        background-image: url('/fish/img/icon-record.png');
+    }
+    #qrcode-box,
+    #bait-top{
+        text-align: center;
+        position: relative;
+        padding: 1rem 1rem;
+    }
+    #bait-top .top-text{
+        font-size:1rem;
+    }
+    #bait-top .top-num{
+        font-size:3rem;
+        font-weight:bold;
+        width: 100%;
+        color: inherit;
+        background-color: transparent ;
+        text-align: center;
+    }
+    #bait-top .top-num::selection {
+        color:inherit;
+        background-color: transparent ;
+    }
+    #qrcode-box>p{
+        line-height: 2rem;
+        font-size: 1rem;
+        color: #554335;
+    }
+    .content-list>li>div:last-child{
+        margin-left: auto;
+    }
+    .dialog-bottom{
+        color: #E02737;
+    }
+
+</style>
+{/block}

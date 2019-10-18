@@ -1,0 +1,524 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>交易市场</title>
+    <link href="/static/css/mescroll.css" rel="stylesheet">
+    {include file="layout/head" /}
+    <style>
+        .mui-input-row.mui-search .mui-icon-clear {
+            top: 7px
+        }
+
+        .mui-search.mui-active:before {
+            top: 25px
+        }
+        .mescroll-upwarp {
+            width: 100%;
+            position: absolute;
+            bottom: 50px;
+        }
+        .pagination {
+            display: inline-block;
+            padding-left: 0;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        .pagination>li {
+            display: inline;
+        }
+        .pagination>li:first-child>a, .pagination>li:first-child>span {
+            margin-left: 0;
+            border-top-left-radius: 4px;
+            border-bottom-left-radius: 4px;
+        }
+        .pagination>.disabled>span, .pagination>.disabled>span:hover, .pagination>.disabled>span:focus, .pagination>.disabled>a, .pagination>.disabled>a:hover, .pagination>.disabled>a:focus {
+            color: #777;
+            cursor: not-allowed;
+            background-color: #fff;
+            border-color: #ddd;
+        }
+        .pagination>li>span {
+            position: relative;
+            float: left;
+            padding: 6px 12px;
+            margin-left: -1px;
+            line-height: 1.42857143;
+            color: #ea6c41;
+            text-decoration: none;
+            background-color: #fff;
+            border: 1px solid #ddd;
+        }
+        .pagination>.active>a, .pagination>.active>span, .pagination>.active>a:hover, .pagination>.active>span:hover, .pagination>.active>a:focus, .pagination>.active>span:focus {
+            z-index: 2;
+            color: #fff;
+            cursor: default;
+            background-color: #ea6c41;
+            border-color: #ea6c41;
+        }
+        .pagination>li>a, .pagination>li>span {
+            position: relative;
+            float: left;
+            padding: 6px 12px;
+            margin-left: -1px;
+            line-height: 1.42857143;
+            color: #ea6c41;
+            text-decoration: none;
+            background-color: #fff;
+            border: 1px solid #ddd;
+        }
+        #search{
+            background: #fff;
+            border: 1px solid #eee;
+            margin-bottom: 0;
+        }
+        #search_btn{
+            margin:0px auto;
+            display: block;
+            background: #ea6c41;
+            color:#fff;
+            font-size: 16px;
+            width:90%;
+            line-height: 38px;
+            height:38px;
+            border-radius: 2px;
+        }
+        .buy-order-btn,.sale-order-btn{
+            background: #ea6c41;
+            color:#fff;
+            padding: 5px 10px;
+        }
+        #dataList,#list_area{
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+{include file="layout/nav" /}
+<header class="mui-bar mui-bar-nav my-header">
+    <h1 class="mui-title">交易中心</h1>
+    <a class="mui-icon mui-icon-contact mui-pull-right" href="{:url('member/index')}"><span id="user-title">{$Think.session.username}</span></a>
+</header>
+<div class="mui-content">
+    <div class="mui-scroll-wrapper" id="scroll" style="margin-bottom: 62px">
+        <div class="mui-scroll">
+            <div class="market-header mui-row">
+                <div class="mui-col-xs-5 mui-col-sm-5">
+                    <p class="text" style="margin-bottom: 6px">当前价</p>
+                    <strong class="price">{$prices['prices']['current']}</strong><span class="text">¥</span>
+
+                    <!--<p class="text" style="margin-top: 6px">≈{$prices['prices']['current_china']} CNY</p>-->
+                </div>
+                <div class="mui-col-xs-7 mui-col-sm-7">
+                    <div class="right">
+                        <p class="text">最高：<span class="blank">{$prices['prices']['max']}</span>&nbsp;&nbsp;¥
+                            &nbsp;最低：<span
+                                    class="blank">{$prices['prices']['min']}</span>&nbsp;¥</p>
+
+                        <p class="text">幅：<span class="blank">{$market_price_rate}</span>&nbsp;%</p>
+
+                        <p class="text">24小时交易量：<span class="blank">{$market_number}</span></p>
+
+                        <p class="text">24小时交易额：<span class="blank">{$market_total}</span></p>
+                    </div>
+                </div>
+            </div>
+            <div class="white-box" style="padding-bottom: 10px">
+                <h5 style="padding: 20px 0 0 20px;margin: 0">{$moneyName}价格线</h5>
+
+                <div class="chart " id="lineChart" style="height:200px;margin-left: 20px">
+
+                </div>
+            </div>
+            <div class="market-dialog white-box" id="action-market">
+                <div class="tabs mui-row">
+                    <div data-action="buy-market" class="mui-col-xs-6 mui-col-sm-6 active action-item">
+                        求购大厅
+                    </div>
+                    <div data-action="sale-market" class="mui-col-xs-6 mui-col-sm-6 action-item">
+                        出售大厅
+                    </div>
+                </div>
+                <div class="market-form" id="buy-market">
+                    <p>可用 <strong>{$magic}</strong>{$moneyName}</p>
+
+                    <div class="clear">
+                        <input type="number" min="{$number_min}" max="{$number_max}" id="buy-number"
+                               class="left change-buy-input" placeholder="请输入购买数量">
+                        <input type="number" min="{$prices['prices']['min']}" max="{$prices['prices']['max']}"
+                               id="buy-price" class="right change-buy-input" placeholder="请输入购买单价" value="{$prices['prices']['current']}" disabled="true">
+                    </div>
+                    <p>预计支出： <strong id="buy-total">0</strong>¥</p>
+                    <button class="mui-btn-block market-btn" onclick="buy(this)">确定购买</button>
+                </div>
+                <div class="market-form" id="sale-market" style="display: none">
+                    <p>可用 <strong>{$magic}</strong>{$moneyName}</p>
+                    <div class="clear">
+                        <input type="number" min="{$number_min}" max="{$number_max}" id="sale-number"
+                               class="left change-sale-input" placeholder="请输入卖出数量">
+                        <input type="number" min="{$prices['prices']['min']}" max="{$prices['prices']['max']}"
+                               id="sale-price" class="right change-sale-input" placeholder="请输入卖出单价" value="{$prices['prices']['current']}" disabled="true">
+                    </div>
+                    <p>预计收入： <strong id="sale-total">0</strong>¥</p>
+                    <button class="mui-btn-block market-btn" onclick="sale(this)">确定卖出</button>
+                </div>
+            </div>
+            <div class="mui-input-row mui-search mui-row" style="margin: 10px">
+                <div class="mui-col-sm-8 mui-col-xs-8">
+                    <input id="search" type="text" maxlength="11" value="{$mobile}" class="mui-input-clear" placeholder="请输入对方手机号码查找">
+                </div>
+                <div class="mui-col-sm-4 mui-col-xs-4 mui-text-center">
+                    <span id="search_btn">搜&nbsp;&nbsp;索</span>
+                </div>
+                
+            </div>
+            <div class="market-dialog white-box" style="margin-top: 0" id="list_area">
+                <div class="tabs mui-row">
+                    <div class="mui-col-sm-3 mui-col-xs-3 mui-text-center">昵称</div>
+                    <div class="mui-col-sm-2 mui-col-xs-2 mui-text-center">数量</div>
+                    <div class="mui-col-sm-2 mui-col-xs-2 mui-text-center">单价</div>
+                    <div class="mui-col-sm-2 mui-col-xs-2 mui-text-center">总价</div>
+                    <div class="mui-col-sm-3 mui-col-xs-3 mui-text-center">类型</div>
+                </div>
+                <div class="market-list market-data-list" id="mescroll0">
+                    <div id="dataList" class="dataList" style="min-height: 50px;margin-bottom:20px;overflow: hidden">
+                        {if !empty($lists)}
+                        {foreach $lists as $info}
+                            <div class="tabs mui-row">
+                                <div class="mui-col-sm-3 mui-col-xs-3 mui-text-center">{$info['nick_name']}</div>
+                                <div class="mui-col-sm-2 mui-col-xs-2 mui-text-center">{$info['number']}</div>
+                                <div class="mui-col-sm-2 mui-col-xs-2 mui-text-center">{$info['price']}</div>
+                                <div class="mui-col-sm-2 mui-col-xs-2 mui-text-center">{$info['china_price']}</div>
+                                <div class="mui-col-sm-3 mui-col-xs-3 mui-text-center">
+                                    {if condition="$info['user_id'] neq $user_id"}
+                                        {if condition="$info['type'] eq 1"}
+                                        <span class="sale-order-btn" data-id="{$info['order_id']}" data-nickname="{$info['nick_name']}">我要卖</span>
+                                        {else/}
+                                        <span class="buy-order-btn" data-id="{$info['order_id']}" data-nickname="{$info['nick_name']}">我要买</span>
+                                        {/if}
+                                    {/if}
+                                </div>
+                            </div>
+                        {/foreach}
+                        {else/}
+                        <div class="mui-text-center" style="margin-top:10px;">暂无数据<div>
+                        {/if}
+                    </div>
+                    {if $page}
+                    <div id="page" class="mui-text-center">
+                        {:htmlspecialchars_decode($page)}
+                    </div>
+                    {/if}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+{include file="layout/footer" /}
+<script src="/static/js/mescroll.js"></script>
+<!--<script src="/static/js/echarts.simple.min.js"></script>-->
+<script src="/static/js/echarts.common.min.js"></script>
+<script>
+    $(function () {
+        $(".change-buy-input").bind('change keydown keyup', function () {
+            var price = parseFloat($("#buy-price").val());
+            var number = parseFloat($("#buy-number").val());
+            var total = accMul(price, number);
+            $("#buy-total").html(total ? total : 0)
+        })
+        $(".change-sale-input").bind('change keydown keyup', function () {
+            var price = parseFloat($("#sale-price").val());
+            var number = parseFloat($("#sale-number").val());
+            var total = accMul(price, number);
+            $("#sale-total").html(total ? total : 0)
+        })
+        $("#action-market .action-item").click(function () {
+            $(this).siblings('.action-item').removeClass('active');
+            $(this).addClass('active');
+            var id = $(this).attr('data-action');
+            $("#action-market .market-form").hide();
+            $("#" + id).show();
+        })
+        //手机号搜索
+        $('#search_btn').click(function(){
+            var value = $('#search').val();
+            var reg = /^1[345789][0-9]{9}$/;
+            if(value.length <= 0){
+                window.location.href = "{:url('market/index')}";
+                return false;
+            }
+            if (!reg.test(value)) {
+                mui.alert('请输入正确的手机号！');
+                return false;
+            }else{
+                window.location.href = "/index/market/index?mobile="+value+'#list_area';
+            }
+        })
+    })
+    function accMul(arg1, arg2) {
+        var m = 0, s1 = arg1.toString(), s2 = arg2.toString();
+        try {
+            m += s1.split(".")[1].length;
+        } catch (e) {
+        }
+        try {
+            m += s2.split(".")[1].length;
+        } catch (e) {
+        }
+        return Number(s1.replace(".", "")) * Number(s2.replace(".", "")) / Math.pow(10, m);
+    }
+    //买入
+    function buy(target) {
+        var price = parseFloat($("#buy-price").val() ? $("#buy-price").val() : 0);
+        var number = parseFloat($("#buy-number").val() ? $("#buy-number").val() : 0);
+        if (!checkParams(price, number)) {
+            return false;
+        }
+        var $this = $(target);
+        mui.showLoading("处理中..", "div");
+        $this.attr('disabled', true);
+        $.post("{:url('market/buy')}", {number: number, price: price}, function (data) {
+            console.log(data);
+            mui.hideLoading();
+            $this.attr('disabled', false);
+            if (data.code == 0) {
+                mui.confirm(data.message, '', ['去查看', '取消'], function (e) {
+                    if (e.index == 0) {
+                        window.location.href = data.toUrl;
+                    } else {
+                        window.location.reload();
+                    }
+                })
+            } else {
+                mui.alert(data.message);
+                if(data.toUrl){
+                    window.location.href = data.toUrl;
+                }
+            }
+
+        }, 'json')
+    }
+    function sale(target) {
+        var price = parseFloat($("#sale-price").val() ? $("#sale-price").val() : 0);
+        var number = parseFloat($("#sale-number").val() ? $("#sale-number").val() : 0);
+        if (!checkParams(price, number)) {
+            return false;
+        }
+        var sale_min = "{$sale_min}";
+        if(number < sale_min)
+        {
+            mui.alert('挂卖单最低数量为：'+sale_min);
+            return false;
+        }
+        var $this = $(target);
+
+        //发送验证码
+        mui.showLoading("处理中..", "div");
+        $this.attr('disabled', true);
+        $.post("{:url('market/send')}", {number: number, price: price}, function (data) {
+            mui.hideLoading();
+            $this.attr('disabled', false);
+            if (data.code == 0) {
+                console.log(data.message);
+                mui.prompt('请输入短信验证码：' + data.message, '请输入短信验证码', '', ['取消', '确定'], function (e) {
+                    if (e.index == 1) {
+                        var code = e.value;
+                        if (!code) {
+                            mui.alert('请输入短信验证码');
+                            return false;
+                        }
+                        mui.showLoading("处理中..", "div");
+                        $this.attr('disabled', true);
+                        $.post("{:url('market/sale')}", {number: number, price: price, code: code}, function (data) {
+                            mui.hideLoading();
+                            $this.attr('disabled', false);
+                            if (data.code == 0) {
+                                mui.confirm(data.message, '', ['去查看', '取消'], function (e1) {
+                                    if (e1.index == 0) {
+                                        window.location.href = data.toUrl;
+                                    } else {
+                                        window.location.reload();
+                                    }
+                                })
+                            } else if (data.code == 1) {
+                                mui.alert(data.message);
+                            } else {
+                                mui.alert(data.message);
+                            }
+
+                        }, 'json')
+                    }
+
+                })
+            } else {
+                mui.alert(data.message);
+            }
+        }, 'json')
+    }
+
+    function checkParams(price, number) {
+        var price_min = parseFloat("{$prices['prices']['min']}");
+        var price_max = parseFloat("{$prices['prices']['max']}");
+        var number_min = parseFloat("{$number_min}");
+        var number_max = parseFloat("{$number_max}");
+        var loose_min = parseFloat("{$loose_min}");
+        var loose_max = parseFloat("{$loose_max}");
+        var whole_min = parseFloat("{$whole_min}");
+        var whole_max = parseFloat("{$whole_max}");
+
+//        if (!(/^\d+(\.\d{1,2})?$/.test(price))) {
+//            mui.alert('单价最多为2位小数');
+//            return false;
+//        }
+
+//        if(number < 100){
+//            if(price > loose_max || price < loose_min){
+//                mui.alert('散币单价在' + loose_min + '-' + loose_max + '之间');
+//                return false;
+//            }
+//        }
+//
+//        if(number >= 100){
+//            if(price > whole_max || price < whole_min){
+//                mui.alert('整币单价在' + whole_min + '-' + whole_max + '之间');
+//                return false;
+//            }
+//        }
+        if (!(/^[1-9]\d*$/.test(number))) {
+            mui.alert('数量必须为大于1的正整数');
+            return false;
+        }
+        if (number_min > 0 && number < number_min) {
+            mui.alert('数量在' + number_min + '-' + number_max + '之间');
+            return false;
+        }
+        if (number_max > 0 && number > number_max) {
+            mui.alert('数量在' + number_min + '-' + number_max + '之间');
+            return false;
+        }
+
+        return true;
+    }
+</script>
+<script>
+    $("#dataList").on('click', '.buy-order-btn', function () {
+        var id = $(this).attr('data-id');
+        var nick_name = $(this).attr('data-nickname');
+        var $this = $(this);
+        mui.confirm('你确定要和' + nick_name + '交易吗', '', ['取消', '确定'], function (e) {
+            if (e.index == 1) {
+                mui.showLoading("处理中..", "div");
+                $this.attr('disabled', true);
+                $.post("{:url('market/buyTa')}", {order_id: id}, function (response) {
+                    mui.hideLoading();
+                    $this.attr('disabled', false);
+                    mui.alert(response.message);
+                    if (response.code == 0) {
+                        $this.parents('.market-list-item').remove();
+                    }
+                }, 'json')
+            }
+        })
+    })
+    $("#dataList").on('click', '.sale-order-btn', function () {
+        var id = $(this).attr('data-id');
+        var nick_name = $(this).attr('data-nickname');
+        var $this = $(this);
+        mui.confirm('你确定要和' + nick_name + '交易吗', '', ['取消', '确定'], function (e) {
+            if (e.index == 1) {
+                mui.showLoading("发送验证码中..", "div");
+                $this.attr('disabled', true);
+                $.post("{:url('market/sendSale')}", {order_id: id}, function (response) {
+                    mui.hideLoading();
+                    $this.attr('disabled', false);
+                    if (response.code == 0) {
+                        console.log(response.message);
+                        mui.prompt('请输入短信验证码：' + response.message, '请输入短信验证码', '', ['取消', '确定'], function (e) {
+                            if (e.index == 1) {
+                                var code = e.value;
+                                if (!code) {
+                                    mui.alert('请输入短信验证码');
+                                    return false;
+                                }
+                                mui.showLoading("处理中..", "div");
+                                $this.attr('disabled', true);
+                                $.post("{:url('market/saleTa')}", {order_id: id, code: code}, function (data) {
+                                    mui.hideLoading();
+                                    $this.attr('disabled', false);
+                                    mui.alert(data.message);
+                                    if (response.code == 0) {
+                                        $this.parents('.market-list-item').remove();
+                                    }
+                                }, 'json')
+                            }
+
+                        })
+                    } else {
+                        mui.alert(response.message);
+                    }
+
+                }, 'json')
+            }
+        })
+    })
+
+</script>
+<script>
+    $(function () {
+        
+    });
+
+</script>
+<script>
+    var option1 = {
+        
+        tooltip: {
+            trigger: 'axis'
+        },
+        grid: {
+            x: 30,
+            x2: 20,
+            y: 15,
+            y2: 25
+        },
+        xAxis: {
+            type: "category",
+            boundaryGap: false,
+            data: [{$prices['echarts']['xalias']}],
+            axisLine: {
+                lineStyle: {
+                    color: '#999'
+                }
+            }
+        },
+        yAxis: {
+            type: "value",
+            axisLine: {
+                lineStyle: {
+                    color: '#999'
+                }
+            }
+
+        },
+        series: {
+            name: "价格",
+            type: "line",
+            data: [{$prices['echarts']['yalias']}],
+            itemStyle: {
+                normal: {
+                    color: '#ffce1b',
+                    lineStyle: {
+                        color: '#ffce1b'
+                    }
+                }
+            },
+        }
+    }
+    var t = echarts.init(document.getElementById("lineChart"), "myzhexian");
+    setTimeout(function () {
+        t.setOption(option1)
+    }, 500);
+
+</script>
+</html>

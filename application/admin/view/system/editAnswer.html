@@ -1,0 +1,124 @@
+{extend name="layout/main" /}
+
+{block name="header"}
+
+{/block}
+
+{block name="content"}
+<section class="panel">
+    {if isset($info)}
+    <header class="panel-heading">
+        <h4>编辑问题答案</h4>
+    </header>
+    <div class="panel-body" style="padding-bottom: 50px">
+        <form class="form-horizontal" method="post" onsubmit="return false" role="form">
+            {foreach $info as $key=>$config}
+
+            <h4>选项{$config->arr($key+1)}</h4><br>
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">答案内容</label>
+                    <div class="col-sm-5">
+                        <input type="text" value="{$config->content}" name="content[]" class="form-control"
+                               placeholder="请输入问题内容">
+                        <input type="hidden" value="{$config->id}" name="id[]">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">答案分数</label>
+                    <div class="col-sm-5">
+                        <input type="text" value="{$config->score}" name="score[]" class="form-control"
+                               placeholder="请输入答案分数">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">排序（数字越小越靠前）</label>
+                    <div class="col-sm-5">
+                        <input type="text" value="{$config->sort}" name="sort[]" class="form-control"
+                               placeholder="请输入排序数字">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">状态</label>
+                    <div class="col-sm-5">
+                        <select name="status[]" class="form-control">
+                            <option value="">——请选择——</option>
+                            <option value="1" {if($config->status ==1)}selected{/if}>启用</option>
+                            <option value="2" {if($config->status ==2)}selected{/if}>禁用</option>
+                        </select>
+                    </div>
+                </div>
+
+            {/foreach}
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button type="submit" data-url="{:url('editTestAnswer',['id'=>$config->id])}"
+                                onclick="main.ajaxPosts(this)" class="btn btn-primary">确定修改
+                        </button>
+                        &nbsp;
+                        <button type="button" onclick="javascript:history.back(-1);" class="btn btn-warning">返回
+                        </button>
+                    </div>
+                </div>
+
+        </form>
+    </div>
+    {else /}
+    <header class="panel-heading">
+        <h4>添加答案</h4>
+    </header>
+    <div class="panel-body" style="padding-bottom: 50px">
+        <h4 style="color: red">题目</h4>
+        <h4>{$list->title}</h4>
+        <form class="form-horizontal" method="post" onsubmit="return false" role="form">
+            <div class="form-group">
+                <label class="col-sm-2 control-label">答案内容</label>
+                <div class="col-sm-5">
+                    <input type="text" value="" name="content" class="form-control"
+                           placeholder="请输入答案内容">
+                    <input type="hidden" value="{$list->id}" name="qid">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">答案分数</label>
+                <div class="col-sm-5">
+                    <input type="text" value="" name="score" class="form-control"
+                           placeholder="请输入答案分数">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">排序(数字越小越靠前)</label>
+                <div class="col-sm-5">
+                    <input type="text" name="sort" class="form-control" placeholder="请输入排序">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">状态</label>
+                <div class="col-sm-5">
+                    <select name="status" class="form-control">
+                        <option value="">——请选择——</option>
+                        <option value="1">启用</option>
+                        <option value="2">禁用</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" onclick="main.ajaxPosts(this)" data-url="{:url('doAddTestAnswer')}"
+                            class="btn btn-primary">提交
+                    </button>
+                    &nbsp;
+                    <button type="button" onclick="javascript:history.back(-1);" class="btn btn-warning">返回
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+    {/if}
+</section>
+{/block}
+
+
+{block name="footer"}
+
+{/block}

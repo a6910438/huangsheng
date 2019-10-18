@@ -1,0 +1,91 @@
+{extend name='main'}
+
+{block name='body'}
+<div class="fish-head">
+    <a href="javascript:window.history.back();" class="head-back"><span>返回</span></a>
+    <h3 class="head-tit"><span>预约记录</span></h3>
+    <!-- <a href="javascript:;" class="head-menu"><span>提交</span></a> -->
+</div>
+<div class="fish-main" v-cloak>
+    <div class="content-box">
+        <ul class="content-list" v-if="list.length>0">
+            <li v-for="vo in list">
+                <div>
+                    <h3>{{vo.name}}</h3>
+                    <div>{{vo.create_time}}</div>
+                </div>
+                <div>
+                    <div><span class="green" v-if="vo.bait>0">+{{vo.bait}}</span><span class="red" v-else>{{vo.bait}}</span></div>
+                    <div>{{vo.status}}</div>
+                </div>
+            </li>
+        </ul>
+        <div class="dialog-bottom"></div>
+    </div>
+</div>
+{include file='menu'}
+{/block}
+
+{block name='script'}
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            list: [],
+            page: 0,
+            status: true,
+        },
+        computed: {
+            
+        },
+        methods: {
+            loadList: function(){
+                var self = this;
+                var data = {
+                    page: self.page,
+                    limit: 12,
+                };
+
+                core.load("{:url('index/my/make_record')}", data, function(res){
+                    
+                    if(res.code=='0'){
+                        if(res.info.length>0) self.list = self.list.concat(res.info);
+                        if(!res.info || (res.info.length<data.limit)){
+                            self.status = false;
+                            $('.dialog-bottom').eq(0).html('已经加载全部数据');
+                        }else{
+                            $('.dialog-bottom').eq(0).html('<i class="loading"></i> 正在加载...');
+                        }
+                    }else{
+                        core.toast(res.message);
+                    }
+                })
+            }
+        },
+        mounted: function(){
+            var self = this;
+            self.loadList();
+            // 下拉加载
+            $(window).off("scroll").on("scroll", function(e){
+                var totalheight = parseFloat($(this).height()) + parseFloat($(this).scrollTop());
+                if (($(document).height()<=totalheight) && self.status){
+                    self.page = ++self.page;
+                    self.loadList()
+                }
+            });
+        }
+    });
+</script>
+{/block}
+
+{block name="style"}
+<style>
+    .content-list>li>div:last-child{
+        margin-left: auto;
+        text-align: right;
+    }
+    .dialog-bottom{
+        color: #E02737;
+    }
+</style>
+{/block}

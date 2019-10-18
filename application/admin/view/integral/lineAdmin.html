@@ -1,0 +1,101 @@
+{extend name="layout/main" /}
+
+{block name="header"}
+
+{/block}
+
+{block name="content"}
+<script src="__PUBLIC__/admin/js/laydate/laydate.js"></script>
+<section class="panel">
+    <header class="panel-heading">
+        <h4>排单币管理</h4>
+    </header>
+    <div class="panel-body" style="padding-bottom: 50px">
+        <form class="form-horizontal" action="{:url('admin/Money/lineAdmin')}" >
+            <div class="form-group">
+                <div class="col-xs-1 no-pd-r">
+                    <select name="type" class="form-control">
+                        <option {if $Request.get.type == 'nick_name'} selected {/if} value="nick_name">用户名称</option>
+                    </select>
+                </div>
+                <div class="col-xs-3 no-pd-l">
+                    <input type="text" value="{$Request.get.keyword}" name="keyword" class="form-control" placeholder="请输入关键词搜索">
+                </div>
+                <div class="col-xs-2 no-pd-2">
+                    <input type="text" value="{$Request.get.startTime}" name="startTime" id="startTime" class="form-control" placeholder="请输入开始时间">
+                </div>
+                <div class="col-xs-2 no-pd-2">
+                    <input type="text" value="{$Request.get.endTime}" name="endTime" id="endTime" class="form-control" placeholder="请输入结束时间">
+                </div>
+                <button type="submit" class="btn btn-color">搜索</button>
+            </div>
+        </form>
+        <table class="table table-bordered table-striped no-margin">
+            <thead>
+                <tr>
+                    <th class="text-center">ID</th>
+                    <th class="text-center">用户昵称</th>
+                    <th class="text-center">用户状态</th>
+                    <th class="text-center">变化的数量</th>
+                    <th class="text-center">原来的数量</th>
+                    <th class="text-center">现在的数量</th>
+                    <th class="text-center">备注</th>
+                    <th class="text-center">时间</th>
+                </tr>
+            </thead>
+            <tbody>
+            {if $list}
+                {foreach $list as $order}
+                    <tr>
+                        <td class="text-center">{$order->id}</td>
+                        <td class="text-center">
+                            {$order->nick_name}
+                        </td>
+                        <td class="text-center">
+                            {$query->getStatus($order->ustatus)}
+                        </td>
+                        <td class="text-center">
+                            {$order->num}
+                        </td>
+                        <td class="text-center">
+                            {$order->old}
+                        </td>
+                        <td class="text-center">
+                            {$order->new}
+                        </td>
+                        <td class="text-center">
+                            {$order->remake}
+                        </td>
+                        <td class="text-center">
+                           {$order->create_time}
+                        </td>
+                    </tr>
+                {/foreach}
+            {else /}
+                <tr class="text-center">
+                    <td colspan="8">暂无数据</td>
+                </tr>
+            {/if}
+            </tbody>
+        </table>
+        <div class="page">
+            {:htmlspecialchars_decode($list->render())}
+        </div>
+    </div>
+</section>
+<script>
+    laydate.render({
+        elem: '#startTime',
+        type: 'datetime'
+    });
+    laydate.render({
+        elem: '#endTime',
+        type: 'datetime'
+    });
+</script>
+{/block}
+
+
+{block name="footer"}
+
+{/block}

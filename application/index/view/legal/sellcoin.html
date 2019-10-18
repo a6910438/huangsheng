@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+	<title>出售币</title>
+	<script type="text/javascript" src="/static/build/flexible_css.js"></script>
+    <script type="text/javascript" src="/static/build/flexible.js"></script>
+    <script type="text/javascript" src="/static/js/jquery.js"></script>
+	<link href="/static/css/mui.min.css" rel="stylesheet" />
+	<link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="/static/css/sell_coin.css">
+    <script src="/static/js/mui.min.js"></script>
+    <script type="text/javascript" charset="utf-8">
+        mui.init();
+    </script>
+</head>
+<body>
+	<header class="head">
+		<div style="height:1.28rem;" onclick="javascript:window.history.back(-1);" class="goback"><img style="display:block;padding-top:0.4rem;" src="/static/images/goback.png"></div>
+		<span class="fb_account">出售LTC</span>
+	</header>
+	<div class="seller">
+		<div>
+			<div class="red_block"></div>
+			<div class="seller_name">{$nickname}</div>
+			<div class="pay_way">
+				<img src="/static/images/bank_card@2x.png" alt="">
+				<img src="/static/images/Alipay@2x.png" alt="">
+				<img src="/static/images/wechat_pay@2x.png" alt="">
+			</div>
+		</div>
+		<div>
+			<div>
+				<span class="trade_sheet">5983</span>
+				<span>交易单</span>
+			</div>
+			<div>
+				<span class="turnover">85%</span>
+				<span>成交率</span>
+			</div>
+			<div>
+				<span class="time_of_payment">5'23"</span>
+				<span>付款时效</span>
+			</div>
+		</div>
+	</div>
+	<div class="input_box">
+		<div class="input_item">
+			<label class="price">价格<span>(CNY)</span></label>
+			<input type="number" value="{$price}" disabled>
+		</div>
+		<div class="input_item">
+			<label>金额<span>(CNY)</span></label>
+			<input type="number" placeholder="限额400-21060">
+			<span class="check_all">全部</span>
+		</div>
+		<div class="input_item">
+			<label>数量<span>(CNY)</span></label>
+			<input type="number" placeholder="请输入出售数量">
+			<span class="check_all">全部</span>
+		</div>
+	</div>
+	<div class="zj_password">
+		<label>资金密码</label>
+		<input type="text"placeholder="请输入资金密码">
+	</div>
+	<div class="tip">发币账户可用0.0000LTC</div>
+	<div class="sell_btn_box">
+		<button class="sell_btn">出售</button>
+	</div>
+</body>
+<script type="text/javascript">
+	var sellerName = $('.seller_name').text();
+	sellerName = sellerName.substring(0, 1);
+	$('.seller_name').text(sellerName + '****');
+	$('input').bind('input propertychange', function() {
+		var inputval = 0;
+		for (var i = 0; i < $('input').length; i++) {
+			if ($('input').eq(i).val().length > 0) {
+				inputval++;
+			}
+		}
+		if (inputval === $('input').length) {
+			$('.sell_btn').css('background', '#ED6363');
+		} else {
+			$('.sell_btn').css('background', '#E0E5E6');
+		}
+	})
+</script>
+</html>

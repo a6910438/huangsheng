@@ -1,0 +1,67 @@
+{extend name="layout/main" /}
+
+{block name="header"}
+
+{/block}
+
+{block name="content"}
+
+<section class="panel">
+
+    <header class="panel-heading">
+        <h4>投放</h4>
+    </header>
+    <div class="panel-body" style="padding-bottom: 50px">
+        <form class="form-horizontal" method="post" onsubmit="return false" role="form">
+            <div class="form-group">
+                <label class="col-sm-2 control-label">所属房产</label>
+
+                <div class="col-sm-5">
+                    <input type="text" value="{$info->name}"  disabled class="form-control" >
+                    <input type="hidden" name="poolid" value="{$info->id}">
+                </div>
+
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">房产数</label>
+                <div class="col-sm-5">
+                    <input type="number" value="" name="num" min="1" class="form-control"
+                           placeholder="房产数">
+
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">价值</label>
+                <div class="col-sm-5">
+                    <input type="number" value="" name="values" min="1" class="form-control"
+                           placeholder="价值">
+
+                </div>
+            </div>
+
+
+
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" onclick="main.ajaxPosts(this)" data-url="{:url('fishsave')}"
+                            class="btn btn-primary">提交
+                    </button>
+                    &nbsp;
+                    <button type="button" onclick="javascript:history.back(-1);" class="btn btn-warning">返回
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+</section>
+{/block}
+
+
+{block name="footer"}
+
+
+{/block}

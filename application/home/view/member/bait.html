@@ -1,0 +1,242 @@
+{extend name='main'}
+
+{block name='body'}
+<div class="fish-head">
+    <a href="javascript:window.history.back();" class="head-back"><span>返回</span></a>
+    <h3 class="head-tit"><span>GTC</span></h3>
+    <a href="{:url('home/member/turnOut')}" class="head-menu"><span>转出</span></a>
+</div>
+<div class="fish-main" v-cloak>
+    <div id="bait-top" class="content-box">
+        <div class="top-text">当前 GTC</div>
+        <div class="top-num">{{info.now_bait || '0.00'}}</div>
+    </div>
+    <div class="content-box">
+        <ul class="tabs">
+            <li class="tab"><a @click="typeFun(1)" href="#test1">全部</a></li>
+            <li class="tab"><a @click="typeFun(2)" href="#test2">收入</a></li>
+            <li class="tab"><a @click="typeFun(3)" href="#test3">支出</a></li>
+        </ul>
+        <div id="test1">
+            <ul class="content-list">
+                <li v-if="list1.length>0" v-for="vo in list1">
+                    <div>
+                        <div class="list-tit">{{vo.name}}</div>
+                        <div class="list-tip">{{vo.create_time}}</div>
+                    </div>
+                    <div>
+                        <span class="green" v-if="vo.number>0">+{{vo.number}}</span>
+                        <span class="red" v-else>{{vo.number}}</span>
+                    </div>
+                </li>
+            </ul>
+            <div class="dialog-bottom"></div>
+        </div>
+        <div id="test2">
+            <ul class="content-list">
+                <li v-if="list2.length>0" v-for="vo in list2">
+                    <div>
+                        <div class="list-tit">{{vo.name}}</div>
+                        <div class="list-tip">{{vo.create_time}}</div>
+                    </div>
+                    <div>
+                        <span class="green" v-if="vo.number>0">+{{vo.number}}</span>
+                        <span class="red" v-else>{{vo.number}}</span>
+                    </div>
+                </li>
+            </ul>
+            <div class="dialog-bottom"></div>
+        </div>
+        <div id="test3">
+            <ul class="content-list">
+                <li v-if="list3.length>0" v-for="vo in list3">
+                    <div>
+                        <div class="list-tit">{{vo.name}}</div>
+                        <div class="list-tip">{{vo.create_time}}</div>
+                    </div>
+                    <div>
+                        <span class="red" v-if="vo.number>0">-{{vo.number}}</span>
+                        <span class="red" v-else>{{vo.number}}</span>
+                    </div>
+                </li>
+            </ul>
+            <div class="dialog-bottom"></div>
+        </div>
+    </div>
+</div>
+{include file='menu'}
+{/block}
+
+{block name='script'}
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            info: '',
+            type: 1,
+            status: true,
+            list1: [],
+            page1: 1,
+            status1: true,
+            list2: [],
+            page2: 1,
+            status2: true,
+            list3: [],
+            page3: 1,
+            status3: true,
+            feed: '',
+        },
+        computed: {
+            
+        },
+        methods: {
+            member: function(){
+                core.load("{:url('/index/setup/index')}", {}, (res)=>{
+                    if(res.code==0){
+                        this.info=res.info;
+                    }else{
+                        core.toast(res.msg);
+                    }
+                })
+            },
+            typeFun: function(id){
+                if(this.type==id) return;
+                this.type=id;
+                if(this.type==1){
+                    this.status = this.status1;
+                    if(this.page1!=1) return;
+                }else if(this.type==2){
+                    this.status = this.status2;
+                    if(this.page2!=1) return;
+                }else if(this.type==3){
+                    this.status = this.status3;
+                    if(this.page3!=1) return;
+                }
+
+                this.loadList();
+            },
+            loadList: function(){
+                var self = this;
+                var page = '';
+
+                if(self.type==1){
+                    if(!self.status1) return;
+                    page = self.page1;
+                    self.page1 = ++self.page1;
+                }else if(self.type==2){
+                    if(!self.status2) return;
+                    page = self.page2;
+                    self.page2 = ++self.page2;
+                }else if(self.type==3){
+                    if(!self.status3) return;
+                    page = self.page3;
+                    self.page3 = ++self.page3;
+                }
+                var data = {
+                    type: (self.type-1),
+                    limit: 12,
+                    page: page,
+                };
+
+                core.load("{:url('index/my/bait_list')}", data, function(res){
+                    
+                    if(res.code=='0'){
+                        if(self.type==1){
+                            if(res.info.length>0) self.list1 = self.list1.concat(res.info);
+                            if(!res.info || (res.info.length<data.limit)){
+                                self.status1 = false;
+                                self.status = false;
+                                $('.dialog-bottom').eq(0).html('已经加载全部数据');
+                            }else{
+                                $('.dialog-bottom').eq(0).html('正在加载...');
+                            }
+                        }else if(self.type==2){
+                            if(res.info.length>0) self.list2 = self.list2.concat(res.info);
+                            if(!res.info || (res.info.length<data.limit)){
+                                self.status2 = false;
+                                self.status = false;
+                                $('.dialog-bottom').eq(1).html('已经加载全部数据');
+                            }else{
+                                $('.dialog-bottom').eq(1).html('正在加载...');
+                            }
+                        }else if(self.type==3){
+                            if(res.info.length>0) self.list3 = self.list3.concat(res.info);
+                            if(!res.info || (res.info.length<data.limit)){
+                                self.status3 = false;
+                                self.status = false;
+                                $('.dialog-bottom').eq(2).html('已经加载全部数据');
+                            }else{
+                                $('.dialog-bottom').eq(2).html('正在加载...');
+                            }
+                        }
+                    }else{
+                        core.toast(res.msg);
+                    }
+                })
+            },
+        },
+        mounted: function(){
+            $('.modal').modal();
+            $('ul.tabs').tabs();
+            var self = this;
+            self.member();
+            self.loadList();
+            // 下拉加载
+            $(window).off("scroll").on("scroll", function(e){
+                var totalheight = parseFloat($(this).height()) + parseFloat($(this).scrollTop());
+                if ( self.status && ($(document).height()-100<=totalheight)){
+                    self.loadList()
+                }
+            });
+        }
+    });
+</script>
+{/block}
+
+{block name="style"}
+<style>
+    #bait-top{
+        text-align: center;
+        position: relative;
+        padding: 2rem 1rem;
+    }
+    #bait-top .top-text{
+        font-size:1rem;
+    }
+    #bait-top .top-num{
+        font-size:3rem;
+        font-weight:bold;
+    }
+    #bait-top .top-icon{
+        position:absolute;
+        top:1rem;
+        right:1rem;
+    }
+    #bait-top .icon-mark{background-image:url('/fish/img/icon-mark.png');height:30px;width:30px;}
+    
+    .content-list>li>div:last-child{
+        margin-left: auto;
+        font-size: 1rem;
+    }
+    .content-list>li>div:first-child{
+        font-weight: bold
+    }
+    .content-list>li>div:first-child>.list-tit{
+        font-size: 1rem
+    }
+    .content-list>li>div:first-child>.list-tip{
+        font-size: 0.8rem
+    }
+    .bait-list{position:relative;}
+    .bait-list li{padding:12px;border-top:1px solid rgba(0, 0, 0, 0.1);}
+    .bait-list li .list-tit{font-size:16px;}
+    .bait-list li .list-tip{color:#bbb;}
+    .bait-list li .fr{font-size:16px;margin-top:10px;}
+    .bait-list li .green{color:#00D6E2;}
+    .bait-list li .red{color:#E02737;}
+
+    .dialog-bottom{
+        color: #E02737;
+    }
+</style>
+{/block}

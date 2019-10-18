@@ -1,0 +1,132 @@
+{extend name="layout/main" /}
+
+{block name="header"}
+
+{/block}
+
+{block name="content"}
+<link rel="stylesheet" href="http://cdn.staticfile.org/webuploader/0.1.5/webuploader.css">
+<script type="text/javascript" src='http://cdn.staticfile.org/webuploader/0.1.5/webuploader.min.js'></script>
+<style type="text/css">
+    
+</style>
+
+
+<section class="panel">
+    <header class="panel-heading">
+        <h4>参数配置</h4>
+    </header>
+    <div class="panel-body" style="padding-bottom: 50px">
+        <table class="table table-bordered table-striped no-margin">
+            <thead>
+            <tr>
+                <th class="text-center">序号</th>
+                <th class="text-center">内容</th>
+                <th class="text-center">排序</th>
+                <th class="text-center">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            {foreach $list as $key=>$config}
+            <tr>
+                <td class="text-center" style="vertical-align: middle; ">{$key+1}</td>
+                <td class="text-center" style="vertical-align: middle; ">
+                	<input type="text" id="{$config['id']}_notice" style="text-align: center" class="form-control"
+                           value="{$config['notice']}">
+                </td>
+                <td class="text-center" style="vertical-align: middle; ">
+                	<input type="text" id="{$config['id']}_sort" style="text-align: center" class="form-control"
+                           value="{$config['sort']}">
+                </td>
+                <td class="text-center" style="vertical-align: middle; ">
+                    <a onclick="updateConfig(this)" data-key="{$config['id']}" class="btn btn-xs btn-primary">确认修改</a>
+                    {if $config['status']==0}
+                    <a onclick="openConfig(this)" data-key="{$config['id']}" val="{$config['status']}" class="btn btn-xs btn-danger">禁用</a>
+                    {else}
+                    <a onclick="openConfig(this)" data-key="{$config['id']}" val="{$config['status']}" class="btn btn-xs btn-primary">开启</a>
+                    {/if}
+                </td>
+            </tr>
+            {/foreach}
+            <tr>
+                <td class="text-center" style="vertical-align: middle; "></td>
+                <td class="text-center" style="vertical-align: middle; ">
+                    <input type="text"  style="text-align: center" id="notice" class="form-control" value=""></td>
+                <td class="text-center" style="vertical-align: middle; ">
+                    <input type="text"  style="text-align: center" id="sort" class="form-control" value=""></td>
+                <td class="text-center" style="vertical-align: middle; ">
+                    <a onclick="addConfig(this)" class="btn btn-xs btn-primary">确认添加</a>
+                </td>
+            </tr>
+            </tbody>
+
+
+            
+        </table>
+
+    </div>
+</section>
+
+
+
+{/block}
+
+{block name="footer"}
+
+<script>
+
+    function addConfig(e) {
+        var notice = $('#notice').val();
+        var sort = $('#sort').val();
+        if (notice==''||sort=='') {
+            main.waringAlert('请填写正确的内容');
+            return;
+        };
+
+        $.post("{:url('fomo/adadd')}", {notice: notice,sort: sort}, function (data) {
+
+            if (data.code == 1) {
+                main.waringAlert(data.message);
+            } else {
+                main.waringAlert(data.message);
+                window.location.reload();
+            }
+        }, 'json')
+    }
+
+    function updateConfig(e) {
+        var id = $(e).attr('data-key');
+
+        var notice = $("#" + id+'_notice').val();
+        var sort = $("#" + id+'_sort').val();
+        $.post("{:url('fomo/adsave')}", {id: id, notice: notice, sort:sort}, function (data) {
+            if (data.code == 1) {
+                main.waringAlert(data.message);
+            } else {
+                main.waringAlert(data.message);
+                window.location.reload();
+            }
+        }, 'json')
+    }
+
+    function openConfig(e){
+        var id = $(e).attr('data-key');
+        var status = $(e).attr('val');
+
+        $.post("{:url('fomo/statussave')}", {id: id, status: status}, function (data) {
+            if (data.code == 1) {
+                main.waringAlert(data.message);
+            } else {
+
+                window.location.reload();
+            }
+        }, 'json')
+    }
+
+
+</script>
+
+
+
+</script>
+{/block}

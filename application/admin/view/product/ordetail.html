@@ -1,0 +1,107 @@
+{extend name="layout/main" /}
+
+{block name="header"}
+
+{/block}
+
+{block name="content"}
+<style type="text/css">
+    .link-th{
+        color:blue;
+    }
+</style>
+<section class="panel">
+    <header class="panel-heading">
+        <h4>订单详情</h4>
+    </header>
+    <div class="panel-body" style="padding-bottom: 50px">
+
+        <table class="table table-bordered table-striped no-margin">
+
+            <tr>
+                <th class="text-center">订单号</th>
+                <th class="text-center">{$info.order_number}</th>
+
+            </tr>
+            <tr>
+                <th class="text-center">生成时间</th>
+                <th class="text-center">{$info.create_time|date='Y-m-d H:i:s',###}</th>
+            </tr>
+            <tr>
+                <th class="text-center">订单类型</th>
+                <th class="text-center">
+                    {if $info.types == 1}
+                    即抢
+                    {else /}
+                    预约
+                    {/if}
+                </th>
+            </tr>
+            <tr>
+                <th class="text-center">状态</th>
+                <th class="text-center">
+                    {$info.status|getAUStatus}
+                </th>
+            </tr>
+            <tr>
+                <th class="text-center">产品名称</th>
+                <th class="text-center">
+                    {$info.fname}
+                </th>
+            </tr>
+            <tr>
+                <th class="text-center">用户分配区间</th>
+                <th class="text-center">
+                    {$info.adopt_lv|getadopt_lvStatus}
+                </th>
+            </tr>
+            <tr>
+                <th class="text-center">本金</th>
+                <th class="text-center">
+                    {$info.worth}
+                </th>
+            </tr>
+            <tr>
+                <th class="text-center">售卖</th>
+                <th class="text-center">
+                    {$info.now}
+                </th>
+            </tr>
+            <tr>
+                <th class="text-center">盈利</th>
+                <th class="text-center">
+                    {$info.num}
+                </th>
+            </tr>
+            <tr>
+                <th class="text-center">转让方</th>
+                <th class="text-center">
+                    {$info.fnick_name}
+                </th>
+            </tr>
+            <tr>
+                <th class="text-center">领取方</th>
+                <th class="text-center">
+                    {$info.nick_name}
+                </th>
+            </tr>
+            <tr>
+                <th class="text-center">支付凭证</th>
+                <th class="text-center">
+                    {if $info.pay_imgs}
+                    <img src="{$info.pay_imgs}" style="height: 200px;" alt="支付凭证">
+                    {else/}
+                    无支付凭证
+                    {/if}
+                </th>
+            </tr>
+        </table>
+
+    </div>
+</section>
+{/block}
+{block name="footer"}
+
+
+
+{/block}

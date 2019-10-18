@@ -1,0 +1,204 @@
+.language-baifencai::before {
+    content: '백분위 수';
+}
+.language-daletou::before {
+    content: '큰 로또';
+}
+.language-touziyouxi::before {
+    content: '주사위 게임';
+}
+.language-laohuji::before {
+    content: '슬롯 머신';
+}
+.language-zuixinzhongjiang::before {
+    content: '최우수상';
+}
+.language-zhongjiangjine::before {
+    content: '당첨 금액';
+}
+.language-shouye::before {
+    content: '홈';
+}
+.language-qukuailianyouxi::before {
+    content: '블록 체인 게임';
+}
+.language-shequ::before {
+    content: '커뮤니티';
+}
+.language-gerenzhongxin::before {
+    content: '개인 센터';
+}
+.language-benqijiangchi::before {
+    content: '현재 상금 풀';
+}
+.language-benqiyitouzhuliang::before {
+    content: '이 기간의 베팅 금액';
+}
+.language-qishumaohao::before {
+    content: '기간 수 :';
+}
+.language-woyaotouzhumaohao::before {
+    content: '나는 내기하고 싶다 :';
+}
+.language-querentouzhu::before {
+    content: '내기 확인';
+}
+.language-touzhujilu::before {
+    content: '도박 기록';
+}
+.language-kaijiangjilu::before {
+    content: '복권 기록';
+}
+.language-qishu::before {
+    content: '마침표 수';
+}
+.language-kaijiangshijian::before {
+    content: '복권 시간';
+}
+.language-gengduo::before {
+    content: '기타';
+}
+.language-xuanzebizhong::before {
+    content: '내기 통화를 선택하십시오';
+}
+.language-benqihaiketouzhu::before {
+    content: '현재 추첨은 내기가 가능합니다';
+}
+.language-youxi::before {
+    content: '게임';
+}
+.language-xiazhushijian::before {
+    content: '내기 시간';
+}
+.language-kaijiangzhuangtai::before {
+    content: '복권 현황';
+}
+.language-weikaijiang::before {
+    content: '미개봉';
+}
+.language-weizhongjiang::before {
+    content: '이기지 못함';
+}
+.language-zhongjiang::before {
+    content: '이기는';
+}
+.language-caipiaoxuliehao::before {
+    content: '복권 일련 번호';
+}
+.language-touzhujine::before {
+    content: '내기 금액';
+}
+.language-gong::before {
+    content: '. 총 ';
+}
+.language-zhu::before {
+    content: '주';
+}
+.language-zhongjianxuliehao::before {
+    content: '일련 번호 획득';
+}
+.language-zhongjiangdengji::before {
+    content: '승리 수준';
+}
+.language-zhongjiangyonghu::before {
+    content: '당첨자';
+}
+.language-zhongjiangzongjine::before {
+    content: '총 승리 금액';
+}
+.language-chakangengduo::before {
+    content: '더보기';
+}
+.language-yidengjiang::before {
+    content: '1 등상';
+}
+.language-erdengjiang::before {
+    content: '2 등상';
+}
+.language-sandengjiang::before {
+    content: '3 등상';
+}
+.language-xingyunjiang::before {
+    content: '럭키 상';
+}
+.language-kaijiangxiangqing::before {
+    content: '복권 세부 정보';
+}
+.language-benqizongjiangchi::before {
+    content: '현재 상금 풀';
+}
+.language-zhongjieshijianmaohao::before {
+    content: '내기 기간의 끝 :';
+}
+.language-zhongjiegaodumaohao::before {
+    content: '베팅이 끝날 때 Ethereum 블록의 높이 :';
+}
+.language-kaijianggaodumaohao::before {
+    content: 'Ethereum 높이 열기 :';
+}
+.language-kaijianghaxizhimaohao::before {
+    content: 'Ethereum 해쉬 값의 추측 :';
+}
+.language-yonghuming::before {
+    content: '사용자 이름';
+}
+.language-yonghuid::before {
+    content: '사용자 ID';
+}
+.language-zhongjiangxuliehao::before {
+    content: '일련 번호 획득';
+}
+.language-jiangxiang::before {
+    content: '수상';
+}
+.language-jiangjin::before {
+    content: '보너스';
+}
+.language-meiyougengduoshujule::before {
+    content: '데이터가 더 이상 없음';
+}
+.language-baifencaikaijiangxiangqing::before {
+    content: '비율 추첨 세부 정보';
+}
+.language-youxigonglue::before {
+    content: '게임 가이드';
+}
+.language-guanyuwomen::before {
+    content: '회사 소개';
+}
+.language-fabugonggao::before {
+    content: '발표';
+}
+.language-bunengxiaoyuyi::before {
+    content: '베팅 횟수는 1보다 작을 수 없습니다';
+}
+.language-bunengweixiaoshu::before {
+    content: '베팅의 수는 십진수가 될 수 없습니다';
+}
+.language-zuiduoyibai::before {
+    content: '각 베팅은 최대 100 개까지 가능합니다';
+}
+.language-zhengzaitouzhu::before {
+    content: '베팅, 잠시 기다려주십시오 ...';
+}
+.language-gongxininzhongdedaletou::before {
+    content: '큰 추첨 축하합니다';
+}
+.language-dianjichakan::before {
+    content: '보시려면 클릭하십시오';
+}
+.language-qingxiandenglu::before {
+    content: '먼저 로그인하십시오';
+}
+.language-qudenglu::before {
+    content: '로그인으로 이동';
+}
+.language-quxiao::before {
+    content: '취소';
+}
+.language-gongxininzhongdebaifencai::before {
+    content: '위닝 축하해';
+}
+.language-dengdaikaijiangzhong::before {
+    content: '상품을 기다리는 중입니다';
+}

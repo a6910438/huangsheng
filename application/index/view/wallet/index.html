@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+	<title>首页</title>
+	<script type="text/javascript" src="/static/build/flexible_css.js"></script>
+    <script type="text/javascript" src="/static/build/flexible.js"></script>
+    <script type="text/javascript" src="/static/js/jquery.js"></script>
+    <script type="text/javascript" src="/static/js/swiper.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/css/swiper.min.css">
+	<link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="/static/css/index.css">
+</head>
+<body>
+	<header class="head">
+		<div class="contacts_icon">
+			<img src="/static/images/head_portrait@2x.png">
+		</div>
+		<span class="username" id="username">{$mobile}</span>
+		<div class="show_hide_btn">
+			<img src="/static/images/can_see@2x.png">
+		</div>
+	</header>
+	<div class="content">
+		<div class="swiper-container swiper-container-horizontal sowing_map" id="swiper1">
+			<ul class="swiper-wrapper">
+				<li class="swiper-slide swiper-slide-active my_wallet">
+					<a href="{:url('wallet/my_wallet')}">
+					<div class="lb_title">我的钱包</div>
+					<div class="lb_num">0.00000001</div>
+					<div class="lb_value">$0.01</div>
+					</a>
+				</li>
+				<li class="swiper-slide swiper-slide-active bb_account">
+					<div class="lb_title">币币账户</div>
+					<div class="lb_num">0.00000002</div>
+					<div class="lb_value">$0.02</div>
+				</li>
+				<!-- <li class="swiper-slide swiper-slide-active hy_account">
+					<div class="lb_title">合约账户</div>
+					<div class="lb_num">0.00000003</div>
+					<div class="lb_value">$0.03</div>
+				</li> -->
+				<li class="swiper-slide swiper-slide-active fb_account">
+					<div class="lb_title">法币账户</div>
+					<div class="lb_num">0.00000004</div>
+					<div class="lb_value">$0.04</div>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<div class="ad_sowing_map swiper-container" id="swiper2">
+		<div class="swiper-wrapper">
+			<div class="swiper-slide ad_picture"></div>
+			<div class="swiper-slide ad_picture"></div>
+			<div class="swiper-slide ad_picture"></div>
+			<div class="swiper-slide ad_picture"></div>
+			<div class="swiper-slide ad_picture"></div>
+			<div class="swiper-slide ad_picture"></div>
+			<div class="swiper-slide ad_picture"></div>
+		</div>
+	</div>
+	<div class="exponential">
+		<div class="exponential_title">
+			<img src="/static/images/exponential.png"><span>OKEx指数</span>
+		</div>
+		<div class="exponential_item">
+			<span class="coin_type">BTC</span>
+			<span class="coin_value">$6369.58</span>
+			<span class="price_ratio">+1.20%</span>
+		</div>
+		<div class="exponential_item">
+			<span class="coin_type">ETH</span>
+			<span class="coin_value">$639.58</span>
+			<span class="price_ratio">+1.20%</span>
+		</div>
+		<div class="exponential_item">
+			<span class="coin_type">ETC</span>
+			<span class="coin_value">$69.58</span>
+			<span class="price_ratio">+1.20%</span>
+		</div>
+		<div class="exponential_item">
+			<span class="coin_type">BCH</span>
+			<span class="coin_value">$6369.58</span>
+			<span class="price_ratio">+1.20%</span>
+		</div>
+		<div class="exponential_item">
+			<span class="coin_type">LTC</span>
+			<span class="coin_value">$6369.58</span>
+			<span class="price_ratio">+1.20%</span>
+		</div>
+	</div>
+	<footer class="footer">
+		<div class="footer_nav now_page">
+			<img src="/static/images/home_bl@2x.png"><br>
+			<span>首页</span>
+		</div>
+		<div class="footer_nav">
+			<img src="/static/images/hq@2x.png"><br>
+			<span>行情</span>
+		</div>
+		<div class="footer_nav">
+			<img src="/static/images/fabi@2x.png"><br>
+			<span>法币</span>
+		</div>
+		<div class="footer_nav">
+			<img src="/static/images/bibi@2x.png"><br>
+			<span>币币</span>
+		</div>
+		<div class="footer_nav">
+			<img src="/static/images/hy@2x.png"><br>
+			<span>合约</span>
+		</div>
+	</footer>
+</body>
+<script type="text/javascript">
+	// 用户名第四位到第七位显示"****"
+	var username = $('#username').text();
+	userName = username.substring(0,3) + '****' + username.substring(7,11)
+	$('#username').text(userName);
+	// 第一个轮播图
+	var swiper1 = new Swiper('#swiper1', {
+	    slidesPerView: 'auto',
+	});
+	// 头部右上角图标点击 显示/隐藏 账户币数量跟币价值
+	var arr = [];
+	var arr1 = [];
+	for (var i = 0; i < $('.lb_num').length; i++) {
+		arr.push($('.lb_num').eq(i).text());
+		arr1.push($('.lb_value').eq(i).text());
+	}
+	$('.show_hide_btn').click(function () {
+		if ($('.lb_num').eq(0).text() === '****') {
+			$('.show_hide_btn').find('img').attr('src','/static/images/can_see@2x.png')
+			for (var j = 0; j < $('.lb_num').length; j++) {
+				$('.lb_num').eq(j).text(arr[j]);
+				$('.lb_value').eq(j).text(arr1[j]);
+			}
+		} else {
+			$('.show_hide_btn').find('img').attr('src','/static/images/hide@2x.png')
+			$('.lb_num').text('****');
+			$('.lb_value').text('****');
+		}
+	})
+	// 广告轮播图
+	var swiper2 = new Swiper('#swiper2', {
+        loop: true,
+        autoplay: {
+	        delay: 4000,
+	        disableOnInteraction: false,
+	    },
+	    pagination: {
+	        el: '#swiper-p2',
+	    },
+	});
+</script>
+</html>

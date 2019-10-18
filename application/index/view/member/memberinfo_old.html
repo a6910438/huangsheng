@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>我的</title>
+        <!--head-->
+        {include file="layout/head" /}
+        <link rel="stylesheet" type="text/css" href="/t/css/index.css"/>
+    </head><style type="text/css">
+        .mui-icon-home:before {
+            content: none;
+        }
+        .mui-icon-email:before {
+            content: none;
+        }
+        .mui-bar {
+            position: fixed;
+            z-index: 10;
+            right: 0;
+            left: 0;
+            height: 44px;
+            padding-right: 10px;
+            padding-left: 10px;
+            border-bottom: 0;
+            background-color: #f7f7f7;
+            -webkit-box-shadow: 0 0 1px rgba(142,206,245,.85); 
+            box-shadow: 0 0 1px rgba(142,206,245,.85); 
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+        }
+    </style>
+    
+    <body>
+        <!--content-->
+        <div class="mui-content" style="padding-bottom: 70px">
+            <div class="mine-top">
+                <div class="mine-info">
+                    <div class="mine-info-top">
+                        <div class="mine-info-left">
+                            <h3>{$list->nick_name}</h3>
+                            <div class="mine-info-level">
+                                <img src="/static/img/uhui.png">
+                                <img src="/static/img/lianmeng.png">
+                                <span>{$list->getLevel()}</span>
+                            </div>
+                        </div>
+                        <div class="mine-info-right" style="height: 85px">
+
+                        </div>
+                    </div>
+                    <!-- <form id="avatarForm"> -->
+                    <input type="file" id="file" name="image" style="display: none;">
+                    <!-- </form> -->
+                    <div class="mine-info-bottom" style="margin-top: 10px;">
+                        <div class="mui-row">
+                            <div class="mui-col-sm-6 mui-col-xs-6 mine-info-item">
+                                <img src="/static/img/moshi.png" >
+                                <span class="text">金币:</span>
+                                <span class="text number">{$list->magic}</span>
+                            </div>
+                            <div class="mui-col-sm-6 mui-col-xs-6 mine-info-item">
+                                <img src="/static/img/dongjie.png" >
+                                <span class="text">冻结:</span>
+                                <span class="text number">{$freeze['freeze'] ? $freeze['freeze'] : 0}</span>
+                            </div>
+                            <!--<div class="mui-col-sm-5 mui-col-xs-5 mine-info-item">-->
+                            <!--<img src="/static/img/baoshi.png" >-->
+                            <!--<span class="text">金条:</span>-->
+                            <!--<span class="text number">{:round($list->jewel,5)}</span>-->
+                            <!--</div>-->
+                            <div class="mui-col-sm-3 mui-col-xs-3 mine-info-item">
+                                <img src="/static/img/jiaoyi2.png" >
+                                <span class="text">交易:</span>
+                                <span class="text number">{$freeze['total'] ? $freeze['total'] : 0}</span>
+                            </div>
+                            <div class="mui-col-sm-4 mui-col-xs-4 mine-info-item">
+                                <img src="/static/img/hp.png" >
+                                <span class="text">好评:</span>
+                                <span class="text number">{$list->comment_rate}%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <ul class="mui-table-view my-view" style="margin-top: 10px;">
+                <li class="mui-table-view-cell mine-list-item">
+                    <a href="{:url('member/magicbox')}" class="mui-navigate-right " >
+                        <img src="/static/img/moe.png" />
+                        <span>金矿</span>
+                    </a>
+                </li>
+                <li class="mui-table-view-cell mine-list-item">
+                    <a class="mui-navigate-right " href="{:url('trade/index')}" >
+                        <img src="/static/img/jiaoyi.png" />
+                        <span>交易</span>
+                    </a>
+                </li>
+                <li class="mui-table-view-cell mine-list-item">
+                    <a href="{:url('member/magicloglist')}" class="mui-navigate-right " >
+                        <img src="/static/img/zhangdan.png" />
+                        <span>账单</span>
+                    </a>
+                </li>
+                <!--			<li class="mui-table-view-cell mine-list-item">
+                                                <a style="color: black" href="{:url('member/conven')}" class="mui-navigate-right " >
+                                                        <img src="/static/img/wind.png" />
+                                                        <span>风控</span>
+                                                </a>
+                                        </li>-->
+                <!--			<li class="mui-table-view-cell mine-list-item">
+                                                <a href="{:url('member/charge')}" class="mui-navigate-right " >
+                                                        <img src="/static/img/chargecard.png" />
+                                                        <span>充值卡</span>
+                                                </a>
+                                        </li>-->
+            </ul>
+            <ul class="mui-table-view my-view" style="margin-top: 10px;">
+<!--                <li class="mui-table-view-cell mine-list-item">
+                    <a href="{:url('member/spread')}" class="mui-navigate-right " >
+                        <img src="/static/img/zhaomu.png" />
+                        <span>招募</span>
+                    </a>
+                </li>-->
+                <!--union-->
+                <li class="mui-table-view-cell mine-list-item">
+                    <a href="{:url('member/team')}" class="mui-navigate-right " >
+                        <img src="/static/img/tuandui.png" />
+                        <span>工会</span>
+                    </a>
+                </li>
+                <!--			<li class="mui-table-view-cell mine-list-item">
+                                                <a href="javascript:void(0)" data-msg="开发中，敬请期待"  class="mui-navigate-right my-tips" >
+                                                        <img src="/static/img/shanghu.png" />
+                                                        <span>商户</span>
+                                                </a>
+                                        </li>-->
+            </ul>
+            <ul class="mui-table-view my-view" style="margin-top: 10px;">
+                <li class="mui-table-view-cell mine-list-item">
+                    <a href="/index/member/message" class="mui-navigate-right " >
+                        <img src="/static/img/kefu.png" />
+                        <span>客服</span>
+                    </a>
+                </li>
+                <li class="mui-table-view-cell mine-list-item">
+                    <a href="/index/member/articleList" class="mui-navigate-right " >
+                        <img src="/static/img/xsjd.png" />
+                        <span>新手解答</span>
+                    </a>
+                </li>
+                <li class="mui-table-view-cell mine-list-item">
+                    <a href="/index/member/about" class="mui-navigate-right " >
+                        <img src="/static/img/gywm.png" />
+                        <span>关于我们</span>
+                    </a>
+                </li>
+                <li class="mui-table-view-cell mine-list-item">
+                    <a href="/index/member/set" class="mui-navigate-right " >
+                        <img src="/static/img/shzhi.png" />
+                        <span>个人资料</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div style="display: none;top:35%;left: 21%;position: fixed;z-index: 999" id="credit_qrcode" >
+            <img src="{$credit_qrcode}" style="width: 200px;height: 200px;">
+            <p style="text-align: center;color: #fff;font-size: 21px">开发中.....</p>
+        </div>
+        <!--footer-->
+        {include file="layout/footer" /}
+        {include file="layout/nav" /}
+        <!--js-->
+        <script>
+            function show() {
+                var mask = mui.createMask(callback);//callback为用户点击蒙版时自动执行的回调；
+                mask.show();//显示遮罩
+                $("#credit_qrcode").show();
+            }
+            function callback() {
+                $("#credit_qrcode").hide();
+            }
+
+
+            $("#avatar").click(function () {
+                $("#file").click();
+            })
+            $("#file").change(function () {
+                var $this = $(this);
+                var file = this.files[0];
+                if (file.length == 0)
+                {
+                    mui.alert("请选择要上传的图片");
+                    return false;
+                }
+                var data = new FormData();
+                data.append('image', file);
+                // console.log(data);return false;
+                mui.showLoading("正在上传头像...");
+                $.ajax({
+                    url: "/index/upload/uploadEditor",
+                    type: "post",
+                    data: data,
+                    processData: false,
+                    contentType: false,
+                    dataType: 'json',
+                    success: function (data) {
+                        var url = data.data[0];
+                        if (data.errno == 0)
+                        {
+                            mui.showLoading("头像上传成功，正在保存...");
+                            $.ajax({
+                                url: "/index/member/updateUser",
+                                type: "post",
+                                data: {'avatar': data.data[0]},
+                                dataType: 'json',
+                                success: function (data) {
+                                    mui.alert(data.message);
+                                    if (data.code == 0)
+                                    {
+                                        mui.hideLoading();
+                                        $("#avatar").attr("src", url);
+                                    }
+                                }
+                            })
+                        }
+                        else
+                        {
+                            mui.alert(data.fail);
+                        }
+                    }
+                })
+            })
+        </script>	
+    </body>
+</html>

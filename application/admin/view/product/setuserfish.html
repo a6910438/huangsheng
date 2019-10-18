@@ -1,0 +1,154 @@
+{extend name="layout/main" /}
+
+{block name="header"}
+
+{/block}
+
+{block name="content"}
+<script src="__PUBLIC__/admin/js/laydate/laydate.js"></script>
+<section class="panel">
+
+    <header class="panel-heading">
+        <h4>赠送</h4>
+    </header>
+    <div class="panel-body" style="padding-bottom: 50px">
+        <form class="form-horizontal" method="post" onsubmit="return false" role="form">
+            <div class="form-group">
+
+
+
+
+            </div>
+
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">用户ID</label>
+                <div class="col-sm-5">
+                    <input type="text" value="" name="mobile" class="form-control" >
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">房产</label>
+                <div class="col-sm-5">
+                    <select name="pid" id="">
+                        {volist name="pool" id="v" }
+                        <option value="{$v.id}">{$v.name}【价值范围：{$v.worth_min}至{$v.worth_max}】</option>
+                        {/volist}
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">价值</label>
+                <div class="col-sm-5">
+                    <input type="text" value="" name="values" class="form-control" >
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">赠送数量</label>
+                <div class="col-sm-5">
+                    <input type="text" value="" name="num" min="1" class="form-control"
+                           placeholder="赠送数量">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">直接参与预约,不参与装修</label>
+                <div class="col-sm-5">
+                    <select name="is_status" >
+                        <option value="1">是</option>
+                        <option value="0">否</option>
+                    </select>
+                </div>
+            </div>
+<!--            <input type="hidden" name="is_status" value="1">-->
+
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" onclick="main.ajaxPosts(this)" data-url="{:url('setuserfishsave')}"
+                            class="btn btn-primary">提交
+                    </button>
+                    &nbsp;
+                    <button type="button" onclick="javascript:history.back(-1);" class="btn btn-warning">返回
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+</section>
+<section class="panel">
+    <header class="panel-heading">
+        <h4>后台赠房产记录</h4>
+    </header>
+    <div class="panel-body" style="padding-bottom: 50px">
+		<form class="form-horizontal" action="{:url('admin/product/setuserfish')}" >
+            <div class="form-group">
+                <div class="col-xs-1 no-pd-r">
+                    <select name="type" class="form-control">
+                        <option {if $Request.get.type == 'ids'} selected {/if} value="ids">用户ID</option>
+
+                    </select>
+                </div>
+                <div class="col-xs-3 no-pd-l">
+                    <input type="text" value="{$Request.get.keyword}" name="keyword" class="form-control"  placeholder="请输入关键词搜索">
+                </div>
+				<div class="col-xs-2 no-pd-2">
+                    <input type="text" value="{$Request.get.startTime}" name="startTime" id="startTime" autocomplete="off" class="form-control" placeholder="请输入开始时间">
+                </div>
+                <div class="col-xs-2 no-pd-2">
+                    <input type="text" value="{$Request.get.endTime}" name="endTime" id="endTime" autocomplete="off" class="form-control" placeholder="请输入结束时间">
+                </div>
+                <button type="submit" class="btn btn-color">搜索</button>
+            </div>
+        </form>
+     <table class="table table-bordered table-striped no-margin">
+     <thead>
+     <tr>
+     <th>用户ID</th>
+     <th>房产</th>
+	 <th>价值</th>
+	 <th>数量</th>
+     <th>时间</th>
+
+     </tr>
+     </thead>
+     <tbody>
+         {if !empty($list)}
+    {foreach $list as $k=>$v}
+    <tr>
+    <th>{$v['invite_code']}</th>
+    <th>{$v['name']}</th>
+	<th>{$v['worth']}</th>
+	<th>{$v['fish_num']}</th>
+    <th>{:date('Y-m-d H:i:s',$v['create_time'])}</th> 
+
+
+    </tr>
+    {/foreach}
+ {/if}
+     </tbody>
+     </table>
+	 <div class="page">
+            {:htmlspecialchars_decode($list->render())}
+        </div>
+    </div>
+</section>
+<script>
+    laydate.render({
+        elem: '#startTime',
+        type: 'datetime'
+    });
+    laydate.render({
+        elem: '#endTime',
+        type: 'datetime'
+    });
+</script>
+{/block}
+
+
+{block name="footer"}
+
+
+{/block}

@@ -1,0 +1,123 @@
+{extend name="layout/main" /}
+
+{block name="header"}
+
+{/block}
+
+{block name="content"}
+<style type="text/css">
+    .link-th{
+        color:blue;
+    }
+</style>
+<section class="panel">
+    <header class="panel-heading">
+        <h4>申诉列表</h4>
+    </header>
+    <div class="panel-body" style="padding-bottom: 50px">
+        <form class="form-horizontal" action="{:url('index')}">
+            <div class="form-group">
+                <div class="col-xs-1 no-pd-r">
+                    <select name="type" id="type" class="form-control">
+                        <option {if $Request.get.type == 'statusf1'} selected {/if} value="statusf1">驳回</option>
+                        <option {if $Request.get.type == 'status0'} selected {/if} value="status0">未处理</option>
+                        <option {if $Request.get.type == 'status1'} selected {/if} value="status1">通过</option>
+                    </select>
+                </div>
+                <div class="col-xs-3 no-pd-l" hidden>
+                    <input type="text" id="keyword" value="{$Request.get.keyword}" name="keyword" class="form-control" placeholder="请输入关键词搜索">
+                </div>
+                <button type="submit" class="btn btn-color">搜索</button>
+
+            </div>
+        </form>
+        <table class="table table-bordered table-striped no-margin">
+            <thead>
+            <tr>
+                <th class="text-center">申诉时间</th>
+                <th class="text-center">订单号</th>
+                <th class="text-center">申诉人</th>
+                <th class="text-center">申诉内容</th>
+                <th class="text-center">产品名称</th>
+                <th class="text-center">领取方</th>
+                <th class="text-center">转让方</th>
+                <th class="text-center">价值</th>
+                <th class="text-center">状态</th>
+                <th class="text-center">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            {if !empty($list)}
+                {foreach $list as $entity}
+                <tr>
+                    <td style="vertical-align: middle" class="text-center">
+                       <?php   echo date('Y-m-d H:i:s',$entity['create_time']) ?><br>
+                    </td>
+                    <td style="vertical-align: middle" class="text-center">
+                        {$entity.order_number}
+                    </td>
+                    <td style="vertical-align: middle" class="text-center">
+                       {$entity.uname}
+                    </td>
+                    <td style="vertical-align: middle" class="text-center">
+                        {$entity.content}<br>
+                    </td>
+                    <td style="vertical-align: middle" class="text-center">
+                        {$entity.f_name}<br>
+                    </td>
+                    <td style="vertical-align: middle" class="text-center">
+                        {$entity.bname}<br>
+                    </td>
+                    <td style="vertical-align: middle" class="text-center">
+                        {$entity.fname}<br>
+                    </td>
+                    <td style="vertical-align: middle" class="text-center">
+                        {$entity.worth}<br>
+                    </td>
+                    <td style="vertical-align: middle" class="text-center">
+                        {if $entity.status == -1}
+                        <a class="btn btn-xs btn-danger">驳回</a>
+                        {elseif $entity.status == -2 /}
+                        <a class="btn btn-xs btn-success">取消</a>
+                        {elseif $entity.status == 0 /}
+                        <a class="btn btn-xs btn-success">未处理</a>
+                        {elseif $entity.status == 1 /}
+                        <a class="btn btn-xs btn-success">通过</a>
+                        {/if}
+                    </td>
+
+                    <td style="vertical-align: middle" class="text-center">
+
+                        <?php  /*
+                            {if $entity.status == -1 || $entity.status == 0}
+                                <a data-url="{:url('activation',['id'=>$entity.id])}" onclick="main.ajaxDelete(this)" data-msg="确定要通过？" class="btn btn-xs btn-success">通过</a>
+                            {else}
+                                <a data-url="{:url('freeze',['id'=>$entity.id])}" onclick="main.ajaxDelete(this)" data-msg="确定要驳回？" class="btn btn-xs btn-warning">驳回</a>
+                            {/if}
+                        */
+                        ?>
+                        <a data-url="{:url('activation',['id'=>$entity.id])}" onclick="main.ajaxDelete(this)" data-msg="确定要通过？" class="btn btn-xs btn-success">通过</a>
+                        <a data-url="{:url('delete',['id'=>$entity.id])}" onclick="main.ajaxDelete(this)" data-msg="确定要删吗？" class="btn btn-xs btn-danger">删除</a>
+                        <a data-url="{:url('freeze',['id'=>$entity.id])}" onclick="main.ajaxDelete(this)" data-msg="确定要驳回？" class="btn btn-xs btn-warning">驳回</a>
+
+                    </td>
+                </tr>
+                {/foreach}
+            {else /}
+            <tr class="text-center">
+                <td colspan="9">暂无数据</td>
+            </tr>
+            {/if}
+            </tbody>
+        </table>
+        <div class="page">
+            {:htmlspecialchars_decode($list->render())}
+        </div>
+    </div>
+</section>
+{/block}
+{block name="footer"}
+
+
+
+{/block}

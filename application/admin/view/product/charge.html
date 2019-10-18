@@ -1,0 +1,141 @@
+{extend name="layout/main" /}
+
+{block name="header"}
+
+{/block}
+
+{block name="content"}
+<section class="panel">
+    {if isset($info)}
+    <header class="panel-heading">
+        <h4>编辑充值卡</h4>
+    </header>
+    <div class="panel-body" style="padding-bottom: 50px">
+        <form class="form-horizontal" method="post" onsubmit="return false" role="form">
+            <div class="form-group">
+                <label class="col-sm-2 control-label">充值卡名称</label>
+
+                <div class="col-sm-5">
+                    <input type="text" value="{$info->name}" name="name" class="form-control"
+                           placeholder="请输入充值卡名">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">价格</label>
+
+                <div class="col-sm-5">
+                    <input type="text" value="{$info->price}" name="price" class="form-control"
+                           placeholder="请输入充值卡价格">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">logo</label>
+
+                <div class="col-sm-2">
+                    <img src="{$info->logo}" class="img logo-img" did="logo" style="width:200px;height: 200px">
+                </div>
+                <input type="hidden" name="logo" id="logo" value="{$info->logo}">
+                <input type="file" class="file logo" style="display: none;" did="logo">
+                <label class="col-sm-1 control-label">客服二维码</label>
+
+                <div class="col-sm-2">
+                    <img src="{$info->qrcode}" class="img qrcode-img" did="qrcode" style="width:200px;height: 200px">
+                </div>
+                <input type="hidden" name="qrcode" id="qrcode" value="{$info->qrcode}">
+                <input type="file" class="file qrcode" did="qrcode" style="display: none;">
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" data-url="{:url('admin/product/saveCharge',['id'=>$info->id])}"
+                            onclick="main.ajaxPosts(this)" class="btn btn-primary">确定修改
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+    {else /}
+    <header class="panel-heading">
+        <h4>添加充值卡</h4>
+    </header>
+    <div class="panel-body" style="padding-bottom: 50px">
+        <form class="form-horizontal" method="post" onsubmit="return false" role="form">
+            <div class="form-group">
+                <label class="col-sm-2 control-label">充值卡名称</label>
+
+                <div class="col-sm-5">
+                    <input type="text" value="" name="name" class="form-control"
+                           placeholder="请输入充值卡名">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">价格</label>
+
+                <div class="col-sm-5">
+                    <input type="text" value="" name="price" class="form-control"
+                           placeholder="请输入充值卡价格">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">logo</label>
+
+                <div class="col-sm-2">
+                    <img src="/static/img/tj.png" class="img logo-img" did="logo" style="width:200px;height: 200px">
+                </div>
+                <input type="hidden" name="logo" id="logo">
+                <input type="file" class="file logo" style="display: none;" did="logo">
+                <label class="col-sm-1 control-label">客服二维码</label>
+
+                <div class="col-sm-2">
+                    <img src="/static/img/tj.png" class="img qrcode-img" did="qrcode" style="width:200px;height: 200px">
+                </div>
+                <input type="hidden" name="qrcode" id="qrcode">
+                <input type="file" class="file qrcode" style="display: none;" did="qrcode">
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" data-url="{:url('admin/product/saveCharge')}"
+                            onclick="main.ajaxPosts(this)" class="btn btn-primary">确定添加
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+    {/if}
+</section>
+{/block}
+
+
+{block name="footer"}
+<script src="/admin/vendor/fuelux/checkbox.js"></script>
+<script>
+    $('.img').click(function () {
+        var did = $(this).attr('did');
+        $('.'+did).click();
+    })
+    $('.file').change(function () {
+        var did = $(this).attr("did");
+        var $this = $(this);
+        var file = this.files[0];
+        if(file.length == 0)
+        {
+            alert("请选择要上传的图片");
+            return false;
+        }
+        var data = new FormData();
+        data.append('image',file);
+        $.ajax({
+            url:"/admin/upload/uploadEditor",
+            type:"post",
+            data:data,
+            processData:false,
+            contentType:false,
+            dataType:'json',
+            success:function(data){
+                var url = data.data[0];
+                $("."+did+"-img").attr('src', url);
+                $('#'+did).val(url)
+            }
+        })
+    })
+</script>
+{/block}

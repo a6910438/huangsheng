@@ -1,0 +1,100 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>茶园商城</title>
+    <!--head-->
+    {include file="layout/head" /}
+</head>
+<style type="text/css">
+    .product-list .product-item{
+        width:100%;
+    }
+    .product-list .product-item .product-img{
+        width:90%;
+    }
+    .product-detail{
+        border-bottom: 2px #c1c1c1 dashed;
+        padding-bottom: 10px;
+    }
+    .product-detail div{
+        height:100px;
+    }
+    .product-detail p{
+        padding: 0px;
+        margin: 0px;
+        color: #000;
+        font-size: 16px;
+        line-height: 30px;
+    }
+    .buy-btn{
+        width:120px;
+        padding:5px;
+        padding-left: 0px;
+        background: #ea6c41;
+        color:#fff;
+    }
+    .buy-btn:hover{
+        color: #fff;
+    }
+    .buy-title{
+        font-size: 16px;
+    }
+    .product-buy-area{
+        padding-top: 10px;
+        font-size: 14px;
+        color: #ea6c41;
+    }
+</style>
+<body>
+<header class="mui-bar mui-bar-nav my-header">
+    <h1 class="mui-title">茶园商城</h1>
+    <a class="mui-icon mui-icon-contact mui-pull-right" href="{:url('member/index')}"><span id="user-title">{$Think.session.username}</span></a>
+</header>
+<div class="mui-content" style="padding-bottom: 100px">
+    
+    <div class="product-list">
+        {foreach $list as $list}
+       
+        <div class="product-item white-box">
+            <h3 class="text-center product-name">{$list->product_name}</h3>
+            <div class="mui-row product-detail">
+                <div class="mui-col-sm-3 mui-col-xs-3 mui-text-center">
+                    <img class="product-img" src="{$list->image_url}">
+                </div>
+                <div class="mui-col-sm-4 mui-col-xs-4 mui-text-center">
+                    <p>总产量：{:round($list->yield_min * $list->period)}</p>
+                    <p>算力：{:number_format($list->rate_min,2)}G</p>
+                    <p>有效期：{$list->period}天</p>
+                </div>
+                <div class="mui-col-sm-5 mui-col-xs-5 mui-text-center product-buy-area">
+                    {$list->price}{$moneyName} / 台
+                    <a href="javascript:;" data-did="{$list->id}" class="buy-btn mui-icon mui-icon-checkmarkempty"><span class="buy-title">我要租赁</span></a>
+                </div>
+            </div>
+        </div>
+        {/foreach}
+    </div>
+</div>
+{include file="layout/nav" /}
+</body>
+
+{include file="layout/footer" /}
+<script type="text/javascript">
+    $('.buy-btn').on("tap",function(){
+        mui.showLoading("请稍等....");
+        var product_id = $(this).attr("data-did");
+        $.ajax({
+            url:"/index/product/recharge",
+            type:'post',
+            dataType:'json',
+            data:{'product_id' : product_id, 'type' : 1},
+            success:function(data){
+                mui.hideLoading();
+                mui.alert(data.message);
+            }
+        })
+    })
+
+</script>
+</html>

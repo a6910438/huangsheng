@@ -1,0 +1,204 @@
+.language-baifencai::before {
+    content: '百分位数';
+}
+.language-daletou::before {
+    content: 'ビッグロト';
+}
+.language-touziyouxi::before {
+    content: 'サイコロゲーム';
+}
+.language-laohuji::before {
+    content: 'スロットマシン';
+}
+.language-zuixinzhongjiang::before {
+    content: '最新の賞';
+}
+.language-zhongjiangjine::before {
+    content: '当選額';
+}
+.language-shouye::before {
+    content: 'ホーム';
+}
+.language-qukuailianyouxi::before {
+    content: 'ブロックチェーンゲーム';
+}
+.language-shequ::before {
+    content: 'コミュニティ';
+}
+.language-gerenzhongxin::before {
+    content: 'パーソナルセンター';
+}
+.language-benqijiangchi::before {
+    content: '現在の賞金プール';
+}
+.language-benqiyitouzhuliang::before {
+    content: 'この期間のベット額';
+}
+.language-qishumaohao::before {
+    content: '期間数：';
+}
+.language-woyaotouzhumaohao::before {
+    content: '賭けたい：';
+}
+.language-querentouzhu::before {
+    content: 'ベットを確認';
+}
+.language-touzhujilu::before {
+    content: '賭け記録';
+}
+.language-kaijiangjilu::before {
+    content: '宝くじ記録';
+}
+.language-qishu::before {
+    content: '期間数';
+}
+.language-kaijiangshijian::before {
+    content: '宝くじの時間';
+}
+.language-gengduo::before {
+    content: 'もっと';
+}
+.language-xuanzebizhong::before {
+    content: 'ベット通貨を選択してください';
+}
+.language-benqihaiketouzhu::before {
+    content: '現在の引き分けも賭けることができます';
+}
+.language-youxi::before {
+    content: 'ゲーム';
+}
+.language-xiazhushijian::before {
+    content: 'ベットタイム';
+}
+.language-kaijiangzhuangtai::before {
+    content: '抽選ステータス';
+}
+.language-weikaijiang::before {
+    content: '未開封';
+}
+.language-weizhongjiang::before {
+    content: '勝っていない';
+}
+.language-zhongjiang::before {
+    content: '勝つ';
+}
+.language-caipiaoxuliehao::before {
+    content: '宝くじのシリアル番号';
+}
+.language-touzhujine::before {
+    content: '金額を賭ける';
+}
+.language-gong::before {
+    content: '共';
+}
+.language-zhu::before {
+    content: '注';
+}
+.language-zhongjianxuliehao::before {
+    content: '当選番号';
+}
+.language-zhongjiangdengji::before {
+    content: '勝利レベル';
+}
+.language-zhongjiangyonghu::before {
+    content: '当選者';
+}
+.language-zhongjiangzongjine::before {
+    content: '勝利の総額';
+}
+.language-chakangengduo::before {
+    content: 'もっと見る';
+}
+.language-yidengjiang::before {
+    content: '1等賞';
+}
+.language-erdengjiang::before {
+    content: '2等賞';
+}
+.language-sandengjiang::before {
+    content: '3等賞';
+}
+.language-xingyunjiang::before {
+    content: 'ラッキー賞';
+}
+.language-kaijiangxiangqing::before {
+    content: '宝くじ詳細';
+}
+.language-benqizongjiangchi::before {
+    content: '現在の賞金プール';
+}
+.language-zhongjieshijianmaohao::before {
+    content: '賭け期間の終わり：';
+}
+.language-zhongjiegaodumaohao::before {
+    content: 'ベット終了時のEthereumブロックの高さ：';
+}
+.language-kaijianggaodumaohao::before {
+    content: 'Ethereumの高さを開く：';
+}
+.language-kaijianghaxizhimaohao::before {
+    content: 'Ethereum Hashを描く：';
+}
+.language-yonghuming::before {
+    content: 'ユーザー名';
+}
+.language-yonghuid::before {
+    content: 'ユーザーID';
+}
+.language-zhongjiangxuliehao::before {
+    content: '当選番号';
+}
+.language-jiangxiang::before {
+    content: '賞';
+}
+.language-jiangjin::before {
+    content: 'ボーナス';
+}
+.language-meiyougengduoshujule::before {
+    content: 'これ以上データなし';
+}
+.language-baifencaikaijiangxiangqing::before {
+    content: '宝くじの割合の詳細';
+}
+.language-youxigonglue::before {
+    content: 'ゲームガイド';
+}
+.language-guanyuwomen::before {
+    content: '私達について';
+}
+.language-fabugonggao::before {
+    content: 'お知らせ';
+}
+.language-bunengxiaoyuyi::before {
+    content: 'ベット数は1未満にはできません';
+}
+.language-bunengweixiaoshu::before {
+    content: 'ベット数は10進数にはできません';
+}
+.language-zuiduoyibai::before {
+    content: '各賭けは100までしかできません';
+}
+.language-zhengzaitouzhu::before {
+    content: '賭けて、お待ちください...';
+}
+.language-gongxininzhongdedaletou::before {
+    content: '大きな宝くじおめでとうございます';
+}
+.language-dianjichakan::before {
+    content: 'クリックして見る';
+}
+.language-qingxiandenglu::before {
+    content: '最初にログインしてください';
+}
+.language-qudenglu::before {
+    content: 'ログインする';
+}
+.language-quxiao::before {
+    content: 'キャンセル';
+}
+.language-gongxininzhongdebaifencai::before {
+    content: '賞金おめでとうございます';
+}
+.language-dengdaikaijiangzhong::before {
+    content: '賞を待っています';
+}

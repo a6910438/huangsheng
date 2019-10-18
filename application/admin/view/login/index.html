@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1">
+    <title>Login</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
+    <link rel="stylesheet" href="/static/bootstrap-4.3.1-dist/css/bootstrap.min.css">
+    <!-- Bootstrap 扩展 -->
+    <link rel="stylesheet" href="/static/bootstrap-4.3.1-dist/css/bootstrap-extend.css">
+    <!-- Font Awesome CSS -->
+    <link rel="stylesheet" href="/static/fontawesome-free-5.9.0-web/css/all.css">
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="/static/js/jquery-3.4.1.min.js"></script>
+    <script src="/static/js/umd/popper.min.js"></script>
+    <script src="/static/bootstrap-4.3.1-dist/js/bootstrap.min.js"></script>
+
+</head>
+
+<body class="bg-light">
+<div class="container" style="margin-top: 10%">
+    <div class="row">
+        <div class="col-xs-10 col-sm-6 col-md-4 mx-auto">
+            <section class="card shadow-lg">
+                <header class="card-header bg-alipay text-white">
+                    <h5 class="card-title mb-0 text-center">大富豪后台管理系统</h5>
+                </header>
+                <div class="card-body">
+                    <div style="overflow-x: hidden">
+                        <img class="d-block mx-auto mt-2 mb-4" style="max-width: 8rem" src="/fish/img/logo.png" alt="Logo">
+                    </div>
+                    <form role="form" action="{:url('login/login')}" id="form-login">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <div class="input-group-text">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <input type="text" autofocus name="username" class="form-control" placeholder="用户名" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="input-group">
+                                <div class="input-group-text">
+                                    <i class="fas fa-key"></i>
+                                </div>
+                                <input type="password" name="password" class="form-control" placeholder="登录密码" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-danger btn-block">登 录</a>
+                        </div>
+                        <div id="login-log" class="text-center d-none text-danger"></div>
+                    </form>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+    $(document).ready(function () {
+        var timeoutRun = null;
+        var logElement = document.getElementById('login-log');
+        function showLog(log){
+            if(timeoutRun){
+                window.clearTimeout(timeoutRun);
+            }
+            logElement.innerText = log;
+            logElement.classList.remove('d-none');
+            timeoutRun = window.setTimeout(()=>{
+                logElement.classList.add('d-none');
+            },3000);
+
+        }
+        $('#form-login').on('submit',function(e){
+            e.preventDefault();
+            e.stopPropagation();
+            //main.ajaxPost(new FormData(this),this.action);
+            this.elements[2].disabled = true;
+            this.elements[2].innerText = '正在登录...'
+            $.ajax({
+                type: 'POST',
+                url: this.action,
+                data: new FormData(this),
+                dataType: 'json',
+                processData: false,
+                contentType: false,
+                success: (response) => {
+                    if(response.toUrl){
+                        window.location.href = response.toUrl;
+                    }else{
+                        //Tool.alert(response.msg,1);
+                        showLog(response.message);
+                    }
+                },
+                complete: (xhr) => {
+                    //Tool.loading.hide();
+                    this.elements[2].disabled = false;
+                    this.elements[2].innerText = '登 录'
+                },
+                error:(xhr) => {
+                    //alert(JSON.stringify(xhr);
+                    //Tool.alert('('+xhr.status + ') '+xhr.statusText,1);
+                    showLog('('+xhr.status + ') '+xhr.statusText);
+                }
+            });
+
+        })
+    });
+</script>
+</html>
+

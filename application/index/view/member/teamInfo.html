@@ -1,0 +1,208 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>联盟</title>
+    <!--head-->
+    {include file="layout/head" /}
+</head>
+<style type="text/css">
+    .team-info-area{
+        padding-top: 15px;
+        text-align: center;
+    }
+    .team-info-area div{
+        display: inline-block;
+        width: 24%;
+    }
+    .team-info-field{
+        display: block;
+    }
+    .team-info-area h3{
+        margin-bottom: 10px;
+    }
+    .leader-title{
+        background: #67c4ff;
+        height: 23px;
+        background-position: 0px;
+        margin: 5px auto;
+        text-align: center;
+        line-height: 23px;
+        color: #fff;
+        font-size: 12px;
+    }
+    .loadmore{
+        background: #fff;
+        padding: 10px 0px;
+        text-align: center;
+    }
+    .team-item-padding{
+        padding:20px 0 10px 20px;
+    }
+    .exit_team{
+        vertical-align: middle;
+        min-height: 44px;
+        display: block;
+        font-size: 16px;
+        line-height: 44px;
+        color:#000;
+    }
+    
+</style>
+<body>
+<header class="mui-bar mui-bar-nav my-header">
+    <a href="/index/member/index" class="mui-icon mui-icon-left-nav mui-pull-left" ></a>
+    <h1 id="title" class="mui-title">联盟</h1>
+    {if condition="$teamInfo->uid eq $userId"}
+    <a class="mui-pull-right exit_team" href="javascript:;" >解散</a>
+    {else/}
+    <a class="mui-pull-right exit_team" href="javascript:;" >退出</a>
+    {/if}
+</header>
+<div class="mui-content">
+    <div class="lianmeng-info mui-row">
+        <div class="team-info-area">
+            <h3 style="color: #fff">{$teamInfo->name}</h3>
+            <div>
+                QQ群<span class="team-info-field">{$teamInfo->qq_groupid}</span>
+            </div>
+            <div>
+                会长微信<span class="team-info-field">{$teamInfo->leader_wx}</span>
+            </div>
+            <div>
+                会长电话<span class="team-info-field">{$teamInfo->leader_mobile}</span>
+            </div>
+            <div>
+                会长QQ<span class="team-info-field">{$teamInfo->leader_qq}</span>
+            </div>
+        </div>
+    </div>
+    <div class="mui-scroll-wrapper" style="top:184px" >
+        <div class="mui-scroll" >
+            <div class="mui-table-view my-list" style="top:0;margin-top: 10px">
+                <ul class="my-list-item mui-row">
+                    <div class="mui-col-sm-2 mui-col-xs-2">
+                        {if $leaderInfo->avatar}
+                        <img style="width: 100%;border-radius: 50%;max-height: 60px"  src="{$leaderInfo->avatar}">
+                        {else /}
+                        <img style="width: 100%;border-radius: 50%;max-height: 60px"  src="/static/image/headphoto.jpg">
+                        {/if}
+                        <div class="leader-title">
+                            会长
+                        </div>
+                    </div>
+                    <div class="mui-col-sm-10 mui-col-xs-10 team-item-padding">
+                        <li class="clear">
+                            <span class="left">
+                                <span>昵称:</span>
+                                <span class="value">{$leaderInfo->nick_name}</span>
+                            </span>
+                        </li>
+                        <li class="clear">
+                            <span class="left">
+                                <span>矿机:</span>
+                                <span class="value">{$leaderInfo->productCount($leaderInfo->id)}</span>
+                            </span>
+                        </li>
+                        <li class="clear">
+                            <span class="left">
+                                <span>注册时间:</span>
+                                <span class="value">{$leaderInfo->register_time}</span>
+                            </span>
+                        </li>
+                    </div>
+                </ul>
+                <div id="list-area-team">
+
+                </div>
+                <div class="loadmore" data-type="team" data-page="1">查看更多</div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--footer-->
+{include file="layout/footer" /}
+<!--js-->
+<script type="text/javascript">
+;(function () {
+    mui('.mui-scroll-wrapper').scroll({
+        deceleration: 0.0005 //flick 减速系数，系数越大，滚动速度越慢，滚动距离越小，默认值0.0006
+    });
+    $('.loadmore').on('click', function () {
+        getDataList($(this).attr('data-type'));
+    })
+    getDataList('team');
+    var ajaxSending = false;
+    function getDataList(type) {
+        var loadDom = $('.loadmore[data-type=' + type + ']');
+        var page = loadDom.attr('data-page');
+        var listAreaDom = $('#list-area-' + type);
+        var url = "{:url('member/teamUserList')}";
+        var tid = '{$teamInfo->id}';
+        var tuid = '{$teamInfo->uid}';
+        if (ajaxSending) {
+            return false;
+        }
+        
+        ajaxSending = true;
+        $.post(url, {'tid': tid,'page': page,'tuid': tuid}, function (d) {
+            if (d.status === true) {
+                var data = d['data']['list'];
+                if (data == null || data.length == 0) {
+                    loadDom.remove();
+                } else {
+                    var html = '', tmpdata = '';
+                    if (type == 'team') {
+                        for (var k in data) {
+                            tmpdata = data[k];
+                            html += '<ul class="my-list-item mui-row"><div class="mui-col-sm-2 mui-col-xs-2">';
+                            html += '<img style="width: 100%;border-radius: 50%;max-height: 60px"  src="' + tmpdata['avatar'] + '"></div>';
+                            html += '<div class="mui-col-sm-10 mui-col-xs-10 team-item-padding">';
+                            html += '<li class="clear"><span class="left"><span>昵称:</span>';
+                            html += '<span class="value">' + tmpdata['username'] + '</span></span></li>';
+                            html += '<li class="clear"><span class="left"><span>矿机:</span>';
+                            html += '<span class="value">' + tmpdata['product_count'] + '</span></span>';
+                            html += '</li><li class="clear"><span class="left"><span>注册时间:</span>';
+                            html += '<span class="value">' + tmpdata['register_time'] + '</span></span></li></div></ul>'
+                        }
+                    }
+                    listAreaDom.append(html);
+                    $('.join-btn').click(function(){
+                        join($(this));
+                    })
+                    if (d['data']['nextPage'] == 0) {
+                        loadDom.remove();
+                    } else {
+                        loadDom.attr('data-page', d['data']['nextPage']);
+                    }
+                }
+            } else {
+                alert(d.info, 2);
+            }
+            ajaxSending = false;
+        })
+    }
+    $('.exit_team').click(function(){
+        var url = "{:url('member/exitTeam')}";
+        mui.confirm('确认退出公会？', '', ['取消', '退出'], function (e) {
+            if (e.index != 0) {
+                if (ajaxSending) {
+                    return false;
+                }
+                ajaxSending = true;
+                $.post(url, {}, function (d) {
+                    if (d.status == true) {
+                        window.location.reload();
+                    } else {
+                        mui.alert(d.info);
+                    }
+                    ajaxSending = false;
+                })
+            }
+        })
+    })
+})();
+</script>
+</body>
+</html>

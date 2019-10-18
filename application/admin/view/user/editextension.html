@@ -1,0 +1,196 @@
+{extend name="layout/main" /}
+
+{block name="header"}
+
+{/block}
+
+{block name="content"}
+<script src="__PUBLIC__/admin/js/laydate/laydate.js"></script>
+<link rel="stylesheet" href="__PUBLIC__/static/webuploader/webuploader.css">
+<script type="text/javascript" src='__PUBLIC__/static/webuploader/webuploader.js'></script>
+<section class="panel">
+
+    <header class="panel-heading">
+        <h4>推广设置</h4>
+    </header>
+    <div class="panel-body" style="padding-bottom: 50px">
+        <form class="form-horizontal" method="post" onsubmit="return false" role="form">
+			
+            <h5>升级条件</h5>
+			<hr>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">初级所需用户消耗GTC</label>
+                <div class="col-sm-5">
+                    <input type="number" value="{$info.bait_need1}" min="0" name="bait_need1" class="form-control"
+                            placeholder="最小值">
+                </div>
+            </div>
+			<div class="form-group">
+                <label class="col-sm-2 control-label">中级所用户消耗GTC</label>
+                <div class="col-sm-5">
+                    <input type="number" value="{$info.bait_need2}" min="0" name="bait_need2" class="form-control"
+                            placeholder="最小值">
+                </div>
+            </div>
+			<div class="form-group">
+                <label class="col-sm-2 control-label">高级所需用户消耗GTC</label>
+                <div class="col-sm-5">
+                    <input type="number" value="{$info.bait_need3}" min="0" name="bait_need3" class="form-control"
+                            placeholder="最小值">
+                </div>
+            </div>
+
+			<hr>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">初级所需收益</label>
+                <div class="col-sm-5">
+                    <input type="number" value="{$info.profit_need1}" min="0" name="profit_need1" class="form-control"
+                            placeholder="最小值">
+                </div>
+            </div>
+			<div class="form-group">
+                <label class="col-sm-2 control-label">中级所需收益</label>
+                <div class="col-sm-5">
+                    <input type="number" value="{$info.profit_need2}" min="0" name="profit_need2" class="form-control"
+                            placeholder="最小值">
+                </div>
+            </div>
+			<div class="form-group">
+                <label class="col-sm-2 control-label">高级所需收益</label>
+                <div class="col-sm-5">
+                    <input type="number" value="{$info.profit_need3}" min="0" name="profit_need3" class="form-control"
+                            placeholder="最小值">
+                </div>
+            </div>
+
+			<hr>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">初级所需直推人数</label>
+                <div class="col-sm-5">
+                    <input type="number" value="{$info.push_need1}" min="0" name="push_need1" class="form-control"
+                            placeholder="最小值">
+                </div>
+            </div>
+			<div class="form-group">
+                <label class="col-sm-2 control-label">中级所需直推人数</label>
+                <div class="col-sm-5">
+                    <input type="number" value="{$info.push_need2}" min="0" name="push_need2" class="form-control"
+                            placeholder="最小值">
+                </div>
+            </div>
+			<div class="form-group">
+                <label class="col-sm-2 control-label">高级所需直推人数</label>
+                <div class="col-sm-5">
+                    <input type="number" value="{$info.push_need3}" min="0" name="push_need3" class="form-control"
+                            placeholder="最小值">
+                </div>
+            </div>
+
+			<hr>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">初级所需伞下人数</label>
+                <div class="col-sm-5">
+                    <input type="number" value="{$info.umbrella_need1}" min="0" name="umbrella_need1" class="form-control"
+                            placeholder="最小值">
+                </div>
+            </div>
+			<div class="form-group">
+                <label class="col-sm-2 control-label">中级所需伞下人数</label>
+                <div class="col-sm-5">
+                    <input type="number" value="{$info.umbrella_need2}" min="0" name="umbrella_need2" class="form-control"
+                            placeholder="最小值">
+                </div>
+            </div>
+			<div class="form-group">
+                <label class="col-sm-2 control-label">高级所需伞下人数</label>
+                <div class="col-sm-5">
+                    <input type="number" value="{$info.umbrella_need3}" min="0" name="umbrella_need3" class="form-control"
+                            placeholder="最小值">
+                </div>
+            </div>
+            <hr>
+            <h5>团队奖设置</h5>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">团队奖初级返点（单位% 数值0-100）</label>
+                <div class="col-sm-5">
+                    <input type="number" value="{$info.team_profit1}" name="team_profit1"  min="0" step="0.01" class="form-control"
+                           placeholder="收益（单位% 数值0-100）">
+
+                </div>
+            </div>
+			<div class="form-group">
+                <label class="col-sm-2 control-label">团队奖中级返点（单位% 数值0-100）</label>
+                <div class="col-sm-5">
+                    <input type="number" value="{$info.team_profit2}" name="team_profit2"  min="0" step="0.01" class="form-control"
+                           placeholder="收益（单位% 数值0-100）">
+
+                </div>
+            </div>
+			<div class="form-group">
+                <label class="col-sm-2 control-label">团队奖高级返点（单位% 数值0-100）</label>
+                <div class="col-sm-5">
+                    <input type="number" value="{$info.team_profit3}" name="team_profit3"  min="0" step="0.01" class="form-control"
+                           placeholder="收益（单位% 数值0-100）">
+
+                </div>
+            </div>
+
+            <hr>
+            <h5>推广奖设置</h5>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">推广奖一级返点（单位% 数值0-100）</label>
+
+                <div class="col-sm-5">
+                    <input type="number" value="{$info.extension_profit1}" name="extension_profit1"  min="0" step="0.01" class="form-control"
+                           placeholder="（单位% 数值0-100）">
+
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">推广奖二级返点（单位% 数值0-100）</label>
+
+                <div class="col-sm-5">
+                    <input type="number" value="{$info.extension_profit2}" name="extension_profit2"  min="0" step="0.01" class="form-control"
+                           placeholder="（单位% 数值0-100）">
+
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">推广奖三级返点（单位% 数值0-100）</label>
+
+                <div class="col-sm-5">
+                    <input type="number" value="{$info.extension_profit3}" name="extension_profit3"  min="0" step="0.01" class="form-control"
+                           placeholder="（单位% 数值0-100）">
+
+                </div>
+            </div>
+
+            <hr>
+
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" data-url="{:url('extensionupdate',['id'=>$info.id])}"
+                            onclick="main.ajaxPosts(this)" class="btn btn-primary">确定修改
+                    </button>
+                    <button type="button" onclick="javascript:history.back(-1);" class="btn btn-warning">返回
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+
+
+</section>
+{/block}
+
+
+{block name="footer"}
+<script src="/admin/vendor/fuelux/checkbox.js"></script>
+<script>
+
+</script>
+
+
+{/block}

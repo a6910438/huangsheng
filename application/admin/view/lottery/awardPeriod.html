@@ -1,0 +1,160 @@
+{extend name="layout/main" /}
+
+{block name="header"}
+
+{/block}
+
+{block name="content"}
+<style>
+    .listli{
+           background-color: #fff;
+    }
+    .select {
+        color: #ffffff;
+        background-color: #1ec3c8;
+        border-color: #1ec3c8;
+    }
+    .select:hover{
+        color: #fff;
+    }
+</style>
+
+<script src="__PUBLIC__/admin/js/laydate/laydate.js"></script>
+<section class="panel">
+    <header class="panel-heading">
+        <h4>大乐透各奖期明细</h4>
+    </header>
+    <div class="panel-body" style="padding-bottom: 50px">
+        <form class="form-horizontal" action="{:url('admin/Lottery/awardPeriod')}">
+            <div class="form-group">
+
+                <div class="col-xs-1 no-pd-r">
+                    <select name="type" class="form-control">
+                        <option {if $Request.get.type == 'periods'} selected {/if} value="periods">大乐透期号</option>
+                    </select>
+                </div>
+                
+                <div class="col-xs-3 no-pd-l">
+                    <input type="text" value="{$Request.get.keyword}" name="keyword" class="form-control" placeholder="请输入相应期号">
+                </div>
+
+                <div class="col-xs-2 no-pd-2">
+                    <input type="text" value="{$Request.get.startTime}" name="startTime" id="startTime" class="form-control" placeholder="请输入开始时间">
+                </div>
+                <div class="col-xs-2 no-pd-2">
+                    <input type="text" value="{$Request.get.endTime}" name="endTime" id="endTime" class="form-control" placeholder="请输入结束时间">
+                </div>
+                <button type="submit" class="btn btn-color">搜索</button>
+            </div>
+        </form>
+        <table class="table table-bordered table-striped no-margin">
+            <thead>
+                <tr>
+                    <th class="text-center">序号</th>
+                    <th class="text-center">游戏类型</th>
+                    <th class="text-center">期数</th>
+                    <th class="text-center">奖池总额≈(USDT)</th>
+                    <th class="text-center">目前奖池BTC总额</th>
+                    <th class="text-center">目前奖池ETH总额</th>
+                    <th class="text-center">目前奖池EOS总额</th>
+                    <th class="text-center">目前总注数</th>
+                    <th class="text-center">开奖状态</th>
+                    <th class="text-center">开奖时间</th>
+                    <th class="text-center">开始时间</th>
+                    <th class="text-center">最近投注时间</th>
+                </tr>
+            </thead>
+            <tbody>
+            {if $list}
+                {foreach $list as $order}
+                    <tr>
+                        <td class="text-center">{$order->id}</td>
+                        <td class="text-center">
+                            {if $order->types == 1}
+                            大乐透
+                            {elseif $order->types == 2}
+                            百分彩
+                            {else /}
+                            未知
+                            {/if}
+                        </td>
+                        <td class="text-center">{$order->periods}</td>
+
+                        <td class="text-center">
+                            {$query->getSum($order->periods)}USDT
+                        </td>
+                        <td class="text-center">
+                            {$order->total_btc}BTC
+                        </td>
+                        <td class="text-center">
+                            {$order->total_eth}ETH
+                        </td>
+                        <td class="text-center">
+                            {$order->total_eos}EOS
+                        </td>
+                        <td class="text-center">
+                            {$order->number}
+                        </td>
+                        <td class="text-center">
+                            {if $order->status == 1}
+                                未开奖
+                            {elseif $order->status ==2  /}
+                                开奖中
+                            {elseif $order->status ==3  /}
+                                已开奖
+                            {else /}
+                                未知
+                            {/if}
+                        </td>
+                        <td class="text-center">
+                            {if $order->status == 1}
+                            未开奖
+                            {elseif $order->status ==2  /}
+                            开奖中
+                            {elseif $order->status ==3  /}
+                            {$order->open_time}
+                            {else /}
+                            未知
+                            {/if}
+
+                        </td>
+                        <td class="text-center">
+                            {$order->create_time}
+                        </td>
+                        <td class="text-center">
+                            {if strtotime($order->update_time)}
+                            {$order->update_time}
+                            {else /}
+                            占时无人下注
+                            {/if}
+                        </td>
+
+                    </tr>
+                {/foreach}
+            {else /}
+                <tr class="text-center">
+                    <td colspan="8">暂无数据</td>
+                </tr>
+            {/if}
+            </tbody>
+        </table>
+        <div class="page">
+            {:htmlspecialchars_decode($list->render())}
+        </div>
+    </div>
+</section>
+<script>
+laydate.render({
+  elem: '#startTime',
+  type: 'datetime'
+});
+laydate.render({
+  elem: '#endTime',
+  type: 'datetime'
+});
+</script>
+
+{/block}
+{block name="footer"}
+
+{/block}

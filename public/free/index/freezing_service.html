@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Contact Customer Service</title>
+    <link rel="icon" href="free.ico" type="image/x-icon"/> 
+    <link rel="stylesheet" href="../css/public.css">
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <script src="../build/flexible.js"></script>
+    <script src="../build/flexible_css.js"></script>
+    <script src="../js/layer.js"></script>
+    <script src="../js/jquery.js"></script>
+    <script src="../js/clipboard.min.js"></script>
+    <style>
+        html, body {background: #F5F5F5;}
+        input::-webkit-input-placeholder {color: #999;}
+        textarea::-webkit-input-placeholder {color: #999;}
+        .header {position: fixed;top: 0px;left: 0px;width: 100%;height: 1.173333rem;line-height: 1.173333rem;text-align: center;color: #fff;background: linear-gradient(to left, #2A3176, #0A0F3E);z-index: 99999;}
+        .header span {font-size: .48rem;font-weight: bold;}
+        .goback {position: absolute;top: 0;left: .106667rem;display: flex;align-items: center;height: inherit;}
+        .goback img {width: .586667rem;}
+        .main {padding: 1.173333rem .373333rem 1.333333rem;}
+        .item {padding-top: .213333rem}
+        .item-title {padding-left: .426667rem;height: .693333rem;line-height: .693333rem;font-size: .426667rem;font-weight: bold;color: #333;}
+        .item-content {position: relative;display: flex;justify-content: space-between;align-items: center;padding: 0rem .32rem 0rem .426667rem;min-height: 1.173333rem;border-radius: .266667rem;background: #191F58;box-shadow: 0rem 0rem .4rem 0rem rgba(25, 31, 88, 0.5);}
+        .item-content textarea {padding: .32rem 0rem;display: block;width: 100%;resize: none;font-size: .426667rem;color: #fff;border: none;background: transparent;}
+        .item-value {height: inherit;border: none;font-size: .426667rem;color: #fff;width: 80%;background: transparent;}
+        .item-content img {height: .586667rem;}
+        .btn-box {margin-top: 4.6rem;display: flex;justify-content: center;}
+        .confirm {padding: 0rem 1.92rem;min-width: 57.64%;height: 1.173333rem;line-height: 1.173333rem;text-align: center;font-size: .48rem;color: #fff;border: none;background: #262F86;}
+        .set-file{
+            display: block;
+            position: absolute;
+            opacity: 0;
+            top: 0;
+            right: 0;
+            width: .586667rem;
+            height: .586667rem;
+                }
+        .tishi{    border: 1px solid #F24D4D;
+            display: inline-block;
+            width: .35rem;
+            height: .35rem;
+            border-radius: .32rem;
+            text-align: center;
+            line-height: .3rem;
+            margin-right: .1rem;
+        }
+        .img-item {
+            width: 4rem;
+            height: 4rem;
+            background-color: #fff;
+            position: relative;
+          	margin:.6rem auto 0;
+        }
+        .img-item img {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+        .acti-error{background-color:rgba(0,0,0,.9);position:absolute;right:-7px;top:-9px;height:25px;width:25px;border-radius:50%;text-align:center;line-height:25px;}
+    </style>
+<body>
+    <header class="header">
+        <a href="javascript:history.back(-1);" class="goback">
+            <img src="../images/nav_arrow_icon@2x.png" alt="">
+        </a>
+        <span>Contact Customer Service</span>
+    </header>
+    <main class="main">
+        <div class="list" data-nickname="">
+            <div class="item">
+                <div class="item-title">Description</div>
+                <div class="item-content">
+                    <textarea class="description" name="" id="" cols="30" rows="4" placeholder="Please enter a detailed description"></textarea>
+                </div>
+            </div>
+            <p class="content_error" style="display: none; margin-top:.1rem;color: #F24D4D;font-size: .32rem"><span class="tishi">!</span>Description cannot be empty</p>                
+            <div class="item">
+                <div class="item-title">Image feedback</div>
+                <div class="item-content">
+                        <input type="text" class="item-value" value="Select a Picture" readonly>
+                        <img id="img-file" src="../images/sc_img_icon@2x.png" alt=""><input type="file" accept="image/jpeg,image/jpg,image/png" id="upload" class="set-file">
+                    </div>
+                     <p class="img_error" style="display: none; margin-top:.1rem;color: #F24D4D;font-size: .32rem"><span class="tishi">!</span>Payment Voucher cannot be empty</p>                
+            </div>
+            <div class="img-box left clearfix"></div>
+        </div>
+        <div class="btn-box" data-img="">
+            <button class="confirm">Submit</button>
+        </div>
+    </main>
+    <script>
+        $(function () {
+            $('#upload').on('change', function(){
+		            var file = $(this)[0];
+		            var formData = new FormData();
+		            formData.append('file', file.files[0]);
+		            $.ajax({
+		                url: "../../index.php/index/Upload/uploadImg",
+		                type: 'POST',
+		                data: formData,
+		                contentType: false, // 注意这里应设为false
+		                processData: false,
+		                success: function(res){
+		                    console.log(res);
+		                    if(res.code==0){
+								var m_img=`
+		                        <div class="img-item">
+							        <img src="${res.data}" alt="">
+							    </div>`
+                                $('.img-box').append(m_img);
+                                $(".btn-box").data("img",res.data);                          
+		                        var lenth = $('.img-box .img-item').length;
+		                        if(lenth>=1){
+		                            $('.set-file').hide();
+		                        } 
+		                        $('#img-total').html(lenth);
+		                        file.value = '';
+		                        layer.open({
+                                content: 'Upload success',
+                                skin: 'msg',
+                                time: 2
+                            });
+		                    }else{
+		                        layer.open({
+                                content: 'upload failed',
+                                skin: 'msg',
+                                time: 2
+                            });
+		                    }
+		                },
+		                error: function(XHR, textStatus, errorThrown) {
+		                    alert('网络错误！');
+		                }
+		            });
+                });
+                $('.confirm').off().on('click',function(){
+                var type=3;
+                var content=$('.description').val();
+                function getQueryString(name) { 
+                    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i"); 
+                    var r = window.location.search.substr(1).match(reg); 
+                    if (r != null) return unescape(r[2]); 
+                    return null; 
+                } 
+                var nick_name=getQueryString('name');
+                var pic=$(".btn-box").data("img");
+                if(!content) return $('.content_error').show();
+                if(!pic) return $('.img_error').show();
+                $.ajax({
+                url: "../../index.php/index/publics/apply",
+				type: 'POST',
+				data:{nick_name:nick_name,type:3,pic:pic,content:content},
+                dataType: 'json',
+                success: function(res){
+                    console.log(res)
+                    if(res.code=='0'){
+                        layer.open({
+                            content: res.msg,
+                            skin: 'msg',
+                            time: 2
+                        });
+                        setTimeout(() => {
+                            window.location.href='login.html';
+                        }, 1000);
+                        }
+                    else{
+                        layer.open({
+                            content: res.msg,
+                            skin: 'msg',
+                            time: 2
+                        });
+                        }
+                },
+            })
+            })
+        });
+    </script>
+</body>
+</html>

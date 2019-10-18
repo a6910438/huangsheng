@@ -1,0 +1,199 @@
+{extend name='main'}
+
+{block name='body'}
+<div class="fish-head">
+    <a href="javascript:window.history.back();" class="head-back"><span>返回</span></a>
+    <h3 class="head-tit"><span>推广收益</span></h3>
+    <a href="/home/member/exchange_profit.html" class="head-menu"><span>兑换</span></a>
+</div>
+<div class="fish-main" v-cloak>
+
+    <div id="bait-top" class="content-box">
+        <div class="top-text">推广收益</div>
+        <div class="top-num">{{info.now_extension|| '0.00'}}</div>
+    </div>
+    <div id="bait-top" class="content-box">
+        <div class="top-text">累计收益</div>
+        <div class="top-num">{{info.extension|| '0.00'}}</div>
+    </div>
+    <div class="content-view">
+        <p>上级微信: {{info.p_chat_num}}&nbsp;&nbsp;&nbsp;&nbsp;上级ID：{{info.p_invite_code}}</p>
+    </div>
+    <div v-if="list.length>0" class="content-box">
+        <ul class="content-list">
+            <li v-for="(vo,index) in list">
+                <div>
+                    <div class="list-top">编号：{{vo.order_number}}</div>
+                    <div class="list-tit" v-if="vo.type == 4">类型：兑换GTC</div>
+                    <div class="list-tit" v-else>来自用户：{{vo.nick_name}}</div>
+                    <div class="list-tip">{{vo.create_time}}</div>
+                </div>
+                <div class="ml-auto">
+                    <span class="green" v-if="vo.number>0">+{{vo.number}}</span>
+                    <span class="red" v-else>{{vo.number}}</span>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
+<div id="modal1" class="modal" style="background-color:transparent;box-shadow: none;width: 90%; max-width: 30rem;">
+    <div class="modal-content">
+        <form class="content-box m-0" action="" method="post" onsubmit="return false;">
+            <div class="content-title">兑换房产</div>
+            <ul class="content-list">
+                <li>
+                    <label class="content-label font5">可兑换收益</label>
+                    <input type="text" :value="info.now_extension" readonly="readonly">
+                </li>
+                <li v-if="pool">
+                    <label class="content-label font5">可兑的房</label>
+                    <input type="text" :value="pool.name" readonly="readonly">
+                </li>
+                <li v-if="pool">
+                    <label class="content-label font5">可兑数量</label>
+                    <input type="text" :value="pool.num" readonly="readonly">
+                </li>
+                <li>
+                    <label class="content-label font5">兑换数量</label>
+                    <input type="text" placeholder="请输入转出数量" v-model="num">
+                </li>
+            </ul>
+        </form>
+        <div class="content-view">
+            <button type="button" class="content-btn" @click="integral()">兑换</button>
+        </div>
+    </div>
+</div>
+{include file='menu'}
+{/block}
+
+{block name='script'}
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            info: '',
+            pool: '',
+            num: '',
+            list: [],
+            page: 0,
+            status: true,
+        },
+        computed: {
+            
+        },
+        methods: {
+            modalShow: function(){
+                if(!this.pool) return core.toast('当前不可兑换');
+                $('#modal1').modal('open');
+            },
+            integral: function(){
+                var self = this;
+                if(!this.num) return core.toast('请输入转出数量');
+                if(!(/(^[1-9]\d*$)/.test(this.num))) return core.toast('只能输入正整数！');
+                if(Number(this.num)>Number(this.pool.num)) return core.toast('转出数量不能大于可兑酒数量');
+
+                core.load("{:url('index/my/buy_integral_fish')}", { 
+                    types: 2,
+                    num: this.num,
+                }, function(res){
+                    
+                    if(res.code==0){
+                        $("#modal1").modal('close');
+                        // setTimeout(function(){
+
+                        // }, 300);
+                    }
+                    core.toast(res.msg);
+                })
+            },
+            poolFun: function(){
+                var self = this;
+
+                core.load("{:url('index/my/integral_pool')}", { types:2, }, function(res){
+                    
+                    if(res.code==0){
+                        self.pool=res.info;
+                    }else{
+                        core.toast(res.msg);
+                    }
+                })
+            },
+            member: function(){
+                var self = this;
+                core.load("{:url('/index/setup/index')}", {}, function(res){
+                    
+                    if(res.code==0){
+                        self.info=res.info;
+                    }else{
+                        core.toast(res.msg);
+                    }
+                })
+            },
+            loadList: function(){
+                var self = this;
+                var data = {
+                    page: self.page,
+                    limit: 12,
+                };
+
+                core.load("{:url('index/my/extension_profit_list')}", data, function(res){
+                    
+                    if(res.code=='0'){
+                        if(res.info.length>0) self.list = self.list.concat(res.info);
+                        if(!res.info || (res.info.length<data.limit)){
+                            self.status = false;
+                            $('.dialog-bottom').eq(0).html('已经加载全部数据');
+                        }else{
+                            $('.dialog-bottom').eq(0).html('正在加载...');
+                        }
+                    }else{
+                        core.toast(res.msg);
+                    }
+                })
+            }
+        },
+        mounted: function(){
+            $('.modal').modal();
+            var self = this;
+            self.member();
+            self.poolFun();
+            self.loadList();
+            // 下拉加载
+            $(window).off("scroll").on("scroll", function(e){
+                var totalheight = parseFloat($(this).height()) + parseFloat($(this).scrollTop());
+                if (($(document).height()<=totalheight) && self.status){
+                    self.page = ++self.page;
+                    self.loadList()
+                }
+            });
+        }
+    });
+</script>
+{/block}
+
+{block name="style"}
+<style>
+    #bait-top{
+        text-align: center;
+        position: relative;
+        padding: 1rem 1rem;
+    }
+    #bait-top .top-text{
+        font-size:1rem;
+    }
+    #bait-top .top-num{
+        font-size:3rem;
+        font-weight:bold;
+    }
+    .dialog-bottom{
+        color: #E02737;
+    }
+    .content-title{
+        color: #E02737;
+        line-height: 3rem;
+        text-align: center;
+        font-size: 1.2rem;
+    }
+</style>
+{/block}

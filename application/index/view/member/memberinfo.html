@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>我的</title>
+        <!--head-->
+        {include file="layout/head" /}
+        
+    </head>
+    <style type="text/css">
+        .mui-icon-home:before {
+            content: none;
+        }
+        .mui-icon-email:before {
+            content: none;
+        }
+        .profile-top{
+            margin-top: 20px;
+        }
+        .money-all{
+            font-size: 18px;
+        }
+        .border-left{
+            border-left: 1px solid #c1c1c1;
+        }
+        .profile-title{
+            font-size: 14px;
+        }
+        .profile-bar,.profile-opt{
+            margin-top:10px;
+            background: #fff;
+            border-top:1px solid #c1c1c1;
+            border-bottom:1px solid #c1c1c1;
+        }
+        .profile-bar div{
+            border-left:1px solid #c1c1c1;
+        }
+        .profile-bar span,.profile-opt span{
+            display: block;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+        .profile-bar a,.profile-opt a{
+            padding: 15px;
+            font-size: 30px;
+            color:#000;
+        }
+        .profile-bar a:hover,.profile-opt a:hover{
+            color:#000;
+        }
+        #profile-bar-notice{
+            color:#FE8D07;
+        }
+        #profile-bar-compose{
+            color:#47C2F0;
+        }
+        #profile-bar-download{
+            color:#FBCE1D;
+        }
+        #profile-bar-upload{
+            color:#E8345A;
+        }
+        .border-top{
+            border-top: 1px solid #c1c1c1;
+        }
+        .border-right{
+            border-right:1px solid #c1c1c1;
+        }
+        .border-bottom{
+            border-bottom: 1px solid #c1c1c1;
+        }
+        .border-left{
+            border-left: 1px solid #c1c1c1;
+        }
+        .tip {
+            display:block;
+            background:#f00;
+            border-radius:50%;
+            width:8px;
+            height:8px;
+            top:15px;
+            right:15px;
+            position:absolute;
+        }
+    </style>
+
+    <body>
+        <!--content-->
+        <header class="mui-bar mui-bar-nav my-header">
+            <h1 class="mui-title">个人中心</h1>
+            <a class="mui-icon mui-icon-contact mui-pull-right" href="{:url('member/index')}"><span id="user-title">{$Think.session.username}</span></a>
+        </header>
+        <div class="mui-content" style="padding-bottom: 70px">
+            <div class="profile-top">
+                <div class="profile-info">
+                    <div class="mui-col-sm-12 mui-col-xs-12 mui-text-center money-all">
+                        {$money_name}总量
+                        <p>{$all_money}</p>
+                    </div>
+                    <div class="mui-row">
+                        <div class="mui-col-sm-6 mui-col-xs-6 mui-text-center">
+                            <span class="profile-title">可用{$money_name}</span>
+                            <p>{$list->magic}</p>
+                        </div>
+                        <div class="mui-col-sm-6 mui-col-xs-6 mui-text-center border-left">
+                            <span class="profile-title">冻结{$money_name}</span>
+                            <p>{$freeze['freeze'] ? $freeze['freeze'] : 0}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="profile-bar mui-row">
+                <div class="mui-col-sm-3 mui-col-xs-3 mui-text-center" style="border:0px;">
+                    <a href="{:url('index/articlelist')}" class="mui-icon-extra mui-icon-extra-notice" id="profile-bar-notice">
+                        <span>系统公告</span>
+                        {if condition="$list->notice"}
+                        <i class="tip"></i>
+                        {/if}
+                    </a>
+                </div>
+                <div class="mui-col-sm-3 mui-col-xs-3 mui-text-center">
+                    <a href="{:url('member/message')}" class="mui-icon mui-icon-compose" id="profile-bar-compose">
+                        <span>写邮件</span>
+                    </a>
+                </div>
+                <div class="mui-col-sm-3 mui-col-xs-3 mui-text-center">
+                    <a href="{:url('member/inbox')}" class="mui-icon mui-icon-download" id="profile-bar-download">
+                        <span>收件箱</span>
+                    </a>
+                </div>
+                <div class="mui-col-sm-3 mui-col-xs-3 mui-text-center">
+                    <a href="{:url('member/sendbox')}" class="mui-icon mui-icon-upload" id="profile-bar-upload">
+                        <span>发件箱</span>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="profile-opt mui-row">
+                <div class="mui-col-sm-4 mui-col-xs-4 mui-text-center border-right border-bottom">
+                    <a href="{:url('member/magicbox')}" class="mui-icon-extra mui-icon-extra-gold">
+                        <span>我的茶园</span>
+                    </a>
+                </div>
+                <div class="mui-col-sm-4 mui-col-xs-4 mui-text-center border-right border-bottom">
+                    <a href="{:url('trade/index')}" class="mui-icon-extra mui-icon-extra-order">
+                        <span>我的交易</span>
+                    </a>
+                </div>
+                <div class="mui-col-sm-4 mui-col-xs-4 mui-text-center border-bottom">
+                    <a href="{:url('member/productIncome')}" class="mui-icon-extra mui-icon-extra-trend">
+                        <span>茶园收益</span>
+                    </a>
+                </div>
+<!--                <div class="mui-col-sm-4 mui-col-xs-4 mui-text-center border-right border-bottom">
+                    <a href="{:url('member/union')}" class="mui-icon-extra mui-icon-extra-prech">
+                        <span>商会收益</span>
+                    </a>
+                </div>-->
+                <div class="mui-col-sm-4 mui-col-xs-4 mui-text-center border-right border-bottom">
+                    <a href="{:url('member/union')}" class="mui-icon-extra mui-icon-extra-peoples" >
+                        <span>茶园商会</span>
+                    </a>
+                </div>
+                <div class="mui-col-sm-4 mui-col-xs-4 mui-text-center border-right border-bottom">
+                    <a href="{:url('member/spread')}" class="mui-icon-extra mui-icon-extra-xiaoshuo">
+                        <span>商会招募</span>
+                    </a>
+                </div>
+                <div class="mui-col-sm-4 mui-col-xs-4 mui-text-center border-bottom developing">
+                    <a href="javascript:;" class="mui-icon-extra mui-icon-extra-cart">
+                        <span>茶叶商城</span>
+                    </a>
+                </div>
+                <div class="mui-col-sm-4 mui-col-xs-4 mui-text-center border-right border-bottom">
+                    <a href="{:url('member/magicloglist')}" class="mui-icon-extra mui-icon-extra-rank">
+                        <span>资产明细</span>
+                    </a>
+                </div>
+                <div class="mui-col-sm-4 mui-col-xs-4 mui-text-center border-right border-bottom">
+                    <a href="{:url('member/set')}" class="mui-icon mui-icon-gear">
+                        <span>设置</span>
+                    </a>
+                </div>
+                <div class="mui-col-sm-4 mui-col-xs-4 mui-text-center border-right border-bottom">
+                    <a href="{:url('member/logout')}" class="mui-icon mui-icon-arrowthinright">
+                        <span>退出</span>
+                    </a>
+                </div>
+                <div class="mui-col-sm-4 mui-col-xs-4 mui-text-center border-right ">
+                    <a href="{:url('Legal/index')}" class="mui-icon-extra mui-icon-extra-gold">
+                        <span>法币交易</span>
+                    </a>
+                </div>
+
+                 <div class="mui-col-sm-4 mui-col-xs-4 mui-text-center border-right ">
+                    <a href="{:url('coindeal/index')}" class="mui-icon-extra mui-icon-extra-gold">
+                        <span>币币交易</span>
+                    </a>
+                </div>
+
+                <div class="mui-col-sm-4 mui-col-xs-4 mui-text-center border-right">
+                    <a href="{:url('wallet/index')}" class="mui-icon mui-icon-arrowthinright">
+                        <span>钱包</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div style="display: none;top:35%;left: 21%;position: fixed;z-index: 999" id="credit_qrcode" >
+            <p style="text-align: center;color: #fff;font-size: 21px">开发中.....</p>
+        </div>
+        <!--footer-->
+        {include file="layout/footer" /}
+        {include file="layout/nav" /}
+        <!--js-->
+        <script>
+            ;(function(){
+                $('.developing').on('tap',function(){
+                    mui.alert('开发中');
+                })
+            })()
+            function show() {
+                var mask = mui.createMask(callback);//callback为用户点击蒙版时自动执行的回调；
+                mask.show();//显示遮罩
+                $("#credit_qrcode").show();
+            }
+            function callback() {
+                $("#credit_qrcode").hide();
+            }
+
+
+            $("#avatar").click(function () {
+                $("#file").click();
+            })
+            $("#file").change(function () {
+                var $this = $(this);
+                var file = this.files[0];
+                if (file.length == 0)
+                {
+                    mui.alert("请选择要上传的图片");
+                    return false;
+                }
+                var data = new FormData();
+                data.append('image', file);
+                // console.log(data);return false;
+                mui.showLoading("正在上传头像...");
+                $.ajax({
+                    url: "/index/upload/uploadEditor",
+                    type: "post",
+                    data: data,
+                    processData: false,
+                    contentType: false,
+                    dataType: 'json',
+                    success: function (data) {
+                        var url = data.data[0];
+                        if (data.errno == 0)
+                        {
+                            mui.showLoading("头像上传成功，正在保存...");
+                            $.ajax({
+                                url: "/index/member/updateUser",
+                                type: "post",
+                                data: {'avatar': data.data[0]},
+                                dataType: 'json',
+                                success: function (data) {
+                                    mui.alert(data.message);
+                                    if (data.code == 0)
+                                    {
+                                        mui.hideLoading();
+                                        $("#avatar").attr("src", url);
+                                    }
+                                }
+                            })
+                        }
+                        else
+                        {
+                            mui.alert(data.fail);
+                        }
+                    }
+                })
+            })
+        </script>	
+    </body>
+</html>

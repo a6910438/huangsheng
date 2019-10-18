@@ -1,0 +1,183 @@
+{extend name="layout/main" /}
+
+{block name="header"}
+
+{/block}
+
+{block name="content"}
+<style type="text/css">
+    .link-th{
+        color:blue;
+    }
+</style>
+<section class="panel">
+    <header class="panel-heading">
+        <h4>ID:{$info->invite_code}-玩家个人资产</h4>
+    </header>
+    <div class="panel-body" style="padding-bottom: 50px">
+
+<!--       <form class="form-horizontal" action="{:url('recharge_detail')}" >-->
+<!--           <div class="form-group">-->
+
+<!--               <div class="col-xs-1 no-pd-r">-->
+<!--               <span class="form-control">开始时间</span>-->
+<!--               </div>-->
+<!--               <div class="col-xs-2 no-pd-l">-->
+
+<!--                 <input type="date" value="{$Request.get.stime}" name="stime" class="form-control">-->
+<!--               </div>-->
+<!--               <div class="col-xs-1 no-pd-r">-->
+<!--                   <span class="form-control"> 结束时间</span>-->
+<!--               </div>-->
+<!--               <div class="col-xs-2 no-pd-l">-->
+<!--                   <input type="date" value="{$Request.get.ntime}" name="ntime" class="form-control">-->
+<!--               </div>-->
+<!--               <button type="submit" class="btn btn-color">搜索</button>-->
+<!--<input type="hidden" name='id' value="{$Request.get.id}"/>-->
+<!--            </div>-->
+<!--        </form>-->
+
+
+
+
+        <table class="table table-bordered table-striped no-margin">
+            <thead>
+            <tr>
+                <th class="text-center">房产总价:{$all_worth}</th>
+                <th class="text-center">房产总数：{$all_fnum}</th>
+                <th class="text-center">预约次数：{$all_aumakenum}</th>
+                <th class="text-center">点击领取次数:{$all_auadoptnum}</th>
+                <th class="text-center">分配成功次数:{$all_auaoknum}</th>
+                <th class="text-center"></th>
+                <th class="text-center"></th>
+
+
+
+            </tr>
+            <tr>
+                <th class="text-center">房产ID</th>
+                <th class="text-center">名称</th>
+                <th class="text-center">价值</th>
+                <th class="text-center">状态</th>
+                <th class="text-center">冻结</th>
+                <th class="text-center">生成时间</th>
+                <th class="text-center" hidden>前身id</th>
+                <th class="text-center">生成类型</th>
+
+
+<!--                <th class="text-center">操作</th>-->
+            </tr>
+            </thead>
+            <tbody>
+            {if !empty($list)}
+            {foreach $list as $entity}
+            <tr>
+                <td style="vertical-align: middle" class="text-center">
+                    {$entity->fid}
+                </td>
+
+                <td style="vertical-align: middle" class="text-center">
+                    {$entity->name}
+                </td>
+                <td style="vertical-align: middle" class="text-center">
+                    {$entity->worth}
+                </td>
+                <td style="vertical-align: middle" class="text-center">
+                    {if $entity->fstatus == -3}
+                    <a class="btn btn-xs btn-danger">投诉取消</a>
+                    {elseif $entity->fstatus == -2/}
+                    <a class="btn btn-xs btn-success">异常冻结</a>
+                    {elseif $entity->fstatus == -1/}
+                    <a class="btn btn-xs btn-success">冻结</a>
+                    {elseif $entity->fstatus == 0/}
+                    {if is_feed($entity->id)}
+                    <a class="btn btn-xs btn-success">品房产中</a>
+                    {else}
+                    <a class="btn btn-xs btn-success">未品房产</a>
+                    {/if}
+                    {elseif $entity->fstatus == 1}
+                    <a class="btn btn-xs btn-success">等待预约</a>
+                    {elseif $entity->fstatus == 2}
+                    <a class="btn btn-xs btn-success">待转账</a>
+                    {elseif $entity->fstatus == 3}
+                    <a class="btn btn-xs btn-success">转账中</a>
+                    {elseif $entity->fstatus == 4}
+                    <a class="btn btn-xs btn-success">转账完成</a>
+                    {/if}
+                </td>
+                <td style="vertical-align: middle" class="text-center">
+                    {if $is_show}
+                        {if $entity->is_show == 0}
+                        <a class="btn btn-xs btn-danger">是</a>
+                        {else/}
+                        <a class="btn btn-xs btn-success">否</a>
+                        {/if}
+                    {else/}
+                    <a class="btn btn-xs btn-danger">是</a>
+                    {/if}
+                </td>
+                <td style="vertical-align: middle" class="text-center">
+                    {$entity->create_time}
+                </td>
+                <td style="vertical-align: middle" class="text-center" hidden>
+                    {$entity->front_id}
+                </td>
+
+                <!-- 0：后台赠送正常流程；  1：拆分生成； 2：升级生成 3：后台指定 ;4:交易生成；5积分 ；6后台赠送即卖-->
+                <td style="vertical-align: middle" class="text-center">
+
+                    {if $entity->types == 0}
+                    <a class="btn btn-xs btn-danger">赠送</a>
+                    {elseif $entity->types == 1/}
+                    <a class="btn btn-xs btn-success">拆分</a>
+                    {elseif $entity->types == 2/}
+                    <a class="btn btn-xs btn-success">升级</a>
+                    {elseif $entity->types == 3/}
+                    <a class="btn btn-xs btn-success">赠送</a>
+                    {elseif $entity->types == 4}
+                    <a class="btn btn-xs btn-success">交易</a>
+                    {elseif $entity->types == 5}
+                    <a class="btn btn-xs btn-success">积分</a>
+                    {elseif $entity->types == 6}
+                    <a class="btn btn-xs btn-success">即卖</a>
+                    {/if}
+                </td>
+
+
+                <td style="vertical-align: middle" class="text-center" hidden>
+                    <a data-url="{:url('product/fish_del',['id'=>$entity->fid])}" onclick="main.ajaxDelete(this)" data-msg="确定要删除吗？" class="btn btn-xs btn-success">删除</a>
+                    {if $entity->is_show == 0}
+                    <a data-url="{:url('product/fish_unactivation',['id'=>$entity->fid])}" onclick="main.ajaxDelete(this)" data-msg="确定要恢复吗？" class="btn btn-xs  btn-danger">恢复</a>
+
+                    {else/}
+                    <a data-url="{:url('product/fish_activation',['id'=>$entity->fid])}" onclick="main.ajaxDelete(this)" data-msg="确定要冻结吗？" class="btn btn-xs  btn-danger">冻结</a>
+
+                    {/if}
+                    {if $entity->status == 0}
+                    <a data-url="{:url('product/fish_splistORupgrade',['id'=>$entity->fid,'types'=>0])}" onclick="main.ajaxDelete(this)" data-msg="确定要升级吗？" class="btn btn-xs  btn-danger">升级</a>
+
+                    {else/}
+                    <a data-url="{:url('product/fish_splistORupgrade',['id'=>$entity->fid,'types'=>1])}" onclick="main.ajaxDelete(this)" data-msg="确定要拆分吗？" class="btn btn-xs  btn-danger">拆分</a>
+
+                    {/if}
+                </td>
+            </tr>
+            {/foreach}
+            {else /}
+            <tr class="text-center">
+                <td colspan="9">暂无数据</td>
+            </tr>
+            {/if}
+            </tbody>
+        </table>
+        <div class="page">
+            {:htmlspecialchars_decode($list->render())}
+        </div>
+    </div>
+</section>
+{/block}
+{block name="footer"}
+
+
+
+{/block}

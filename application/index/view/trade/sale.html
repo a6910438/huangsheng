@@ -1,0 +1,104 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>买入订单</title>
+    {include file="layout/head" /}
+</head>
+<body>
+<header class="mui-bar mui-bar-nav my-header">
+    <a class="mui-icon mui-icon-left-nav mui-pull-left" href="{:url('member/index')}"></a>
+
+    <h1 id="title" class="mui-title">交易</h1>
+</header>
+
+<div style="top: 44px;z-index: 50;"
+     class="mui-segmented-control mui-segmented-control-inverted mui-segmented-control-primary my-tabs">
+    <a class="mui-control-item " href="{:url('trade/buy')}">
+        买入
+    </a>
+    <a class="mui-control-item mui-active" >
+        卖出
+    </a>
+    <a class="mui-control-item" href="{:url('trade/index')}">
+        交易中
+    </a>
+    <a class="mui-control-item" href="{:url('trade/finish')}">
+        已完成
+    </a>
+</div>
+<div class="mui-content">
+    <div class="mui-scroll-wrapper">
+        <div class="mui-scroll">
+            <div class="mui-table-view my-list"  style="top: 85px;">
+                {if !empty($order) }
+                <ul class="my-list-item">
+                    <li class="clear">
+                        <span class="left">
+                            <span>编号:</span>
+                            <span class="value">{$order->order_number}</span>
+                        </span>
+                    </li>
+                    <li class="clear">
+                        <span class="left">
+                            <span>数量:</span>
+                            <span class="value">{$order->number} 金币</span>
+                        </span>
+                    </li>
+                    <li class="clear">
+                        <span class="left">
+                            <span>单价:</span>
+                            <span class="value">{:sprintf('%.3f',$order->price)} ¥</span>
+                        </span>
+                    </li>
+                    <li class="clear">
+                        <span class="left">
+                            <span>总价:</span>
+                            <span class="value">{:bcmul($order->number,$order->price,3)} ¥</span>
+                        </span>
+                    </li>
+                    <li class="clear">
+                        <span class="left">
+                            <span>时间:</span>
+                            <span class="value">{$order->create_time}</span>
+                        </span>
+                    </li>
+                </ul>
+                <button class="mui-btn-block my-btn-block" data-id="{$order->id}" onclick="cancelOrder(this)">取消交易
+                </button>
+                {else /}
+                <div>
+                    <img class="noneview" src="/static/img/noneview.png">
+                </div>
+                {/if}
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+{include file="layout/footer" /}
+<script>
+    function cancelOrder(target) {
+        var id = $(target).attr('data-id');
+        var $this = $(target);
+        mui.confirm('你确定要取消吗', '', ['关闭', '确定'], function (e) {
+            if (e.index) {
+                mui.showLoading("处理中..", "div");
+                $this.attr('disabled', true);
+                $.post("{:url('trade/cancel')}", {type: 'sale', orderId: id}, function (data) {
+                    mui.hideLoading();
+                    $this.attr('disabled', false);
+                    if(data.code == 0){
+                        mui.alert(data.message, '', function () {
+                            window.location.reload();
+                        })
+                    }else {
+                        mui.alert(data.message)
+                    }
+
+                }, 'json')
+            }
+        })
+    }
+</script>
+</html>

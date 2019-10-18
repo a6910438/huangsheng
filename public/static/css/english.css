@@ -1,0 +1,204 @@
+.language-baifencai::before {
+    content: 'Percentile Lottery';
+}
+.language-daletou::before {
+    content: 'Great lotto';
+}
+.language-touziyouxi::before {
+    content: 'Dice game';
+}
+.language-laohuji::before {
+    content: 'One-arm bandit';
+}
+.language-zuixinzhongjiang::before {
+    content: 'The latest prize';
+}
+.language-zhongjiangjine::before {
+    content: 'Winning amount';
+}
+.language-shouye::before {
+    content: 'Home';
+}
+.language-qukuailianyouxi::before {
+    content: 'Block Chain Game';
+}
+.language-shequ::before {
+    content: 'Community';
+}
+.language-gerenzhongxin::before {
+    content: 'Personal Center';
+}
+.language-benqijiangchi::before {
+    content: 'This award pool';
+}
+.language-benqiyitouzhuliang::before {
+    content: 'Volume of bets made in the current period';
+}
+.language-qishumaohao::before {
+    content: 'Number of periods:';
+}
+.language-woyaotouzhumaohao::before {
+    content: 'I want to bet:';
+}
+.language-querentouzhu::before {
+    content: 'Confirm bet';
+}
+.language-touzhujilu::before {
+    content: 'Betting record';
+}
+.language-kaijiangjilu::before {
+    content: 'Lottery record';
+}
+.language-qishu::before {
+    content: 'Number of periods';
+}
+.language-kaijiangshijian::before {
+    content: 'Lottery time';
+}
+.language-gengduo::before {
+    content: 'More';
+}
+.language-xuanzebizhong::before {
+    content: 'Please choose the currency to bet on';
+}
+.language-benqihaiketouzhu::before {
+    content: 'There are still bets to be made before the prize is awarded';
+}
+.language-youxi::before {
+    content: 'Game';
+}
+.language-xiazhushijian::before {
+    content: 'Bet time';
+}
+.language-kaijiangzhuangtai::before {
+    content: 'Lottery status';
+}
+.language-weikaijiang::before {
+    content: 'No award';
+}
+.language-weizhongjiang::before {
+    content: 'No prize';
+}
+.language-zhongjiang::before {
+    content: 'Winning the prize';
+}
+.language-caipiaoxuliehao::before {
+    content: 'Lottery serial number';
+}
+.language-touzhujine::before {
+    content: 'Betting amount';
+}
+.language-gong::before {
+    content: 'A total of ';
+}
+.language-zhu::before {
+    content: ' notes';
+}
+.language-zhongjianxuliehao::before {
+    content: 'Winning serial number';
+}
+.language-zhongjiangdengji::before {
+    content: 'Winning rank';
+}
+.language-zhongjiangyonghu::before {
+    content: 'Winning user';
+}
+.language-zhongjiangzongjine::before {
+    content: 'Total Amount of Winning Prize';
+}
+.language-chakangengduo::before {
+    content: 'View more';
+}
+.language-yidengjiang::before {
+    content: 'The first prize';
+}
+.language-erdengjiang::before {
+    content: 'Second award';
+}
+.language-sandengjiang::before {
+    content: 'Third Award';
+}
+.language-xingyunjiang::before {
+    content: 'Lucky prize';
+}
+.language-kaijiangxiangqing::before {
+    content: 'Lottery details';
+}
+.language-benqizongjiangchi::before {
+    content: "This issue's pool of awards";
+}
+.language-zhongjieshijianmaohao::before {
+    content: 'Ending time of betting in this period:';
+}
+.language-zhongjiegaodumaohao::before {
+    content: 'At the end of the betting, the height of the Taifang block:';
+}
+.language-kaijianggaodumaohao::before {
+    content: 'Award-opening height of ETF:';
+}
+.language-kaijianghaxizhimaohao::before {
+    content: 'Award-winning Ethernet square hash value:';
+}
+.language-yonghuming::before {
+    content: 'User name';
+}
+.language-yonghuid::before {
+    content: 'User ID';
+}
+.language-zhongjiangxuliehao::before {
+    content: 'Winning serial number';
+}
+.language-jiangxiang::before {
+    content: 'Prize';
+}
+.language-jiangjin::before {
+    content: 'Bonus';
+}
+.language-meiyougengduoshujule::before {
+    content: 'No more data';
+}
+.language-baifencaikaijiangxiangqing::before {
+    content: 'Details of Percentile Lottery Opening';
+}
+.language-youxigonglue::before {
+    content: 'Walkthrough';
+}
+.language-guanyuwomen::before {
+    content: 'About us';
+}
+.language-fabugonggao::before {
+    content: 'Announcement';
+}
+.language-bunengxiaoyuyi::before {
+    content: 'The number of bets cannot be less than 1';
+}
+.language-bunengweixiaoshu::before {
+    content: 'The number of bets cannot be decimal';
+}
+.language-zuiduoyibai::before {
+    content: 'Each bet can only be up to 100';
+}
+.language-zhengzaitouzhu::before {
+    content: 'Betting, please wait...';
+}
+.language-gongxininzhongdedaletou::before {
+    content: 'Congratulations on your big lottery';
+}
+.language-dianjichakan::before {
+    content: 'Click to view';
+}
+.language-qingxiandenglu::before {
+    content: 'please log in first';
+}
+.language-qudenglu::before {
+    content: 'Go to login';
+}
+.language-quxiao::before {
+    content: 'Cancel';
+}
+.language-gongxininzhongdebaifencai::before {
+    content: 'Congratulations on your winnings';
+}
+.language-dengdaikaijiangzhong::before {
+    content: 'Waiting for the prize';
+}

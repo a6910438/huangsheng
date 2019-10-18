@@ -1,0 +1,156 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>买入订单</title>
+    {include file="layout/head" /}
+    <style>
+        .trade-btn{
+            background: #ffce1b;
+            color: #fff;
+            padding: 10px;
+            border: 1px solid #ffce1b;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+<header class="mui-bar mui-bar-nav my-header">
+    <a class="mui-icon mui-icon-left-nav mui-pull-left" href="{:url('member/index')}"></a>
+
+    <h1 id="title" class="mui-title">交易</h1>
+</header>
+
+<div style="top: 44px;z-index: 50;"
+     class="mui-segmented-control mui-segmented-control-inverted mui-segmented-control-primary my-tabs">
+    <a class="mui-control-item " href="{:url('trade/buy')}">
+        买入
+    </a>
+    <a class="mui-control-item "   href="{:url('trade/sale')}">
+        卖出
+    </a>
+    <a class="mui-control-item mui-active">
+        交易中
+    </a>
+    <a class="mui-control-item" href="{:url('trade/finish')}">
+        已完成
+    </a>
+</div>
+<div class="mui-content">
+    <div class="mui-scroll-wrapper">
+        <div class="mui-scroll">
+            <div class="mui-table-view my-list"  style="top: 85px;">
+                {foreach $buy as $buyOrder}
+                    <ul class="my-list-item">
+                        <li class="clear">
+                            <span class="left">
+                                <span>编号:</span>
+                                <span class="value">{$buyOrder['order_number']}</span>
+                            </span>
+                            <span class="right">
+                                {if $buyOrder['status'] == 2}等待付款{/if}
+                                {if $buyOrder['status'] == 3}等待收款{/if}
+                            </span>
+                        </li>
+                        <li class="clear">
+                            <span class="left">
+                                <span>类型:</span>
+                                <span class="value">买入交易</span>
+                            </span>
+                        </li>
+                        <li class="clear">
+                            <span class="left">
+                                <span>数量:</span>
+                                <span class="value">{$buyOrder['number']} 金币</span>
+                            </span>
+                        </li>
+                        <li class="clear">
+                            <span class="left">
+                                <span>单价:</span>
+                                <span class="value">{:sprintf('%.3f',$buyOrder['price'])} ¥</span>
+                            </span>
+                        </li>
+                        <li class="clear">
+                            <span class="left">
+                                <span>总价:</span>
+                                <span class="value">
+                                    {:sprintf('%.3f',$buyOrder['total_price'])} ¥
+                                    <!--<strong style="color: #ffce1b;margin-left: 10px">{$buyOrder['total_price_china']} CNY</strong>-->
+                                </span>
+                            </span>
+                        </li>
+                        <li class="clear">
+                            <span class="left">
+                                <span>时间:</span>
+                                <span class="value">{:date('Y-m-d H:i:s',$buyOrder['match_time'])}</span>
+                            </span>
+                            <span class="right">
+                                <a href="{:url('trade/detail',['id'=>$buyOrder['id'],'type'=>'pay'])}" class="trade-btn">详细</a>
+                            </span>
+                        </li>
+                    </ul>
+                {/foreach}
+                {foreach $sale as $saleOrder}
+                <ul class="my-list-item">
+                    <li class="clear">
+                            <span class="left">
+                                <span>编号:</span>
+                                <span class="value">{$saleOrder['order_number']}</span>
+                            </span>
+                            <span class="right">
+                                {if $saleOrder['status'] == 2}等待付款{/if}
+                                {if $saleOrder['status'] == 3}等待收款{/if}
+                            </span>
+                    </li>
+                    <li class="clear">
+                            <span class="left">
+                                <span>类型:</span>
+                                <span class="value">出售交易</span>
+                            </span>
+                    </li>
+                    <li class="clear">
+                            <span class="left">
+                                <span>数量:</span>
+                                <span class="value">{$saleOrder['number']} 金币</span>
+                            </span>
+                    </li>
+                    <li class="clear">
+                            <span class="left">
+                                <span>单价:</span>
+                                <span class="value">{:sprintf('%.3f',$saleOrder['price'])} ¥</span>
+                            </span>
+                    </li>
+                    <li class="clear">
+                            <span class="left">
+                                <span>总价:</span>
+                                <span class="value">
+                                    {:sprintf('%.3f',$saleOrder['total_price'])} ¥
+                                    <!--<strong style="color: #ffce1b;margin-left: 10px">{$saleOrder['total_price_china']} CNY</strong>-->
+                                </span>
+                            </span>
+                    </li>
+                    <li class="clear">
+                            <span class="left">
+                                <span>时间:</span>
+                                <span class="value">{:date('Y-m-d H:i:s',$saleOrder['match_time'])}</span>
+                            </span>
+                            <span class="right">
+                                <a href="{:url('trade/detail',['id'=>$saleOrder['id'],'type'=>'confirm'])}" class="trade-btn">详细</a>
+                            </span>
+                    </li>
+                </ul>
+                {/foreach}
+                {if empty($buy) && empty($sale)}
+                    <div>
+                        <img class="noneview" src="/static/img/noneview.png">
+                    </div>
+                {/if}
+            </div>
+
+        </div>
+    </div>
+</div>
+</body>
+{include file="layout/footer" /}
+
+</html>

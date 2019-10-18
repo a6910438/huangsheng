@@ -1,0 +1,252 @@
+{extend name='main'}
+
+{block name='body'}
+<div class="fish-head">
+    <a href="javascript:window.history.back();" class="head-back"><span>返回</span></a>
+    <h3 class="head-tit">
+        <span v-if="type==0">添加支付宝</span>
+        <span v-else-if="type==1">添加微信</span>
+        <span v-else-if="type==2">添加银行卡</span>
+    </h3>
+    <!-- <a href="javascript:;" class="head-menu"><span>提交</span></a> -->
+</div>
+<div class="fish-main" v-cloak>
+    <form class="daz-form content-box" action="" method="post" onsubmit="return false;">
+        <ul class="content-list" v-if="type==2">
+            <li>
+                <label class="content-label font5">银行名称</label>
+                <select class="initialized" v-model="bank_name">
+                    <option v-if="bank.length>0" v-for="vo in bank" :value="vo">{{vo}}</option>
+                </select>
+            </li>
+            <li>
+                <label class="content-label font5">银行卡姓名</label>
+                <input type="text" placeholder="请输入银行卡姓名" v-model="bank_account_num">
+            </li>
+            <li>
+                <label class="content-label font5">银行卡账号</label>
+                <input type="text" placeholder="请输入银行卡账号" v-model="bank_bank_name">
+            </li>
+            <li>
+                <label class="content-label font5">开户支行</label>
+                <input type="text" placeholder="请输入开户支行" v-model="bank_sub_branch">
+            </li>
+        </ul>
+        <ul class="content-list" v-else>
+            <li>
+                <label class="content-label font5">姓名</label>
+                <input type="text" placeholder="请输入姓名" v-model="name">
+            </li>
+            <li>
+                <label class="content-label font5">账号</label>
+                <input type="text" placeholder="请输入账号" v-model="account_num">
+            </li>
+            <li>
+                <label class="content-label font5">收款二维码</label>
+                <button type="button" v-on:click="selectImage(event)" style="margin:0 auto 0 0.8rem;">点击上传</button>
+                <input type="file" accept="image/*" id="upload" class="set-file needsclick" v-on:change="upload()">
+            </li>
+            <li v-if="imgs">
+                <div id="online-pay-img-box">
+                    <img :src="imgs" alt="收款二维码图片">
+                </div>
+            </li>
+        </ul>
+    </form>
+    <div class="content-view">
+        <button class="content-btn" type="button" v-on:click="send()">提交</button>
+    </div>
+</div>
+{include file='menu'}
+{/block}
+
+{block name='script'}
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            type: core.getParame('types'),
+            id: core.getParame('id'),
+            bank: [],
+            bank_name: '',
+            bank_account_num: '',
+            bank_bank_name: '',
+            bank_sub_branch: '',
+            name: '',
+            account_num: '',
+            imgs: '',
+        },
+        computed: {
+
+        },
+        methods: {
+            selectImage: function(e){
+                e.stopPropagation();
+                e.preventDefault();
+                console.log('click');
+                let upload = document.getElementById('upload');
+                /*$("#upload").click();*/
+                let ev = new MouseEvent('click', {
+                    cancelable: true,
+                    bubble: false,
+                    view: window
+                });
+                upload.dispatchEvent(ev);
+                let ev2 = new MouseEvent('click', {
+                    cancelable: true,
+                    bubble: false,
+                    view: window
+                });
+                upload.dispatchEvent(ev2);
+            },
+            upload: function(){
+                var self = this;
+                var file = $('#upload')[0];
+                if (file.value == '' || file.value == null) {
+                    return core.toast("请上传图片");
+                }
+                if (!/\.(gif|jpg|jpeg|png|GIF|JPG|PNG)$/.test(file.value)) {
+                    file.value = "";
+                    return core.toast("图片类型必须是[.gif,jpeg,jpg,png]中的一种");
+                }
+                if (file.files[0].size > 6*1024*1024) {
+                    file.value = "";
+                    return core.toast("图片大小不能超过6M");
+                }
+                var formData = new FormData();
+                formData.append('file', file.files[0]);
+                formData.append('token', localStorage.uid);
+                var id = '';
+
+                $.ajax({
+                    url: "{:url('/index/upload/uploadimg')}",
+                    type: 'POST',
+                    data: formData,
+                    contentType: false, // 注意这里应设为false
+                    processData: false,
+                    beforeSend: function(){id=core.loading();},
+                    complete: function(){core.rmLoading(id);},
+                    success: function(res){
+                        
+                        if(res.code=='0'){
+                            file.value = '';
+                            self.imgs = res.info.url;
+                        }
+                        core.toast(res.msg);
+                    },
+                    error: function(XHR, textStatus, errorThrown) {
+                        core.toast('网络错误！');
+                    }
+                });
+            },
+            banklist: function(){
+                var self = this;
+
+                core.load("{:url('/index/setup/get_banklist')}", {}, function(res){
+                    
+                    if(res.code==0){
+                        self.bank=res.info;
+                        if(!self.id) self.bank_name=res.info[0];
+                    }else{
+                        core.toast(res.msg);
+                    }
+                })
+            },
+            send: function(){
+                var self = this;
+                var url = '';
+                var data = '';
+                if(self.type==2){
+                    if(!self.bank_name) return core.toast('请选择银行');
+                    if(!self.bank_account_num) return core.toast('请输入银行卡姓名');
+                    if(!self.bank_bank_name) return core.toast('请输入银行卡账号');
+                    if(!self.bank_sub_branch) return core.toast('请输入开户支行');
+                    if(self.id){
+                        url="{:url('/index/setup/addreceivablesbankup')}";
+                    }else{
+                        url="{:url('/index/setup/addreceivablesbank')}";
+                    }
+                    data={
+                        name: self.bank_account_num,//名字
+                        account_num: self.bank_bank_name,//账号
+                        bank_name: self.bank_name,//银行卡名称
+                        sub_branch: self.bank_sub_branch,//支行
+                    };
+                }else{
+                    if(!self.name) return core.toast('请输入姓名');
+                    if(!self.account_num) return core.toast('请输入账号');
+                    if(!self.imgs) return core.toast('请上传收款二维码');
+                    if(self.id){
+                        url="{:url('/index/setup/addreceivablesup')}";
+                    }else{
+                        url="{:url('/index/setup/addreceivables')}";
+                    }
+                    data={
+                        types: self.type,
+                        name: self.name,
+                        account_num: self.account_num,
+                        imgs: self.imgs,
+                    };
+                }
+
+                if(self.id){
+                    data.id=self.id;
+                    data.types=self.type;
+                }
+
+                core.load(url, data, function(res){
+                    
+                    if(res.code==0){
+                        setTimeout(function(){
+                            window.history.go(-1);
+                        }, 300);
+                    }
+                    core.toast(res.msg);
+                })
+            },
+            detail: function(){
+                var self = this;
+                core.load("{:url('index/setup/receivablesmsg')}", {
+                    id: self.id,
+                }, function(res){
+                    
+                    if(res.code==0){
+                        if(self.type==2){
+                            self.bank_name=res.info.bank_name;
+                            self.bank_account_num=res.info.names;
+                            self.bank_bank_name=res.info.account_num;
+                            self.bank_sub_branch=res.info.sub_branch;
+                        }else{
+                            self.name=res.info.names;
+                            self.account_num=res.info.account_num;
+                            self.imgs=res.info.imgs;
+                        }
+                    }else{
+                        core.toast(res.msg);
+                    }
+                })
+            }
+        },
+        mounted: function() {
+            (this.type==2) && this.banklist();
+            (this.id) && this.detail();
+        }
+    });
+</script>
+{/block}
+
+{block name="style"}
+<style>
+    input.set-file{
+        display: none;
+    }
+    #online-pay-img-box{
+        overflow: hidden;
+    }
+    #online-pay-img-box>img{
+        display: block;
+        max-width: 100%;
+        margin: 0 auto;
+    }
+</style>
+{/block}

@@ -1,0 +1,23 @@
+<style>
+    .listli{
+           background-color: #fff;
+    }
+    .select {
+        color: #ffffff;
+        background-color: #1ec3c8;
+        border-color: #1ec3c8;
+    }
+    .select:hover{
+        color: #fff;
+    }
+</style>
+<div>
+    <ul>
+        <a href="{:url('admin/coindeal/index')}"><li class="btn listli {if $type == 1}select{/if}">购买订单</li></a>
+        <a href="{:url('admin/coindeal/index',array('types'=>2))}"><li class="btn listli {if $type == 2}select{/if}">出售订单</li></a>
+        <a href="{:url('admin/coindeal/index',array('reality'=>1))}"><li class="btn listli {if $Request.get.reality == 1}select{/if}">实际交易订单</li></a>
+
+        <!-- <a href="{:url('admin/coindeal/deal')}"><li class="btn listli {if $type == 3}select{/if}">交易订单</li></a>
+        <a href="{:url('admin/coindeal/iserror')}"><li class="btn listli {if $type == 4}select{/if}">错误订单</li></a> -->
+    </ul>
+</div>

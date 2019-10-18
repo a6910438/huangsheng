@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>News</title>
+    <link rel="icon" href="free.ico" type="image/x-icon"/> 
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/news.css">
+    <script src="../build/flexible.js"></script>
+    <script src="../build/flexible_css.js"></script>
+    <script src="../js/jquery.js"></script>
+    <script src="../js/template.js"></script>
+    <script src="../js/layer.js"></script>
+    <script src="../js/login_error.js"></script>
+    <script src="../js/logout.js"></script>
+    <style>
+        body{background: #f5f5f5;}
+        .head_title {z-index: 999999;}
+        .nav-bg {position: fixed;top: 0;left: 0;width: 100%;height: 100%;background: rgba(27, 27, 27, .5);display: none;}
+        .nav-box {position: absolute;top: 0;left: -67.73%;width: 67.73%;height: 100%;padding-top: 1.173333rem;transition: ease left .4s;}
+        .nav-content {padding-top: .373333rem;width: 100%;height: 100%;background: #fff;border-radius: 0rem .133333rem .133333rem 0rem;}
+        .nav-item {height: 1.333333rem;display: flex;align-items: center;padding-left: .346667rem;}
+        .nav-icon img {height: .586667rem;vertical-align: bottom;}
+        .nav-name {margin-left: .72rem;font-size: .426667rem;color: #666;}
+        .nav-active .nav-name {color: #212121;}
+        .layout-btn {position: absolute;left: 0;bottom: 0;width: 100%;height: 1.333333rem;border-top: 1px solid #E0E0E0;display: flex;align-items: center;}
+        .layout {display: flex;align-items: center;padding-left: .346667rem;width: 100%;height: 100%;border: none;background: transparent;font-size: .426667rem;color: #999;}
+        .layout img {height: .586667rem;margin-right: .773333rem;}
+        .news_block .white_block{height:2.6rem;}
+        .news_content{height: 1rem;overflow: hidden;}
+        .news_content p{overflow: hidden;
+    /*将对象作为弹性伸缩盒子模型显示*/
+    display: -webkit-box;
+    /*设置子元素排列方式*/
+    -webkit-box-orient: vertical;
+    /*设置显示的行数，多出的部分会显示为...*/
+    -webkit-line-clamp: 2;}   
+        .news_block .white_block img{display: none;}
+    </style>
+</head>
+
+<body>
+    <!-- Centered page -->
+    <div id="page">
+        <div class="head_title">
+            <p>News</p>
+            <div class="left_panel more" data="0">
+                <a class="left-panel-link"><img src="../images/nav_icon.png" alt=""></a>
+            </div>
+        </div>
+    </div>
+    <!-- end -->
+    <!-- news_list -->
+    <div class="new_list">
+        
+    </div>
+    <!-- end -->
+
+    <div class="nav-bg">
+        <div class="nav-box">
+            <div class="nav-content">
+                <div class="nav-list">
+                    <div class="nav-item" onclick="window.location.href='index.html'">
+                        <div class="nav-icon"><img src="../images/lab_2homei_icon@2x.png" alt=""></div>
+                        <div class="nav-name">Home</div>
+                    </div>
+                    <div class="nav-item nav-active" onclick="window.location.href='news.html'">
+                        <div class="nav-icon"><img src="../images/lab_News_icon@2x.png" alt=""></div>
+                        <div class="nav-name">News</div>
+                    </div>
+                    <div class="nav-item" onclick="window.location.href='Trading.html'">
+                        <div class="nav-icon"><img src="../images/lab_transaction_icon@2x.png" alt=""></div>
+                        <div class="nav-name">Trading</div>
+                    </div>
+                    <div class="nav-item" onclick="window.location.href='assets.html'">
+                        <div class="nav-icon"><img src="../images/lab_assets_icon@2x.png" alt=""></div>
+                        <div class="nav-name">Transaction</div>
+                    </div>
+                    <div class="nav-item" onclick="window.location.href='my.html'">
+                        <div class="nav-icon"><img src="../images/lab_mein_icon@2x.png" alt=""></div>
+                        <div class="nav-name">My Profile</div>
+                    </div>
+                </div>
+                <div class="layout-btn">
+                    <button class="layout">
+                        <img src="../images/lab_Sidebar_icon@2x.png" alt="">
+                        <span>Logout</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script type="text/html" id="new_list">
+    {{each info val}}
+        <div class="news_block">
+            <a href="news_content.html?id={{val.article_id}}">
+                <div class="white_block">
+                    <p class="news_title">{{val.title}}</p>
+                    <div class="news_content">{{@val.content}}</div>
+                    <p class="news_time">{{val.create_time}}</p>
+                </div>
+            </a>
+        </div>
+    {{/each}}
+</script>
+<script>
+    $(function () {
+
+        $.ajax({
+                url: "../../index.php/index/Article/articleList",
+                type: 'GET',
+                dataType: 'json',
+                success: function(res){
+                    console.log(res)
+                    if(res.code=='0'){
+                            $('.new_list').html(template('new_list',res));
+                        }
+                    else{
+                        layer.open({
+                            content: res.message,
+                            skin: 'msg',
+                            time: 2
+                        });
+                        }
+                },
+        })
+    });
+</script>
+<script>
+    let more = document.querySelector('.more');
+    let navBg = document.querySelector('.nav-bg');
+    let navBox = document.querySelector('.nav-box');
+    more.addEventListener('click', function () {
+        if (this.getAttribute('data') == 0) {
+            navBg.style.display = 'block';
+            setTimeout(() => {
+                navBox.style.left = '0%';
+            }, 10);
+            this.setAttribute('data', '1');
+        } else {
+            navBox.style.left = '-67.73%';
+            setTimeout(() => {
+                navBg.style.display = 'none';
+            }, 400);
+            this.setAttribute('data', '0');
+        }
+    });
+    navBox.addEventListener('click', (e) => {
+        if (e) {
+            e.stopPropagation();
+            e.preventDefault();
+        } else {
+            window.event.returnValue = false;
+            window.event.cancelBubble = true;
+        }
+    });
+    navBg.addEventListener('click', () => {
+        if (more.getAttribute('data') == 1) {
+            navBox.style.left = '-67.73%';
+            setTimeout(() => {
+                navBg.style.display = 'none';
+            }, 400);
+            more.setAttribute('data', '0');
+        }
+    });
+</script>
+
+</html>

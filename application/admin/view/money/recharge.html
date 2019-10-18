@@ -1,0 +1,139 @@
+{extend name="layout/main" /}
+
+{block name="header"}
+
+{/block}
+
+{block name="content"}
+<section class="panel">
+    <header class="panel-heading">
+        <h4>人工充值GTC</h4>
+    </header>
+    <div class="panel-body" style="padding-bottom: 50px">
+        <form class="form-horizontal" method="post"  action="{:url('recharge')}">
+            <div class="form-group">
+                <label class="col-sm-2 control-label">用户ID</label>
+                <div class="col-sm-5">
+                    <input type="text"  name="uid" class="form-control"
+                           placeholder="用户ID">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">充值类型</label>
+                <div class="col-sm-5">
+                    <select name="case_type" class="form-control" id="">
+                        <option value="1">GTC</option>
+                        <option value="2">推广收益</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">充值数额</label>
+                <div class="col-sm-5">
+                    <input type="text" name="num" class="form-control" placeholder="充值数额">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">备注</label>
+                <div class="col-sm-5">
+                    <input type="text" value="GTC充值" name="remake" class="form-control" placeholder="备注">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit"  class="btn btn-primary">确认充值 </button>
+                    <button type="button"  class="btn btn-warning">返回
+                    </button>
+                    <button type="button" onclick="clearForm(this)" class="btn btn-default">
+                        清空
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+</section>
+
+<section class="panel">
+    <header class="panel-heading">
+        <h4>今天充值GTC记录</h4>
+    </header>
+    <div class="panel-body" style="padding-bottom: 50px">
+		<form class="form-horizontal" action="{:url('admin/money/recharge')}" >
+            <div class="form-group">
+                <div class="col-xs-1 no-pd-r">
+                    <select name="type" class="form-control">
+                        <option {if $Request.get.type == 'mobile'} selected {/if} value="mobile">手机号</option>
+                        <option {if $Request.get.type == 'ids'} selected {/if} value="ids">用户ID</option>
+
+                    </select>
+                </div>
+                <div class="col-xs-3 no-pd-l">
+                    <input type="text" value="{$Request.get.keyword}" name="keyword" class="form-control" placeholder="请输入关键词搜索">
+                </div>
+
+                <button type="submit" class="btn btn-color">搜索</button>
+            </div>
+        </form>
+     <table class="table table-bordered table-striped no-margin">
+     <thead>
+     <tr>
+     <th>用户ID</th>
+     <th>充值额数</th>
+     <th>时间</th>
+
+     </tr>
+     </thead>
+     <tbody>
+         {if !empty($list)}
+    {foreach $list as $k=>$v}
+    <tr>
+    <th>{$v['invite_code']}</th>
+    <th>{$v['number']}</th>
+        <th>{:date('H:i:s',$v['create_time'])}</th> 
+
+
+    </tr>
+    {/foreach}
+ {/if}
+     </tbody>
+     </table>
+    </div>
+</section>
+
+
+<section class="panel">
+    <header class="panel-heading">
+        <h4>今天充值推广收益记录</h4>
+    </header>
+    <div class="panel-body" style="padding-bottom: 50px">
+     <table class="table table-bordered table-striped no-margin">
+     <thead>
+     <tr>
+     <th>用户ID</th>
+     <th>充值额数</th>
+    <th>时间</th>
+     </tr>
+     </thead>
+     <tbody>
+    {if !empty($list2)}
+    {foreach $list2 as $k=>$v}
+    <tr>
+    <th>{$v['invite_code']}</th>
+    <th>{$v['number']}</th>
+    <th>{:date('H:i:s',$v['createtime'])}</th>
+    </tr>
+    {/foreach}
+    {/if}
+     </tbody>
+     </table>
+    </div>
+
+</section>
+{/block}
+
+
+{block name="footer"}
+    <script src="/admin/vendor/fuelux/checkbox.js"></script>
+{/block}

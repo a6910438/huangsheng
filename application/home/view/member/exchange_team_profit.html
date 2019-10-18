@@ -1,0 +1,133 @@
+{extend name='main'}
+
+{block name='body'}
+<div class="fish-head">
+    <a href="javascript:window.history.back();" class="head-back"><span>返回</span></a>
+    <h3 class="head-tit"><span>{$title}</span></h3>
+</div>
+<div class="fish-main" v-cloak>
+    <div id="bait-top" class="content-box">
+        <div class="top-text">汇率 : {{exchange_rate || '0.00'}} : 1</div>
+    </div>
+    <div class="content-box clearfix">
+        <div class="col-5">
+            <label>{{form}}</label>
+            <input type="number" placeholder="转入数量" autofocus v-model="eth"/>
+        </div>
+        <div class="col-2">
+            <i class="icon exchange-white"></i>
+        </div>
+        <div class="col-5">
+            <label>{{to}}</label>
+            <input type="text" placeholder="收到数量" readonly v-bind:value="Number(eth*exchange_rate).toFixed(2)"/>
+        </div>
+    </div>
+    <div class="content-view">
+        <button type="button" class="content-btn" v-on:click="exchange">提交</button>
+    </div>
+</div>
+{include file='menu'}
+{/block}
+
+{block name='script'}
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            exchange_rate: 1.00,
+            exchange_rate_gc: 1.00,
+            eth: '',
+            form: '团队收益',
+            to: 'GTC',
+            default_url: "{:url('/index/exchange/team_profit_to_gtc')}",
+        },
+        computed: {},
+        methods: {
+            exchange: function () {
+                if (this.eth < 300){
+                    core.toast("最小兑换单位为300GTC");
+                    return;
+                }
+                core.load(this.default_url, {eth: this.eth}, (res) => {
+                    if (res.code == 0) {
+                        this.eth = '';
+                    }
+                    core.toast(res.msg);
+                });
+            }
+        },
+        mounted: function () {
+        }
+    });
+</script>
+{/block}
+
+{block name="style"}
+<style>
+    #bait-top {
+        text-align: center;
+        position: relative;
+        padding: 1rem 1rem;
+    }
+
+    #bait-top .top-text {
+        font-size: 1rem;
+    }
+
+    #bait-top .top-num {
+        font-size: 3rem;
+        font-weight: bold;
+    }
+
+    .content-box:nth-child(2) {
+        text-align: center;
+        margin: 12px;
+        margin-left: 11px;
+        display: flex
+    }
+
+    .content-box:nth-child(2) > div {
+
+    }
+
+    .content-box:nth-child(2) > div:nth-child(2) {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .content-box:nth-child(2) > div > i {
+        height: 40px;
+        width: 40px;
+        margin-bottom: 8px;
+    }
+
+    i.exchange-white {
+        background-image: url('/fish/img/exchange.png');
+    }
+
+    .content-box:nth-child(2) > div > label {
+        display: block;
+        padding: 0.5rem;
+        font-weight: bold;
+        font-size: 1.6rem;
+        margin-bottom: 0.4rem
+    }
+
+    .content-box:nth-child(2) > div > input {
+        background-color: transparent;
+        /*color:#eee;*/
+        width: 100%;
+        font-size: 18px;
+        padding: 15px 10px;
+        border: none;
+        text-align: center
+    }
+
+    /*.content-btn {*/
+    /*    background: -webkit-linear-gradient(133deg, rgb(221, 221, 221) 0%, rgb(221, 221, 221) 100%);*/
+    /*    box-shadow: inset 0px -8px 0px 0px rgba(221, 211, 201, 0.97);*/
+    /*}*/
+
+</style>
+{/block}

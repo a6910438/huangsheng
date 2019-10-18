@@ -1,0 +1,62 @@
+{extend name="layout/main" /}
+
+{block name="header"}
+
+{/block}
+
+{block name="content"}
+<section class="panel">
+
+    <header class="panel-heading">
+        <h4>订单详细</h4>
+    </header>
+    <div class="panel-body" style="padding-bottom: 50px">
+        <button onclick="javascript:history.go(-1)" class="btn btn-success ">返回</button>
+        <section class="panel">
+            <div class="panel-body" >
+                <table class="table table-bordered table-striped no-margin">
+                    <thead>
+                        <tr>
+                            <th class="text-center">ID</th>
+                            <th class="text-center">用户信息</th>
+                            <th class="text-center">描述</th>
+                            <th class="text-center">图片</th>
+                            <th class="text-center">订单类型</th>
+                            <th class="text-center">审核状态</th>
+                            <th class="text-center">申请时间</th>
+                            {if($order->status != 1)}
+                            <th class="text-center">审核时间</th>
+                            {/if}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="text-center">{$order->id}</td>
+                            <td class="text-center">
+                                ID：{$order->uid}<br>
+                                昵称：{$order->nick_name}
+                            </td>
+                            <td class="text-center"> {$order->describe}</td>
+                            <td class="text-center">{$order->pic}</td>
+                            <td class="text-center">{$order->getType($order->type)}</td>
+                            <td class="text-center">{$order->getStatus($order->status)}</td>
+                            <td class="text-center">{$order->create_time}</td>
+                            {if($order->status != 1)}
+                            <td class="text-center">{$order->update_time}</td>
+                            {/if}
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+    </div>
+</section>
+{/block}
+
+{block name="footer"}
+    <script>
+
+    </script>
+
+{/block}

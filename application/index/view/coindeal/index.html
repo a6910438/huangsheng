@@ -1,0 +1,1384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+	<title>币币/杠杆</title>
+
+	{include file="layout/head" /}
+	{include file="coindeal/head" /}
+
+</head>
+<body>
+	<header class="head">
+		<div class="menu_icon"><img src="/static/images/1@2x.png" alt=""></div>
+		<div class="nav_box">
+			<span class="coin checkIt">币币</span><span class="lever">杠杆</span>
+		</div>
+		<div class="search_icon"><img src="/static/images/search@2x.png"></div>
+	</header>
+	<div class="main_nav_box">
+		<div class="main_nav">
+			<div class="takeUpMainNav"><img src="/static/images/11@2x.png"></div>
+			<div class="main_nav_item">我的挂单</div>
+			<div class="main_nav_item">历史委托</div>
+			<div class="main_nav_item">账单</div>
+			<div class="main_nav_item">杠杆解释说明</div>
+		</div>
+		<div class="main_nav_right"></div>
+	</div>
+	<div class="coin_coin_content">
+		<div class="container">
+			<div class="ct_top">
+				<span class="coin_type">BTC/USDT</span>
+				<span class="open_icon"><img src="/static/images/goback@2x.png"></span>
+				<span class="coin_box">
+					<i class="coin_num"></i><br>
+					<i class="coin_value">￥44094.29</i>
+				</span>
+				<span class="data_box">
+					<i class="data" id="dayrate">+0.27%</i>
+					<i class="data_icon"><img src="/static/images/data@2x.png"></i>
+				</span>
+			</div>
+			<div class="ct_left">
+				<div class="buy_and_sell">
+					<span class="buy">买入</span>
+					<span class="sell">卖出</span>
+				</div>
+				<div class="buy_content">
+					<div class="fixed_price">
+						<span>限价买入</span>
+						<img src="/static/images/goback@2x.png">
+					</div>
+					<div class="buying_method">
+						<div>
+							<div class="buying_method_item check_buy_method">
+								<div class="right_icon">√</div>
+								<div>限价买入</div>
+							</div>
+							<div class="buying_method_item">
+								<div class="right_icon">√</div>
+								<div>市场快速买入</div>
+							</div>
+						</div>
+						<div class="white_triangle"></div>
+					</div>
+					<div class="fixed_price_content">
+						<div class="num_box">
+							<span class="reduce">-</span>
+							<span class="coin_number"><input type="number" placeholder="价格" class="bugprice" id="realbugprice"></span>
+							<span class="add">+</span>
+						</div>
+						<div class="valuation">估值￥ 440942.29</div>
+						<div class="amount_box">
+							<span class="reduce cant_reduce">-</span>
+							<span class="amount"><input type="number" placeholder="数量(BTC)" id="bugnum"></span>
+							<span class="add">+</span>
+						</div>
+						<div class="percentage">
+							<span>25%</span>
+							<span>50%</span>
+							<span>75%</span>
+							<span>100%</span>
+						</div>
+						<div class="can_use_box">
+							<span class="can_use">可用</span><span class="usdt_num">0.00 USDT</span>
+						</div>
+						<div class="can_buy_box">
+							<span class="can_buy">可买</span><span class="usdt_num">0.00000000 BTC</span>
+						</div>
+						<button class="buy_btc">买入BTC</button>
+					</div>
+					<div class="market_buying">
+						<div class="reference_price">参考市场价格&nbsp;&nbsp;&nbsp;<span class="market_price bugprice"></span></div>
+						<div class="explain">以市场成交价为准</div>
+						<div class="money_box">
+							<span class="reduce cant_reduce">-</span>
+							<span class="money"><input type="number" placeholder="金额" id="marketbugprice"></span>
+							<span class="add">+</span>
+						</div>
+						<div class="percentage">
+							<span>25%</span>
+							<span>50%</span>
+							<span>75%</span>
+							<span>100%</span>
+						</div>
+						<div class="can_use_box">
+							<span class="can_use">可用</span><span class="usdt_num">0.00 USDT</span>
+						</div>
+						<div class="can_buy_box">
+							<span class="can_buy">可买</span><span class="usdt_num">0.00000000 BTC</span>
+						</div>
+						<button class="buy_btc">买入BTC</button>
+					</div>
+				</div>
+				<div class="sell_content">
+					<div class="fixed_price">
+						<span>限价卖出</span>
+						<img src="/static/images/goback@2x.png">
+					</div>
+					<div class="selling_method">
+						<div>
+							<div class="selling_method_item check_sell_method">
+								<div class="right_icon">√</div>
+								<div>限价卖出</div>
+							</div>
+							<div class="selling_method_item">
+								<div class="right_icon">√</div>
+								<div>市场快速卖出</div>
+							</div>
+						</div>
+						<div class="white_triangle"></div>
+					</div>
+					<div class="fixed_price_content">
+						<div class="num_box">
+							<span class="reduce">-</span>
+							<span class="coin_number"><input type="number" placeholder="价格" class="sellprice" id="realsellprice"></span>
+							<span class="add">+</span>
+						</div>
+						<div class="valuation">估值￥ 440942.29</div>
+						<div class="amount_box">
+							<span class="reduce cant_reduce">-</span>
+							<span class="amount"><input type="number" placeholder="数量(BTC)" id="realsellnum"></span>
+							<span class="add">+</span>
+						</div>
+						<div class="percentage">
+							<span>25%</span>
+							<span>50%</span>
+							<span>75%</span>
+							<span>100%</span>
+						</div>
+						<div class="can_use_box">
+							<span class="can_use">可用</span><span class="usdt_num">0.00 USDT</span>
+						</div>
+						<div class="can_sell_box">
+							<span class="can_sell">可卖</span><span class="usdt_num">0.00000000 BTC</span>
+						</div>
+						<button class="sell_btc">卖出BTC</button>
+					</div>
+					<div class="market_selling">
+						<div class="reference_price">参考市场价格&nbsp;&nbsp;&nbsp;<span class="market_price sellprice"></span></div>
+						<div class="explain">以市场成交价为准</div>
+						<div class="money_box">
+							<span class="reduce cant_reduce">-</span>
+							<span class="money"><input type="number" placeholder="数量" id="marketsellnum"></span>
+							<span class="add">+</span>
+						</div>
+						<div class="percentage">
+							<span>25%</span>
+							<span>50%</span>
+							<span>75%</span>
+							<span>100%</span>
+						</div>
+						<div class="can_use_box">
+							<span class="can_use">可用</span><span class="usdt_num">0.00 USDT</span>
+						</div>
+						<div class="can_sell_box">
+							<span class="can_sell">可卖</span><span class="usdt_num">0.00000000 BTC</span>
+						</div>
+						<button class="sell_btc">卖出BTC</button>
+					</div>
+				</div>
+			</div>
+			<div class="ct_right">
+				<div class="decimal_num">
+					<span>4位小数</span><img src="/static/images/goback@2x.png">
+					<div class="decimal_num_box">
+						<div class="white_triangle"></div>
+						<div class="decimal_num_item check_decimal">4位小数</div>
+						<div class="decimal_num_item">2位小数</div>
+						<div class="decimal_num_item">0位小数</div>
+					</div>
+				</div>
+
+				<div class="p_n_title">
+						<span class="price_title">价格(USDT)</span>
+						<span class="num_title">数量(BTC)</span>
+				</div>
+
+
+				<div class="price_and_num" id="price_and_num">
+				
+				</div>
+
+
+				<div class="price_num" id="price_num">
+					
+				</div>
+
+
+
+			</div>
+		</div>
+		<div class="coin_transform_usdt">
+			<div class="currency">
+				<div class="currency_title">计价币种</div>
+				<div class="currency_item_box">
+					<div class="currency_item check_currency">自选</div>
+					<div class="currency_item">USDT</div>
+					<div class="currency_item">BTC</div>
+					<div class="currency_item">ETH</div>
+					<div class="currency_item">OKB</div>
+				</div>
+				<div class="search"><img src="/static/images/search_b.png"></div>
+			</div>
+			<div class="transform_box">
+				<div class="transform_title">
+					<div>交易币对&nbsp;</div>
+					<div class="rise_or_fall_sort">涨跌幅<img class="sort_icon" src="/static/images/default_g@2x@2x.png" alt=""></div>
+					<div class="volume_sort">成交量<img class="sort_icon" src="/static/images/default_g@2x@2x.png" alt=""></div>
+				</div>
+				<div class="item_box">
+					<div class="zixuan_transform_item coin_transform"></div>
+					<div class="usdt_transform_item coin_transform">
+						<div class="transform_item">
+							<div class="coin_pair">BTC/USDT</div>
+							<div class="rise_and_fall">+3.28%</div>
+							<div class="volume">31420</div>
+						</div>
+						<div class="transform_item">
+							<div class="coin_pair">LTC/USDT</div>
+							<div class="rise_and_fall">-1.83%</div>
+							<div class="volume">1865737</div>
+						</div>
+						<div class="transform_item">
+							<div class="coin_pair">ETH/USDT</div>
+							<div class="rise_and_fall">+0.83%</div>
+							<div class="volume">203035</div>
+						</div>
+						<div class="transform_item">
+							<div class="coin_pair">OKB/USDT</div>
+							<div class="rise_and_fall">-0.15%</div>
+							<div class="volume">38612447</div>
+						</div>
+						<div class="transform_item">
+							<div class="coin_pair">ETC/USDT</div>
+							<div class="rise_and_fall">+0.01%</div>
+							<div class="volume">2546569</div>
+						</div>
+						<div class="transform_item">
+							<div class="coin_pair">BCH/USDT</div>
+							<div class="rise_and_fall">+0.15%</div>
+							<div class="volume">74140</div>
+						</div>
+						<div class="transform_item">
+							<div class="coin_pair">1ST/USDT</div>
+							<div class="rise_and_fall">+6.60%</div>
+							<div class="volume">6219610</div>
+						</div>
+						<div class="transform_item">
+							<div class="coin_pair">ABT/USDT</div>
+							<div class="rise_and_fall">+3.52%</div>
+							<div class="volume">1222994</div>
+						</div>
+					</div>
+					<div class="btc_transform_item coin_transform">
+						<div class="transform_item">
+							<div class="coin_pair">LTC/BTC</div>
+							<div class="rise_and_fall">-4.84%</div>
+							<div class="volume">644646</div>
+						</div>
+						<div class="transform_item">
+							<div class="coin_pair">ETH/BTC</div>
+							<div class="rise_and_fall">-2.28%</div>
+							<div class="volume">91410</div>
+						</div>
+						<div class="transform_item">
+							<div class="coin_pair">OKB/BTC</div>
+							<div class="rise_and_fall">-3.39%</div>
+							<div class="volume">1538540</div>
+						</div>
+						<div class="transform_item">
+							<div class="coin_pair">ETC/BTC</div>
+							<div class="rise_and_fall">-4.06%</div>
+							<div class="volume">1948078</div>
+						</div>
+						<div class="transform_item">
+							<div class="coin_pair">BCH/BTC</div>
+							<div class="rise_and_fall">-3.49%</div>
+							<div class="volume">39850</div>
+						</div>
+						<div class="transform_item">
+							<div class="coin_pair">LTC/BTC</div>
+							<div class="rise_and_fall">-1.83%</div>
+							<div class="volume">1865737</div>
+						</div>
+						<div class="transform_item">
+							<div class="coin_pair">1ST/BTC</div>
+							<div class="rise_and_fall">-3.04%</div>
+							<div class="volume">6829320</div>
+						</div>
+						<div class="transform_item">
+							<div class="coin_pair">ABT/BTC</div>
+							<div class="rise_and_fall">+0.63%</div>
+							<div class="volume">814893</div>
+						</div>
+					</div>
+					<div class="eth_transform_item coin_transform">
+						<div class="transform_item">
+							<div class="coin_pair">LTC/ETH</div>
+							<div class="rise_and_fall">-2.41%</div>
+							<div class="volume">2545</div>
+						</div>
+						<div class="transform_item">
+							<div class="coin_pair">OKB/ETH</div>
+							<div class="rise_and_fall">-1.18%</div>
+							<div class="volume">1086365</div>
+						</div>
+						<div class="transform_item">
+							<div class="coin_pair">ETC/ETH</div>
+							<div class="rise_and_fall">-2.12%</div>
+							<div class="volume">478142</div>
+						</div>
+						<div class="transform_item">
+							<div class="coin_pair">BCH/ETH</div>
+							<div class="rise_and_fall">-0.03%</div>
+							<div class="volume">612</div>
+						</div>
+						<div class="transform_item">
+							<div class="coin_pair">1ST/ETH</div>
+							<div class="rise_and_fall">+5.74%</div>
+							<div class="volume">3448590</div>
+						</div>
+						<div class="transform_item">
+							<div class="coin_pair">ABT/ETH</div>
+							<div class="rise_and_fall">+3.22%</div>
+							<div class="volume">612291</div>
+						</div>
+						<div class="transform_item">
+							<div class="coin_pair">ACT/ETH</div>
+							<div class="rise_and_fall">+3.56%</div>
+							<div class="volume">814543</div>
+						</div>
+						<div class="transform_item">
+							<div class="coin_pair">ADA/ETH</div>
+							<div class="rise_and_fall">+1.60%</div>
+							<div class="volume">103430</div>
+						</div>
+					</div>
+
+
+					<div class="okb_transform_item coin_transform">
+						<div class="transform_item">
+							<div class="coin_pair">LTC/OKB</div>
+							<div class="rise_and_fall">-1.52%</div>
+							<div class="volume">37224</div>
+						</div>
+						<div class="transform_item">
+							<div class="coin_pair">ETC/OKB</div>
+							<div class="rise_and_fall">-0.48%</div>
+							<div class="volume">341310</div>
+						</div>
+						<div class="transform_item">
+							<div class="coin_pair">BCH/OKB</div>
+							<div class="rise_and_fall">-0.04%</div>
+							<div class="volume">8062</div>
+						</div>
+						<div class="transform_item">
+							<div class="coin_pair">ADA/OKB</div>
+							<div class="rise_and_fall">-2.71%</div>
+							<div class="volume">115939</div>
+						</div>
+						<div class="transform_item">
+							<div class="coin_pair">AE/OKB</div>
+							<div class="rise_and_fall">+8.67%</div>
+							<div class="volume">1864</div>
+						</div>
+						<div class="transform_item">
+							<div class="coin_pair">BNC/OKB</div>
+							<div class="rise_and_fall">-3.37%</div>
+							<div class="volume">79349</div>
+						</div>
+						<div class="transform_item">
+							<div class="coin_pair">CAI/OKB</div>
+							<div class="rise_and_fall">-2.31%</div>
+							<div class="volume">12079175</div>
+						</div>
+						<div class="transform_item">
+							<div class="coin_pair">CIT/OKB</div>
+							<div class="rise_and_fall">-6.04%</div>
+							<div class="volume">970811</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="limit_list">限价单</div>
+		<div class="no_limit_list">暂无限价单</div>
+	</div>
+
+	{include file="legal/nav" /}
+
+</body>
+
+
+{include file="layout/footer" /}
+<script type="text/javascript">
+
+	$(function () {
+		$.post("{:url('coindeal/indexdata')}", {op: 'start'}, function (response) {
+
+            if (response.code == 0) {
+            	var data = response.data;
+            	$('.coin_num').html(data.market);
+
+            	$('.bugprice').val(data.market);
+            	$('.bugprice').html(data.market);
+
+            	$('.sellprice').val(data.market);
+            	$('.sellprice').html(data.market);
+
+            	$('#dayrate').html(data.dayrate+'%');
+
+            	if(data.dayrate>0){
+            		$('#dayrate').css('background','#EE6560');
+            		$('.data_icon').css('background','#EE6560');
+            	}else{
+            		$('#dayrate').css('background','#4DB872');
+            		$('.data_icon').css('background','#4DB872');
+            	}
+            	
+               	setListData(data.selflist,data.buylist);
+            }
+        }, 'json')
+	})
+
+	$('.buy_btc').click(function(){
+		var that = $(this);
+		var dealway = 0;
+
+
+
+		//市场价买入
+		if($('.buy_content .fixed_price_content').is(":hidden")){
+			dealway=1;
+			var realbugprice = $('#marketbugprice').val();
+
+			if(!realbugprice || realbugprice <= 0){
+				mui.alert('请输入正确的买入金额！');
+				return;
+			}
+
+		}else{
+		//限价买入
+			var realbugprice = $('#realbugprice').val();
+			var bugnum = $('#bugnum').val();
+
+			if(!realbugprice || realbugprice <= 0){
+				mui.alert('请输入正确的买入价格！');
+				return;
+			}
+
+			if(!bugnum || bugnum <= 0){
+				mui.alert('请输入正确的买入数量！');
+				return;
+			}
+		
+		}
+
+		mui.showLoading("处理中..", "div");
+        that.attr('disabled', true);
+		
+		$.post("{:url('coindeal/buy')}", {dealway:dealway,realbugprice: realbugprice, bugnum: bugnum}, function (data) {
+            mui.hideLoading();
+            that.attr('disabled', false);
+            if (data.code == 0) {
+
+                mui.confirm(data.message, '', ['去查看', '取消'], function (e) {
+                    if (e.index == 0) {
+                        window.location.href = data.toUrl;
+                    } else {
+                        window.location.reload();
+                    }
+                })
+            } else {
+                mui.alert(data.message);
+                // if(data.toUrl){
+                    window.location.reload();
+                // }
+            }
+
+        }, 'json')
+
+
+
+	})
+
+
+
+	/*设置列表数据*/
+	function setListData(upData,downData){
+
+		var listDom=document.getElementById("price_and_num");
+
+		for (var i = 0; i < upData.length; i++) {
+			var pd=upData[i];
+			var str='<span class="price_num">'+pd.price.toFixed(4)+'</span>';
+				str+='<span class="btc_num">'+pd.remnant.toFixed(4)+'</span>';
+			var liDom=document.createElement("div");
+			liDom.innerHTML=str;
+			listDom.append(liDom);
+		}
+
+		$('#price_num').html('');
+		var downDom=document.getElementById("price_num");
+		for (var i = 0; i < downData.length; i++) {
+			var pd=downData[i];
+			var str='<span class="price_num">'+pd.price.toFixed(4)+'</span>';
+				str+='<span class="btc_num">'+pd.remnant.toFixed(4)+'</span>';
+			var doDom=document.createElement("div");
+			doDom.innerHTML=str;
+			downDom.append(doDom);
+		}
+	}
+
+
+	// 点击头部 "币币" 左边菜单图标展开隐藏菜单
+	$('.menu_icon').click(function () {
+		// 判断，"限价买入" 下拉菜单是否已展开，如果有，先收起该下拉菜单
+		if (clickBuyFixedPrice === 1) {
+			$('.buying_method').slideUp(200);
+			$('.fixed_price').find('img').attr('src', '/static/images/goback@2x.png');
+			clickBuyFixedPrice--;
+		} else if (clickSellFixedPrice === 1) { // 判断，"限价卖出" 下拉菜单是否已展开，如果有，先收起该下拉菜单
+			$('.selling_method').slideUp(200);
+			$('.fixed_price').find('img').attr('src', '/static/images/goback@2x.png');
+			clickSellFixedPrice--;
+		} else if (clickDecimal === 1) { // 判断，"X位小数" 下拉菜单是否已展开，如果有，先收起该下拉菜单
+			$('.coin_coin_content .decimal_num_box').slideUp(200);
+			$('.decimal_num').find('img').attr('src', '/static/images/goback@2x.png');
+			clickDecimal--;
+		} else if (coinType === 1) { // 判断，"币种/币种" 下拉菜单是否已展开，如果有，先收起该下拉菜单
+			$('.coin_coin_content .open_icon').find('img').attr('src', '/static/images/goback@2x.png');
+			$('.coin_coin_content .coin_transform_usdt').slideUp(200);
+			coinType--;
+		} else { // 所有下拉菜单都没有展开，展开头部 "币币" 左边菜单图标隐藏菜单
+			$('.main_nav_box').css({left: '0px'});
+		}
+	})
+	// 点击头部 "币币" 左边菜单图标的隐藏菜单里面的收起图标，收起该隐藏菜单
+	$('.takeUpMainNav').find('img').click(function () {
+		$('.main_nav_box').css({left: '-100%'});
+	})
+	// 点击头部 "币币" 左边菜单图标的隐藏菜单里面的灰色半透明部分，收起该隐藏菜单
+	$('.main_nav_right').click(function () {
+		$('.main_nav_box').css({left: '-100%'});
+	})
+	// 点击价格输入框左侧减号时，判断该输入框的value值是否为空，如果不是，则颜色不做改变，每次点击该减号时value值减0.0001，如果value值为空，则左侧减号颜色由蓝色改变为灰色
+	$('.buy_content .num_box .reduce').click(function () {
+		var coinNumVal = $('.num_box .coin_number').find('input').val();
+		if (coinNumVal != '') {
+			coinNumVal = Number(coinNumVal) * 10000;
+			coinNumVal--;
+			coinNumVal = (coinNumVal / 10000).toFixed(4);
+			if (coinNumVal <= 0) {
+				$(this).addClass('cant_reduce');
+				$('.buy_content .num_box .coin_number').find('input').val('');
+			} else {
+				coinNumVal = String(coinNumVal);
+				$('.buy_content .num_box .coin_number').find('input').val(coinNumVal);
+			}
+		}
+		if ($('.buy_content .coin_number').find('input').val() != '' && $('.buy_content .amount').find('input').val() != '') {
+			$('.buy_content .fixed_price_content .buy_btc').css('background', '#4DB872');
+		}
+		if ($('.buy_content .coin_number').find('input').val() === '' || $('.buy_content .amount').find('input').val() === '') {
+			$('.buy_content .fixed_price_content .buy_btc').css('background', '#CCCCCC');
+		}
+	})
+	$('.sell_content .num_box .reduce').click(function () {
+		var coinNumVal = $('.num_box .coin_number').find('input').val();
+		if (coinNumVal != '') {
+			coinNumVal = Number(coinNumVal) * 10000;
+			coinNumVal--;
+			coinNumVal = (coinNumVal / 10000).toFixed(4);
+			if (coinNumVal <= 0) {
+				$(this).addClass('cant_reduce');
+				$('.sell_content .num_box .coin_number').find('input').val('');
+			} else {
+				coinNumVal = String(coinNumVal);
+				$('.sell_content .num_box .coin_number').find('input').val(coinNumVal);
+			}
+		}
+		if ($('.sell_content .coin_number').find('input').val() != '' && $('.sell_content .amount').find('input').val() != '') {
+			$('.sell_content .fixed_price_content .sell_btc').css('background', '#EE6560');
+		}
+		if ($('.sell_content .coin_number').find('input').val() === '' || $('.sell_content .amount').find('input').val() === '') {
+			$('.sell_content .fixed_price_content .sell_btc').css('background', '#CCCCCC');
+		}
+	})
+	// 点击价格输入框右侧加号时，每次点击时该输入框value值加0.0001
+	$('.buy_content .num_box .add').click(function () {
+		var coinNumVal = $('.buy_content .num_box .coin_number').find('input').val();
+		if (coinNumVal === '') {
+			coinNumVal = 0;
+			coinNumVal++;
+			coinNumVal = (coinNumVal / 10000).toFixed(4);
+			coinNumVal = String(coinNumVal);
+			$('.buy_content .num_box .coin_number').find('input').val(coinNumVal);
+			$('.buy_content .num_box .reduce').removeClass('cant_reduce');
+		} else {
+			coinNumVal = Number(coinNumVal) * 10000;
+			coinNumVal++;
+			coinNumVal = (coinNumVal / 10000).toFixed(4);
+			coinNumVal = String(coinNumVal);
+			$('.buy_content .num_box .coin_number').find('input').val(coinNumVal);
+		}
+		if ($('.buy_content .coin_number').find('input').val() != '' && $('.buy_content .amount').find('input').val() != '') {
+			$('.buy_content .fixed_price_content .buy_btc').css('background', '#4DB872');
+		}
+		if ($('.buy_content .coin_number').find('input').val() === '' || $('.buy_content .amount').find('input').val() === '') {
+			$('.buy_content .fixed_price_content .buy_btc').css('background', '#CCCCCC');
+		}
+	})
+
+	$('.sell_content .num_box .add').click(function () {
+		var coinNumVal = $('.sell_content .num_box .coin_number').find('input').val();
+		if (coinNumVal === '') {
+			coinNumVal = 0;
+			coinNumVal++;
+			coinNumVal = (coinNumVal / 10000).toFixed(4);
+			coinNumVal = String(coinNumVal);
+			$('.sell_content .num_box .coin_number').find('input').val(coinNumVal);
+			$('.sell_content .num_box .reduce').removeClass('cant_reduce');
+		} else {
+			coinNumVal = Number(coinNumVal) * 10000;
+			coinNumVal++;
+			coinNumVal = (coinNumVal / 10000).toFixed(4);
+			coinNumVal = String(coinNumVal);
+			$('.sell_content .num_box .coin_number').find('input').val(coinNumVal);
+		}
+		if ($('.sell_content .coin_number').find('input').val() != '' && $('.sell_content .amount').find('input').val() != '') {
+			$('.sell_content .fixed_price_content .sell_btc').css('background', '#EE6560');
+		}
+		if ($('.sell_content .coin_number').find('input').val() === '' || $('.sell_content .amount').find('input').val() === '') {
+			$('.sell_content .fixed_price_content .sell_btc').css('background', '#CCCCCC');
+		}
+	})
+	// 价格输入框获得焦点改变祖先元素边框颜色为蓝色
+	$('.coin_number').find('input').focus(function () {
+		$(this).parent().parent().css('border-color', '#3075EF');
+	})
+	// 价格输入框失去焦点回复祖先元素边框颜色为原本颜色
+	$('.coin_number').find('input').blur(function () {
+		$(this).parent().parent().css('border-color', '#CCD9DB');
+	})
+	// 价格输入框value值改变时实时判断该输入框value值是否为空，如果是，将左侧减号颜色由蓝色改变为灰色，如果不是，则不做任何改变
+	$('.buy_content .coin_number').find('input').bind('input propertychange', function () {
+		if ($(this).val() === '') {
+			$('.buy_content .num_box .reduce').addClass('cant_reduce');
+		} else {
+			$('.buy_content .num_box .reduce').removeClass('cant_reduce');
+		}
+		if ($('.buy_content .coin_number').find('input').val() != '' && $('.buy_content .amount').find('input').val() != '') {
+			$('.buy_content .fixed_price_content .buy_btc').css('background', '#4DB872');
+		}
+		if ($('.buy_content .coin_number').find('input').val() === '' || $('.buy_content .amount').find('input').val() === '') {
+			$('.buy_content .fixed_price_content .buy_btc').css('background', '#CCCCCC');
+		}
+	})
+	$('.sell_content .coin_number').find('input').bind('input propertychange', function () {
+		if ($(this).val() === '') {
+			$('.sell_content .num_box .reduce').addClass('cant_reduce');
+		} else {
+			$('.sell_content .num_box .reduce').removeClass('cant_reduce');
+		}
+		if ($('.sell_content .coin_number').find('input').val() != '' && $('.sell_content .amount').find('input').val() != '') {
+			$('.sell_content .fixed_price_content .sell_btc').css('background', '#EE6560');
+		}
+		if ($('.sell_content .coin_number').find('input').val() === '' || $('.sell_content .amount').find('input').val() === '') {
+			$('.sell_content .fixed_price_content .sell_btc').css('background', '#CCCCCC');
+		}
+	})
+	// 点击数量输入框左侧减号时，判断该输入框的value值是否为空，如果不是，则颜色不做改变，每次点击该减号时value值减0.0001，如果value值为空，则左侧减号颜色由蓝色改变为灰色
+	$('.buy_content .amount_box .reduce').click(function () {
+		var amountVal = $('.buy_content .amount_box .amount').find('input').val();
+		if (amountVal != '') {
+			amountVal = Number(amountVal) * 10000;
+			amountVal--;
+			amountVal = (amountVal / 10000).toFixed(4);
+			if (amountVal <= 0) {
+				$(this).addClass('cant_reduce');
+				$('.buy_content .amount_box .amount').find('input').val('');
+			} else {
+				amountVal = String(amountVal);
+				$('.buy_content .amount_box .amount').find('input').val(amountVal);
+			}
+		}
+		if ($('.buy_content .coin_number').find('input').val() != '' && $('.buy_content .amount').find('input').val() != '') {
+			$('.buy_content .fixed_price_content .buy_btc').css('background', '#4DB872');
+		}
+		if ($('.buy_content .coin_number').find('input').val() === '' || $('.buy_content .amount').find('input').val() === '') {
+			$('.buy_content .fixed_price_content .buy_btc').css('background', '#CCCCCC');
+		}
+	})
+	$('.sell_content .amount_box .reduce').click(function () {
+		var amountVal = $('.sell_content .amount_box .amount').find('input').val();
+		if (amountVal != '') {
+			amountVal = Number(amountVal) * 10000;
+			amountVal--;
+			amountVal = (amountVal / 10000).toFixed(4);
+			if (amountVal <= 0) {
+				$(this).addClass('cant_reduce');
+				$('.sell_content .amount_box .amount').find('input').val('');
+			} else {
+				amountVal = String(amountVal);
+				$('.sell_content .amount_box .amount').find('input').val(amountVal);
+			}
+		}
+		if ($('.sell_content .coin_number').find('input').val() != '' && $('.sell_content .amount').find('input').val() != '') {
+			$('.sell_content .fixed_price_content .sell_btc').css('background', '#EE6560');
+		}
+		if ($('.sell_content .coin_number').find('input').val() === '' || $('.sell_content .amount').find('input').val() === '') {
+			$('.sell_content .fixed_price_content .sell_btc').css('background', '#CCCCCC');
+		}
+	})
+	// 点击数量输入框右侧加号时，每次点击时该输入框value值加0.0001
+	$('.buy_content .amount_box .add').click(function () {
+		var amountVal = $('.buy_content .amount_box .amount').find('input').val();
+		if (amountVal === '') {
+			amountVal = 0;
+			amountVal++;
+			amountVal = (amountVal / 10000).toFixed(4);
+			amountVal = String(amountVal);
+			$('.buy_content .amount_box .amount').find('input').val(amountVal);
+			$('.buy_content .amount_box .reduce').removeClass('cant_reduce');
+		} else {
+			amountVal = Number(amountVal) * 10000;
+			amountVal++;
+			amountVal = (amountVal / 10000).toFixed(4);
+			amountVal = String(amountVal);
+			$('.buy_content .amount_box .amount').find('input').val(amountVal);
+		}
+		if ($('.buy_content .coin_number').find('input').val() != '' && $('.buy_content .amount').find('input').val() != '') {
+			$('.buy_content .fixed_price_content .buy_btc').css('background', '#4DB872');
+		}
+		if ($('.buy_content .coin_number').find('input').val() === '' || $('.buy_content .amount').find('input').val() === '') {
+			$('.buy_content .fixed_price_content .buy_btc').css('background', '#CCCCCC');
+		}
+	})
+	$('.sell_content .amount_box .add').click(function () {
+		var amountVal = $('.sell_content .amount_box .amount').find('input').val();
+		if (amountVal === '') {
+			amountVal = 0;
+			amountVal++;
+			amountVal = (amountVal / 10000).toFixed(4);
+			amountVal = String(amountVal);
+			$('.sell_content .amount_box .amount').find('input').val(amountVal);
+			$('.sell_content .amount_box .reduce').removeClass('cant_reduce');
+		} else {
+			amountVal = Number(amountVal) * 10000;
+			amountVal++;
+			amountVal = (amountVal / 10000).toFixed(4);
+			amountVal = String(amountVal);
+			$('.sell_content .amount_box .amount').find('input').val(amountVal);
+		}
+		if ($('.sell_content .coin_number').find('input').val() != '' && $('.sell_content .amount').find('input').val() != '') {
+			$('.sell_content .fixed_price_content .sell_btc').css('background', '#EE6560');
+		}
+		if ($('.sell_content .coin_number').find('input').val() === '' || $('.sell_content .amount').find('input').val() === '') {
+			$('.sell_content .fixed_price_content .sell_btc').css('background', '#CCCCCC');
+		}
+	})
+	// 数量输入框获得焦点改变祖先元素边框颜色为蓝色
+	$('.amount').find('input').focus(function () {
+		$(this).parent().parent().css('border-color', '#3075EF');
+	})
+	// 数量输入框失去焦点回复祖先元素边框颜色为原本颜色
+	$('.amount').find('input').blur(function () {
+		$(this).parent().parent().css('border-color', '#E0E8E9');
+	})
+	// 数量输入框value值改变时实时判断该输入框value值是否为空，如果是，将左侧减号颜色由蓝色改变为灰色，如果不是，则不做任何改变
+	$('.buy_content .amount').find('input').bind('input propertychange', function () {
+		if ($(this).val() === '') {
+			$('.buy_content .amount_box .reduce').addClass('cant_reduce');
+		} else {
+			$('.buy_content .amount_box .reduce').removeClass('cant_reduce');
+		}
+		if ($('.buy_content .coin_number').find('input').val() != '' && $('.buy_content .amount').find('input').val() != '') {
+			$('.buy_content .fixed_price_content .buy_btc').css('background', '#4DB872');
+		}
+		if ($('.buy_content .coin_number').find('input').val() === '' || $('.buy_content .amount').find('input').val() === '') {
+			$('.buy_content .fixed_price_content .buy_btc').css('background', '#CCCCCC');
+		}
+	})
+	$('.sell_content .amount').find('input').bind('input propertychange', function () {
+		if ($(this).val() === '') {
+			$('.sell_content .amount_box .reduce').addClass('cant_reduce');
+		} else {
+			$('.sell_content .amount_box .reduce').removeClass('cant_reduce');
+		}
+		if ($('.sell_content .coin_number').find('input').val() != '' && $('.sell_content .amount').find('input').val() != '') {
+			$('.sell_content .fixed_price_content .sell_btc').css('background', '#EE6560');
+		}
+		if ($('.sell_content .coin_number').find('input').val() === '' || $('.sell_content .amount').find('input').val() === '') {
+			$('.sell_content .fixed_price_content .sell_btc').css('background', '#CCCCCC');
+		}
+	})
+	// 点击金额输入框左侧减号时，判断该输入框的value值是否为空，如果不是，则颜色不做改变，每次点击该减号时value值减0.0001，如果value值为空，则左侧减号颜色由蓝色改变为灰色
+	$('.buy_content .money_box .reduce').click(function () {
+		var moneyVal = $('.buy_content .money_box .money').find('input').val();
+		if (moneyVal != '') {
+			moneyVal = Number(moneyVal) * 10000;
+			moneyVal--;
+			moneyVal = (moneyVal / 10000).toFixed(4);
+			if (moneyVal <= 0) {
+				$(this).addClass('cant_reduce');
+				$('.buy_content .money_box .money').find('input').val('');
+			} else {
+				moneyVal = String(moneyVal);
+				$('.buy_content .money_box .money').find('input').val(moneyVal);
+			}
+		}
+		if ($('.buy_content .money_box').find('input').val() != '') {
+			$('.buy_content .market_buying .buy_btc').css('background', '#4DB872');
+		}
+		if ($('.buy_content .money_box').find('input').val() === '') {
+			$('.buy_content .market_buying .buy_btc').css('background', '#CCCCCC');
+		}
+	})
+	$('.sell_content .money_box .reduce').click(function () {
+		var moneyVal = $('.sell_content .money_box .money').find('input').val();
+		if (moneyVal != '') {
+			moneyVal = Number(moneyVal) * 10000;
+			moneyVal--;
+			moneyVal = (moneyVal / 10000).toFixed(4);
+			if (moneyVal <= 0) {
+				$(this).addClass('cant_reduce');
+				$('.sell_content .money_box .money').find('input').val('');
+			} else {
+				moneyVal = String(moneyVal);
+				$('.sell_content .money_box .money').find('input').val(moneyVal);
+			}
+		}
+		if ($('.sell_content .money_box').find('input').val() != '') {
+			$('.sell_content .market_buying .sell_btc').css('background', '#EE6560');
+		}
+		if ($('.sell_content .money_box').find('input').val() === '') {
+			$('.sell_content .market_buying .sell_btc').css('background', '#CCCCCC');
+		}
+	})
+	// 点击金额输入框右侧加号时，每次点击时该输入框value值加0.0001
+	$('.buy_content .money_box .add').click(function () {
+		var moneyVal = $('.buy_content .money_box .money').find('input').val();
+		if (moneyVal === '') {
+			moneyVal = 0;
+			moneyVal++;
+			moneyVal = (moneyVal / 10000).toFixed(4);
+			moneyVal = String(moneyVal);
+			$('.buy_content .money_box .money').find('input').val(moneyVal);
+			$('.buy_content .money_box .reduce').removeClass('cant_reduce');
+		} else {
+			moneyVal = Number(moneyVal) * 10000;
+			moneyVal++;
+			moneyVal = (moneyVal / 10000).toFixed(4);
+			moneyVal = String(moneyVal);
+			$('.buy_content .money_box .money').find('input').val(moneyVal);
+		}
+		if ($('.buy_content .money_box').find('input').val() != '') {
+			$('.buy_content .market_buying .buy_btc').css('background', '#4DB872');
+		}
+		if ($('.buy_content .money_box').find('input').val() === '') {
+			$('.buy_content .market_buying .buy_btc').css('background', '#CCCCCC');
+		}
+	})
+	$('.sell_content .money_box .add').click(function () {
+		var moneyVal = $('.sell_content .money_box .money').find('input').val();
+		if (moneyVal === '') {
+			moneyVal = 0;
+			moneyVal++;
+			moneyVal = (moneyVal / 10000).toFixed(4);
+			moneyVal = String(moneyVal);
+			$('.sell_content .money_box .money').find('input').val(moneyVal);
+			$('.sell_content .money_box .reduce').removeClass('cant_reduce');
+		} else {
+			moneyVal = Number(moneyVal) * 10000;
+			moneyVal++;
+			moneyVal = (moneyVal / 10000).toFixed(4);
+			moneyVal = String(moneyVal);
+			$('.sell_content .money_box .money').find('input').val(moneyVal);
+		}
+		if ($('.sell_content .money_box').find('input').val() != '') {
+			$('.sell_content .market_selling .sell_btc').css('background', '#EE6560');
+		}
+		if ($('.sell_content .money_box').find('input').val() === '') {
+			$('.sell_content .market_selling .sell_btc').css('background', '#CCCCCC');
+		}
+	})
+	// 数量输入框获得焦点改变祖先元素边框颜色为蓝色
+	$('.money').find('input').focus(function () {
+		$(this).parent().parent().css('border-color', '#3075EF');
+	})
+	// 数量输入框失去焦点回复祖先元素边框颜色为原本颜色
+	$('.money').find('input').blur(function () {
+		$(this).parent().parent().css('border-color', '#E0E8E9');
+	})
+	// 数量输入框value值改变时实时判断该输入框value值是否为空，如果是，将左侧减号颜色由蓝色改变为灰色，如果不是，则不做任何改变
+	$('.buy_content .money').find('input').bind('input propertychange', function () {
+		if ($(this).val() === '') {
+			$('.buy_content .money_box .reduce').addClass('cant_reduce');
+		} else {
+			$('.buy_content .money_box .reduce').removeClass('cant_reduce');
+		}
+		if ($('.buy_content .money_box').find('input').val() != '') {
+			$('.buy_content .market_buying .buy_btc').css('background', '#4DB872');
+		}
+		if ($('.buy_content .money_box').find('input').val() === '') {
+			$('.buy_content .market_buying .buy_btc').css('background', '#CCCCCC');
+		}
+	})
+	$('.sell_content .money').find('input').bind('input propertychange', function () {
+		if ($(this).val() === '') {
+			$('.sell_content .money_box .reduce').addClass('cant_reduce');
+		} else {
+			$('.sell_content .money_box .reduce').removeClass('cant_reduce');
+		}
+		if ($('.sell_content .money_box').find('input').val() != '') {
+			$('.sell_content .market_buying .sell_btc').css('background', '#EE6560');
+		}
+		if ($('.sell_content .money_box').find('input').val() === '') {
+			$('.sell_content .market_buying .sell_btc').css('background', '#CCCCCC');
+		}
+	})
+	// 点击页面左上角 "币种/币种" 展开/收起 "币种/币种" 下拉列表
+	var coinType = 0;
+	$('.coin_coin_content .coin_type').click(function () {
+		// 判断，"限价买入" 下拉菜单是否已展开，如果有，先收起该下拉菜单
+		if (clickBuyFixedPrice === 1) {
+			$('.buying_method').slideUp(200);
+			$('.fixed_price').find('img').attr('src', '/static/images/goback@2x.png');
+			clickBuyFixedPrice--;
+		} else if (clickSellFixedPrice === 1) { // 判断，"限价卖出" 下拉菜单是否已展开，如果有，先收起该下拉菜单
+			$('.selling_method').slideUp(200);
+			$('.fixed_price').find('img').attr('src', '/static/images/goback@2x.png');
+			clickSellFixedPrice--;
+		} else if (clickDecimal === 1) { // 判断，"X位小数" 下拉菜单是否已展开，如果有，先收起该下拉菜单
+			$('.coin_coin_content .decimal_num_box').slideUp(200);
+			$('.coin_coin_content .decimal_num').find('img').attr('src', '/static/images/goback@2x.png');
+			clickDecimal--;
+		} else {
+			// 所有下拉菜单都没有展开，展开 "币种/币种" 下拉菜单
+			if (coinType === 0) {
+				$('.coin_coin_content .open_icon').find('img').attr('src', '/static/images/goback_up@2x.png');
+				$('.coin_coin_content .coin_transform_usdt').slideDown(200);
+				coinType++;
+			} else if (coinType === 1) { // 收起 "币种/币种" 下拉菜单
+				$('.coin_coin_content .open_icon').find('img').attr('src', '/static/images/goback@2x.png');
+				$('.coin_coin_content .coin_transform_usdt').slideUp(200);
+				coinType--;
+			}
+		}
+	})
+	// 点击 "币种/币种" 下拉列表左侧的 "币种" 菜单时，展开对应的币种详情页
+	$('.currency_item').click(function () {
+		var index = $(this).index();
+		$(this).addClass('check_currency').siblings().removeClass('check_currency');
+		$('.coin_transform').eq(index).show().siblings().hide();
+	})
+	// 点击 "X位小数" 展开/收起 "X位小数" 下拉菜单
+	var clickDecimal = 0;
+	$('.coin_coin_content .decimal_num').click(function () {
+		// 判断，"限价买入" 下拉菜单是否已展开，如果有，先收起该下拉菜单
+		if (clickBuyFixedPrice === 1) {
+			$('.buying_method').slideUp(200);
+			$('.fixed_price').find('img').attr('src', '/static/images/goback@2x.png');
+			clickBuyFixedPrice--;
+		} else if (clickSellFixedPrice === 1) { // 判断，"限价卖出" 下拉菜单是否已展开，如果有，先收起该下拉菜单
+			$('.selling_method').slideUp(200);
+			$('.fixed_price').find('img').attr('src', '/static/images/goback@2x.png');
+			clickSellFixedPrice--;
+		} else {
+			// "限价买入" 和 "限价卖出" 下拉菜单都没有展开， 展开 "X位小数" 下拉菜单
+			if (clickDecimal === 0) {
+				$('.coin_coin_content .decimal_num_box').slideDown(200);
+				$(this).find('img').attr('src', '/static/images/goback_up@2x.png');
+				clickDecimal++;
+			} else if (clickDecimal === 1) { // 收起 "X位小数" 下拉菜单
+				$('.coin_coin_content .decimal_num_box').slideUp(200);
+				$(this).find('img').attr('src', '/static/images/goback@2x.png');
+				clickDecimal--;
+			}
+		}
+	})
+	// 点击 "X位小数" 下拉菜单里面的选项，进行小数位筛选
+	$('.coin_coin_content .decimal_num_item').click(function () {
+		$(this).addClass('check_decimal').siblings().removeClass('check_decimal');
+		$('.coin_coin_content .decimal_num_box').slideUp(200);
+		$(this).find('img').attr('src', '/static/images/goback@2x.png');
+		var decimalNum = $(this).text();
+		$('.coin_coin_content .decimal_num').find('span').text(decimalNum);
+	})
+	// 点击 "买入/卖出" 的 "买入"，切换到买入状态
+	$('.buy_and_sell .buy').click(function () {
+		if (clickDecimal === 1) { // 判断，"X位小数" 下拉菜单是否已展开，如果有，先收起该下拉菜单
+			$('.coin_coin_content .decimal_num_box').slideUp(200);
+			$('.decimal_num').find('img').attr('src', '/static/images/goback@2x.png');
+			clickDecimal--;
+		} else if (clickSellFixedPrice === 1) { // 判断，"限价卖出" 下拉菜单是否已展开，如果有，先收起该下拉菜单
+			$('.selling_method').slideUp(200);
+			$('.fixed_price').find('img').attr('src', '/static/images/goback@2x.png');
+			clickSellFixedPrice--;
+		}  else { // "X位小数" 和 "限价卖出" 下拉菜单都没有展开，切换到买入状态
+			$(this).css({
+				color: '#fff',
+				background: '#4DB872',
+			}).siblings().css({
+				color: '#EE6560',
+				background: '#F7F8FA',
+			})
+			$('.buy_content').show();
+			$('.sell_content').hide();
+		}
+	})
+	// 点击 "买入/卖出" 的 "卖出"，切换到卖出状态
+	$('.buy_and_sell .sell').click(function () {
+		if (clickDecimal === 1) { // 判断，"X位小数" 下拉菜单是否已展开，如果有，先收起该下拉菜单
+			$('.coin_coin_content .decimal_num_box').slideUp(200);
+			$('.decimal_num').find('img').attr('src', '/static/images/goback@2x.png');
+			clickDecimal--;
+		} else if (clickBuyFixedPrice === 1) { // 判断，"限价买入" 下拉菜单是否已展开，如果有，先收起该下拉菜单
+			$('.buying_method').slideUp(200);
+			$('.fixed_price').find('img').attr('src', '/static/images/goback@2x.png');
+			clickBuyFixedPrice--;
+		} else { // "X位小数" 和 "限价买入" 下拉菜单都没有展开，切换到卖出状态
+			$(this).css({
+				color: '#fff',
+				background: '#EE6560',
+			}).siblings().css({
+				color: '#4DB872',
+				background: '#F7F8FA',
+			})
+			$('.buy_content').hide();
+			$('.sell_content').show();
+		}
+	})
+	// 点击 "限价买入"，展开/关闭 "限价买入" 下拉菜单
+	var clickBuyFixedPrice = 0;
+	$('.buy_content .fixed_price').click(function () {
+		// 判断，"X位小数" 下拉菜单是否已展开，如果有，先收起该下拉菜单
+		if (clickDecimal === 1) {
+			$('.coin_coin_content .decimal_num_box').slideUp(200);
+			$('.decimal_num').find('img').attr('src', '/static/images/goback@2x.png');
+			clickDecimal--;
+		} else {
+			// "X位小数" 下拉菜单没有展开， 展开 "限价买入" 下拉菜单
+			if (clickBuyFixedPrice === 0) {
+				$(this).siblings('.buying_method').slideDown(200);
+				$(this).find('img').attr('src', '/static/images/goback_up@2x.png');
+				clickBuyFixedPrice++;
+			} else if (clickBuyFixedPrice === 1) { // 关闭 "限价买入" 下拉菜单
+				$(this).siblings('.buying_method').slideUp(200);
+				$(this).find('img').attr('src', '/static/images/goback@2x.png');
+				clickBuyFixedPrice--;
+			}
+		}
+	})
+	// 点击 "限价买入" 下拉菜单的选项，"限价买入" 切换为改选项功能
+	$('.buying_method_item').click(function () {
+		$(this).addClass('check_buy_method').siblings().removeClass('check_buy_method');
+		var checkBuyMethod = $(this).find('.right_icon').next().text();
+		$(this).parent().parent().siblings('.fixed_price').find('span').text(checkBuyMethod);
+		$(this).parent().parent().slideUp(200);
+		$(this).parent().parent().siblings('.fixed_price').find('img').attr('src', '/static/images/goback@2x.png');
+		clickBuyFixedPrice--;
+		var index = $(this).index();
+		if (index === 0) {
+			$('.buy_content .fixed_price_content').show();
+			$('.buy_content .market_buying').hide();
+		}
+		if (index === 1) {
+			$('.buy_content .fixed_price_content').hide();
+			$('.buy_content .market_buying').show();
+		}
+	})
+	// 点击 "限价卖出"，展开/关闭 "限价卖出" 下拉菜单
+	var clickSellFixedPrice = 0;
+	$('.sell_content .fixed_price').click(function () {
+		// 判断，"X位小数" 下拉菜单是否已展开，如果有，先收起该下拉菜单
+		if (clickDecimal === 1) {
+			$('.coin_coin_content .decimal_num_box').slideUp(200);
+			$('.decimal_num').find('img').attr('src', '/static/images/goback@2x.png');
+			clickDecimal--;
+		} else {
+			// "X位小数" 下拉菜单没有展开， 展开 "限价卖出" 下拉菜单
+			if (clickSellFixedPrice === 0) {
+				$(this).siblings('.selling_method').slideDown(200);
+				$(this).find('img').attr('src', '/static/images/goback_up@2x.png');
+				clickSellFixedPrice++;
+			} else if (clickSellFixedPrice === 1) { // 关闭 "限价卖出" 下拉菜单
+				$(this).siblings('.selling_method').slideUp(200);
+				$(this).find('img').attr('src', '/static/images/goback@2x.png');
+				clickSellFixedPrice--;
+			}
+		}
+	})
+	// 点击 "限价卖出" 下拉菜单的选项，"限价卖出" 切换为改选项功能
+	$('.selling_method_item').click(function () {
+		$(this).addClass('check_sell_method').siblings().removeClass('check_sell_method');
+		var checkBuyMethod = $(this).find('.right_icon').next().text();
+		$(this).parent().parent().siblings('.fixed_price').find('span').text(checkBuyMethod);
+		$(this).parent().parent().slideUp(200);
+		$(this).parent().parent().siblings('.fixed_price').find('img').attr('src', '/static/images/goback@2x.png');
+		clickSellFixedPrice--;
+		var index = $(this).index();
+		if (index === 0) {
+			$('.sell_content .fixed_price_content').show();
+			$('.sell_content .market_selling').hide();
+		}
+		if (index === 1) {
+			$('.sell_content .fixed_price_content').hide();
+			$('.sell_content .market_selling').show();
+		}
+	})
+	for (var i = 0; i < $('.rise_and_fall').length; i++) {
+		if (Number($('.rise_and_fall').eq(i).text().substring(0, 2)) >= 0) {
+			$('.rise_and_fall').eq(i).css('color', '#4EB873');
+		}
+		if (Number($('.rise_and_fall').eq(i).text().substring(0, 2)) <= 0) {
+			$('.rise_and_fall').eq(i).css('color', '#DE4C3E');
+		}
+	}
+	// 数组从小到大排序
+	function bubbleSort(array){
+	    /*给每个未确定的位置做循环*/
+	    for (var unfix = array.length-1; unfix > 0; unfix--) {
+			/*给进度做个记录，比到未确定位置*/
+			for (var i = 0; i < unfix; i++) {
+				if (array[i] > array[i+1]) {
+				  	var temp = array[i];
+				  	array.splice(i, 1, array[i+1]);
+				  	array.splice(i+1, 1, temp);
+				}
+			}
+	    }
+  	}
+
+  	// 数组从大到小排序
+	function downBubbleSort(array){
+	    /*给每个未确定的位置做循环*/
+	    for (var unfix = array.length-1; unfix > 0; unfix--) {
+			/*给进度做个记录，比到未确定位置*/
+			for (var i = 0; i < unfix; i++) {
+				if (array[i] < array[i+1]) {
+				  	var temp = array[i];
+				  	array.splice(i, 1, array[i+1]);
+				  	array.splice(i+1, 1, temp);
+				}
+			}
+	    }
+  	}
+
+  	var clickRiseAndFall = 0;
+  	var riseList1 = [];
+  	var riseList2 = [];
+  	var riseList3 = [];
+  	var riseList4 = [];
+  	var fallList1 = [];
+  	var fallList2 = [];
+  	var fallList3 = [];
+  	var fallList4 = [];
+	var arrUp = [];
+	for (var i = 0; i < $('.usdt_transform_item > .transform_item').length; i++) {
+		var rise = Number($('.usdt_transform_item .transform_item').eq(i).find('.rise_and_fall').text().replace(/%/, ''));
+		arrUp.push(rise);
+	}
+	downBubbleSort(arrUp);
+	var q = 0;
+	for (var i = 0; i < $('.usdt_transform_item > .transform_item').length; i++) {
+		for (var j = 0; j < $('.usdt_transform_item > .transform_item').length; j++) {
+			if (Number($('.usdt_transform_item > .transform_item').eq(j).find('.rise_and_fall').text().replace(/%/, '')) === arrUp[q]) {
+				riseList1.push($('.usdt_transform_item > .transform_item').eq(j));
+				fallList1.push($('.usdt_transform_item > .transform_item').eq(j));
+				q++;
+			}
+		}
+	}
+	
+	var arrUp = [];
+	for (var i = 0; i < $('.btc_transform_item > .transform_item').length; i++) {
+		var rise = Number($('.btc_transform_item .transform_item').eq(i).find('.rise_and_fall').text().replace(/%/, ''));
+		arrUp.push(rise);
+	}
+	downBubbleSort(arrUp);
+	var q = 0;
+	for (var i = 0; i < $('.btc_transform_item > .transform_item').length; i++) {
+		for (var j = 0; j < $('.btc_transform_item > .transform_item').length; j++) {
+			if (Number($('.btc_transform_item > .transform_item').eq(j).find('.rise_and_fall').text().replace(/%/, '')) === arrUp[q]) {
+				riseList2.push($('.btc_transform_item > .transform_item').eq(j));
+				fallList2.push($('.btc_transform_item > .transform_item').eq(j));
+				q++;
+			}
+		}
+	}
+	
+	var arrUp = [];
+	for (var i = 0; i < $('.eth_transform_item > .transform_item').length; i++) {
+		var rise = Number($('.eth_transform_item .transform_item').eq(i).find('.rise_and_fall').text().replace(/%/, ''));
+		arrUp.push(rise);
+	}
+	downBubbleSort(arrUp);
+	var q = 0;
+	for (var i = 0; i < $('.eth_transform_item > .transform_item').length; i++) {
+		for (var j = 0; j < $('.eth_transform_item > .transform_item').length; j++) {
+			if (Number($('.eth_transform_item > .transform_item').eq(j).find('.rise_and_fall').text().replace(/%/, '')) === arrUp[q]) {
+				riseList3.push($('.eth_transform_item > .transform_item').eq(j));
+				fallList3.push($('.eth_transform_item > .transform_item').eq(j));
+				q++;
+			}
+		}
+	}
+	
+	var arrUp = [];
+	for (var i = 0; i < $('.okb_transform_item > .transform_item').length; i++) {
+		var rise = Number($('.okb_transform_item .transform_item').eq(i).find('.rise_and_fall').text().replace(/%/, ''));
+		arrUp.push(rise);
+	}
+	downBubbleSort(arrUp);
+	var q = 0;
+	for (var i = 0; i < $('.okb_transform_item > .transform_item').length; i++) {
+		for (var j = 0; j < $('.okb_transform_item > .transform_item').length; j++) {
+			if (Number($('.okb_transform_item > .transform_item').eq(j).find('.rise_and_fall').text().replace(/%/, '')) === arrUp[q]) {
+				riseList4.push($('.okb_transform_item > .transform_item').eq(j));
+				fallList4.push($('.okb_transform_item > .transform_item').eq(j));
+				q++;
+			}
+		}
+	}
+	
+	fallList1.reverse();
+	fallList2.reverse();
+	fallList3.reverse();
+	fallList4.reverse();
+
+	$('.rise_or_fall_sort').click(function () {
+		clickRiseAndFall++;
+		clickVolumeSort = 0;
+		$('.volume_sort').find('img').attr('src','/static/images/default_g@2x@2x.png');
+		if (clickRiseAndFall === 1) {
+			$(this).find('img').attr('src','/static/images/down_p_g@2x.png');
+			for(var i = 0; i < $('.usdt_transform_item .transform_item').length; $('.usdt_transform_item').append(riseList1[i++]));
+			for(var i = 0; i < $('.btc_transform_item .transform_item').length; $('.btc_transform_item').append(riseList2[i++]));
+			for(var i = 0; i < $('.eth_transform_item .transform_item').length; $('.eth_transform_item').append(riseList3[i++]));
+			for(var i = 0; i < $('.okb_transform_item .transform_item').length; $('.okb_transform_item').append(riseList4[i++]));
+		}
+		if (clickRiseAndFall === 2) {
+			clickRiseAndFall = 0;
+			$(this).find('img').attr('src','/static/images/up_p_g@2x.png');
+			for(var i = 0; i < $('.usdt_transform_item .transform_item').length; $('.usdt_transform_item').append(fallList1[i++]));
+			for(var i = 0; i < $('.btc_transform_item .transform_item').length; $('.btc_transform_item').append(fallList2[i++]));
+			for(var i = 0; i < $('.eth_transform_item .transform_item').length; $('.eth_transform_item').append(fallList3[i++]));
+			for(var i = 0; i < $('.okb_transform_item .transform_item').length; $('.okb_transform_item').append(fallList4[i++]));
+		}
+	})
+
+	var clickVolumeSort = 0;
+  	var moreToLessList1 = [];
+  	var moreToLessList2 = [];
+  	var moreToLessList3 = [];
+  	var moreToLessList4 = [];
+  	var lessToMoreList1 = [];
+  	var lessToMoreList2 = [];
+  	var lessToMoreList3 = [];
+  	var lessToMoreList4 = [];
+	var arrUp = [];
+	for (var i = 0; i < $('.usdt_transform_item > .transform_item').length; i++) {
+		var rise = Number($('.usdt_transform_item .transform_item').eq(i).find('.volume').text());
+		arrUp.push(rise);
+	}
+	downBubbleSort(arrUp);
+	var q = 0;
+	for (var i = 0; i < $('.usdt_transform_item > .transform_item').length; i++) {
+		for (var j = 0; j < $('.usdt_transform_item > .transform_item').length; j++) {
+			if (Number($('.usdt_transform_item > .transform_item').eq(j).find('.volume').text()) === arrUp[q]) {
+				moreToLessList1.push($('.usdt_transform_item > .transform_item').eq(j));
+				lessToMoreList1.push($('.usdt_transform_item > .transform_item').eq(j));
+				q++;
+			}
+		}
+	}
+	
+	var arrUp = [];
+	for (var i = 0; i < $('.btc_transform_item > .transform_item').length; i++) {
+		var rise = Number($('.btc_transform_item .transform_item').eq(i).find('.volume').text());
+		arrUp.push(rise);
+	}
+	downBubbleSort(arrUp);
+	var q = 0;
+	for (var i = 0; i < $('.btc_transform_item > .transform_item').length; i++) {
+		for (var j = 0; j < $('.btc_transform_item > .transform_item').length; j++) {
+			if (Number($('.btc_transform_item > .transform_item').eq(j).find('.volume').text()) === arrUp[q]) {
+				moreToLessList2.push($('.btc_transform_item > .transform_item').eq(j));
+				lessToMoreList2.push($('.btc_transform_item > .transform_item').eq(j));
+				q++;
+			}
+		}
+	}
+	
+	var arrUp = [];
+	for (var i = 0; i < $('.eth_transform_item > .transform_item').length; i++) {
+		var rise = Number($('.eth_transform_item .transform_item').eq(i).find('.volume').text());
+		arrUp.push(rise);
+	}
+	downBubbleSort(arrUp);
+	var q = 0;
+	for (var i = 0; i < $('.eth_transform_item > .transform_item').length; i++) {
+		for (var j = 0; j < $('.eth_transform_item > .transform_item').length; j++) {
+			if (Number($('.eth_transform_item > .transform_item').eq(j).find('.volume').text()) === arrUp[q]) {
+				moreToLessList3.push($('.eth_transform_item > .transform_item').eq(j));
+				lessToMoreList3.push($('.eth_transform_item > .transform_item').eq(j));
+				q++;
+			}
+		}
+	}
+	
+	var arrUp = [];
+	for (var i = 0; i < $('.okb_transform_item > .transform_item').length; i++) {
+		var rise = Number($('.okb_transform_item .transform_item').eq(i).find('.volume').text());
+		arrUp.push(rise);
+	}
+	downBubbleSort(arrUp);
+	var q = 0;
+	for (var i = 0; i < $('.okb_transform_item > .transform_item').length; i++) {
+		for (var j = 0; j < $('.okb_transform_item > .transform_item').length; j++) {
+			if (Number($('.okb_transform_item > .transform_item').eq(j).find('.volume').text()) === arrUp[q]) {
+				moreToLessList4.push($('.okb_transform_item > .transform_item').eq(j));
+				lessToMoreList4.push($('.okb_transform_item > .transform_item').eq(j));
+				q++;
+			}
+		}
+	}
+	
+	lessToMoreList1.reverse();
+	lessToMoreList2.reverse();
+	lessToMoreList3.reverse();
+	lessToMoreList4.reverse();
+
+	$('.volume_sort').click(function () {
+		clickVolumeSort++;
+		clickRiseAndFall = 0;
+		$('.rise_or_fall_sort').find('img').attr('src','/static/images/default_g@2x@2x.png');
+		if (clickVolumeSort === 1) {
+			$(this).find('img').attr('src','/static/images/down_p_g@2x.png');
+			for(var i = 0; i < $('.usdt_transform_item .transform_item').length; $('.usdt_transform_item').append(moreToLessList1[i++]));
+			for(var i = 0; i < $('.btc_transform_item .transform_item').length; $('.btc_transform_item').append(moreToLessList2[i++]));
+			for(var i = 0; i < $('.eth_transform_item .transform_item').length; $('.eth_transform_item').append(moreToLessList3[i++]));
+			for(var i = 0; i < $('.okb_transform_item .transform_item').length; $('.okb_transform_item').append(moreToLessList4[i++]));
+		}
+		if (clickVolumeSort === 2) {
+			clickVolumeSort = 0;
+			$(this).find('img').attr('src','/static/images/up_p_g@2x.png');
+			for(var i = 0; i < $('.usdt_transform_item .transform_item').length; $('.usdt_transform_item').append(lessToMoreList1[i++]));
+			for(var i = 0; i < $('.btc_transform_item .transform_item').length; $('.btc_transform_item').append(lessToMoreList2[i++]));
+			for(var i = 0; i < $('.eth_transform_item .transform_item').length; $('.eth_transform_item').append(lessToMoreList3[i++]));
+			for(var i = 0; i < $('.okb_transform_item .transform_item').length; $('.okb_transform_item').append(lessToMoreList4[i++]));
+		}
+	})
+</script>
+</html>
+
+
+
+
+

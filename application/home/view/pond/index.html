@@ -1,0 +1,5157 @@
+{extend name='main'}
+
+{block name='body'}
+<!-- <div class="fish-head">
+    <h3 class="head-tit"><span>{$title}</span></h3>
+    <div class="head-gtc">
+        <span v-text="mybait || '0.00'"></span>
+        <label>GTC</label>
+    </div>
+</div>
+<div class="fish-main" v-cloak>
+    <div class="page-title">
+        <span>资产列表</span>
+    </div>
+    <ul class="fish-list">
+        <li v-if="list.length>0" v-for="(vo,index) in list" @click="toDetail(vo.id)">
+            <div class="fish-img">
+                <img :src="vo.img" alt="">
+            </div>
+            <div class="fish-name">
+                <h3 class="info-title">{{vo.name}}</h3>
+                <div class="info-price"><span>{{vo.worth*1}} </span><small>GTC</small></div>
+            </div>
+            <div class="fish-info">
+                <div class="info-item">
+                    <label>收益 :</label>
+                    <span>{{Number(vo.over_profit).toFixed(2)*1}}%/{{vo.profit}}%</span>
+                </div>
+                <div class="info-item">
+                    <label>合约 :</label>
+                    <span>{{Math.ceil(vo.create_age/24)}}/{{Math.ceil(vo.contract_time/24)}}</span>
+                    <small>天</small>
+                </div>
+                <div class="info-item">
+                    <label>装修 :</label>
+                    <span>{{Math.ceil(vo.over_contract_day)}}/{{Math.ceil(vo.contract_day)}}</span>
+                    <small>天</small>
+                </div>
+            </div>
+            <div class="fish-btn">
+                <a href="javascript:;" v-if="vo.is_contract==0" class="list-btn" @click.stop="feed(vo.id,index)"><span>待装修</span></a>
+                <a href="javascript:;" v-else-if="(vo.over_contract_day<vo.contract_day) && !(vo.types == 3 && vo.is_feed == 1)" class="list-btn gray"><span>装修中</span></a>
+                <a href="javascript:;" v-else-if="vo.start_about || (vo.types == 3 && vo.is_feed == 1)" class="list-btn yellow"><span>即可<br>转让</span></a>
+                <a href="javascript:;" v-else class="list-btn yellow"><span>等待<br>转让</span></a>
+            </div>
+        </li>
+    </ul>
+    <div class="dialog-bottom"></div>
+</div> -->
+
+
+<div class="box_center">
+    <div class="box_topp">
+        <div class="assets_content">
+            <div class="assets_top">
+                <div>总资产：</div>
+                <div @click="detaiaMax()">
+                    <img src="http://oss.inewgo.net/resource/imgs/img/assets2.png" alt="">
+                </div>
+            </div>
+            <div class="assets_num" style="font-family:Rubik; font-weight:bold;">
+                <div>{{info.sumTotal}}</div>
+                <!-- <div>96899.</div> -->
+                <!-- <div style="margin-top:1rem;">00</div> -->
+                <!-- <div style="margin-top:1rem;margin-left:0.3rem;">GTC</div> -->
+            </div>
+            <div style="display:flex; justify-content: center;align-items: center;">
+                <div class="profit">
+                    <div style="display:flex; justify-content: space-between;">
+                        <div style="font-size:22px;">房产利润</div>
+                        <div class="profit_top">
+
+                            <div>
+                                <img src="http://oss.inewgo.net/resource/imgs/img/assets3.png" alt="">
+                            </div>
+                            <div>X</div>
+                            <div style="font-family:Rubik;">{{info.now_profit}}</div>
+
+                        </div>
+                    </div>
+
+                    <div class="profit_center">
+                        <div>持有房产</div>
+                        <div>奖励收益</div>
+                    </div>
+                    <div class="profit_bottom">
+                        <div class="profit_bottom1">
+                            <div>
+                                <img src="http://oss.inewgo.net/resource/imgs/img/assets4.png" alt="">
+                            </div>
+                            <div style="margin-left:0.2rem;">X</div>
+                            <div style="font-family:Rubik;" v-text="info.house_num"></div>
+                        </div>
+                        <div class="profit_bottom2">
+                            <div>
+                                <img src="http://oss.inewgo.net/resource/imgs/img/assets3.png" alt="">
+                            </div>
+                            <div style="margin-top:1rem;">x</div>
+                            <div style="font-family:Rubik;">{{info.sumTeamProfit}}</div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="contractMax">
+        <div @click="heyuezMax">
+            <img src="http://oss.inewgo.net/resource/imgs/img/assets105.png" alt="" style="height:7.4rem;">
+        </div>
+        <div class="dcsMax" @click="dcyMax">
+            <img src="http://oss.inewgo.net/resource/imgs/img/assets104.png" alt="" style="height:7.4rem;">
+        </div>
+    </div>
+
+    <div class="centerFooter">
+        <div class="center_content" style="font-family:MF XingYan(Noncommercial);font-weight:400;text-shadow:0px 4px 4px rgba(0, 0, 0, 0.55);color:rgba(255,255,255,1);">
+            <div @click="AppointordBtn">预约记录</div>
+            <div @click="SnatchRecordBtn">抢购记录</div>
+            <div @click="ransferrecordBtn(1)">转让记录</div>
+            <div @click="RewaredemptionBtn"> 奖励兑换</div>
+            <div @click="coinBtn">GC提币</div>
+            <div @click="WalletaaBtn">钱包充币</div>
+            <div @click="flashFlashBtn">闪兑</div>
+
+        </div>
+    </div>
+
+</div>
+
+
+<!-- 资产详情弹框 -->
+<div class="Asset_details" v-show="close2">
+    <div id="details_top" class="lazy">
+        <div class="detailsImg lhl" @click="closeMax">
+            <img src="http://oss.inewgo.net/resource/imgs/img/assets10.png" alt="">
+        </div>
+        <div class="zichang_bxo" style="line-height:5rem;">
+            资产详情
+        </div>
+        <div class="details_content1  lili11">
+            <div class="detailsList">
+                <div @click="openGCDetail">
+                    <div class="detailsList_yu">
+                        <div>GC余额</div>
+                        <div class="detailsList_right">
+                            <img src="http://oss.inewgo.net/resource/imgs/img/assets100.png" alt="">
+                        </div>
+                    </div>
+                    <div v-text="info.gc" style="font-family:Rubik; "></div>
+                </div>
+
+            </div>
+            <div class="detailsList">
+                <div @click="openGTCDetail">
+                    <div class="detailsList_yu">
+                        <div>GTC余额</div>
+                        <div class="detailsList_right">
+                            <img src="http://oss.inewgo.net/resource/imgs/img/assets100.png" alt="">
+                        </div>
+                    </div>
+                    <div v-text="info.now_bait" style="font-family:Rubik; "></div>
+                </div>
+
+            </div>
+            <div class="detailsList">
+                <div @click="openIntegralDetail">
+                    <div class="detailsList_yu">
+                        <div>精粹余额</div>
+                        <div class="detailsList_right">
+                            <img src="http://oss.inewgo.net/resource/imgs/img/assets100.png" alt="">
+                        </div>
+                    </div>
+                    <div v-text="info.now_integral" style="font-family:Rubik; "></div>
+                </div>
+
+            </div>
+            <div class="detailsList">
+                <div @click="openRewardrecord">
+                    <div class="detailsList_yu">
+                        <div>商会奖励</div>
+                        <div class="detailsList_right">
+                            <img src="http://oss.inewgo.net/resource/imgs/img/assets100.png" alt="">
+                        </div>
+                    </div>
+                    <div v-text="info.now_team" style="font-family:Rubik; "></div>
+                </div>
+
+            </div>
+            <div class="detailsList">
+                <div @click="openProfitrecord(0)">
+                    <div class="detailsList_yu">
+                        <div>招募奖励</div>
+                        <div class="detailsList_right">
+                            <img src="http://oss.inewgo.net/resource/imgs/img/assets100.png" alt="">
+                        </div>
+                    </div>
+                    <div v-text="info.now_extension" style="font-family:Rubik; "></div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<!-- 房产信息弹框 -->
+<div class="Asset_details" v-show="close3">
+    <div id="details_top1" class="lazy">
+        <div class="detailsImg lhl" @click="wwww">
+            <img src="http://oss.inewgo.net/resource/imgs/img/assets10.png" alt="">
+        </div>
+        <div class="zichang_bxo4">
+            房产信息
+        </div>
+
+
+        <div class="details_content">
+            <div style="margin-left:0.8rem;">
+                <div class="a_icon">转让 ID</div>
+                <div class="b_icon">ID: 365248</div>
+            </div>
+            <div style="margin-left:1.5rem;">
+                <div class="a_icon">房产编号</div>
+                <div class="b_icon">028698876</div>
+            </div>
+            <div style="margin-left:1.5rem;">
+                <div class="a_icon">交易订单号</div>
+                <div class="b_icon">20190816103203</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- GC账单弹框 -->
+<div class="Asset_details" v-show="close4">
+    <div id="details_top2" class="lazy">
+        <div class="detailsImg lhl" @click="gcMax">
+            <img src="http://oss.inewgo.net/resource/imgs/img/assets10.png" alt="">
+        </div>
+        <div class="detailsImg_zr">
+            GTC转让
+        </div>
+        <div class="zichang_bxo1">
+            GC账单
+        </div>
+        <div class="gc_Bill">
+            <div class="gc_tab new_dgtab">
+                <div :class="tabid==1? 'active1' :'' " @click="max_list(1)">全部</div>
+                <div :class="tabid==2? 'active1' :'' " @click="max_list(2)">收入</div>
+                <div :class="tabid==3? 'active1' :'' " @click="max_list(3)">支出</div>
+            </div>
+
+        </div>
+        <div class="gc_content" v-show="tabid == 1">
+            <div class="gc_tabnew">
+                <div>
+                    <div>数量</div>
+                    <div>+2,000</div>
+                </div>
+                <div>
+                    <div>详情</div>
+                    <div>钱包充币</div>
+                </div>
+                <div>
+                    <div>时间</div>
+                    <div style="font-size:9px;">2019.09.10 12:30:30</div>
+                </div>
+            </div>
+            <div class="gc_tabnew">
+                <div>
+                    <div>数量</div>
+                    <div>+2,000</div>
+                </div>
+                <div>
+                    <div>详情</div>
+                    <div>钱包充币</div>
+                </div>
+                <div>
+                    <div>时间</div>
+                    <div style="font-size:9px;">2019.09.10 12:30:30</div>
+                </div>
+            </div>
+            <div class="gc_tabnew">
+                <div>
+                    <div>数量</div>
+                    <div style="margin-top:1rem;">+2,000</div>
+                </div>
+                <div>
+                    <div>详情</div>
+                    <div>钱包充币</div>
+                </div>
+                <div>
+                    <div>时间</div>
+                    <div style="font-size:9px;">2019.09.10 12:30:30</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- GTc转让 -->
+<div class="Asset_details" v-show="close5">
+    <div id="gczhuangrnang" class="lazy">
+        <div class="detailsImg gczhuangrnangTop" @click="FineTransferGc">
+            <img src="http://oss.inewgo.net/resource/imgs/img/assets10.png" alt="">
+        </div>
+        <div class="zichang_bxo9">GTC转让</div>
+        <div style="color:#FFE9C9; font-size:61px; line-height:35rem; text-align: center;">转让成功</div>
+        <div style="font-size:9px; color:#FFFFFF; font-weight:400; width:100%; text-align: center; position:absolute; top:30rem;">您的GTC已成功转让，请通知好友确认是否到账</div>
+    </div>
+</div>
+
+<!-- 精隧转让 -->
+<div class="Asset_details" v-show="close6">
+    <div id="details_top6" class="lazy">
+        <div class="detailsImg detailsImg5" @click="FineTransfer">
+            <img src="http://oss.inewgo.net/resource/imgs/img/assets10.png" alt="">
+        </div>
+        <div class="zichang_bxo8">精粹转让</div>
+        <div style="color:#FFE9C9; font-size:61px; line-height:35rem; text-align: center;">转让成功</div>
+    </div>
+</div>
+
+<!-- 精隧账单 -->
+<div class="Asset_details" v-show="close7">
+    <div id="details_topjs" class="lazy">
+        <div class="detailsImg lhl" @click="gsMax">
+            <img src="http://oss.inewgo.net/resource/imgs/img/assets10.png" alt="">
+        </div>
+        <div class="zichang_bxo2" style="line-height: 5.5rem;">精粹账单</div>
+        <!-- <div class="detailsImg_zr">
+                    <img src="http://oss.inewgo.net/resource/imgs/img/assets13.png" alt="">
+                </div> -->
+        <div class="gc_Bill">
+            <div class="gc_tab jszhangdan">
+                <div :class="tabid==1? 'active1' :'' " @click="max_lista(1)">精粹收入</div>
+                <div :class="tabid==2? 'active1' :'' " @click="max_lista(2)">精粹支出</div>
+                <div :class="tabid==3? 'active1' :'' " @click="max_lista(3)">申诉</div>
+            </div>
+
+        </div>
+        <div class="gc_content" v-show="tabid == 1">
+            <div class="gc_tabnewjs">
+                <div>
+                    <div style="font-size:14px;">转让 ID</div>
+                    <div style="font-size:11px;">ID:123456</div>
+                </div>
+                <div style="margin-left:0.8rem;">
+                    <div style="font-size:14px;">转让数量</div>
+                    <div style="font-size:11px;">2,000</div>
+                </div>
+                <div style="margin-left:0.8rem;width:24%;">
+                    <div style="font-size:14px;">转让时间</div>
+                    <div style="font-size:11px;">2019.09.10 12.30.30</div>
+                </div>
+                <div style="margin-left:0.8rem;">
+                    <div style="font-size:14px;">转让状态</div>
+                    <div style="font-size:11px;">成功</div>
+                </div>
+            </div>
+            <div class="gc_tabnewjs">
+                <div>
+                    <div style="font-size:14px;">转让 ID</div>
+                    <div style="font-size:11px;">ID:123456</div>
+                </div>
+                <div style="margin-left:0.8rem;">
+                    <div style="font-size:14px;">转让数量</div>
+                    <div style="font-size:11px;">2,000</div>
+                </div>
+                <div style="margin-left:0.8rem;width:24%;">
+                    <div style="font-size:14px;">转让时间</div>
+                    <div style="font-size:11px;">2019.09.10 12.30.30</div>
+                </div>
+                <div style="margin-left:0.8rem;">
+                    <div style="font-size:14px;">转让状态</div>
+                    <div style="font-size:11px;">成功</div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+
+<!-- 奖励记录 -->
+<div class="Asset_details" v-show="close8">
+    <div id="details_top8" class="lazy">
+        <div class="detailsImg lhl" @click="Rewardrecord">
+            <img src="http://oss.inewgo.net/resource/imgs/img/assets10.png" alt="">
+        </div>
+        <div class="zichang_bxo3" style="line-height: 5.93rem;">
+            奖励记录
+        </div>
+        <div class="gc_Bill">
+            <div class="gc_tab jl_tab">
+                <div :class="tabidMy7==0? 'active1' :'' " @click="loadTeamProfitListL(0)">全部</div>
+                <div :class="tabidMy7==2? 'active1' :'' " @click="loadTeamProfitListL(2)">收入</div>
+                <div :class="tabidMy7==3? 'active1' :'' " @click="loadTeamProfitListL(3)">兑换</div>
+            </div>
+
+        </div>
+        <div class="gc_content" v-show="tabid == 1" id="my7">
+            <div class="gc_tabnew" v-for="(item,index) in TeamList">
+                <div>
+                    <div>数量</div>
+                    <div style="font-family:Rubik;  " v-text="item.number"></div>
+                </div>
+                <div>
+                    <div>详情</div>
+                    <div>{{item.type == 4 ? '兑换GTC' : '来自用户：'+item.nick_name }}</div>
+                </div>
+                <div>
+                    <div>时间</div>
+                    <div style="font-size:9px; font-family:Rubik;  " v-text="item.create_time"></div>
+                </div>
+            </div>
+            <div v-show='allLoad8' :style="{textAlign: 'center', marginTop:TeamList.length==0?'10rem':'0.5rem'}">已全部加载完成</div>
+        </div>
+    </div>
+</div>
+
+<!-- 奖励记录 -->
+<div class="Asset_details" v-show="close32">
+    <div id="details_top8" class="lazy">
+        <div class="detailsImg lhl" @click="RewardrecordBtn">
+            <img src="http://oss.inewgo.net/resource/imgs/img/assets10.png" alt="">
+        </div>
+        <div class="zichang_bxo3" style="line-height: 5.93rem;">
+            奖励记录
+        </div>
+        <div class="gc_Bill">
+            <div class="gc_tab jl_tab">
+                <div :class="tabidMy8==0? 'active1' :'' " @click="loadProfitListL(0)">全部</div>
+                <div :class="tabidMy8==2? 'active1' :'' " @click="loadProfitListL(2)">收入</div>
+                <div :class="tabidMy8==4? 'active1' :'' " @click="loadProfitListL(4)">兑换</div>
+            </div>
+
+        </div>
+        <div class="gc_content" v-show="tabid == 1" id="my8">
+            <div class="gc_tabnew" v-for="(item,index) in InviteList">
+                <div>
+                    <div>数量</div>
+                    <div v-text="item.number" style="font-family:Rubik;  "></div>
+                </div>
+                <div>
+                    <div>详情</div>
+                    <div>{{item.type == 4 ? '兑换GTC' : '来自用户：'+item.nick_name }}</div>
+                </div>
+                <div>
+                    <div>时间</div>
+                    <div style="font-size:9px; font-family:Rubik;  " v-text="item.create_time"></div>
+                </div>
+            </div>
+            <div v-show='allLoad9' :style="{textAlign: 'center', marginTop:InviteList.length==0?'10rem':'0.5rem'}">已全部加载完成</div>
+        </div>
+    </div>
+</div>
+
+<!-- 合约中弹框 -->
+<div class="Asset_details" v-show="close9" @click='wangMax1'>
+    <div class="contract_title">
+        <img src="http://oss.inewgo.net/resource/imgs/img/assets24.png" alt="" style="width:9.375rem; height:7.34rem;">
+    </div>
+    <!-- <div class="detailsImg lzMax" @click="wangMax1">
+        <img src="http://oss.inewgo.net/resource/imgs/img/assets10.png" alt="">
+    </div> -->
+    <div class="contract contract_list_table" style="margin-top:2rem;">
+        <div class="contract_list" v-if="item.is_contract==0 || ((item.over_contract_day<item.contract_day) && !(item.types == 3 && item.is_feed == 1))" :class="item.is_contract==0 || ((item.over_contract_day<item.contract_day) && !(item.types == 3 && item.is_feed == 1)) ? 'ct1':''" v-for="(item,index) in ContractList">
+            <div
+                    class="contract_listcon newcontract_listcon">
+                <div class="li-con" @click.stop=''>
+                    <div class="contractlist_left">
+                        <img :src="item.img" alt="">
+                        <img style="position: absolute;left:-1rem;top:3rem;" v-show='((item.over_contract_day<item.contract_day) && !(item.types == 3 && item.is_feed == 1)) && !item.is_contract==0' src="http://oss.inewgo.net/resource/imgs/img/zxz.png" alt="">
+                    </div>
+                    <div class="contractlist_center1" style="padding-top:1rem;">
+                        <div style="font-size:12px;">购买价格:</div>
+                        <div>{{item.buy_worth}}</div>
+                        <div>{{item.name}}</div>
+                        <div style="word-wrap:break-word; width:4.8rem;">{{item.en_name}}</div>
+                    </div>
+                    <div class="contractlist_center2" style="padding-top:0.5rem;">
+                        <div style="margin-top:0.1rem;">
+                            <span>合约收益：</span>
+                            <span style="font-size:18px;color:#E24E44;">{{item.profit}}%</span>
+                        </div>
+                        <div style="margin-top:0.1rem;">
+                            <span>装修费用：</span>
+                            <span>{{item.bait}} GTC/天</span>
+                        </div>
+                        <div style="margin-top:0.2rem;">
+                            <span>合约时间：</span>
+                            <span>{{Math.ceil(item.over_contract_day)}}天</span>
+                        </div>
+                        <div style="margin-top:0.2rem;">
+                            <span>合约进度：</span>
+                            <span style="font-size:9px;color:#E24E44;">{{Math.ceil(item.create_age/24)}}/{{Math.ceil(item.contract_time/24)}}</span>
+                        </div>
+                        <div style="margin-top:0.2rem;">
+                            <span>装修进度：</span>
+                            <span style="font-size:9px;color:#E24E44;">{{Math.floor(item.over_contract_day)}}/{{Math.ceil(item.contract_day)}}</span>
+                        </div>
+                    </div>
+                    <div class="contractlist_right">
+                        <img v-show="item.is_contract==0" src="http://oss.inewgo.net/resource/imgs/img/assers21.png" alt=""
+                             @click="openTrimDetail(item)">
+                        <img v-show="((item.over_contract_day<item.contract_day) && !(item.types == 3 && item.is_feed == 1)) && !item.is_contract==0"
+                             src="http://oss.inewgo.net/resource/imgs/img/assers203.png" alt="">
+                    </div>
+                </div>
+
+                <img class="line" src="http://oss.inewgo.net/resource/imgs/img/assets23.png"/>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- 待出售弹框 -->
+<div class="Asset_details" v-show="close10" @click="wangMax2">
+    <div class="contract_title  lyaaa">
+        <img src="http://oss.inewgo.net/resource/imgs/img/assets22.png" alt="" style="width:9.28rem; height:4.56rem;">
+    </div>
+    <!-- <div class="detailsImg lzMax" @click="wangMax2">
+        <img src="http://oss.inewgo.net/resource/imgs/img/assets10.png" alt="">
+    </div> -->
+    <div class="contract">
+        <div class="contract contract_list_table" id="my10" style="margin-top: 2rem">
+            <div class="contract_list" v-if="(item.start_about || (item.types == 3 && item.is_feed == 1)) || !(item.is_contract==0 || ((item.over_contract_day<item.contract_day) && !(item.types == 3 && item.is_feed == 1)))" :class="(item.start_about || (item.types == 3 && item.is_feed == 1)) || !(item.is_contract==0 || ((item.over_contract_day<item.contract_day) && !(item.types == 3 && item.is_feed == 1)))?'ct2':''" v-for="(item,index) in ContractList">
+                <div
+                        class="contract_listcon newcontract_listcon">
+                    <div class="li-con" @click.stop="">
+                        <div class="contractlist_left">
+                            <img :src="item.img" alt="">
+                            <!-- <img src="http://oss.inewgo.net/resource/imgs/img/zxz.png" alt=""> -->
+                        </div>
+                        <div class="contractlist_center1" style="padding-top:1rem;">
+                            <div style="font-size:12px;">出售价格:</div>
+                            <div>{{item.sell_worth}}</div>
+                            <div>{{item.name}}</div>
+                            <div style="word-wrap:break-word; width:4.8rem;">{{item.en_name}}</div>
+                        </div>
+                        <div class="contractlist_center2" style="padding-top:0.5rem;">
+                            <div style="margin-top:0.5rem;">
+                                <span>合约收益：</span>
+                                <span style="font-size:22px;color:#E24E44;">{{item.profit}}%</span>
+                            </div>
+                            <div style="margin-top:0.2rem;">
+                                <span>装修费用：</span>
+                                <span>{{item.bait}} GTC/天</span>
+                            </div>
+                            <div style="margin-top:0.2rem;">
+                                <span>合约时间：</span>
+                                <span>{{Math.ceil(item.over_contract_day)}}天</span>
+                            </div>
+                            <div style="margin-top:0.2rem;">
+                                <span>合约进度：</span>
+                                <span style="font-size:9px;color:#E24E44;">{{Math.ceil(item.create_age/24)}}/{{Math.ceil(item.contract_time/24)}}</span>
+                            </div>
+                            <!-- <div style="margin-top:0.2rem;">
+                                <span>装修进度：</span>
+                                <span style="font-size:9px;color:#E24E44;"></span>
+                            </div> -->
+                        </div>
+                        <div class="contractlist_right">
+                            <img src="http://oss.inewgo.net/resource/imgs/img/assets99.png" alt="">
+                        </div>
+                    </div>
+
+                    <img  class="line" src="http://oss.inewgo.net/resource/imgs/img/assets23.png"/>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- 预约记录 -->
+<!-- <div class="Asset_details" v-show="close13">
+    <div class="details_topjl">
+        <div class="detailsImg" @click="reservationMax">
+            <img src="http://oss.inewgo.net/resource/imgs/img/assets10.png" alt="">
+        </div>
+        <div class="details_content1">
+            <div class="detailsList">
+                <div>
+                    <div class="detailsList_yu">
+                        <div style="font-size:27px;">别墅</div>
+                        <div style="font-size:12px; margin-top:0.5rem;">-50 GTC</div>
+
+                    </div>
+                    <div class="yy_time">
+                        <div style="font-size:12px; margin-top:0.5rem">2019.09.10</div>
+                        <div style="font-size:12px; margin-top:0.5rem; margin-left:2.5rem;">16:30:10</div>
+                        <div style="font-size:17px; margin-left:2.5rem;">预约记录</div>
+                    </div>
+                </div>
+
+
+                <img class="line" src="http://oss.inewgo.net/resource/imgs/img/assets23.png"/>
+            </div>
+            <div class="contract_listcon newcontract_listcon">
+                <div class="li-con">
+                    <div class="contractlist_left">
+                        <img src="http://oss.inewgo.net/resource/imgs/img/assets10.png" alt="">
+                    </div>
+                    <div class="contractlist_center1">
+                        <div>草房</div>
+                        <div style="word-wrap:break-word; width:4.8rem;">ThatchedCottage</div>
+                        <div>
+                            <span>价格：</span>
+                            <span>100-300</span>
+                        </div>
+                    </div>
+                    <div class="contractlist_center2">
+                        <div>
+                            <span>合约收益：</span>
+                            <span style="font-size:22px;color:#E24E44;">15%</span>
+                        </div>
+                        <div>
+                            <span>装修费用：</span>
+                            <span>1 GTC/天</span>
+                        </div>
+                        <div>
+                            <span>合约时间：</span>
+                            <span>15 天</span>
+                        </div>
+                        <div>
+                            <span>合约进度：</span>
+                            <span style="font-size:9px;color:#E24E44;">10%</span>
+                        </div>
+                    </div>
+                    <div class="contractlist_right">
+                        <img src="http://oss.inewgo.net/resource/imgs/img/assers21.png" alt="">
+                    </div>
+                </div>
+
+
+                <img class="line" src="http://oss.inewgo.net/resource/imgs/img/assets99.png"/>
+            </div>
+        </div>
+    </div>
+</div> -->
+
+
+<!-- 预约记录 -->
+<div class="Asset_details" v-show="close13">
+    <div id="details_topjl" class="lazy">
+        <div class="detailsImg lhl" @click="reservationMax">
+            <img src="http://oss.inewgo.net/resource/imgs/img/assets10.png" alt="">
+        </div>
+        <div class="zichang_bxo">
+            预约记录
+        </div>
+        <div class="details_content1  yueyueList" id="my1">
+            <div class="detailsList" v-for='item in list100'>
+                <div>
+                    <div class="detailsList_yu">
+                        <div style="font-size:27px;font-family:MF XingYan(Noncommercial);font-weight:400;">{{item.name}}</div>
+                        <div style="font-size:12px; margin-top:0.5rem;font-family:Rubik;font-weight:400;">
+                            <span v-if="item.bait>0">+{{item.bait}}</span>
+                            <span v-else>{{item.bait}}</span>
+                        </div>
+
+                    </div>
+                    <div class="list_tab2" style="font-family:Rubik;font-weight:400;">
+                        <div style="font-size:12px; margin-top:0.5rem"> {{item.create_time.split(' ')[0]}}</div>
+                        <div style="font-size:12px; margin-top:0.5rem;">{{item.create_time.split(' ')[1]}}</div>
+                        <div style=" text-align: right;font-size:12px; margin-top:0.5rem;">{{item.status}}</div>
+                    </div>
+                </div>
+
+            </div>
+            <div :style="{textAlign: 'center', marginTop:list100.length==0?'10rem':'0.5rem'}" v-show="allLoad2">已全部加载完成</div>
+        </div>
+    </div>
+
+</div>
+
+
+<!-- 抢购记录 -->
+<div class="Asset_details" v-show="close14">
+    <div id="SnatchMax" class="lazy">
+        <div class="detailsImg lhl" @click="SnatchMax">
+            <img src="http://oss.inewgo.net/resource/imgs/img/assets10.png" alt="">
+        </div>
+        <div class="zichang_bxo">
+            抢购记录
+        </div>
+        <div class="details_content1 yueyueList" id="my">
+            <div class="detailsList" v-for="item1 in list101">
+                <div>
+                    <div class="detailsList_yu">
+                        <div style="font-size:27px; font-family:MF XingYan(Noncommercial);font-weight:400;">{{item1.name}}</div>
+                        <div style="font-size:12px; margin-top:0.5rem;font-family:Rubik; ">{{item1.worth}} GTC</div>
+                    </div>
+                    <div class="list_tab2" style="font-family:Rubik;     font-weight:400;">
+                        <!-- {{item1.over_time}} -->
+                        <div style="font-size:12px; margin-top:0.5rem">{{item1.over_time.split(' ')[0]}}</div>
+                        <div style="font-size:12px; margin-top:0.5rem">{{item1.over_time.split(' ')[1]}}</div>
+                        <!-- <div style="font-size:12px; margin-top:0.5rem; margin-left:2.5rem;">16:30:10</div> -->
+                        <div style=" text-align: right;font-size:17px; margin-left:0.5rem;">{{item1.status_name}}</div>
+                    </div>
+                </div>
+            </div>
+            <div v-show='allLoad' :style="{textAlign: 'center', marginTop:list101.length==0?'10rem':'0.5rem'}">已全部加载完成</div>
+
+        </div>
+    </div>
+
+</div>
+
+
+<!-- 转让记录 -->
+<div class="Asset_details" v-show="close15">
+    <div id="Transfer_record" class="lazy">
+        <div class="detailsImg lhl" @click="recordhMaxaaa">
+            <img src="http://oss.inewgo.net/resource/imgs/img/assets10.png" alt="">
+        </div>
+        <div class="zichang_bxo">
+            转让记录
+        </div>
+        <div class="Transfer_content">
+            <div class="Transfer_title">
+                <div :class="tabid1==1? 'active2' :'' " @click="record_list(1)">已转让</div>
+                <div :class="tabid1==2? 'active2' :'' " @click="record_list(2)">申诉</div>
+            </div>
+            <div class="a1111" id='myzr'>
+                <div class="Transfer_listbox" id="my2">
+                    <div class="Transfer_list" v-for="(item, index) in listZr" :key="index">
+                        <div class="list_tab1">
+                            <div style="font-size:27px; font-family:MF XingYan(Noncommercial);font-weight:400;">{{item.name}}</div>
+                            <div style="font-size:13px; font-family:Rubik; ">+{{item.worth}} GTC</div>
+                        </div>
+                        <div class="list_tab2" style="font-family:Rubik;">
+                            <div style="margin-top:0.5rem;">{{item.over_time.split(' ')[0]}}</div>
+                            <div style="margin-top:0.5rem;">{{item.over_time.split(' ')[1]}}</div>
+                            <div style="text-align: right; font-size:17px;">{{tabid1 == 1 ? '转让成功' : '申诉'}}</div>
+                        </div>
+                    </div>
+
+                </div>
+                <div v-show='allLoad3' :style="{textAlign: 'center', marginTop:listZr.length==0?'10rem':'0.5rem'}">全部加载完成</div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- 奖励兑换 -->
+<div class="Asset_details" v-show="close16">
+    <div id="redemption" class="lazy">
+        <div class="detailsImg_zr11 Redeem_nowBb" @click="send5()">
+            立即兑换
+        </div>
+        <div class="detailsImg liupai" @click="detailsImghMax">
+            <img src="http://oss.inewgo.net/resource/imgs/img/assets10.png" alt="">
+        </div>
+        <div class="zichang_bxo4">
+            奖励兑换
+        </div>
+
+        <div class="redemption_content">
+            <div style="display:flex;">
+                <div :class="tab==1?'activ1': '' " @click="tabLstMax(1)">当前商会/</div>
+                <div :class="tab==2?'activ1': '' " @click="tabLstMax(2)">招募奖励</div>
+            </div>
+            <div class="redemption_top">
+                <div>
+                    <img src="http://oss.inewgo.net/resource/imgs/img/assets31.png" alt="">
+                </div>
+                <div>X
+                    <input type="number" v-model="rednum"
+                           style="text-align:center;margin-left:0.5rem;border:1px solid #ccc;width:7rem;height:2rem;line-height:2rem; margin-top:1.7rem; outline: none; background:none; text-align: 2rem; font-size:27px; color:#fff;">
+                </div>
+
+            </div>
+            <div style="font-size:9px; opacity: 0.65;">注：商会及招募奖励兑换GTC，最小兑换额为300 GTC。</div>
+        </div>
+
+    </div>
+</div>
+
+
+<!-- 兑换成功 -->
+<div class="Asset_details" v-show="close17">
+    <div id="Successful_redemption" class="lazy">
+
+        <div class="detailsImg Successful" @click="SuccessfulRedemption">
+            <img src="http://oss.inewgo.net/resource/imgs/img/assets10.png" alt="">
+        </div>
+
+
+    </div>
+</div>
+
+
+<!-- 闪兑 -->
+<div class="Asset_details" v-show="close18">
+    <div id="new_flash" class="lazy">
+        <div class="detailsImg lhl" @click="flashMax">
+            <img src="http://oss.inewgo.net/resource/imgs/img/assets10.png" alt="">
+        </div>
+        <div class="detailsImg_zr sdMax" @click="recordhMax">
+            立即兑换
+        </div>
+        <div class="zichang_bxo10">
+            闪兑
+        </div>
+
+        <div class="flash_box">
+            <div class="flash_content">
+                <div class="flash_content1">
+                    <div>当前{{form}}:{{gt_num}}</div>
+                    <div></div>
+                </div>
+                <div class="flash_content2">
+                    <div>{{form}}:</div>
+                    <input placeholder="兑换数量" type="number" step="0.01" autofocus v-model="eth">
+                </div>
+                <div class="flash_content3" @click="swap">
+                    <img src="http://oss.inewgo.net/resource/imgs/img/assets37.png" alt="">
+                </div>
+                <div class="flash_content2 flash_content4">
+                    <div>{{to}}:</div>
+                    <input type="text" placeholder="收到数量" readonly v-bind:value="Number(eth*exchange_rate).toFixed(2)"/>
+                </div>
+                <div class="flash_content5">
+                    <div>当前汇率：</div>
+                    <div>{{exchange_rate || '0.00'}}</div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<!-- 闪兑成功弹框 -->
+<div class="Asset_details" v-show="close19">
+    <div id="flash_successful" class="lazy">
+        <div class="detailsImg flashsuccessfulMax" @click="flashsuccessfulMax">
+            <img src="http://oss.inewgo.net/resource/imgs/img/assets10.png" alt="">
+        </div>
+        <div class="zichang_bxomax1">
+            闪兑
+        </div>
+        <div style="color:#FFE9C9; font-size:61px; line-height:35rem; text-align: center;">闪兑成功</div>
+
+    </div>
+</div>
+<!-- GC提币 -->
+<div class="Asset_details" v-show="close20">
+    <div id="gc_coin" class="lazy">
+        <div class="detailsImg lhl" @click="gcflashMax">
+            <img src="http://oss.inewgo.net/resource/imgs/img/assets10.png" alt="">
+        </div>
+        <div class="zichang_bxo10">
+            GC提币
+        </div>
+
+
+
+        <div class="CoinBtn" @click="CoinBtnMax">
+            <img src="http://oss.inewgo.net/resource/imgs/img/assets41.png" alt="">
+        </div>
+        <div class="Submit_review" @click="submitBtn1">
+            <img src="http://oss.inewgo.net/resource/imgs/img/assets42.png" alt="">
+        </div>
+        <div class="gc_coinContent">
+            <div class="flash_content2 new_flash_content2">
+                <div class="gc_coinContentaa">钱包地址:</div>
+                <input style="color:#fff;" v-model="wallet_address" placeholder="请输入您的钱包地址">
+            </div>
+            <div class="flash_content2 new_flash_content2">
+                <div class="gc_coinContentaa">提币数量:</div>
+                <input type="number" style="color:#fff;" v-model="amount" placeholder="请输入您转出的数量">
+            </div>
+            <div class="flash_content2 new_flash_content2">
+                <div class="gc_coinContentaa">交易密码：</div>
+                <input style="color:#fff;" type="password" v-model="pay_pwd" placeholder="请输入您交易密码">
+            </div>
+            <div class="lase_flash">本次交易手续费：{{amount*commission_rate/100}}</div>
+        </div>
+    </div>
+
+</div>
+
+
+<!-- GC提币审核中 -->
+<div class="Asset_details" v-show="close21">
+    <div id="gC_review" class="lazy">
+        <div class="detailsImg gc_img" @click="reviewMax">
+            <img src="http://oss.inewgo.net/resource/imgs/img/assets10.png" alt="">
+        </div>
+        <div class="zichang_bxomax1">
+            GC提币
+        </div>
+        <div style="color:#FFE9C9; font-size:61px; line-height:35rem; text-align: center;">审核中</div>
+        <div class="review_content">
+            <div class="review_content_b">提币时间为每日上午09:00 - 22:00,您的提币审核会在您提交申请的两小时内得到处理</div>
+
+        </div>
+    </div>
+</div>
+
+<!-- 提币记录 -->
+<div class="Asset_details" v-show="close22">
+    <div id="MoneyRecord" class="lazy">
+        <div class="detailsImg lhl" @click="oneyRecordMax">
+            <img src="http://oss.inewgo.net/resource/imgs/img/assets10.png" alt="">
+        </div>
+        <div class="zichang_bxo2" style="line-height: 5.93rem;">提币记录</div>
+        <div class="MoneyRecord_content">
+            <div class="MoneyRecord_tab">
+                <div :class="tabid2==1? 'active3':''" @click="MoneyRecordMaxL(1)">审核中</div>
+                <div :class="tabid2==2? 'active3':''" @click="MoneyRecordMaxL(2)">转出成功</div>
+                <div :class="tabid2==3? 'active3':''" @click="MoneyRecordMaxL(3)">转出失败</div>
+            </div>
+            <div class="a1111" id="my3">
+                <div class="Record_content" v-for="(item, index) in listTb" :key="index">
+                    <div>
+                        <div class="Record_a">提币时间</div>
+                        <div class="Record_b">{{item.create_time}}
+                        </div>
+                    </div>
+                    <div>
+                        <div class="Record_a">提币数量</div>
+                        <div class="Record_b">{{item.amount}}</div>
+                    </div>
+                    <div>
+                        <div class="Record_a">状态</div>
+                        <div class="Record_b">{{tabid2 == 1 ? '审核中' : (tabid2 == 2 ? '转出成功' : '转出失败')}}</div>
+                    </div>
+                </div>
+                <div v-show='allLoad4' :style="{textAlign: 'center', marginTop:listTb.length==0?'10rem':'0.5rem'}">已全部加载完成</div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<!-- 钱包充币 -->
+<div class="Asset_details" v-show="close23">
+    <div id="Wallet" class="lazy">
+        <div class="detailsImg lhl" @click="WalletMax">
+            <img src="http://oss.inewgo.net/resource/imgs/img/assets10.png" alt="">
+        </div>
+        <div class="new_flashImg Walletbtn" @click="copyGcAddress">
+            <img src="http://oss.inewgo.net/resource/imgs/img/assets53.png" alt="">
+        </div>
+        <div class="zichang_bxo10">
+            钱包充币
+        </div>
+
+        <div class="Wallet_content">
+            <div>GC-Wallet</div>
+            <div style="display: none;">{{info.gc_address || 'null'}}</div>
+            <input id="gc-address" type="text" readonly v-bind:value="info.gc_address" class="gc-address">
+            <div>
+                <!-- <img src="http://oss.inewgo.net/resource/imgs/img/assets35.png" alt=""> -->
+                <img v-bind:src="info.gc_address ? '/home/tools/qrcode.html?code='+info.gc_address : '#'" alt="二维码"/>
+            </div>
+            <div>请转入GC</div>
+        </div>
+    </div>
+</div>
+
+
+<!-- 钱包充币复制地址 -->
+<div class="Asset_details" v-show="close24">
+    <div id="copy_address" class="lazy">
+        <div class="detailsImg cyll" @click="copyAddress">
+            <img src="http://oss.inewgo.net/resource/imgs/img/assets10.png" alt="">
+        </div>
+        <div class="zichang_bxo11" style="left:9.2rem;">钱包充币</div>
+        <div style="color:#FFE9C9; font-size:61px;text-align: center; padding:5rem;">复制地址成功</div>
+    </div>
+</div>
+
+<!-- 流拍提示 -->
+<div class="Asset_details" v-show="close11">
+    <div id="Streaming_tips" class="lazy">
+        <div class="detailsImg liupai" @click="StreamingMax">
+            <img src="http://oss.inewgo.net/resource/imgs/img/assets10.png" alt="">
+        </div>
+        <div class="zichang_bxo4">
+            流拍提示
+        </div>
+        <div class="Streaming_content" style="font-size:10px;">
+            <div>尊敬的大富豪玩家，由于此次抢购到您房产（编号：123123）的玩家（ID：368027）没能在规定时间内及时付款，导致您的该套房产流拍，我们深表歉意。
+            </div>
+            <div>对于玩家（ID：368027）系统将对其进行封禁24小时处罚。</div>
+            <div>关于此次流拍的房产（编号：123123）在您再次按照合约时间进行装修后，将自动进入下一轮抢购，在这个过程中，您的收益也将会按照合约收益进行累加，大富豪感谢您的支持与理解！</div>
+        </div>
+    </div>
+</div>
+
+<!-- 房产详情 -->
+<div class="Asset_details" v-show="close25" @click="ffDetail">
+    <div id="Property_details" class="lazy">
+        <!-- <div class="detailsImg ffffcccc" @click="ffDetail">
+                <img src="http://oss.inewgo.net/resource/imgs/img/assets10.png" alt="">
+            </div> -->
+        <div class="PropertyImg_box" @click='ljzx'>
+            <img src="http://oss.inewgo.net/resource/imgs/img/assets102.png" alt="">
+        </div>
+        <div class="Property_box" @click.stop="">
+            <div>
+                <div class="Propertyimg">
+                    <img :src="fish.img" alt="">
+                </div>
+                <div class="Property_tilte">
+                    <div v-text="fish.name"></div>
+                    <div style="font-size:9px; color:#F2E1C0; margin-top:1.3rem">Villa</div>
+                </div>
+            </div>
+            <div></div>
+            <div style="line-height:24px;">
+                <div style="color:#3A3026; font-size:14px;margin-left:2.2rem;">合约收益：</div>
+                <div style="font-size:26px; color:#E14F4F">{{fish.profit}}%</div>
+            </div>
+            <div style="color:#3A3026; font-size:14px;margin-top:0.3rem;">
+                <div style="margin-left:2.2rem;">装修费用：</div>
+                <div>{{fish.bait}} GTC/天</div>
+            </div>
+            <div style="color:#3A3026; font-size:14px; margin-top:0.3rem;">
+                <div style="margin-left:2.2rem;">合约时间：</div>
+                <div>{{Math.ceil(fish.over_contract_day)}} 天</div>
+            </div>
+            <div style="color:#E14F4F; font-size:14px; margin-top:0.3rem;">
+                <div style="margin-left:2.2rem;">合约进度：</div>
+                <div>{{Math.ceil(fish.create_age/24)}}/{{Math.ceil(fish.contract_time/24)}}</div>
+            </div>
+            <div class="PropertyTab">
+                <div style="display:flex;" @click="switchPayType(1)">
+                    <div class="PropertyTab1">
+                        <img src="http://oss.inewgo.net/resource/imgs/img/assets3.png" alt="">
+                    </div>
+                    <div>GTC 装修</div>
+                </div>
+                <div style="display:flex;" @click="switchPayType(0)">
+                    <div class="PropertyTab2">
+                        <img src="http://oss.inewgo.net/resource/imgs/img/assets92.png" alt="">
+                    </div>
+                    <div>精粹装修</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- 装修成功弹框 -->
+<div class="Asset_details" v-show="close26">
+    <div id="zh_success" class="lazy">
+        <div class="Property_box zh_Property_box">
+            <div>
+                <div class="Propertyimg">
+                    <img src="http://oss.inewgo.net/resource/imgs/img/assets10.png" alt="">
+                </div>
+                <div class="Property_tilte">
+                    <div>别墅</div>
+                    <div style="font-size:9px; color:#F2E1C0; margin-top:1.3rem">Villa</div>
+                    <div style="font-size:9px; color:#F2E1C0;margin-top:0.3rem;">价格：3001-6000</div>
+                </div>
+            </div>
+            <div></div>
+            <div style="line-height:34px;">
+                <div style="margin-left:2.2rem;">合约收益：</div>
+                <div style="font-size:34px; color:#E14F4F">40%</div>
+            </div>
+            <div style="color:#3A3026; font-size:14px;margin-top:0.3rem;">
+                <div style="margin-left:2.2rem;">抢购时间：</div>
+                <div>17:30-17:40</div>
+            </div>
+            <div style="color:#3A3026; font-size:14px;margin-top:0.3rem;">
+                <div style="margin-left:2.2rem;">装修费用：</div>
+                <div>20 GTC/天</div>
+            </div>
+            <div style="color:#3A3026; font-size:14px; margin-top:0.3rem;">
+                <div style="margin-left:2.2rem;">合约时间：</div>
+                <div>21 天</div>
+            </div>
+            <div style="color:#E14F4F; font-size:14px; margin-top:0.3rem;">
+                <div style="margin-left:2.2rem;">合约进度：</div>
+                <div>60%</div>
+            </div>
+            <div class="PropertyTab">
+                <div style="display:flex;">
+                    <div class="PropertyTab1">
+                        <img src="http://oss.inewgo.net/resource/imgs/img/assets91.png" alt="">
+                    </div>
+                    <div>GTC 装修</div>
+                </div>
+                <div style="display:flex;">
+                    <div class="PropertyTab2">
+                        <img src="http://oss.inewgo.net/resource/imgs/img/assets92.png" alt="">
+                    </div>
+                    <div>精粹装修</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- GTC转让弹框 -->
+<div class="Asset_details" v-show="close27">
+    <div class="gtc_transfer ">
+        <div class="detailsImg lhl" @click="closeGCMax">
+            <img src="http://oss.inewgo.net/resource/imgs/img/assets10.png" alt="">
+        </div>
+        <div class="detailsImg_zr" @click="liliMax">
+            确认转让
+        </div>
+        <div class="zichang_bxo1">
+            GTC转让
+        </div>
+        <div class="GTC_transferContent">
+            <div>
+                <div class="gtc_aa" style="letter-spacing: 5px;">对方ID:</div>
+                <input style="color:#fff;" v-model='gtcOutId' placeholder="请输入对方 ID">
+            </div>
+            <div>
+                <div class="gtc_aa">转出数量：</div>
+                <input  style="color:#fff;" v-model='gtcOutNumber' placeholder="请输入转出数量">
+            </div>
+            <!-- <div>
+                <div class="gtc_aa" style="letter-spacing: 8px; width:13rem;">验证码</div>
+                <input placeholder="输入验证码" style="text-align: center;">
+                <div style="width:6.125rem; height:2.2rem;">
+                    <img src="http://oss.inewgo.net/resource/imgs/img/assets65.png" alt="" style="width:6.125rem; height:2.2rem;">
+                </div>
+            </div> -->
+            <div>
+                <div class="gtc_aa">交易密码：</div>
+                <input style="color:#fff;"  type='password' v-model='gtcOutPwd' placeholder="请输入您交易密码">
+            </div>
+            <div> 注：为确保账号安全，本次操作需要验证当前手机号</div>
+            <div> 当前绑定手机号为：{{info.mobile}}</div>
+            <div>已转让的GTC不可逆转，请核对并确认好友ID再进行转让</div>
+        </div>
+    </div>
+</div>
+
+<!-- 精粹转让弹框 -->
+<div class="Asset_details" v-show="close28">
+    <div id="Pristine_transfer" class="lazy">
+        <div class="detailsImg lhl" @click="PristineMax">
+            <img src="http://oss.inewgo.net/resource/imgs/img/assets10.png" alt="">
+        </div>
+        <div class="zichang_bxo2">精粹转让</div>
+        <div class="detailsImg_zr" @click="jsMaxLi">
+            立即转让
+        </div>
+        <div class="Pristine_content">
+            <div>
+                <div class="Pristine_bb" style="letter-spacing: 2px;">对 方 ID:</div>
+                <input style="color:#fff" v-model='gtcOutId1' style="margin-left:0.5rem;">
+            </div>
+            <div>
+                <div class="Pristine_bb">转出数量：</div>
+                <input style="color:#fff" v-model='gtcOutNumber1'>
+            </div>
+            <div>
+                <div class="Pristine_bb">支付密码：</div>
+                <input style="color:#fff" type='password' v-model='gtcOutPwd1'>
+            </div>
+            <!-- <div>
+                <div style="display:flex; justify-content: center;">
+                    <div style="width: 4.625rem; height:4.94rem;">
+                        <img src="http://oss.inewgo.net/resource/imgs/img/assets97.png" alt="" style="width:4.625rem; height:9.49rem;">
+                    </div>
+                    <div style="font-size:27px;line-height:7.49rem;">X999.99</div>
+                </div>
+                <div style="text-align: center;margin-top:0.5rem; font-size:11px;">当前可用精粹</div>
+            </div> -->
+            <div>注：精粹可用与「激活」、「预约」、「装修」功能，不可转换为GTC或GC。</div>
+        </div>
+    </div>
+</div>
+
+
+<!-- 弹窗 -->
+<div id="myModal" class="modal2" v-show="popwin">
+
+    <!-- 弹窗内容 -->
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="closebtn" @click="closeWin">
+				<img style="width: 100%;" src="http://oss.inewgo.net/resource/imgs/img/assets10.png">
+			</span>
+        </div>
+        <div class="modal-body don-form">
+            <div class="input-box content-box">
+                <div class="input-item"><span>对方 ID:</span> <input type="text" placeholder="请输入用户名" autocomplete="off">
+                </div>
+                <div class="input-item"><span>转出数量:</span> <input type="text" placeholder="请输入手机号码" autocomplete="off">
+                </div>
+                <div class="input-item"><span>验 证 码:</span> <input type="text" placeholder="请输入验证码" autocomplete="off"
+                                                                   class="login-verify">
+                    <button class="getcode">发送验证码</button>
+                </div>
+                <div class="input-item"><span>交易密码:</span> <input type="password" placeholder="请输入密码"
+                                                                  autocomplete="off"></div>
+                <p class="tip">
+                    注：为确保账号安全，本次操作需要验证当前手机号 <br>当前绑定手机号为：136-6666-8888
+                </p>
+                <p class="tip2">已转让的GTC不可逆转，请核对并确认好友ID再进行转让</p>
+                <div class="input-foot">
+                    <div type="submit" class="foot-btn"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+<div id="myModal2" class="modal2" v-show="popwin">
+    <!-- 弹窗内容2 -->
+    <div class="modal-content modal-content2">
+        <div class="modal-header">
+          <span class="closebtn" @click="closeWin">
+			  <img style="width: 100%;" src="http://oss.inewgo.net/resource/imgs/img/assets10.png">
+		  </span>
+        </div>
+        <div class="modal-body don-form">
+            <div class="input-box content-box2">
+                <div class="input-item"><span>对方ID:</span> <input type="text" placeholder="请输入用户名" autocomplete="off">
+                </div>
+                <div class="input-item"><span>转出数量:</span> <input type="text" placeholder="请输入手机号码" autocomplete="off">
+                </div>
+                <div class="input-item"><span>支付密码:</span> <input type="password" placeholder="请输入密码"
+                                                                  autocomplete="off"></div>
+                <div class="essencebox">
+                    <i class="essence"></i><span class="essenceNum">x9999</span>
+                    <p>当前可用精粹</p>
+                </div>
+                <p class="tip">
+                    注：精粹可用与「激活」、「预约」、「装修」功能，不可转换为GTC或GC。
+                </p>
+                <div class="input-foot2">
+                    <div type="submit" class="foot-btn foot-btn2"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- gc账单明细 -->
+<div class="Asset_details" v-show="close29">
+    <div id="details_top12" class="lazy">
+        <div class="detailsImg lhl" @click="closeGCDetail">
+            <img src="http://oss.inewgo.net/resource/imgs/img/assets10.png" alt="">
+        </div>
+        <div class="zichang_bxo1">
+            GC账单
+        </div>
+
+        <div class="gc_table">
+            <div class="Transfer_title">
+                <div :class="tabid300==1? 'active2' :'' " @click="loadGCListL(1)">全部</div>
+                <div :class="tabid300==2? 'active2' :'' " @click="loadGCListL(2)">收入</div>
+                <div :class="tabid300==3? 'active2' :'' " @click="loadGCListL(3)">支出</div>
+            </div>
+            <div class="a1111" id="my4">
+                <div class="Transfer_listbox" v-for="(item,index) in GCList">
+                    <div class="Transfer_list">
+                        <div class="list_tab1">
+                            <div style="font-size:15px;">数量</div>
+                            <div style="font-size:15px;">详情</div>
+                            <div style="font-size:15px;">时间</div>
+                        </div>
+                        <div class="list_tab2">
+                            <div style="margin-top:0.5rem;font-family:Rubik;  ">{{item.type==1?'-':'+'}}{{parseFloat(item.amount).toFixed(2)}}
+                            </div>
+                            <div style="margin-top:0.5rem;margin-left:2.5rem;" v-text="item.remark"></div>
+                            <div style="margin-top:0.5rem;text-align: right; font-size:13px; font-family:Rubik; "
+                                 v-text="item.create_time"></div>
+                        </div>
+                    </div>
+                </div>
+                <div v-show='allLoad5' :style="{textAlign: 'center', marginTop:GCList.length==0?'10rem':'0.5rem'}" >已全部加载完成</div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- gtc账单明细 -->
+<div class="Asset_details" v-show="close30">
+    <div id="details_top13" class="lazy">
+        <div class="detailsImg_zr" @click="gtOutMax">
+            GTC转让
+            <!-- <img src="http://oss.inewgo.net/resource/imgs/img/assets131.png" alt=""> -->
+        </div>
+        <div class="zichang_bxo1">
+            GTC账单
+        </div>
+        <div class="detailsImg lhl" @click="closeGTCDetail">
+            <img src="http://oss.inewgo.net/resource/imgs/img/assets10.png" alt="">
+        </div>
+
+        <div class="gc_table">
+            <div class="Transfer_title">
+                <div :class="tabid3==1? 'active2' :'' " @click="loadGTCListL(1)">全部</div>
+                <div :class="tabid3==2? 'active2' :'' " @click="loadGTCListL(2)">收入</div>
+                <div :class="tabid3==3? 'active2' :'' " @click="loadGTCListL(3)">支出</div>
+            </div>
+            <div class="a1111" id="my5">
+                <div class="Transfer_listbox" v-for="(item,index) in GTCList">
+                    <div class="Transfer_list">
+                        <div class="list_tab1">
+                            <div style="font-size:15px;">数量</div>
+                            <div style="font-size:15px;">详情</div>
+                            <div style="font-size:15px;">时间</div>
+                        </div>
+                        <div class="list_tab2">
+                            <div style="margin-top:0.5rem;">{{item.number>0?'+':''}}{{parseFloat(item.number).toFixed(2)}}
+                            </div>
+                            <div style="margin-top:0.5rem;margin-left:3.5rem;font-family:Rubik; " v-text="item.name"></div>
+                            <div style="margin-top:0.5rem;text-align: right; font-size:13px; font-family:Rubik;"
+                                 v-text="item.create_time"></div>
+                        </div>
+                    </div>
+                </div>
+                <div v-show='allLoad6' :style="{textAlign: 'center', marginTop:GTCList.length==0?'10rem':'0.5rem'}">已全部加载完成</div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- 精粹账单明细 -->
+<div class="Asset_details" v-show="close31">
+    <div id="details_top14" class="lazy">
+        <div class="detailsImg lhl" @click="closeIntegralDetail">
+            <img src="http://oss.inewgo.net/resource/imgs/img/assets10.png" alt="">
+        </div>
+        <div class="zichang_bxo2" style="line-height: 5.93rem;">
+            精粹账单
+        </div>
+        <div class="detailsImg_zr" @click="jsMaxamxTab">
+            确认转让
+        </div>
+
+        <div class="gc_table">
+            <div class="Transfer_title ">
+                <div :class="tabidJc==1? 'active2' :'' " @click="loadIntegralListL(1)">全部</div>
+                <div :class="tabidJc==2? 'active2' :'' " @click="loadIntegralListL(2)">精粹收入</div>
+                <div :class="tabidJc==3? 'active2' :'' " @click="loadIntegralListL(3)">精粹支出</div>
+            </div>
+            <div class="a1111" id="my6">
+                <div class="Transfer_listbox" v-for="(item,index) in IntegralList">
+                    <div class="Transfer_list">
+                        <div class="list_tab1">
+                            <div style="font-size:15px;">数量</div>
+                            <div style="font-size:15px;">详情</div>
+                            <div style="font-size:15px;">时间</div>
+                        </div>
+                        <div class="list_tab2">
+                            <div style="margin-top:0.5rem;font-family:Rubik;">{{item.number>0?'+':''}}{{parseFloat(item.number).toFixed(2)}}
+                            </div>
+                            <div style="margin-top:0.5rem;margin-left:2.5rem;" v-text="item.name"></div>
+                            <div style="margin-top:0.5rem;text-align: right; font-size:13px; font-family:Rubik; "
+                                 v-text="item.create_time"></div>
+                        </div>
+                    </div>
+
+                </div>
+                <div v-show='allLoad7' :style="{textAlign: 'center', marginTop:IntegralList.length==0?'10rem':'0.5rem'}">已全部加载完成</div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- 打开弹窗按钮 -->
+<!-- <button id="myBtn">打开弹窗</button>
+ <button id="myBtn2">打开弹窗2</button> -->
+
+{include file='menu'}
+{/block}
+
+{block name='script'}
+<script>
+
+
+    // document.addEventListener("DOMContentLoaded", function() {
+    //             var lazyloadImages = document.querySelectorAll(".lazy");
+    //             var imageObserver = new IntersectionObserver(function(entries, observer) {
+    //                 entries.forEach(function(entry) {
+    //                     if (entry.isIntersecting) {
+    //                         var image = entry.target;
+    //                         image.classList.remove("lazy");
+    //                         imageObserver.unobserve(image);
+    //                     }
+    //                 });
+    //             });
+    //             lazyloadImages.forEach(function(image) {
+    //                 imageObserver.observe(image);
+    //             });
+    //         });
+
+
+    var app = new Vue({
+        el: '#app',
+        data: {
+            list: [],
+            GCList: [],
+            GTCList: [],
+            IntegralList: [],
+            ContractList: [],
+            InviteList: [],
+            TeamList:[],
+            info: {},
+            fish: {},
+            page: 1,
+            page3: 1,
+            allLoad2: false,
+            status: true,
+            mybait: '',
+            close2: false,  //资产详情弹框
+            close3: false,  //房产信息弹框
+            close4: false,  //GC账单弹框
+            tabid: 1,
+            close6: false,  //精粹转让弹框
+            close5: false,  //GTc转让弹框
+            close7: false,  //精粹账单弹框
+            close8: false,  //奖励记录弹框   已改
+            close9: false,  //合约中弹框
+            close10: false,   //待出售弹框
+            close11: false, // 流拍提示弹框
+            popwin: false,
+            close13: false, //预约记录弹框
+            close14: false, //抢购记录弹框
+            close15: false,  //转让记录弹框
+            close16: false, //奖励兑换弹框
+            close17: false,  //兑换成功弹框
+            close18: false, //闪兑弹框
+            close19: false,  //闪兑成功弹框
+            close20: false,  //GC提币弹框
+            close21: false, //GC提币审核中弹框
+            close22: false,  //提币记录弹框
+            close23: false,  //钱包充币弹框
+            close24: false,  //钱包充币复制地址弹框
+            close25: false,  //房产详情弹框
+            close26: false,//装修成功弹框
+            close27: false,  //GTC转让弹框
+            close28: false, //GTC转让弹框
+            close29: false,  //GC余额明细弹框
+            close30: false,  //GTC余额明细弹框
+            close31: false,  //精粹余额明细弹框
+            close32: false, //  招募明细弹框
+            tabid1: '',
+            tabid2: '',
+            tabid3: '',
+            list100: [],
+            list101: [],
+            page2: 1,
+            page: 1,
+            page3: 1,
+            page4: 1,
+            page5: 1,
+            page6: 1,
+            page7: 1,
+            page8: 1,
+            page9: 1,
+            page10: 1,
+            page11: 1,
+            isloding: false,
+            allLoad: false,
+            isloding3: false,
+            allLoad3: false,
+            isloding4: false,
+            allLoad4: false,
+            isloding5: false,
+            allLoad5: false,
+            isloding6: false,
+            allLoad6: false,
+            isloding7: false,
+            allLoad7: false,
+            isloding8: false,
+            allLoad8: false,
+            isloding9: false,
+            allLoad9: false,
+            isloding10: false,
+            allLoad10: false,
+            isloding11: false,
+            allLoad11: false,
+            wallet_address: '',
+            amount: '',
+            pay_pwd: '',
+            commission_rate: 1,
+            listTb: [],
+            listZr: [],
+            tab: 1,
+            rednum: '',
+            /*闪兑*/
+            exchange_rate: 1.00,
+            exchange_rate_gc: 1.00,
+            fall: 0.00,
+            eth: '',
+            form: 'GC',
+            to: 'GTC',
+            default_url: "{:url('/index/exchange/gc_to_gtc')}",
+            url_gc_to_gtc: "{:url('/index/exchange/gc_to_gtc')}",
+            url_gtc_to_gc: "{:url('/index/exchange/gtc_to_gc')}",
+            gc_num: '',
+            gtc_num: '',
+            gt_num: '',
+            info: '',
+            payType: 1,
+            gtcOutId:'',
+            gtcOutNumber:'',
+            gtcOutPwd: '',
+            gtcOutId1:'',
+            gtcOutNumber1:'',
+            gtcOutPwd1:'',
+            tabid300: '',
+            tabidJc: '',
+            tabidMy7: '',
+            tabidMy8: ''
+        },
+        computed: {},
+        methods: {
+            tabLstMax(n) {
+                this.tab = n;
+            },
+            jsMaxLi(){
+                var self = this;
+                var data = {
+                    mobile: this.gtcOutId1,
+                    num: this.gtcOutNumber1,
+                    pwd: this.gtcOutPwd1
+                };
+                core.load("{:url('index/my/integral_out_ylb')}", data, function (res) {
+
+                    if (res.code == '0') {
+                        self.close28 = false
+                        self.IntegralList = [];
+                    }
+                    core.toast(res.msg);
+
+                })
+            },
+            wwww(){
+                this.close3 = false;
+            },
+
+            jsMaxamxTab(){
+
+                this.close31 = false;
+                this.close28 = true;
+                this.gtcOutId1 = '';
+                this.gtcOutNumber1 = '';
+                this.gtcOutPwd1 = '';
+                this.IntegralList = [];
+            },
+            wangMax1(){
+                this.close9 = false;
+            },
+            wangMax2(){
+                this.close10 = false;
+            },
+            gtOutMax(){
+                this.close27  = true;
+                this.close30 = false;
+                this.gtcOutId = '';
+                this.gtcOutNumber = '';
+                this.gtcOutPwd = '';
+                this.GTCList = [];
+            },
+            recordhMaxaaa() {
+                this.tabid1 = '';
+                this.close15 = false;
+            },
+            liliMax(){
+                var self = this;
+                var data = {
+                    mobile: this.gtcOutId,
+                    num: this.gtcOutNumber,
+                    pwd: this.gtcOutPwd
+                };
+                core.load("{:url('index/my/bait_out_ylb')}", data, function (res) {
+
+                    if (res.code == '0') {
+                        self.close27 = false
+                        self.GTCList = [];
+                    }
+                    core.toast(res.msg);
+
+                })
+            },
+            getZr(n) {
+                var self = this;
+                self.isloding3 = true;
+                self.tabid1 = n;
+                var data = {
+                    type: this.tabid1 == 1 ? 1 : 2,
+                    page: self.page3,
+                    limit: 8
+                };
+                core.load("{:url('index/my/turn')}", data, function (res) {
+                    self.isloding3 = false
+                    if (res.code == '0') {
+                        self.listZr = self.page3 == 1 ? res.info : self.listZr.concat(res.info);
+                        if (res.info.length < 8) {
+                            self.allLoad3 = true;
+                        }
+                    } else {
+                        core.toast(res.message);
+                    }
+                })
+            },
+            send5() {
+                var that = this;
+                var obj = {
+                    eth: this.rednum,
+                }
+
+                if (this.rednum < 300) {
+                    return core.toast('输入的值不能少于300');
+                }
+                core.load(that.tab == 1 ? "{:url('index/exchange/invite_profit_to_gtc')}" : "{:url('index/exchange/team_profit_to_gtc')}", obj, function (res) {
+                    console.log(res)
+                    if (res.code == 0) {
+                        that.close16 = false;
+                        that.close17 = true;
+
+                        // that.setclose20 = false;
+                        // that.setclose10 = true;
+
+                    }
+                    core.toast(res.msg);
+
+                })
+
+            },
+            sdrecordhMax() {
+
+            },
+            ffDetail(){
+                this.close25 = false;
+                this.close9 = true;
+
+            },
+            getTb(n) {
+                var self = this;
+
+                self.isloding4 = false
+
+                self.tabid2 = n;
+                var data = {
+                    type: this.tabid2 - 1,
+                    page: self.page4,
+                    limit: 8
+                }
+                core.load("{:url('index/withdraw/list')}", data, (res) => {
+                    self.isloding4 = false
+                    if (res.code == '0') {
+                        self.listTb = self.page == 1 ? res.info.data : self.listTb.concat(res.info.data);
+                        if (res.info.data.length < 8) {
+                            self.allLoad4 = true;
+                        }
+                    } else {
+                        core.toast(res.message);
+                    }
+
+                })
+            },
+            autoLoad: function () {
+                core.load("{:url('/index/withdraw/get_commission_rate')}", {}, (res) => {
+                    if (res.code == 666) {
+                        this.commission_rate = res.data;
+                    }
+                });
+                /*获取闪兑gc信息*/
+                core.load("{:url('/index/exchange/get_rate')}", {}, (res) => {
+                    if (res.code == 666) {
+                        this.exchange_rate = res.data.rate;
+                        this.exchange_rate_gc = res.data.rate;
+                        this.fall = res.data.fall;
+                        this.gt_num = res.data.gc_num;
+                        this.gc_num = res.data.gc_num;
+                        this.gtc_num = res.data.gtc_num;
+                    }
+                });
+            },
+
+
+            submitBtn1() {
+                if (!this.wallet_address) {
+                    return core.toast('请输入钱包地址');
+                }
+                ;
+                if (!this.amount) {
+                    return core.toast('请输入转出数量');
+                }
+                ;
+                if (!this.pay_pwd) {
+                    return core.toast('请输入支付密码');
+                }
+                ;
+                core.load("{:url('/index/withdraw/submit')}",
+                    {wallet_address: this.wallet_address, amount: this.amount, pay_pwd: this.pay_pwd},
+                    (res) => {
+                        if (res.code == 666) {
+                            this.close20 = false;
+                            this.close21 = true;
+                            this.wallet_address = '';
+                            this.amount = '';
+                            this.pay_pwd = '';
+                        }else{
+                            core.toast(res.msg);
+                        }
+                        
+                    });
+            },
+
+            loadList1: function (n) {  //预约记录
+                var self = this;
+
+                if(n == 1){
+                    self.list100 = [];
+                }
+
+                var data = {
+                    page: self.page,
+                    limit: 8,
+                };
+                self.isloding2 = true
+                core.load("{:url('index/my/make_record')}", data, function (res) {
+                    // console.log(res)
+                    self.isloding2 = false
+                    if (res.code == '0') {
+                        self.list100 = self.page == 0 ? res.info : self.list100.concat(res.info);
+                        if (res.info.length < 8) {
+                            self.allLoad2 = true;
+                        }
+                    } else {
+                        core.toast(res.message);
+                    }
+                })
+
+            },
+
+
+            loadList2: function (n) {  //抢购记录
+                var self = this;
+
+                if(n == 1){
+                    self.list101 = [];
+                }
+
+                var data = {
+                    page: self.page2,
+                    limit: 8,
+                };
+                self.isloding = true;
+                core.load("{:url('index/my/adopt')}", data, function (res) {
+                    console.log(res)
+                    self.isloding = false;
+                    if (res.code == '0') {
+                        self.list101 = self.page2 == 0 ? res.info : self.list101.concat(res.info);
+                        if (res.info.length < 8) {
+                            self.allLoad = true;
+                        }
+
+                    } else {
+                        core.toast(res.message);
+                    }
+                })
+
+            },
+
+            dcyMax() {
+                this.close10 = true;
+                this.loadContractList(0);
+            },
+            CoinBtnMax() {
+                this.close22 = true;
+                this.MoneyRecordMaxL(1);
+            },
+            AppointordBtn() {
+                this.close13 = true;
+                this.loadList1(1);
+            },
+            SnatchRecordBtn() {
+                this.close14 = true;
+                this.loadList2(1);
+            },
+            flashFlashBtn() {
+                this.close18 = true;
+                this.autoLoad();
+            },
+            WalletaaBtn() {
+                this.close23 = true;
+            },
+            RewaredemptionBtn() {
+                this.close16 = true;
+            },
+            coinBtn() {
+                this.close20 = true;
+            },
+            ransferrecordBtn(n) {
+                this.close15 = true;
+
+                this.getZr(n);
+            },
+            StreamingMax() {
+                this.close11 = false;
+            },
+            closeGCMax() {
+                this.close27 = false;
+                this.GTCList = [];
+            },
+            PristineMax() {
+                this.close28 = false;
+                this.IntegralList = [];
+            },
+            flashsuccessfulMax() {
+                this.close19 = false;
+                this.close18 = false;
+            },
+            reviewMax() {
+                this.close21 = false;
+            },
+            gcflashMax() {
+                this.close20 = false;
+            },
+            MoneyRecordMaxL(n) {
+                var self = this;
+                if (self.tabid2 == n) return;
+                self.isloding3 = false;
+                self.allLoad3 = false;
+                self.page3 = 1;
+                self.listTb = [];
+                this.getTb(n)
+            },
+            copyAddress() {
+                this.close24 = false;
+                this.close23 = false;
+            },
+            WalletMax() {
+                this.close23 = false;
+            },
+            flashMax() {
+                this.close18 = false;
+            },
+            recordhMax() {
+                core.load(this.default_url, {eth: this.eth}, (res) => {
+                    if (res.code == 666) {
+                        this.eth = '';
+                        this.close19 = true;
+                        this.member();
+                    } else{
+                        core.toast(res.msg);
+                    }
+
+                });
+            },
+            oneyRecordMax() {
+                this.tabid2 = '';
+                this.close22 = false;
+            },
+            record_list(n) {
+                var self = this;
+                if (self.tabid1 == n) return;
+                self.isloding3 = false;
+                self.allLoad3 = false;
+                self.page3 = 1;
+                self.listZr = [];
+                this.getZr(n)
+            },
+            detailsImghMax() {
+                this.close16 = false;
+            },
+            SnatchMax() {
+                this.close14 = false;
+                this.page2 = 1;
+            },
+            SuccessfulRedemption() {
+                this.close17 = false;
+            },
+            reservationMax() {
+                this.close13 = false;
+                this.page = 1;
+            },
+            heyuezMax() {
+                this.close9 = true;
+                this.loadContractList(0);
+            },
+            detaiaMax() {
+                console.log(111)
+                this.close2 = true;
+            },
+            max_list(n) {
+                this.tabid = n;
+            },
+            max_lista(n) {
+                this.tabid = n;
+            },
+            transferMax() {
+                this.close5 = false;
+            },
+            closeMax() {
+                this.close2 = false;
+            },
+            gcMax() {
+                this.close4 = false;
+            },
+            openRewardrecord() {
+                this.close8 = true;
+                this.loadTeamProfitListL(0);
+            },
+            loadTeamProfitListL(n) {
+                var self = this;
+                if (self.tabidMy7 === n) return;
+                self.isloding8 = false;
+                self.allLoad8 = false;
+                self.page8 = 1;
+                self.TeamList = [];
+                self.loadTeamProfitList(n);
+            },
+            Rewardrecord() {
+                this.tabidMy7 = '';
+                this.close8 = false;
+            },
+            RewardrecordBtn(){
+                this.tabidMy8 = '';
+                this.close32 = false;
+            },
+            openProfitrecord() {
+                this.close32 = true;
+                this.loadProfitListL(0);
+            },
+            loadProfitListL(n) {
+                var self = this;
+                if (self.tabidMy8 === n) return;
+                self.isloding9 = false;
+                self.allLoad9 = false;
+                self.page9 = 1;
+                self.InviteList = [];
+                self.loadProfitList(n);
+            },
+            profitrecord() {
+                this.close32 = false;
+            },
+            gsMax() {
+                this.close7 = false;
+            },
+            FineTransferGc() {
+                this.close5 = false;
+            },
+            FineTransfer() {
+                this.close6 = false;
+            },
+            openGCDetail() {
+                this.close29 = true;
+                this.loadGCListL(1);
+            },
+            closeGCDetail() {
+                this.tabid300 = '';
+                this.close29 = false;
+            },
+            openGTCDetail() {
+                this.close30 = true;
+                this.loadGTCListL(1);
+            },
+            closeGTCDetail() {
+                this.tabid3 = '';
+                this.close30 = false;
+            },
+            openIntegralDetail() {
+                this.close31 = true;
+                this.loadIntegralListL(1);
+            },
+            loadIntegralListL(n) {
+                if (n == this.tabidJc) return;
+                this.IntegralList = [];
+                this.page7 = 1;
+                this.allLoad7 = false;
+                this.isloding7 = false;
+                this.loadIntegralList(n)
+            },
+            closeIntegralDetail() {
+                this.tabidJc = '';
+                this.close31 = false;
+                this.IntegralList = [];
+            },
+            openTrimDetail(item) {
+                this.close25 = true;
+                this.loadFish(item);
+            },
+            closeTrimDetail() {
+                this.close25 = false;
+            },
+            switchPayType(type) {
+                if (type == 0) {
+                    $(".PropertyTab1 img").attr("src", "http://oss.inewgo.net/resource/imgs/img/assets204.png");
+                    $(".PropertyTab2 img").attr("src", "http://oss.inewgo.net/resource/imgs/img/assets97.png");
+                } else {
+                    $(".PropertyTab1 img").attr("src", "http://oss.inewgo.net/resource/imgs/img/assets3.png");
+                    $(".PropertyTab2 img").attr("src", "http://oss.inewgo.net/resource/imgs/img/assets92.png");
+                }
+                this.payType = type;
+            },
+            ljzx() {
+
+                var self = this;
+                core.load("{:url('/index/fish/feed')}", {fid: this.fish.id, pay_type: this.payType}, function (res) {
+                    if (res.code == 0) {
+                        self.close25 = false;
+                        self.close9 = true;
+                        self.heyuezMax()
+                    }
+                    core.toast(res.msg);
+                })
+            },
+            toDetail: function (id) {
+                id && (location.href = "{:url('home/pond/detail')}?type=3&id=" + id);
+            },
+            feed: function (id, index) {
+                var self = this;
+                core.load("{:url('/index/fish/feed')}", {fid: id}, function (res) {
+                    if (res.code == 0) {
+                        window.location.reload();
+                        // self.list[index].is_contract=1;
+                    }
+                    core.toast(res.msg);
+                })
+            },
+            loadList: function () {
+                var self = this;
+                var data = {
+                    page: self.page,
+                    limit: 12,
+                };
+
+                core.load("{:url('/index/fish/index')}", data, function (res) {
+                    if (res.code == '0') {
+                        if (!self.mybait) self.mybait = res.info.mybait;
+                        if (res.info.list.length > 0) self.list = self.list.concat(res.info.list);
+                        if (!res.info.list || (res.info.list.length < data.limit)) {
+                            self.status = false;
+                            $('.dialog-bottom').text('已经加载全部数据');
+                        } else {
+                            $('.dialog-bottom').text('正在加载...');
+                        }
+                    } else {
+                        core.toast(res.msg)
+                    }
+                })
+            },
+            closeWin: function () {
+                this.popwin = false;
+            },
+            /*············闪兑···············*/
+            swap: function () {
+                if (this.form == 'GC') {
+                    this.exchange_rate = Number(1 / (Number(this.exchange_rate_gc)+Number(this.fall))).toFixed(4);
+                    this.default_url = this.url_gtc_to_gc;
+                    this.form = "GTC";
+                    this.to = "GC";
+                    this.gt_num = this.gtc_num;
+                } else {
+                    this.exchange_rate = this.exchange_rate_gc;
+                    this.default_url = this.url_gc_to_gtc;
+                    this.form = "GC";
+                    this.to = "GTC";
+                    this.gt_num = this.gc_num;
+                }
+            },
+            exchange: function () {
+                core.load(this.default_url, {eth: this.eth}, (res) => {
+                    if (res.code == 666) {
+                        this.eth = '';
+                    }
+                    core.toast(res.msg);
+                });
+            },
+            copyGcAddress: function () {
+                if (!this.info.gc_address) {
+                    core.toast('未获取到钱包地址');
+                    return;
+                }
+                ;
+                var input = document.getElementById('gc-address');
+                const len = input.value.length;
+                if (input.createTextRange) {
+                    //ie
+                    const range = input.createTextRange();
+                    range.collapse(true);
+                    range.moveStart('character', 0);//起始光标
+                    range.moveEnd('character', len);//结束光标
+                    range.select();//不兼容苹果
+                } else {
+                    //firefox/chrome
+                    input.setSelectionRange(0, len);
+                    input.focus();
+                }
+                //input.select();
+                if (document.execCommand("copy")) {
+                    this.close24 = true;
+                    // core.toast('复制钱包地址成功');
+                } else {
+                    core.toast('复制钱包地址失败');
+                }
+                ;
+            },
+            member: function () {
+                var self = this;
+                core.load("{:url('/index/setup/index')}", {}, function (res) {
+                    console.log(res)
+                    if (res.code == 0) {
+                        self.info = res.info;
+                        //self.info.nowProfitFiexd = res.info.now_profit.split('.')[1];
+                        self.info.now_profit = (res.info.now_profit*1).toFixed(2);
+                        self.info.sumTeamProfit = (res.info.now_extension*1 + res.info.now_team*1).toFixed(2);
+                        self.info.sumTeamProfitFiexd = self.info.sumTeamProfit.toString().split('.')[1];
+                        self.info.sumTotal = (res.info.now_extension*1 + res.info.now_team*1 + res.info.now_bait*1 + res.info.now_integral*1 + res.info.gc*1).toFixed(2);
+                    } else {
+                        core.toast(res.msg);
+                    }
+                })
+            },
+            loadGCListL(n) {
+                console.log(n)
+                if (n == this.tabid300) return;
+                this.page5 = 1;
+                this.GCList = [];
+                this.allLoad5 = false;
+                this.isloding5 = false;
+                this.loadGCList(n)
+            },
+            loadGCList: function (n) {
+                var self = this;
+                if (this.isloding5 || this.allLoad5) return;
+                this.isloding5 = true;
+                self.tabid300 = n;
+                var data = {
+                    type: n - 1,
+                    limit: 5,
+                    page: self.page5
+                };
+                core.load("{:url('index/gc/list')}", data, (res) => {
+                    self.isloding5 = false
+                    if(res.code=='0'){
+                        self.GCList = self.page5 == 1 ? res.info.data : self.GCList.concat(res.info.data);
+                        if (res.info.data.length < 5) {
+                            self.allLoad5 = true;
+                        }
+                    }else{
+                        core.toast(res.msg);
+                    }
+                })
+            },
+            loadGTCListL(n) {
+                var self = this;
+                if (self.tabid3 == n) return;
+                self.isloding6 = false;
+                self.allLoad6 = false;
+                self.page6 = 1;
+                self.GTCList = [];
+                self.loadGTCList(n);
+            },
+            loadGTCList: function (n) {
+                var self = this;
+
+                console.log(n);
+                console.log(self.tabid3);
+
+                if (self.isloding6 || self.allLoad6) return;
+                self.isloding6 = true;
+                self.tabid3 = n;
+
+                var data = {
+                    type: n - 1,
+                    limit: 5,
+                    page: self.page6,
+                };
+
+                core.load("{:url('index/my/bait_list')}", data, function (res) {
+                    self.isloding6 = false;
+                    if(res.code=='0'){
+                        self.GTCList = self.page6 == 1 ? res.info : self.GTCList.concat(res.info);
+                        if (res.info.length < 5) {
+                            self.allLoad6 = true;
+                        }
+                    }else{
+                        core.toast(res.msg);
+                    }
+                })
+            },
+            loadIntegralList: function (n) {
+                var self = this;
+                if (this.allLoad7 || this.isloding7) return;
+                this.isloding7 = true;
+                self.tabidJc = n;
+                var data = {
+                    type: n - 1,
+                    limit: 5,
+                    page: self.page7,
+                };
+
+                core.load("{:url('index/my/integral_list')}", data, function (res) {
+                    self.isloding7 = false;
+                    if(res.code=='0'){
+                        self.IntegralList = self.page7 == 1 ? res.info : self.IntegralList.concat(res.info)
+                        if (res.info.length < 5) {
+                            console.log(111)
+                            self.allLoad7 = true;
+                            console.log(self.allLoad7)
+                        }
+                    }else{
+                        core.toast(res.msg);
+                    }
+                })
+            },
+            loadContractList: function (n) {
+                var self = this;
+
+               
+
+                var data = {
+                    page: self.page10,
+                    limit: 8888,
+                };
+
+                core.load("{:url('/index/fish/index')}", data, function (res) {
+                    console.log(res)
+
+
+                    if(res.code=='0'){
+                        if(res.info.list.length>0) self.ContractList = res.info.list;
+                        if(!res.info.list || (res.info.list.length<data.limit)){
+                            $('.dialog-bottom').eq(0).html('已经加载全部数据');
+                        }else{
+                            $('.dialog-bottom').eq(0).html('正在加载...');
+                        }
+                    }else{
+                        core.toast(res.msg);
+                    }
+                })
+            },
+            loadFish: function (item) {
+                console.log(item)
+                var self = this;
+                self.fish = item;
+                // var data = {
+                //     fid: id,
+                // };
+
+                // core.load("{:url('/index/my/turn_msg')}", data, function (res) {
+
+                //     if (res.code == '0') {
+                //         self.fish = res.info.fish_msg;
+                //     } else {
+                //         core.toast(res.msg)
+                //     }
+                // })
+            },
+            loadProfitList: function(n){
+                var self = this;
+
+
+                self.isloding9 = true;
+                self.tabidMy8 = n;
+                var data = {
+                    page: self.page9,
+                    limit: 5,
+                    type: n,
+                };
+
+                core.load("{:url('index/my/extension_profit_list')}", data, function(res){
+                    self.isloding9 = false;
+                    if(res.code=='0'){
+                        self.InviteList = self.page9 == 1 ? res.info : self.InviteList.concat(res.info);
+                        if (res.info.length < 5) {
+                            self.allLoad9 = true;
+                        }
+                    }else{
+                        core.toast(res.msg);
+                    }
+                })
+            },
+            loadTeamProfitList: function(n){
+                var self = this;
+                self.isloding8 = true;
+                self.tabidMy7 = n;
+                var data = {
+                    page: self.page8,
+                    limit: 5,
+                    type: n,
+                };
+
+                core.load("{:url('index/my/team_profit_list')}", data, function(res){
+                    self.isloding8 = false;
+                    if(res.code=='0'){
+                        self.TeamList = self.page8 == 1 ? res.info : self.TeamList.concat(res.info);
+                        if (res.info.length < 5) {
+                            self.allLoad8 = true;
+                        }
+                    }else{
+                        core.toast(res.msg);
+                    }
+                })
+            }
+        },
+        mounted: function () {
+            var self = this;
+            self.member();
+            $('#my').on('scroll', function () {
+                if (self.isloding || self.allLoad) {
+                    return false;
+                }
+                var scrollTop = $(this).scrollTop()
+                var ks_area = $(this).innerHeight();
+                var nScrollHight = 0;
+                nScrollHight = $(this)[0].scrollHeight;
+                if (scrollTop + ks_area >= nScrollHight) {
+
+                    self.page2 = ++self.page2;
+                    self.loadList2(0);
+                }
+            });
+            $('#my1').on('scroll', function () {
+                if (self.isloding2 || self.allLoad2) {
+                    return false;
+                }
+                var scrollTop = $(this).scrollTop()
+                var ks_area = $(this).innerHeight();
+                var nScrollHight = 0;
+                nScrollHight = $(this)[0].scrollHeight;
+                if (scrollTop + ks_area >= nScrollHight) {
+
+                    self.page = ++self.page;
+                    self.loadList1(0)
+                }
+            });
+            $('#myZr').on('scroll', function () {
+                if (self.isloding3 || self.allLoad3) {
+                    return false;
+                }
+                var scrollTop = $(this).scrollTop()
+                var ks_area = $(this).innerHeight();
+                var nScrollHight = 0;
+                nScrollHight = $(this)[0].scrollHeight;
+                if (scrollTop + ks_area >= nScrollHight) {
+
+                    self.page3 = ++self.page3;
+                    self.getZr(self.tabid1);
+                }
+            });
+            $('#my3').on('scroll', function () {
+                if (self.isloding4 || self.allLoad4) {
+                    return false;
+                }
+                var scrollTop = $(this).scrollTop()
+                var ks_area = $(this).innerHeight();
+                var nScrollHight = 0;
+                nScrollHight = $(this)[0].scrollHeight;
+                if (scrollTop + ks_area >= nScrollHight) {
+
+                    self.page4 = ++self.page4;
+                    self.getTb(self.tabid2);
+                }
+            });
+            $('#my4').on('scroll', function () {
+                if (self.isloding5 || self.allLoad5) {
+                    return false;
+                }
+                var scrollTop = $(this).scrollTop()
+                var ks_area = $(this).innerHeight();
+                var nScrollHight = 0;
+                nScrollHight = $(this)[0].scrollHeight;
+                if (scrollTop + ks_area >= nScrollHight) {
+                    self.page5 = ++self.page5;
+                    self.loadGCList(self.tabid300);
+                }
+            });
+            $('#my5').on('scroll', function () {
+                if (self.isloding6 || self.allLoad6) {
+                    return false;
+                }
+                var scrollTop = $(this).scrollTop()
+                var ks_area = $(this).innerHeight();
+                var nScrollHight = 0;
+                nScrollHight = $(this)[0].scrollHeight;
+                if (scrollTop + ks_area >= nScrollHight) {
+                    self.page6 = ++self.page6;
+                    self.loadGTCList(self.tabid3);
+                }
+            });
+            $('#my6').on('scroll', function () {
+                if (self.isloding7 || self.allLoad7) {
+                    return false;
+                }
+                var scrollTop = $(this).scrollTop()
+                var ks_area = $(this).innerHeight();
+                var nScrollHight = 0;
+                nScrollHight = $(this)[0].scrollHeight;
+                if (scrollTop + ks_area >= nScrollHight) {
+                    self.page7 = ++self.page7;
+                    self.loadIntegralList(self.tabidJc);
+                }
+            });
+            $('#my7').on('scroll', function () {
+                if (self.isloding8 || self.allLoad8) {
+                    return false;
+                }
+                var scrollTop = $(this).scrollTop()
+                var ks_area = $(this).innerHeight();
+                var nScrollHight = 0;
+                nScrollHight = $(this)[0].scrollHeight;
+                if (scrollTop + ks_area >= nScrollHight) {
+                    self.page8 = ++self.page8;
+                    self.loadTeamProfitList(self.tabidMy7);
+                }
+            });
+            $('#my8').on('scroll', function () {
+                if (self.isloding9 || self.allLoad9) {
+                    return false;
+                }
+                var scrollTop = $(this).scrollTop()
+                var ks_area = $(this).innerHeight();
+                var nScrollHight = 0;
+                nScrollHight = $(this)[0].scrollHeight;
+                if (scrollTop + ks_area >= nScrollHight) {
+                    self.page9 = ++self.page9;
+                    self.loadProfitList(self.tabidMy8);
+                }
+            });
+            // $('#my9').on('scroll', function () {
+            //     if (self.isloding10 || self.allLoad10) {
+            //         return false;
+            //     }
+            //     var scrollTop = $(this).scrollTop()
+            //     var ks_area = $(this).innerHeight();
+            //     var nScrollHight = 0;
+            //     nScrollHight = $(this)[0].scrollHeight;
+            //     if (scrollTop + ks_area >= nScrollHight) {
+            //         self.page10 = ++self.page10;
+            //         self.loadContractList(self.tabid3);
+            //     }
+            // });
+            // $('#my10').on('scroll', function () {
+            //     if (self.isloding11 || self.allLoad11) {
+            //         return false;
+            //     }
+            //     var scrollTop = $(this).scrollTop()
+            //     var ks_area = $(this).innerHeight();
+            //     var nScrollHight = 0;
+            //     nScrollHight = $(this)[0].scrollHeight;
+            //     if (scrollTop + ks_area >= nScrollHight) {
+            //         self.page11 = ++self.page11;
+            //         self.loadContractList(self.tabid3);
+            //     }
+            // });
+        }
+    });
+
+
+</script>
+{/block}
+
+{block name="style"}
+<style>
+    .GTC_transferContent {
+        padding: 3.5rem 1.5rem 0 1.5rem;
+        margin-top:2rem;
+    }
+    .activ1{
+        color:red !important;
+    }
+
+    .lzMax{
+        right:3.1rem !important;
+        top:1rem !important;
+
+    }
+
+    /* .dcsMax{
+    width:9.625rem;
+    height:7.4rem;
+}
+.dcsMax img{
+    width:9.625rem;
+    height:7.4rem;
+} */
+
+    .Redeem_nowBb {
+        left: 8.8rem !important;
+        top:14rem !important;
+    }
+    .detailsImg_zr1{
+        background: url("http://oss.inewgo.net/resource/imgs/img/button.png") 0 0 no-repeat;
+        background-size: 100% 100%;
+        width: 7.125rem;
+        height: 4.2rem;
+        position:absolute !important;
+        left:8rem !important;
+        top:14rem !important;
+        font-size:17px;
+        color:#fff;
+        font-weight:400;
+        line-height:4.2rem;
+        text-align:center;
+        font-family:MF XingYan(Noncommercial);
+        text-shadow:0px 0px 9px rgba(0, 0, 0, 0.42);
+    }
+    .detailsImg_zr11{
+        background: url("http://oss.inewgo.net/resource/imgs/img/button.png") 0 0 no-repeat;
+        background-size: 100% 100%;
+        width: 7.125rem;
+        height: 4.2rem;
+        position:absolute !important;
+        left:8rem !important;
+        top:16rem !important;
+        font-size:17px;
+        color:#fff;
+        font-weight:400;
+        line-height:4.2rem;
+        text-align:center;
+        font-family:MF XingYan(Noncommercial);
+        text-shadow:0px 0px 9px rgba(0, 0, 0, 0.42);
+    }
+
+    .yueyueList {
+        height: 80%;
+        overflow:scroll;
+        -webkit-overflow-scrolling: touch;
+        /* overflow-scrolling: touch; */
+
+    }
+
+    .yueyueList1 {
+        height: 24rem;
+        overflow: scroll;
+        -webkit-overflow-scrolling: touch;
+        /* overflow-scrolling: touch; */
+    }
+
+    .sdMax {
+        position:absolute !important;
+        left: 8rem !important;
+        top:29rem !important;
+    }
+
+    /* .sdMax {
+        left: 9.5rem !important;
+    } */
+
+    .Transfer_content {
+        /* height: 80%;
+        overflow: scroll;
+        -webkit-overflow-scrolling: touch; */
+    }
+
+    .yueyueList > div:nth-last-child(1) {
+        border-bottom: 0 !important;
+    }
+
+    .Pristine_content > div:nth-child(5) {
+        font-family: PingFang SC;
+        font-weight: 400;
+        color: rgba(255, 255, 255, 1);
+        font-size: 10px;
+        line-height: 27px;
+        margin-top: 2rem;
+    }
+
+    .Pristine_content > div:nth-child(4) {
+        margin-top: 2rem;
+    }
+
+    .PristineImg {
+        width: 7.125rem;
+        height: 4.22rem;
+        position: fixed;
+        left: 9.5rem;
+        top: 40rem;
+    }
+    .lyaaa{
+        margin-top:2rem;
+    }
+    .PristineImg img {
+        width: 7.125rem;
+        height: 4.22rem;
+    }
+
+    .Pristine_bb {
+        font-size: 17px;
+        text-indent: 10px;
+        letter-spacing: 1px;
+    }
+
+    .Pristine_content {
+        padding: 3.5rem 1.5rem 0 1.5rem;
+        margin-top:2rem;
+    }
+
+    .Pristine_content input {
+        outline: none;
+        background: none;
+    }
+    .lhl{
+        top:-1rem !important;
+    }
+    .zichang_bxo{
+        background: url("http://oss.inewgo.net/resource/imgs/img/assets888.png") 0 0 no-repeat;
+        width:7.875rem;
+        height:5.93rem;
+        position:absolute;
+        left:7rem;
+        background-size: 100% 100%;
+        top:-2rem;
+        text-align:center;
+        font-size:22px;
+        color:#FFE9C9;
+        line-height:4.93rem;
+        font-family:MF XingYan(Noncommercial);
+    }
+
+    .zichang_bxo10{
+        background: url("http://oss.inewgo.net/resource/imgs/img/blue.png") 0 0 no-repeat;
+        width:7.875rem;
+        height:5.93rem;
+        position:absolute;
+        left:8rem;
+        background-size: 100% 100%;
+        top:-2rem;
+        text-align:center;
+        font-size:22px;
+        color:#FFE9C9;
+        line-height:6rem;
+        font-family:MF XingYan(Noncommercial);
+    }
+    .zichang_bxomax1{
+        background: url("http://oss.inewgo.net/resource/imgs/img/blue.png") 0 0 no-repeat;
+        width:7.875rem;
+        height:5.93rem;
+        position:absolute;
+        left:9rem;
+        background-size: 100% 100%;
+        top:4.5rem;
+        text-align:center;
+        font-size:22px;
+        color:#FFE9C9;
+        line-height:6rem;
+        font-family:MF XingYan(Noncommercial);
+    }
+    .zichang_bxo11{
+        background: url("http://oss.inewgo.net/resource/imgs/img/blue.png") 0 0 no-repeat;
+        width:7.875rem;
+        height:5.93rem;
+        position:absolute;
+        left:8.2rem;
+        background-size: 100% 100%;
+        top:4.5rem;
+        text-align:center;
+        font-size:22px;
+        color:#FFE9C9;
+        line-height:6rem;
+        font-family:MF XingYan(Noncommercial);
+    }
+
+
+    .zichang_bxo4{
+        background: url("http://oss.inewgo.net/resource/imgs/img/assetsred.png") 0 0 no-repeat;
+        width:7.875rem;
+        height:5.93rem;
+        position:absolute;
+        left:8rem;
+        background-size: 100% 100%;
+        top:-2rem;
+        text-align:center;
+        font-size:22px;
+        color:#FFE9C9;
+        line-height:5.93rem;
+        font-family:MF XingYan(Noncommercial);
+    }
+    .zichang_bxo2{
+        background: url("http://oss.inewgo.net/resource/imgs/img/assets8882.png") 0 0 no-repeat;
+        width:7.875rem;
+        height:5.93rem;
+        position:absolute;
+        left:8rem;
+        background-size: 100% 100%;
+        top:-2rem;
+        text-align:center;
+        font-size:22px;
+        color:#FFE9C9;
+        line-height:6rem;
+        font-family:MF XingYan(Noncommercial);
+    }
+
+    .zichang_bxo8{
+        background: url("http://oss.inewgo.net/resource/imgs/img/assets8882.png") 0 0 no-repeat;
+        width:7.875rem;
+        height:5.93rem;
+        position:absolute;
+        left:8rem;
+        background-size: 100% 100%;
+        top:4.5rem;
+        text-align:center;
+        font-size:22px;
+        color:#FFE9C9;
+        line-height:6rem;
+        font-family:MF XingYan(Noncommercial);
+    }
+
+    .zichang_bxo9{
+        background: url("http://oss.inewgo.net/resource/imgs/img/assets8881.png") 0 0 no-repeat;
+        width:7.875rem;
+        height:5.93rem;
+        position:absolute;
+        left:8rem;
+        background-size: 100% 100%;
+        top:4.5rem;
+        text-align:center;
+        font-size:22px;
+        color:#FFE9C9;
+        line-height:6rem;
+        font-family:MF XingYan(Noncommercial);
+    }
+    .zichang_bxo3{
+        background: url("http://oss.inewgo.net/resource/imgs/img/assets8883.png") 0 0 no-repeat;
+        width:7.875rem;
+        height:5.93rem;
+        position:absolute;
+        left:8rem;
+        background-size: 100% 100%;
+        top:-2rem;
+        text-align:center;
+        font-size:22px;
+        color:#FFE9C9;
+        line-height:6rem;
+        font-family:MF XingYan(Noncommercial);
+    }
+    .zichang_bxo1{
+        background: url("http://oss.inewgo.net/resource/imgs/img/assets8881.png") 0 0 no-repeat;
+        width:7.875rem;
+        height:5.93rem;
+        position:absolute;
+        left:8rem;
+        background-size: 100% 100%;
+        top:-2rem;
+        text-align:center;
+        font-size:22px;
+        color:#FFE9C9;
+        line-height:5.5rem;
+        font-family:MF XingYan(Noncommercial);
+    }
+    .lili11{
+        height:80%;
+        overflow: scroll;
+        -webkit-overflow-scrolling: touch;
+        /* overflow-scrolling: touch; */
+    }
+    .gtc_aa {
+        width: 7.8rem;
+        font-size: 22px;
+        color: #fff;
+        text-indent: 6px;
+    }
+    .liliw{
+        top:0.5rem !important;
+    }
+
+    .GTC_transferContent input {
+        background: none;
+        outline: none;
+        width: 50%;
+        font-size: 17px;
+    }
+
+    .GTC_transferContent > div:nth-child(1) {
+        background: url("http://oss.inewgo.net/resource/imgs/img/assets61.png") 0 0 no-repeat;
+        background-size: 100% 100%;
+        width: 19rem;
+        height: 2.5rem;
+        display: flex;
+    }
+
+    .Pristine_content > div:nth-child(1) {
+        background: url("http://oss.inewgo.net/resource/imgs/img/assets61.png") 0 0 no-repeat;
+        background-size: 100% 100%;
+        width: 19rem;
+        height: 2.5rem;
+        display: flex;
+        line-height: 2.5rem;
+    }
+
+    .Pristine_content > div:nth-child(2) {
+        background: url("http://oss.inewgo.net/resource/imgs/img/assets61.png") 0 0 no-repeat;
+        background-size: 100% 100%;
+        width: 19rem;
+        height: 2.5rem;
+        display: flex;
+        margin-top: 0.5rem;
+        line-height: 2.5rem;
+    }
+
+    .Pristine_content > div:nth-child(3) {
+        background: url("http://oss.inewgo.net/resource/imgs/img/assets61.png") 0 0 no-repeat;
+        background-size: 100% 100%;
+        width: 19rem;
+        height: 2.5rem;
+        display: flex;
+        margin-top: 0.5rem;
+        line-height: 2.5rem;
+    }
+
+    .GTC_transferContent > div:nth-child(2) {
+        background: url("http://oss.inewgo.net/resource/imgs/img/assets61.png") 0 0 no-repeat;
+        background-size: 100% 100%;
+        width: 19rem;
+        height: 2.5rem;
+        display: flex;
+        margin-top: 0.5rem;
+    }
+
+    .GTC_transferContent > div:nth-child(3) {
+        background: url("http://oss.inewgo.net/resource/imgs/img/assets61.png") 0 0 no-repeat;
+        background-size: 100% 100%;
+        width: 19rem;
+        height: 2.5rem;
+        display: flex;
+        margin-top: 0.5rem;
+    }
+
+    .GTC_transferContent > div:nth-child(4) {
+        /* background: url("http://oss.inewgo.net/resource/imgs/img/assets61.png") 0 0 no-repeat; */
+        background-size: 100% 100%;
+        width: 19rem;
+        height: 2.5rem;
+        display: flex;
+        margin-top: 0.5rem;
+        margin-top:5rem;
+    }
+
+    .GTC_transferContent > div:nth-child(5) {
+        font-family: PingFang SC;
+        font-weight: 400;
+        color: rgba(255, 255, 255, 1);
+        line-height: 35px;
+        font-size: 12px;
+        margin-top: 2rem;
+    }
+
+    .GTC_transferContent > div:nth-child(6) {
+        font-family: PingFang SC;
+        font-weight: 400;
+        color: rgba(255, 255, 255, 1);
+        line-height: 35px;
+        font-size: 10px;
+    }
+    .fangchang{
+        top:0.8rem;
+    }
+
+    .GTC_transferContent > div:nth-child(7) {
+        font-family: PingFang SC;
+        font-weight: 400;
+        color: rgba(255, 255, 255, 1);
+        line-height: 35px;
+        font-size: 10px;
+        margin-top: 2.5rem;
+        text-align: center;
+    }
+
+    .contractlist_right {
+        display: flex;
+        flex: 1;
+        justify-content: center;
+        align-items: center;
+
+    }
+
+    .transferSubmit {
+        width: 7.125rem;
+        height: 4.22rem;
+        position: absolute;
+        top: 29rem;
+        left: 7.5rem;
+    }
+
+    .transferSubmit img {
+        width: 7.125rem;
+        height: 4.22rem;
+    }
+
+    .PropertyTab {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 0.5rem;
+        font-size: 13px;
+        line-height: 2.967rem;
+        color: rgba(58, 48, 38, 0.6);
+    }
+
+    .PropertyTab1 {
+        width: 2.78rem;
+        height: 2.68rem;
+    }
+
+    .PropertyTab1 img {
+        width: 2.78rem;
+        height: 2.68rem;
+        vertical-align: middle;
+    }
+
+    .PropertyTab2 {
+        width: 2.93rem;
+        height: 2.967rem;
+    }
+
+    .PropertyTab2 img {
+        width: 2.93rem;
+        height: 2.967rem;
+        vertical-align: middle;
+    }
+    .gczhuangrnangTop{
+        top:5.5rem !important;
+        left:18rem !important;
+    }
+    .Propertyimg img {
+        width: 5.75rem;
+        height: 4.5rem;
+    }
+
+    .Property_tilte {
+        margin-left: 0.5rem;
+    }
+
+    .Property_tilte div:nth-child(1) {
+        font-size: 32px;
+        font-family: MF XingYan(Noncommercial);
+        font-weight: 400;
+        color: rgba(136, 111, 92, 1);
+        line-height: 22px;
+        text-shadow: 0px 4px 2px rgba(0, 0, 0, 0.42);
+        color: #F2E1C0;
+
+        /* background-color:linear-gradient(0deg,rgba(242,225,192,1) 0%, rgba(255,255,255,1) 100%); */
+
+    }
+
+    .Property_box {
+        padding-left: 6.1rem;
+        padding-right: 7.2rem;
+        padding-top: 8.4rem;
+    }
+
+    .zh_Property_box {
+        padding-top: 14.4rem !important;
+    }
+
+    .Property_box > div {
+        display: flex;
+    }
+
+    .Streaming_content {
+        padding: 1rem 2.2rem 0 2.59rem;
+        font-family: PingFang SC;
+        font-weight: 400;
+        color: rgba(255, 255, 255, 1);
+        line-height: 20px;
+        font-size: 14px;
+        padding-top:5rem;
+
+    }
+    .liupai{
+        top:-1rem;
+    }
+
+    .Wallet_content {
+        padding-left: 1.81rem;
+        padding-right: 1.81rem;
+        padding-top: 5rem;
+        text-align: center;
+    }
+
+    .Wallet_content div:nth-child(1) {
+        font-family: Rubik;
+        font-weight: bold;
+        color: rgba(255, 255, 255, 1);
+        font-size: 17px;
+    }
+
+    .Wallet_content div:nth-child(2) {
+        font-family: Rubik;
+        font-weight: 400;
+        color: rgba(255, 255, 255, 1);
+        font-size: 11px;
+        margin-top: 1.5rem;
+    }
+
+    .Wallet_content div:nth-child(3) {
+        width: 16.56rem;
+        height: 15.93rem;
+        background: rgba(255, 255, 255, 1);
+        border-radius: 15px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 2rem;
+        margin: 2rem auto;
+
+
+    }
+
+    .Wallet_content div:nth-child(3) img {
+        width: 13.75rem;
+        height: 13.75rem;
+    }
+
+    .Wallet_content div:nth-child(4) {
+        font-family: MF XingYan(Noncommercial);
+        font-weight: 400;
+        color: rgba(255, 255, 255, 1);
+        font-size: 27px;
+        margin-top: 1.28rem;
+    }
+    .ffffcccc{
+        top:-3rem;
+        right:1.1rem !important
+    }
+
+    .Record_a {
+        font-size: 14px;
+        font-family: MF XingYan(Noncommercial);
+        font-weight: 400;
+        color: rgba(255, 255, 255, 1);
+        margin-top: 0.5rem;
+    }
+
+    .Walletbtn {
+        position:absolute !important;
+        left: 7rem !important;
+        top:29rem !important
+    }
+
+    .Record_b {
+        font-family: Rubik;
+        font-weight: 400;
+        color: rgba(255, 255, 255, 1);
+        font-size: 12px;
+        margin-top: 0.5rem;
+    }
+
+    .Record_content {
+        height: 5.125rem;
+        border-bottom: 1px solid #6D6D6D;
+        display: flex;
+    }
+
+    .Record_content div:nth-child(1) {
+        flex: 1;
+    }
+
+    .Record_content div:nth-child(2) {
+        flex: 1;
+    }
+
+    .Record_content div:nth-child(3) {
+        flex: 1;
+    }
+
+    .MoneyRecord_tab {
+        display: flex;
+        font-family: MF XingYan(Noncommercial);
+        font-weight: 400;
+        color: rgba(91, 86, 83, 1);
+        font-size: 17px;
+    }
+
+    .MoneyRecord_tab div:nth-child(2) {
+        margin-left: 3.5rem;
+    }
+
+    .MoneyRecord_tab div:nth-child(3) {
+        margin-left: 3.5rem;
+    }
+
+    .active3 {
+        color: #fff;
+        border-bottom: 4px solid #0092C5;
+    }
+
+    .MoneyRecord_content {
+        padding-left: 1.68rem;
+        padding-right: 1.28rem;
+        /* padding-top: 3.53rem; */
+        margin-top:4rem;
+    }
+
+    .CoinBtn {
+        width: 7.125rem;
+        height: 4.21rem;
+        position: absolute;
+        left: 3rem;
+        top: 29rem;
+    }
+
+    .review_content_b {
+        font-family: PingFang SC;
+        font-weight: 400;
+        color: rgba(255, 255, 255, 1);
+        font-size: 14px;
+        position: absolute;
+        left: 0;
+        text-indent: 2.5rem;
+        line-height: 27px;
+        top:24rem;
+        padding:4rem;
+    }
+
+    .review_content {
+        padding-left: 3.93rem;
+        padding-right: 3.78rem;
+        padding-bottom: 4.47rem;
+    }
+
+    .PropertyImg_box {
+        width: 10.6rem;
+        height: 6.28rem;
+        position: absolute;
+        top: 30rem;
+        left: 7.5rem;
+    }
+
+    .PropertyImg_box img {
+        width: 10.6rem;
+        height: 6.28rem;
+    }
+
+    .GTCOut {
+        width: 10.6rem;
+        height: 6.28rem;
+        position: absolute;
+        top: 29rem;
+        left:7.5rem;
+    }
+
+    .GTCOut img {
+        width: 7.6rem;
+        height: 4.28rem;
+    }
+
+
+    .flashsuccessfulMax {
+        top: 5.2rem !important;
+        left: 21rem !important;
+    }
+
+    .gc_img {
+        top: 6rem !important;
+        left: 20.5rem !important;
+    }
+    .cyll{
+        right:1.2rem !important;
+        top:5.5rem;
+    }
+
+    .gc_coinContent {
+        padding-top: 3rem;
+        padding-left: 1.7rem;
+        padding-right: 1.7rem;
+    }
+
+    .lase_flash {
+        font-size: 14px;
+        margin: 1.5rem;
+        text-align: center;
+        color: rgba(255, 255, 255, 1);
+        font-family: PingFang SC;
+    }
+
+    .Submit_review {
+        background: url("http://oss.inewgo.net/resource/imgs/img/button.png") 0 0 no-repeat;
+        background-size: 100% 100%;
+        width: 7.125rem;
+        height: 4.2rem;
+        position:absolute !important;
+        left:12.5rem !important;
+        top:29rem !important;
+        font-size:17px;
+        color:#fff;
+        font-weight:400;
+        line-height:4.2rem;
+        text-align:center;
+        font-family:MF XingYan(Noncommercial);
+        text-shadow:0px 0px 9px rgba(0, 0, 0, 0.42);
+    }
+
+    .Submit_review img {
+        width: 7.125rem;
+        height: 4.21rem;
+    }
+
+    .CoinBtn img {
+        width: 7.125rem;
+        height: 4.21rem;
+    }
+
+    .flash_content5 {
+        font-size: 27px;
+        margin-top: 1.5rem;
+        justify-content: center;
+    }
+
+    .flash_content3 img {
+        width: 4.46rem;
+        height: 4.46rem;
+        margin: 0.4rem auto;
+    }
+
+    .flash_content3 {
+        margin-top: 0.2rem;
+    }
+
+    .flash_content4 {
+        margin-top: 0.2rem !important;
+    }
+
+    .flash_content > div {
+        display: flex;
+    }
+
+    .flash_content1 div:nth-child(1) {
+        font-size: 27px;
+    }
+
+    .flash_content1 div:nth-child(2) {
+        font-size: 32px;
+
+    }
+
+    .flash_content2 {
+        text-indent: 8px;
+        width: 19rem;
+        height: 2.43rem;
+        font-size: 22px;
+        background: url("http://oss.inewgo.net/resource/imgs/img/asets36.png") 0 0 no-repeat;
+        background-size: 100% 100%;
+        margin-top: 1em;
+        line-height: 2.43rem;
+
+    }
+
+    #Property_details {
+        background: url("http://oss.inewgo.net/resource/imgs/img/assets90.png") 0 0 no-repeat;
+        background-size: 100% 100%;
+        /* width: 26rem; */
+        height: 27.75rem;
+        position: absolute;
+        top: 4.2rem;
+        margin:0 auto;
+        width:99%;
+    }
+    /* #Property_details.lazy {
+            background-image: none;
+        } */
+
+    #zh_success {
+        background: url("http://oss.inewgo.net/resource/imgs/img/assets93.png") 0 0 no-repeat;
+        background-size: 100% 100%;
+        width: 26rem;
+        height: 39rem;
+        /* position: relative; */
+        /* top: 4.2rem; */
+        position:fixed;
+        left:0;
+        top:0;
+        right:0;
+        bottom: 0;
+    }
+
+    /* #zh_success.lazy {
+               background-image: none;
+           } */
+
+    .new_flash_content2 {
+        display: flex;
+    }
+
+    /* .new_flash_content2 div{
+    font-size:15px !important;
+} */
+    .new_flash_content2 input {
+        margin-left: 0.1rem !important;
+        width: 50%;
+    }
+
+    .new_flash_content2 div {
+        font-size: 22px;
+    }
+
+    .flash_content2 input {
+        outline: none;
+        background: none;
+        font-size: 17px;
+        margin-left: 0.1rem;
+    }
+
+    .flash_box {
+        padding-left: 1.7rem;
+        padding-right: 1.7rem;
+        padding-top: 4rem;
+    }
+
+    .new_flashImg {
+        width: 7.4rem;
+        height: 4.21rem;
+        position: fixed;
+        left: 11rem;
+        top: 40rem;
+    }
+
+    .new_flashImg img {
+        width: 7.1rem;
+        height: 4.21rem;
+    }
+
+    .Redeem_now {
+        width: 7.125rem;
+        height: 4.22rem;
+        position: fixed;
+        left: 10.5rem;
+        top: 22rem;
+    }
+
+    .Successful {
+        top: 7.5rem !important;
+        left: 20rem !important;
+    }
+
+    .Redeem_now img {
+        width: 7.125rem;
+        height: 4.22rem;
+
+    }
+
+    .redemption_top {
+        height: 5.375rem;
+        line-height: 5.375rem;
+    }
+
+    .redemption_content {
+        padding-top: 3.5rem;
+        padding-left: 4.0rem;
+        padding-right: 4.0rem;
+    }
+
+    .redemption_content div:nth-child(1) {
+        color: #fff;
+        font-size: 25px;
+    }
+
+    .redemption_content div:nth-child(2) {
+        display: flex;
+        font-size: 27px;
+        /* line-height:5.375rem; */
+    }
+
+    .gc_coinContentaa {
+        width: 7.5rem;
+        font-size: 22px !important;
+    }
+
+    .redemption_content div:nth-child(2) img {
+        width: 4.625rem;
+        height: 5.375rem;
+    }
+
+    .Transfer_title {
+        display: flex;
+        font-size: 17px;
+        color: #5B5653;
+        font-weight: 400;
+        justify-content: space-between;
+    }
+
+    .Transfer_list {
+        height: 5.1rem;
+        border-bottom: 1px solid #6D6D6D;
+        margin-top: 1rem;
+    }
+
+    .list_tab1 {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .list_tab2 {
+        display: flex;
+        font-size: 13px;
+    }
+
+    .list_tab2 div {
+        flex: 1;
+    }
+
+    .active2 {
+        color: #fff;
+        border-bottom: 4px solid #0092C5;
+        border-radius: 3px;
+    }
+
+    .Transfer_content {
+        padding: 1.5rem 1.625rem 2rem 1.75rem;
+        margin-top:3rem;
+    }
+
+    .gc_table {
+        padding: 0rem 1.625rem 2rem 1.75rem;
+        /* height: 30rem; */
+        /* overflow-y: auto; */
+        height:80%;
+
+        /* overflow-x:hidden; */
+        margin-top:4rem;
+    }
+    .a1111{
+        overflow-y: scroll;
+        height: 22rem;
+        -webkit-overflow-scrolling: touch;
+        /* overflow-scrolling: touch; */
+    }
+    .contract_list_table {
+        height: 31rem;
+        overflow: auto;
+        margin-top: -2rem;
+        padding-top:1rem;
+        -webkit-overflow-scrolling: touch;
+        /* overflow-scrolling: touch; */
+        /* margin-top:4rem; */
+        /* margin-top:-6rem; */
+        /* height:15rem; */
+    }
+
+    .yy_time {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .new_dgtab div:nth-child(2) {
+        margin-left: 5.2rem !important;
+    }
+
+    .new_dgtab div:nth-child(3) {
+        margin-left: 5.2rem !important;
+    }
+
+    .jl_tab div:nth-child(2) {
+        margin-left: 5.2rem !important;
+    }
+
+    .jl_tab div:nth-child(3) {
+        margin-left: 5.2rem !important;
+    }
+
+    .newcontract_listcon {
+        margin-top: 1.8rem !important;
+    }
+
+    .jszhangdan div:nth-child(2) {
+        margin-left: 3.8rem !important;
+    }
+
+    .jszhangdan div:nth-child(3) {
+        margin-left: 3.8rem !important;
+    }
+
+    .contractlist_right img {
+        width: 3.43rem;
+        height: 3.43rem;
+    }
+
+    .detailsImg {
+        width: 3.8rem;
+        height: 3.9rem;
+        /* position: relative; */
+        position:absolute;
+        right:-0.9rem;
+        /* left: 19.5rem; */
+        /* top: 1.5rem; */
+    }
+
+    .contractlist_center2 {
+        font-size: 9px;
+        font-family: MF XingYan(Noncommercial);
+        font-weight: 400;
+        color: rgba(136, 111, 92, 1);
+        /* margin-left:1rem; */
+    }
+
+    .contractlist_center2 {
+        margin-left: 0.1rem;
+    }
+
+    .contractlist_center2 div:nth-child(2) {
+        margin-top: 0.2rem;
+    }
+
+    .contractlist_center2 div:nth-child(3) {
+        margin-top: 0.2rem;
+    }
+
+    .contractlist_center2 div:nth-child(4) {
+        margin-top: 0.2rem;
+    }
+
+    .contractlist_center2 div:nth-child(1) {
+        margin-top: 0.2rem;
+    }
+
+    .contractlist_left {
+        width: 7.59rem;
+        height: 8.28rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position:relative;
+    }
+
+    .contractlist_left img {
+        width: 5.75rem;
+        height: 4.625rem;
+    }
+    .contractlist_center1 div:nth-child(1) {
+        font-size: 26px;
+        font-family: MF XingYan(Noncommercial);
+        font-weight: 400;
+        color: rgba(136, 111, 92, 1);
+        margin-top: 0.1rem;
+    }
+    .contractlist_center1 div:nth-child(2) {
+        font-size: 12px;
+        font-family: MF XingYan(Noncommercial);
+        font-weight: 400;
+        /* color: rgba(136, 111, 92, 1); */
+        margin-top: 0.1rem;
+        font-weight: 400;
+        color: rgb(226, 78, 68)
+    }
+    .contractlist_center1 div:nth-child(3) {
+        font-size: 26px;
+        font-family: MF XingYan(Noncommercial);
+        font-weight: 400;
+        color: rgba(136, 111, 92, 1);
+        margin-top: 0.1rem;
+    }
+
+    .contractlist_center1 div:nth-child(4) {
+        font-size: 9px;
+        font-family: Rubik;
+        font-weight: bold;
+        color: rgba(136, 111, 92, 1);
+        width: 3rem;
+    }
+
+    .contractlist_center1 div:nth-child(5) {
+        font-size: 7px;
+        font-family: MF XingYan(Noncommercial);
+        font-weight: 400;
+        color: rgba(136, 111, 92, 1);
+        margin-top: 0.2rem;
+    }
+
+    .contract_listcon {
+        width: 24.8rem;
+        height: 8.28rem;
+        background: url("http://oss.inewgo.net/resource/imgs/img/assets20.png") 0 0 no-repeat;
+        background-size: 100% 100%;
+        margin: auto;
+        display: flex;
+        margin-top: 0.29rem;
+        position: relative;
+
+    }
+
+    .li-con {
+        width: 24.8rem;
+        height: 8.28rem;
+        background: url("http://oss.inewgo.net/resource/imgs/img/assets20.png") 0 0 no-repeat;
+        background-size: 100% 100%;
+        margin: auto;
+        display: flex;
+        position: absolute;
+        left: 0;
+        top: 0;
+        z-index: 1
+    }
+
+
+
+    .line {
+        position: absolute;
+        z-index: 10;
+        width: 17.59rem;
+        height: 3.65rem;
+        top: 8rem;
+        left: 3rem;
+    }
+    .contract_list:last-child .contract_listcon > img{
+        display: none;
+    }
+    .contract_list {
+        width: 100%;
+        /*position: relative;*/
+        /*top: -1.5rem;*/
+
+
+    }
+
+    .contract_title img {
+        width: 9.125rem;
+        height: 7.34rem;
+        margin-top:2rem;
+        /*margin-top: 4.9rem;*/
+        /* margin-left: 8.3125rem; */
+    }
+    .contract_title{
+        display:flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .detailsImg5 {
+        top: 5.5rem !important;
+        left: 18rem !important;
+    }
+    .detailsImg_zr{
+        background: url("http://oss.inewgo.net/resource/imgs/img/button.png") 0 0 no-repeat;
+        background-size: 100% 100%;
+        width: 7.125rem;
+        height: 4.2rem;
+        position:absolute !important;
+        left:8rem !important;
+        top:29rem !important;
+        font-size:17px;
+        color:#fff;
+        font-weight:400;
+        line-height:4.2rem;
+        text-align:center;
+        font-family:MF XingYan(Noncommercial);
+        text-shadow:0px 0px 9px rgba(0, 0, 0, 0.42);
+
+
+    }
+    .detailsImg_zr img {
+        width: 7.125rem;
+        height: 4.2rem;
+        /* position: fixed;
+        top: 40rem;
+        left: 10rem; */
+    }
+
+    .detailsImg_new {
+        width: 3.8rem;
+        height: 3.9rem;
+        position: relative;
+        left: 19.5rem;
+        top: -4rem;
+    }
+
+    .detailsImg_new > img {
+        width: 3.8rem;
+        height: 3.9rem;
+    }
+
+    .gc_content {
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+        padding-bottom: 1.5rem;
+        height:70%;
+        overflow: scroll;
+        -webkit-overflow-scrolling: touch;
+        /* overflow-scrolling: touch; */
+    }
+
+    .gc_list {
+        display: flex;
+    }
+
+    .gc_tabnew {
+        font-size: 14px;
+        display: flex;
+        height: 4.58rem;
+        border-bottom: 1px solid #6D6D6D;
+        padding-top: 0.5rem;
+    }
+
+    .gc_tabnewjs {
+        font-size: 14px;
+        display: flex;
+        height: 4.58rem;
+        border-bottom: 1px solid #6D6D6D;
+        padding-top: 0.5rem;
+    }
+
+    .gc_tabnew > div:nth-child(1) {
+        width: 30%;
+    }
+
+    .gc_tabnew > div:nth-child(2) {
+        width: 30%;
+        margin-left: 2.8rem;
+    }
+
+    .gc_tabnew > div:nth-child(3) {
+        width: 30%;
+        margin-left: 2.8rem;
+    }
+
+    .active1 {
+
+        color: #fff;
+        border-bottom: 3px solid #F8D99E;
+    }
+
+    .gc_Bill {
+        padding-left: 2.5rem;
+        padding-right: 1.5rem;
+        padding-bottom: 0.5;
+        margin-top:4rem;
+    }
+
+    .gc_tab {
+        display: flex;
+        font-size: 17px;
+        color: #5B5653;
+    }
+
+    .gc_tab div:nth-child(1) {
+        /* width:30%; */
+    }
+
+    .gc_tab div:nth-child(2) {
+        margin-left: 2.8rem;
+        /* width:30%; */
+    }
+
+    .gc_tab div:nth-child(3) {
+        margin-left: 2.8rem;
+        /* width:30%; */
+    }
+
+    .details_content {
+        display: flex;
+        padding: 1.2rem;
+        padding-top:5rem;
+    }
+
+    .details_content1 {
+        padding: 1.2rem;
+        margin-top:3rem;
+    }
+
+    .a_icon {
+        color: #fff;
+        font-size: 13px;
+    }
+
+    .b_icon {
+        font-size: 11px;
+    }
+
+    .detailsList_yu {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 0.5rem;
+    }
+
+    .detailsList_yu div:nth-child(1) {
+        font-size: 22px;
+        color: #fff;
+    }
+
+    .detailsList_yu div:nth-child(2) {
+        font-size: 27px;
+        color: #fff;
+        margin-top: 0.5rem;
+    }
+
+    .detailsList_right img {
+        width: 1.5rem;
+        height: 1.5rem;
+    }
+
+    .detailsList {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        /* padding-top:2rem; */
+    }
+
+    .detailsList > div {
+        width: 80%;
+        height: 5.7rem;
+        border-bottom: 1px solid #6D6D6D;
+    }
+
+    .detailsImg > img {
+        width: 3.8rem;
+        height: 3.9rem;
+    }
+
+    .Asset_details {
+        position: fixed;
+        left: 0px;
+        top: 0px;
+        background: rgba(0, 0, 0, 0.8);
+        width: 100%; /*宽度设置为100%，这样才能使隐藏背景层覆盖原页面*/
+        height: 100%;
+        filter: alpha(opacity=60); /*设置透明度为60%*/
+        /* opacity:0.8;  非IE浏览器下设置透明度为60% */
+        z-index: 999;
+
+    }
+
+    #details_top1 {
+        width: 87%;
+        height: 18rem;
+        position: relative;;
+        top: 6.5rem;
+        background: url("http://oss.inewgo.net/resource/imgs/img/assets6666.png") 0 0 no-repeat;
+        background-size: 100%;
+        margin: auto;
+    }
+
+
+    /* #details_top1.lazy {
+            background-image: none;
+        } */
+
+    /* #success_nickname.lazy {
+            background-image: none;
+        } */
+
+    .details_top5 {
+        width: 22.3rem;
+        height: 42.56 .5rem;
+        position: relative;;
+        /* background:url("http://oss.inewgo.net/resource/imgs/img/assets14.png") 0 0 no-repeat; */
+        background: url("http://oss.inewgo.net/resource/imgs/img/assets15.png") 0 0 no-repeat;
+        background-size: 100%;
+        margin: auto;
+    }
+
+    #gczhuangrnang {
+        /* width: 22.3rem; */
+        height: 35rem;
+        position: relative;;
+        /* top:6.5rem; */
+        background: url("http://oss.inewgo.net/resource/imgs/img/assets555.png") 0 0 no-repeat;
+        background-size: 100% 100%;
+        margin: auto;
+        width:87%;
+    }
+
+    /* #gczhuangrnang.lazy {
+            background-image: none;
+        } */
+
+
+    #details_top6 {
+        /* width: 22.3rem; */
+        /* height: 43.5rem; */
+        position: relative;;
+        /* top:6.5rem; */
+        background: url("http://oss.inewgo.net/resource/imgs/img/assets555.png") 0 0 no-repeat;
+        background-size: 100% 100%;
+        margin: auto;
+        height:35rem;
+        width:87%;
+    }
+    /* #details_top6.lazy {
+               background-image: none;
+           } */
+
+    #details_top {
+        width:87%;
+        /* width: 22.3rem; */
+        height: 31rem;
+        /* position: relative;; */
+        top: 6.5rem;
+        /* 11 */
+        background: url("http://oss.inewgo.net/resource/imgs/img/assets999.png") 0 0 no-repeat;
+        background-size: 100% 100%;
+        margin: auto;
+        position: absolute;;
+        left:0;
+        top:0;
+        right:0;
+        bottom: 0;
+    }
+    /* #details_top.lazy {
+            background-image: none;
+        } */
+
+    .gtc_transfer {
+        /* width: 22.3rem; */
+        height: 31rem;
+        /* position: relative;; */
+        top: 6.5rem;
+        background: url("http://oss.inewgo.net/resource/imgs/img/assets999.png") 0 0 no-repeat;
+        background-size: 100% 100%;
+        margin: auto;
+        position:absolute;
+        left:0;
+        top:0;
+        right:0%;
+        bottom: 0;
+        width:87%;
+    }
+
+    /* #gtc_transfer.lazy {
+            background-image: none;
+        } */
+
+    #Pristine_transfer {
+        width: 22.3rem;
+        height: 31rem;
+        /* position: relative;;
+        top: 6.5rem; */
+        background: url("http://oss.inewgo.net/resource/imgs/img/assets999.png") 0 0 no-repeat;
+        background-size: 100% 100%;
+        margin: auto;
+        position:fixed;
+        left:0;
+        top:0;
+        right:0;
+        bottom: 0;
+    }
+    /* #Pristine_transfer.lazy {
+            background-image: none;
+        } */
+
+    #details_topjl {
+        /* width: 22.3rem; */
+        height: 31rem;
+        position: absolute;
+        /* top: 6.5rem; */
+        /* 11 */
+        background: url("http://oss.inewgo.net/resource/imgs/img/assets999.png") 0 0 no-repeat;
+        background-size: 100% 100%;
+        margin: auto;
+        left:0;
+        top:0;
+        right:0;
+        bottom: 0;
+        width:87%;
+    }
+    /* #details_topjl.lazy {
+            background-image: none;
+        } */
+
+
+    #SnatchMax {
+        /* width: 22.3rem; */
+        height: 31rem;
+        position: absolute;
+        /* top: 6.5rem; */
+        /* 11 */
+        background: url("http://oss.inewgo.net/resource/imgs/img/assets999.png") 0 0 no-repeat;
+        background-size: 100% 100%;
+        margin: auto;
+        left:0;
+        top:0;
+        right:0;
+        bottom: 0;
+        width:87%;
+    }
+
+    /* #SnatchMax.lazy {
+            background-image: none;
+        } */
+
+    #Transfer_record {
+        /* width: 22.3rem; */
+        height: 31rem;
+        /* position: relative;; */
+        /* top: 6.5rem; */
+        /* 11 */
+        background: url("http://oss.inewgo.net/resource/imgs/img/assets999.png") 0 0 no-repeat;
+        background-size: 100% 100%;
+        margin: auto;
+        position:absolute;
+        left:0;
+        top:0;
+        right:0;
+        bottom: 0;
+        width:87%;
+    }
+    /* #Transfer_record.lazy {
+            background-image: none;
+        } */
+
+    #MoneyRecord {
+        /* width: 22.3rem; */
+        height: 32rem;
+        /* position: relative;; */
+        top: 6.5rem;
+        background: url("http://oss.inewgo.net/resource/imgs/img/assets999.png") 0 0 no-repeat;
+        background-size: 100% 100%;
+        margin: auto;
+        position: absolute;
+        left:0;
+        top:0;
+        right:0;
+        bottom: 0;
+        width:87%;
+    }
+    /* #MoneyRecord.lazy {
+            background-image: none;
+        } */
+
+
+    #Wallet {
+        /* width: 22.3rem; */
+        height: 31rem;
+        /* position: relative;; */
+        top: 6.5rem;
+        /* 11 */
+        background: url("http://oss.inewgo.net/resource/imgs/img/assets999.png") 0 0 no-repeat;
+        background-size: 100% 100%;
+        margin: auto;
+        position:absolute;
+        left:0;
+        top:0;
+        right:0;
+        bottom: 0;
+        width:87%;
+    }
+
+    /* #Wallet.lazy {
+            background-image: none;
+        } */
+
+    #Streaming_tips {
+        /* width: 22.3rem; */
+        height: 18.3rem;
+        position: relative;;
+        top: 6.5rem;
+        background: url("http://oss.inewgo.net/resource/imgs/img/assets6666.png") 0 0 no-repeat;
+        background-size: 100% 100%;
+        margin: auto;
+        width:87%;
+    }
+
+    /* #Streaming_tips.lazy {
+            background-image: none;
+        } */
+
+
+    #copy_address {
+        height: 35rem;
+        background: url("http://oss.inewgo.net/resource/imgs/img/assets555.png") 0 0 no-repeat;
+        background-size: 100% 100%;
+        margin: auto;
+        padding-top:7rem;
+    }
+
+    /* #copy_address.lazy {
+               background-image: none;
+           } */
+
+    #gc_coin {
+        /* width: 22.3rem; */
+        height: 31rem;
+        /* position: relative;; */
+        /* top: 6.5rem; */
+        background: url("http://oss.inewgo.net/resource/imgs/img/assets999.png") 0 0 no-repeat;
+        background-size: 100% 100%;
+        margin: auto;
+        position: absolute;
+        left:0;
+        right:0;
+        top:0;
+        bottom: 0;
+        width:87%;
+
+    }
+    /* #gc_coin.lazy {
+            background-image: none;
+        } */
+
+    #gC_review {
+        width:95%;
+        height: 36rem;
+        background: url("http://oss.inewgo.net/resource/imgs/img/assets555.png") 0 0 no-repeat;
+        background-size: 100% 100%;
+        margin: auto;
+        position:absolute;
+    }
+    /* #gC_review.lazy {
+            background-image: none;
+        } */
+
+
+    #redemption {
+        width: 22.3rem;
+        height: 18.2rem;
+        /* position: relative;
+        top: 6.5rem; */
+        background: url("http://oss.inewgo.net/resource/imgs/img/assets6666.png") 0 0 no-repeat;
+        background-size: 100% 100%;
+        position:absolute;
+        left:0;
+        top:0;
+        right:0;
+        bottom: 0;
+        margin: auto;
+        width:87%;
+    }
+
+    /* #redemption.lazy {
+               background-image: none;
+           } */
+
+    #Successful_redemption {
+        /* width: 22.3rem; */
+        height: 31.96rem;
+        /* position: relative;;
+    top:6.5rem; */
+        background: url("http://oss.inewgo.net/resource/imgs/img/assets33.png") 0 0 no-repeat;
+        background-size: 100% 100%;
+        margin: auto;
+        width:87%;
+    }
+    /* #Successful_redemption.lazy {
+            background-image: none;
+        } */
+
+    #details_top2 {
+        /* width: 22.3rem; */
+        height: 31rem;
+        /* position: relative;; */
+        top: 6.5rem;
+        background: url("http://oss.inewgo.net/resource/imgs/img/assets999.png") 0 0 no-repeat;
+        background-size: 100% 100%;
+        margin: auto;
+        position: absolute;;
+        left:0;
+        top:0;
+        right:0;
+        bottom: 0;
+        width:87%;
+        /* padding-top:5rem; */
+    }
+    /* #details_top2.lazy {
+            background-image: none;
+        } */
+
+    #details_top8 {
+        /* width: 22.3rem; */
+        height: 31rem;
+        /* position: relative;; */
+        top: 6.5rem;
+        /* 11 */
+        background: url("http://oss.inewgo.net/resource/imgs/img/assets999.png") 0 0 no-repeat;
+        background-size: 100% 100%;
+        margin: auto;
+        position: absolute;;
+        left:0;
+        top:0;
+        right:0;
+        bottom: 0;
+        width:87%;
+        /* padding-top:5rem; */
+    }
+    /* #details_top8.lazy {
+            background-image: none;
+        } */
+
+
+    #details_topjs {
+        /* width: 22.3rem; */
+        height: 31rem;
+        /* position: relative;; */
+        top: 6.5rem;
+        background: url("http://oss.inewgo.net/resource/imgs/img/assets999.png") 0 0 no-repeat;
+        background-size: 100% 100%;
+        margin: auto;
+        position: absolute;;
+        left:0;
+        top:0;
+        right:0;
+        bottom: 0;
+        width:87%;
+        /* padding-top:5rem; */
+    }
+
+    /* #details_topjs.lazy {
+            background-image: none;
+        } */
+
+    #new_flash {
+        /* width: 22.3rem; */
+        height: 31rem;
+        position: absolute;
+        /* top: 6.5rem; */
+        /* 11 */
+        background: url("http://oss.inewgo.net/resource/imgs/img/assets999.png") 0 0 no-repeat;
+        background-size: 100% 100%;
+        margin: auto;
+        left:0;
+        top:0;
+        right:0;
+        bottom: 0;
+        width:87%;
+    }
+    /* #new_flash.lazy {
+            background-image: none;
+        } */
+    .ssssddd{
+        top:0.5rem;
+    }
+    #flash_successful {
+        width: 95%;
+        /* width: 25.3rem; */
+        height: 35rem;
+        background: url("http://oss.inewgo.net/resource/imgs/img/assets555.png") 0 0 no-repeat;
+        background-size: 100% 100%;
+        margin: auto;
+    }
+    /* #flash_successful.lazy {
+            background-image: none;
+        } */
+
+
+    /* .profit_top div:nth-child(1) {
+        font-size: 22px;
+        color: #fff;
+    } */
+
+    .contractMax {
+        display: flex;
+        /* width: 26rem; */
+        height: 1rem;
+        /* margin-left:1.8rem; */
+        justify-content: space-around;
+        height: 5.0rem;
+        width:95%;
+        margin: auto;
+        /* justify-content: space-between; */
+    }
+
+    .contractMax img {
+        width: 9.3rem;
+        height: 5.3rem;
+
+    }
+
+    .contract {
+        /* display:flex; */
+    }
+
+    .profit_center {
+        display: flex;
+        font-size: 22px;
+        color: #fff;
+        justify-content: space-between;
+    }
+
+    .profit_center div:nth-child(1) {
+        /* margin-left: 3.2rem; */
+    }
+
+    .profit_top div:nth-child(1) img {
+        width: 3.75rem;
+        height: 3.4rem;
+        margin-left: 0.5rem;
+    }
+
+    .profit_top div:nth-child(2) {
+        font-size: 9px;
+        margin-top: 1rem;
+    }
+
+    .profit_top div:nth-child(3) {
+        margin-left: 0.8rem;
+        font-size: 22px;
+    }
+
+    .profit_top div:nth-child(4) {
+        margin-left: 0.2rem;
+        margin-top: 1rem;
+    }
+
+    .profit div {
+        display: flex;
+    }
+
+    .profit {
+        padding-top: 1rem;
+        height: 12.9rem;
+        margin-top: 1.2rem;
+        /* background:rgba(0,0,0,0); */
+        /* box-shadow:0px 7px 12px 0px rgba(106,55,28,0.44); */
+        /* border-radius: 26px; */
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+        /* background: #7E594B; */
+        width:90%;
+        background:rgba(106,55,28,0.3);
+        box-shadow:0px 7px 12px 0px rgba(106,55,28,0.44);
+        border-radius:26px;
+    }
+
+    .assets_num {
+        display: flex;
+        width:80%;
+        margin: 0.5rem auto;
+        height:2.4rem;
+    }
+
+    .profit_bottom {
+        margin-top: 0.5rem;
+        display:flex;
+        justify-content: space-between;
+    }
+
+    .profit_bottom1 div:nth-child(2) {
+        margin-top: 1rem;
+    }
+
+    .profit_bottom1 div:nth-child(3) {
+        font-size: 27px;
+        line-height:3.4rem;
+    }
+
+    .profit_bottom2 div:nth-child(3) {
+        font-size: 22px;
+        margin-left: 0.3rem;
+        line-height:3.4rem;
+    }
+
+    .profit_bottom1 div:nth-child(1) img {
+        width: 4.625rem;
+        height: 3.96rem;
+    }
+
+    .profit_bottom2 div:nth-child(1) img {
+        width: 3.75rem;
+        height: 3.4rem;
+        margin-left: 1.7rem;
+    }
+
+    .assets_num div:nth-child(1) {
+        /* margin-left: 2rem; */
+        font-size: 48px;
+        font-family: MF XingYan(Noncommercial);
+        font-weight: 400;
+        color: #F2E1C0;
+        line-height: 9px;
+        text-shadow: 0px 4px 2px rgba(0, 0, 0, 0.42);
+
+    }
+
+    .assets_num div {
+        font-family: MF XingYan(Noncommercial);
+        font-weight: 400;
+        color: #F2E1C0;
+        line-height: 9px;
+        text-shadow: 0px 4px 2px rgba(0, 0, 0, 0.42);
+    }
+
+    .assets_top {
+        width:80%;
+        display: flex;
+        padding: 0.5rem;
+        /* justify-content: space-around; */
+        justify-content: space-between;
+        margin:0 auto;
+    }
+
+    .assets_top div:nth-child(2) > img {
+        width: 4.2rem;
+        height: 1.68rem;
+    }
+
+    .assets_top div:nth-child(1) {
+        font-size: 27px;
+        font-family: MF XingYan(Noncommercial);
+        font-weight: 400;
+        color: #F2E1C0;
+        line-height: 9px;
+        text-shadow: 0px 4px 2px rgba(0, 0, 0, 0.42);
+
+
+    }
+
+    .box_topp {
+        display: flex;
+        justify-content: center;
+        /* align-items: center; */
+    }
+
+    .assets_content {
+        width: 80%;
+        height: 60%;
+        position: relative;
+        top: 12.5rem;
+    }
+
+    .center_content {
+        padding-top: 3rem;
+        width: 19rem;
+        display: flex;
+        flex-wrap: wrap;
+        text-align: center;
+        font-size: 14px;
+        color: #fff;
+        height: 13rem;
+        margin-top: -1rem;
+        padding-left: 0.6rem;
+    }
+
+    .center_content a {
+        color: #fff;
+    }
+
+    .center_content div {
+        height: 3rem;
+        line-height: 3rem;
+    }
+
+    .center_content div:nth-child(1) {
+        background: url("http://oss.inewgo.net/resource/imgs/img/assets6.png") 0 0 no-repeat;
+        width:5.63rem;
+        height:3rem;
+        background-size: 100% 100%;
+
+    }
+
+    .center_content div:nth-child(3n-1) {
+        margin-left: 0.5rem;
+    }
+
+    .center_content div:nth-child(3n) {
+        margin-left: 0.5rem;
+    }
+
+    .center_content div:nth-child(2) {
+        background: url("http://oss.inewgo.net/resource/imgs/img/assets6.png") 0 0 no-repeat;
+        width:5.63rem;
+        height:3rem;
+        background-size: 100% 100%;
+    }
+
+    .center_content div:nth-child(3) {
+        background: url("http://oss.inewgo.net/resource/imgs/img/assets6.png") 0 0 no-repeat;
+        width:5.63rem;
+        height:3rem;
+        background-size: 100% 100%;
+    }
+
+    .center_content div:nth-child(4) {
+        background: url("http://oss.inewgo.net/resource/imgs/img/assets7.png") 0 0 no-repeat;
+        width:5.63rem;
+        height:3rem;
+        background-size: 100% 100%;
+    }
+
+    .center_content div:nth-child(5) {
+        background: url("http://oss.inewgo.net/resource/imgs/img/assets8.png") 0 0 no-repeat;
+        width:5.63rem;
+        height:3rem;
+        background-size: 100% 100%;
+    }
+
+    .center_content div:nth-child(6) {
+        background: url("http://oss.inewgo.net/resource/imgs/img/assets8.png") 0 0 no-repeat;
+        width:5.63rem;
+        height:3rem;
+        background-size: 100% 100%;
+    }
+
+    .center_content div:nth-child(7) {
+        background: url("http://oss.inewgo.net/resource/imgs/img/assets8.png") 0 0 no-repeat;
+        width:5.63rem;
+        height:3rem;
+        background-size: 100% 100%;
+    }
+
+    .centerFooter {
+        background: url("http://oss.inewgo.net/resource/imgs/img/center98.png") center center no-repeat;
+        /* width: 25.9rem; */
+        height: 16.8rem;
+        background-size: 100% 100%;
+        display: flex;
+        justify-content: center;
+        margin-bottom: 7rem !important;
+        margin:2rem auto;
+        width:100%;
+        font-family:MF XingYan(Noncommercial);
+
+
+    }
+
+    .hy_box {
+        width: 16.46rem;
+        height: 4.625rem;
+        background: url("http://oss.inewgo.net/resource/imgs/img/center23.png") 0 0 no-repeat;
+        background-size: 100% 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .hy {
+        width: 100%;
+        height: 4.625rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 0.5rem;
+    }
+
+    .new_phone {
+        font-size: 14px;
+        font-family: MF XingYan(Noncommercial);
+        font-weight: 400;
+        color: #3A3026;
+    }
+
+    .span2_id {
+        font-size: 11px;
+        font-family: MF XingYan(Noncommercial);
+        font-weight: 400;
+        color: rgba(58, 48, 38, 1);
+        margin-left: .5rem;
+        margin-top: 0.3rem;
+    }
+
+    .new_phone {
+        display: flex;
+        justify-content: center;
+        align-content: center;
+    }
+
+    .new_id {
+        display: flex;
+        justify-content: center;
+        align-content: center;
+    }
+
+    .new_top-name {
+        display: flex;
+        justify-content: center;
+        align-content: center;
+    }
+
+    .new_top-name > strong {
+        font-size: 26px;
+        font-family: Rubik;
+        font-weight: bold;
+        color: rgba(255, 255, 255, 1);
+        text-shadow: 0px 4px 2px rgba(0, 0, 0, 0.42);
+        color: #F2E1C0;
+    }
+
+    .new_top-name > span {
+        margin-left: 0.5rem;
+        color: #F2E1C0;
+        font-size: 11px;
+        font-family: MF XingYan(Noncommercial);
+        text-shadow: 0px 4px 2px rgba(0, 0, 0, 0.42);
+        margin-top: 1rem;
+    }
+
+    .new_topImg {
+        width: 100%;
+        height: 12.18rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 6rem;
+    }
+
+    .right_X {
+        background: url("http://oss.inewgo.net/resource/imgs/img/img3.png") 0 0 no-repeat;
+        background-size: 100% 100%;
+        width: 3.1rem;
+        height: 3.2rem;
+        position: relative;
+        top: 5rem;
+        right: -21rem
+    }
+
+    .box_topp {
+        width:100%;
+        height: 36.75rem;
+        background: url("http://oss.inewgo.net/resource/imgs/img/assets1.png") 0 0 no-repeat;
+        background-size: 100% 100%;
+        /* width: 24rem; */
+        margin: 0 auto;
+    }
+
+    .box_center {
+        width: 100%;
+        height: 60rem;;
+        background: url("http://oss.inewgo.net/resource/imgs/img/center1.png") 0 0 no-repeat;
+        /* background-size: 100% 100%; */
+
+    }
+
+    .center_list {
+        margin-top: -2rem;
+        width: 100%;
+        height: 16.81rem;
+        background: url("http://oss.inewgo.net/resource/imgs/img/fish11.png") 0 0 no-repeat;
+        background-size: 100% 100%;
+        z-index: 999;
+
+
+    }
+
+    .img2 {
+        width: 100%;
+        height: 100%;
+
+    }
+
+    .img3 {
+        width: 8.5rem;
+        height: 8.9rem;
+    }
+
+    .top_one {
+        width: 90%;
+        height: 90%;
+        margin: auto;
+
+    }
+
+    .center_top {
+        width: 100%;
+        height: 37rem;
+        z-index: 99;
+        position: relative;
+        top: -3rem;
+
+
+    }
+
+    .img1 {
+        width: 100%;
+        height: 100%;
+        position: fixed;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        background-size: 100% 100%;
+    }
+
+
+    .fish-head {
+        background-color: transparent;
+        background-image: url('http://oss.inewgo.net/resource/imgs/img/pond-title-bg.png');
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+        background-position: bottom;
+        height: 10rem;
+    }
+
+    .head-tit {
+        font-weight: bold;
+    }
+
+    .fish-head > .head-gtc > span {
+        font-size: 2.5rem;
+    }
+
+    .fish-head > .head-gtc > label {
+        font-size: 1.2rem;
+        margin-left: 6px;
+    }
+
+    .fish-list {
+        position: relative;
+    }
+
+    .fish-list > li {
+        margin: 0 0.5rem 0.4rem;
+        overflow: hidden;
+        background-image: url('http://oss.inewgo.net/resource/imgs/img/index-item-bg.png');
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+        color: #e8aa02;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 0.5rem 0;
+    }
+
+    .fish-list > li .fish-img {
+        background-image: url('http://oss.inewgo.net/resource/imgs/img/index-item-img-border-right.png');
+        background-repeat: no-repeat;
+        background-position-x: 100%;
+        background-size: auto 100%;
+        margin-right: 0.5rem;
+    }
+
+    .fish-list > li .fish-img img {
+        width: 7rem;
+        height: 4rem;
+        display: block;
+        padding: 0 0.8rem;
+    }
+
+    .fish-list > li > .fish-name {
+        width: 4rem;
+        height: 3rem;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+    }
+
+    .fish-list > li > .fish-name > .info-title {
+        font-size: 1rem;
+        font-weight: bold;
+        line-height: 1rem;
+    }
+
+    .fish-list > li > .fish-name > .info-title:first-child {
+        font-style: italic;
+        text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3);
+    }
+
+    .fish-list > li > .fish-name > .info-price {
+        font-size: 0.7rem;
+        margin-top: auto;
+        font-weight: bold;
+    }
+
+    .fish-list > li > .fish-name > .info-price > small {
+        font-size: 0.6rem;
+    }
+
+    .fish-list > li > .fish-info {
+        margin: 0 auto;
+        line-height: 1rem;
+        font-weight: bold;
+    }
+
+    .fish-list > li > .fish-info > .info-item:first-child {
+        /*line-height: 1rem;*/
+    }
+
+    .fish-list > li > .fish-info > .info-item > label {
+        font-size: 0.6rem;
+    }
+
+    .fish-list > li > .fish-info > .info-item > strong {
+        font-size: 1rem;
+        text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3);
+        font-weight: 900
+    }
+
+    .fish-list > li > .fish-info > .info-item > small {
+        font-size: 0.5rem;
+    }
+
+    .fish-list > li > .fish-info > .info-item span {
+        font-size: 0.75rem;
+    }
+
+    .fish-list > li > .fish-btn {
+        margin-right: 0.5rem
+    }
+
+    .fish-list > li > .fish-btn > .list-btn {
+        display: block;
+        text-align: center;
+        margin: auto auto 0.3rem;
+        font-size: 0.6rem;
+        font-weight: bold;
+        line-height: 0.8rem;
+        color: white;
+        width: 3rem;
+        height: 3rem;
+        background-image: url('http://oss.inewgo.net/resource/imgs/img/pond-btn-green.png');
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+        display: flex;
+        justify-content: center;
+        align-content: center;
+        align-items: center;
+        text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
+    }
+
+    .fish-list > li > .fish-btn > .info-item {
+        line-height: 0.8rem;
+        font-weight: bold;
+        font-size: 0.6rem;
+    }
+
+    .fish-list > li > .fish-btn > .info-item > small {
+        font-size: 0.6rem;
+    }
+
+    .fish-list > li > .fish-btn > .info-item > span {
+        font-size: 0.8rem
+    }
+
+    .fish-list > li > .fish-btn > .info-btn {
+        font-size: 0.8rem;
+    }
+
+    .fish-list > li .list-btn.gray {
+        background-image: url('http://oss.inewgo.net/resource/imgs/img/pond-btn-gray.png');
+    }
+
+    .fish-list > li .list-btn.yellow {
+        background-image: url('http://oss.inewgo.net/resource/imgs/img/pond-btn-yellow.png');
+    }
+
+
+    /* 弹窗 (background) */
+    .modal2 {
+        /* display: block; */
+        /* 默认隐藏 */
+        position: fixed;
+        z-index: 101;
+        padding-top: 4rem;
+        left: 0;
+        top: 0 !important;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgb(0, 0, 0);
+        background-color: rgba(0, 0, 0, 0.4);
+        bottom: 0 !important;
+        max-width: initial;
+        max-height: initial;
+    }
+
+    /* 弹窗内容 */
+    .modal-content {
+        position: relative;
+        /* background: url('http://oss.inewgo.net/resource/imgs/img/tc-gtc.png'); */
+        background-size: 100% 100%;
+        margin: auto;
+        padding: 0;
+        width: 20.25rem;
+        height: 32.4rem;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        -webkit-animation-name: animatetop;
+        -webkit-animation-duration: 0.4s;
+        animation-name: animatetop;
+        animation-duration: 0.4s
+    }
+
+    .modal-content2 {
+        /* background: url('http://oss.inewgo.net/resource/imgs/img/givebg.png'); */
+        background-size: 100% 100%;
+    }
+
+    /* 添加动画 */
+    @-webkit-keyframes animatetop {
+        from {
+            top: -300px;
+            opacity: 0
+        }
+
+        to {
+            top: 0;
+            opacity: 1
+        }
+    }
+
+    @keyframes animatetop {
+        from {
+            top: -300px;
+            opacity: 0
+        }
+
+        to {
+            top: 0;
+            opacity: 1
+        }
+    }
+
+    /* 关闭按钮 */
+    .closebtn {
+        right: 0;
+        color: white;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        width: 3rem;
+        height: 3rem;
+        display: block;
+        position: absolute;
+        background: url(http://oss.inewgo.net/resource/imgs/img/assets10.png);
+        top: 1rem;
+    }
+
+    .closebtnimg {
+        width: 100%;
+        height: 100%;
+        display: block;
+    }
+
+    .close:hover,
+    .close:focus {
+        color: #000;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    .modal-header {
+        padding: 2px 16px;
+        color: white;
+        position: relative;
+    }
+
+    .modal-body {
+        padding: 2px 16px;
+    }
+
+    .modal-footer {
+        padding: 2px 16px;
+        color: white;
+    }
+
+    .content-box {
+        background: transparent;
+        color: #fff;
+        padding: 3rem 0 0;
+        margin: 0.5rem 0.3rem;
+    }
+
+    .content-box2 {
+        background: transparent;
+        color: #fff;
+        padding: 6rem 0 0;
+        margin: 0.5rem 0.3rem;
+    }
+
+    .don-form .input-item input {
+        width: 70%;
+        padding: 0rem 1rem;
+        line-height: 2rem;
+        font-size: 1rem;
+        background-color: transparent;
+        /* background-image: url(http://oss.inewgo.net/resource/imgs/img/login-input-bg.png); */
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+        color: #fff;
+        font-family: fontset2;
+    }
+
+    .don-form .input-item {
+        position: relative;
+        margin-bottom: 14px;
+        background: #2a2c2b;
+        background-size: 100% 100%;
+        border-radius: .3rem;
+    }
+
+    .don-form .input-item span {
+        display: inline-block;
+        width: 6rem;
+        color: #fff;
+        text-align: center;
+        font-size: 1.25rem;
+    }
+
+    .don-form .input-item input {
+        width: 60%;
+        padding: 0rem 1rem;
+        line-height: 2rem;
+        font-size: 1rem;
+        background-color: transparent;
+        /* background-image: url(http://oss.inewgo.net/resource/imgs/img/login-input-bg.png); */
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+        color: #fff;
+        font-family: fontset2;
+    }
+
+    .don-form .input-foot {
+        /* padding: 2rem 0; */
+        position: relative;
+        top: 8.5rem;
+    }
+
+    .don-form .input-foot2 {
+        /* padding: 2rem 0; */
+        position: relative;
+        top: 5.5rem;
+    }
+
+    .don-form .foot-btn {
+        display: block;
+        padding: 0 3rem;
+        margin: 0 auto;
+        line-height: 4rem;
+        color: #755f4e;
+        border-radius: 1.5rem;
+        font-size: 1rem;
+        background-image: url('http://oss.inewgo.net/resource/imgs/img/Bt_select.png');
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+        text-align: center;
+        width: 6.4rem;
+        height: 3.75rem;
+    }
+
+    .don-form .foot-btn2 {
+        background-image: url('http://oss.inewgo.net/resource/imgs/img/nowgive.png') !important;
+        background-size: 100% 100%;
+    }
+
+    .getcode {
+        position: absolute;
+        right: 0;
+        background: #0181AD;
+        background-size: 100% 100%;
+        color: #FFE9C9;
+        padding: .5rem .5rem;
+        border-radius: 0.4rem;
+        font-family: fontset2;
+    }
+
+    .tip {
+        font-family: "microsoft yahei";
+        color: #fff;
+        font-size: .5rem
+    }
+
+    .tip2 {
+        margin: 2rem;
+        text-align: center;
+        color: #fff;
+        font-size: .5rem
+    }
+
+    .essence {
+        width: 4.2rem;
+        height: 4.4rem;
+        display: inline-block;
+        background: url('http://oss.inewgo.net/resource/imgs/img/essence.png');
+        background-size: 100% 100%;
+        vertical-align: middle;
+    }
+
+    .essenceNum {
+        display: inline-block;
+        vertical-align: middle;
+        font-size: 1.5rem
+    }
+
+    .essencebox {
+        text-align: center;
+        margin-bottom: 3rem;
+    }
+
+    .essencebox p {
+        font-size: .8rem;
+
+    }
+
+    .flash_box input {
+        font-size: 1.5rem;
+        text-indent: 1rem;
+        background: transparent;
+        color: #fff;
+    }
+
+    .gc-address {
+        width: 100%;
+        font-size: .75rem;
+        text-align: center;
+        background: transparent;
+        color: #fff;
+    }
+
+    #details_top12 {
+        /* width: 22.3rem; */
+        height: 31rem;
+        /* position: relative;; */
+        top: 6.5rem;
+        /* 11 */
+        background: url("http://oss.inewgo.net/resource/imgs/img/assets999.png") 0 0 no-repeat;
+        background-size: 100% 100%;
+        margin: auto;
+        position:absolute;
+        left:0;
+        top:0;
+        right:0;
+        bottom: 0;
+        width:87%;
+
+    }
+    /* #details_top12.lazy {
+            background-image: none;
+        } */
+
+    #details_top13 {
+        /* width: 22.3rem; */
+        height: 31rem;
+        /* position: relative;; */
+        top: 2.5rem;
+        /* 11 */
+        background: url("http://oss.inewgo.net/resource/imgs/img/assets999.png") 0 0 no-repeat;
+        background-size: 100% 100%;
+        margin: auto;
+        position:absolute;
+        left:0;
+        top:0;
+        right:0;
+        bottom: 0;
+        width:87%;
+    }
+
+    /* #details_top13.lazy {
+            background-image: none;
+        } */
+    #details_top14 {
+        /* width: 22.3rem; */
+        height: 31rem;
+        /* position: relative;; */
+        top: 6.5rem;
+        /* 11 */
+        background: url("http://oss.inewgo.net/resource/imgs/img/assets999.png") 0 0 no-repeat;
+        background-size: 100% 100%;
+        margin: auto;
+        position: absolute;
+        top:0;
+        right:0;
+        left:0;
+        bottom: 0;
+        width:87%;
+    }
+    /* #details_top14.lazy {
+            background-image: none;
+        } */
+</style>
+{/block}

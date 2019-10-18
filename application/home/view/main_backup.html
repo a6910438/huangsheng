@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{block name="title"}{$title|default=''}{/block}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <!-- <link rel="shortcut icon" href=""> -->
+    <!-- css -->
+    <link href="/fish/css/style.css?date=201907180011" rel="stylesheet">
+	{block name="style"}{/block}
+    <!-- js -->
+    <script src="/fish/js/vue.min.js"></script>
+    <script src="/fish/js/jquery.min.js"></script>
+    <script src="/fish/js/core.js?date=201907172346"></script>
+</head>
+<body id="main">
+    <div>
+        <div id="app">
+            {block name='body'}{/block}
+        </div>
+    </div>
+    <!-- js -->
+	{block name='script'}{/block}
+</body>
+</html>

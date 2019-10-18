@@ -1,0 +1,91 @@
+{extend name="layout/main" /}
+
+{block name="header"}
+
+{/block}
+
+{block name="content"}
+<section class="panel">
+    <header class="panel-heading">
+        <h4>评测设置</h4>
+    </header>
+    <div class="panel-body" style="padding-bottom: 50px">
+        <form class="form-horizontal" action="">
+            <div class="form-group">
+                <div class="col-xs-1 no-pd-r">
+                    <select name="type" id="type" class="form-control">
+                        <option {if $Request.get.type == 'title'} selected {/if} value="title">题目名称</option>
+                    </select>
+                </div>
+                <div class="col-xs-3 no-pd-l">
+                    <input type="text" id="keyword" value="{$Request.get.keyword}" name="keyword" class="form-control" placeholder="请输入关键词搜索">
+                </div>
+                <button type="submit" class="btn btn-color">搜索</button>
+                <a type="button" href="{:url('createTestQuestion')}" class="btn btn-info">添加新问题</a>
+            </div>
+        </form>
+        <table class="table table-bordered table-striped no-margin">
+            <thead>
+            <tr>
+                <th class="text-center">序号</th>
+                <th class="text-center">题号</th>
+                <th class="text-center">题目</th>
+                <th class="text-center">状态</th>
+                <th class="text-center">答案</th>
+                <th class="text-center">创建时间</th>
+                <th class="text-center">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            {if !empty($list)}
+            {foreach $list as $k=> $entity}
+            <tr>
+                <td class="text-center">{$entity->id}</td>
+                <td class="text-center">{$entity->arr($k+1)}</td>
+                <td class="text-center">{$entity->title}</td>
+                <td class="text-center">{$entity->getStatus($entity->status)}</td>
+                <td class="text-center">
+                    <a onclick="showContent(this)" data-content="{$entity->getAnswer($entity->id)}" class="btn btn-xs btn-primary">查看</a>
+                </td>
+                <td class="text-center">{$entity->create_time}</td>
+                <td class="text-center">
+                    {if $entity->status == 1}
+                    <a data-url="{:url('testConfigClose',['id'=>$entity->id])}" onclick="main.ajaxDelete(this)"
+                       data-msg="确定禁用该问题吗？" class="btn btn-xs btn-warning">禁用</a>
+                    {elseif $entity->status == 2}
+                    <a data-url="{:url('testConfigOpen',['id'=>$entity->id])}" onclick="main.ajaxDelete(this)"
+                       data-msg="确定启用该问题吗？" class="btn btn-xs btn-success">启用</a>
+                    {/if}
+                    <a href="{:url('updateTestQuestion',['id'=>$entity->id])}" class="btn btn-xs btn-primary">编辑问题</a>
+                    <a href="{:url('updateTestAnswer',['id'=>$entity->id])}" class="btn btn-xs btn-info">编辑答案</a>
+                    <a href="{:url('addTestAnswer',['id'=>$entity->id])}" class="btn btn-xs btn-info">添加答案</a>
+                    <a data-url="{:url('delTestConfig',['id'=>$entity->id])}" onclick="main.ajaxDelete(this)"
+                       data-msg="确定要删除该问题吗？" class="btn btn-xs btn-danger">删除</a>
+                </td>
+            </tr>
+            {/foreach}
+            {else /}
+            <tr class="text-center">
+                <td colspan="5">暂无数据</td>
+            </tr>
+            {/if}
+            </tbody>
+        </table>
+        <div class="page">
+            {:htmlspecialchars_decode($list->render())}
+        </div>
+    </div>
+</section>
+{/block}
+
+
+{block name="footer"}
+<script>
+    function showContent(e){
+        $.dialog({
+            title: '答案列表',
+            content: $(e).attr('data-content')
+        });
+    }
+</script>
+{/block}

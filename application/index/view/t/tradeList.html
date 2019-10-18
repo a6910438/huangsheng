@@ -1,0 +1,74 @@
+<!doctype html>
+<html>
+
+    <head>
+        <meta charset="UTF-8">
+        <title>交易列表</title>
+        {include file="t/head" /}
+        <link rel="stylesheet" type="text/css" href="/t/css/transactionList.css"/>
+    </head>
+    <body style="background: white;">
+        <header class="mui-bar mui-bar-nav mui-bar-nav-bg">
+            <a id="icon-menu" class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+            <h1 class="mui-title">交易列表</h1>
+        </header>
+        <div class="mui-content" style="background: none;">
+            <div id="slider" class="mui-slider mui-fullscreen">
+                <div id="sliderSegmentedControl" class="mui-scroll-wrapper mui-slider-indicator mui-segmented-control mui-segmented-control-inverted" style="width: 95%;margin: 20px auto;">
+                    <div class="mui-scroll">
+                        <a class="mui-control-item mui-active" href="#item1mobile" data-wid="tab-top-subpage-1.html">
+                            A:交易列表
+                        </a>
+                        <a class="mui-control-item" href="#item2mobile" data-wid="tab-top-subpage-2.html" style="margin-left: -5px;">
+                            B:交易列表
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div style="width: 95%;margin: 0 auto;"> 
+                <table width="100%" class="table" id="tablevalue">
+                    <tr>
+                        <th>买、卖家</th>
+                        <th>成交笔数</th>
+                        <th>诚信度100%</th>
+                        <th>FSC总价$(0.00)</th>
+                        <th>成交状态</th>
+                    </tr>
+                    <tr class="amite">
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                    </tr>
+                </table>
+            </div> 
+        </div>
+        <div class="mui-input-group" style="width: 95%;margin: 30px auto;">
+            <div class="mui-input-row">
+                <label>显示</label>
+                <input type="text" class="mui-input-clear" placeholder="请输入手机号">
+            </div>
+            <div class="mui-input-row">
+                <label>手机号</label>
+                <input type="text" class="mui-input-clear" placeholder="请输入手机号">
+            </div>
+            <div class="mui-input-row">
+                <label>密码</label>
+                <input type="text" class="mui-input-clear" placeholder="请输入手机号">
+            </div>
+            <div class="mui-input-row">
+                <label>前四</label>
+                <input type="text" class="mui-input-clear" placeholder="请输入手机号">
+            </div>
+            <div class="mui-input-row">
+                <label>后面</label>
+                <input type="text" class="mui-input-clear" placeholder="请输入手机号">
+            </div>
+            <div class="mui-input-row">
+                <label>隐藏</label>
+                <input type="text" class="mui-input-clear" placeholder="请输入手机号">
+            </div>
+        </div>
+    </body>
+</html>

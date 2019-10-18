@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>Trading</title>
+		<link rel="icon" href="free.ico" type="image/x-icon"/> 
+		<link rel="stylesheet" href="../css/style.css" />
+		<script type="text/javascript" src="../js/jquery.js" ></script>
+		<script type="text/javascript" src="../build/flexible_css.js" ></script>
+		<script type="text/javascript" src="../build/flexible.js" ></script>
+		<script type="text/javascript" src="../js/template.js" ></script>
+		<script src="../js/layer.js"></script>
+		<script src="../js/logout.js"></script>
+		<style>
+			html,body{ background: #F5F5F5;overflow-x: hidden}
+			.header {position: fixed;top: 0px;left: 0px;width: 100%;height: 1.173333rem;line-height: 1.173333rem;text-align: center;color: #fff;background: linear-gradient(to left, #2A3176, #0A0F3E);z-index: 99999;}
+			.header span {font-size: .48rem;font-weight: bold;}
+			.more {position: absolute;top: 0;left: .373333rem;display: flex;align-items: center;height: inherit;}
+			.more img {width: .773333rem;}
+			.my-order {position: absolute;top: 0;right: .373333rem;font-size: .373333rem;color: #fff;font-weight: normal;}
+			.tab{ width: 100%; height: 1.2rem; line-height: 1.2rem; background: #fff; }
+			.tab ul li{  width: 33.3%; float: left; text-align: center; font-size: 0.4rem; color: #999; }
+			.tab ul li.action{ color: #191F58; }
+			.tab ul li.action:after{ content: ""; display: block; width: 100%; border: 1px solid #191F58; }
+			.m-box{ padding: 0.3rem 0; }
+			.box .title{ width: 100%; height: 1rem; line-height: 1rem; background: #fff; }
+			.box .title span,.box ul li span{ display: block; width: 25%; float: left;  text-align: center; font-size: 0.35rem; }
+			.box ul{ padding: 0 0.3rem; margin-top: 0.3rem; }
+			.box ul li{ width: 100%; background: #fff; height: 1rem; line-height: 1rem; font-size: 0.35rem; margin-bottom: 0.3rem; overflow: hidden; border-radius: 0.3rem; }
+			.box ul li span:last-child{background: #262F86; color: #fff;  }
+			.search{ width: 100%; height: 2rem; line-height: 1rem; margin-bottom: 0.2rem; padding: 0 0.35rem; position: relative; }
+			.search input{ height: 1rem; border: none; width: 100%; border-radius: 0.35rem; padding: 0 0.35rem; font-size: 0.4rem;  }
+			.search button{ background: url(../images/search.png)no-repeat center center; background-size: auto 60% ; width: 1.5rem; height: 1rem; border: none; z-index: 999;  position: absolute; top: 0; right: 0.45rem;  }
+			.search span{ display: block; width: 100%; height: 0.4rem; text-align: right; line-height: 0.4rem; color: #E77E51; margin-bottom: 0.1rem; }
+			.red{ color: #F24D4D; }
+			.orange{ color:#E77E51}
+			.m-trading{ display: block; height: 2rem;  width: 2rem; position: fixed; bottom: 2rem; right: 0.1rem; text-align: center; }
+			.m-trading img{ width: 85%; }
+			.ly{ position: fixed; height: 100%; width: 100%; background: rgba(0,0,0,0.3); top: 0; left: 0; display: none; }
+			.m-megess{ width: 90%;height: 50%; background: #fff; position: fixed; display: none; z-index: 99; text-align: center; border-radius: 0.3rem; left: 5%; top: 30%; overflow:scroll  }
+			.m-megess .title{ height: 0.9rem; font-size: 0.4rem; line-height: 0.9rem; padding: 0 0.35rem; text-align: left; position: relative; border-bottom: 1px solid #E0E0E0; }
+			.m-megess .title i{ position: absolute; height: 0.9rem; width: 0.9rem; background: url(../images/shutdown.png) no-repeat center center; background-size:auto 70%; right: 0.25rem;  }
+			.m-megess .list{ width: 100%; padding: 0 0.35rem;  }
+			.m-megess .list .top span{ display: block; width: 50%; font-size: 0.35rem; color: #666; text-align: left; float: left; height: 0.8rem; line-height: 0.8rem; }
+			.m-megess .list .top span:nth-child(2n){ text-align: right; }
+			.m-megess .Serial{ width: 100%; height: auto; }
+			.m-megess .Serial .tops span{ width: 25%; display: block; float: left; position: relative; font-size: 0.35rem; height: 0.8rem; line-height: 0.8rem; }				
+			.m-megess .Serial em{ height: 0.5rem; width: 0.5rem; position: absolute; top: 0.2rem; right: 0.6rem; border-radius: 0.35rem; border:1px solid #191F58; display: block; }
+			.m-megess .Serial .tops.action span em:after{ content: ""; display: block; width: 0.3rem; margin: 0.085rem auto; height: 0.3rem; border-radius: 0.25rem; background: #191F58; }
+			.Conf-btn{ width: 60%; margin: 1.2rem auto 0.3rem; height: 1rem; line-height: 1rem; background: #262F86; color: #fff; font-size: 0.4rem; border-radius: 0.1rem; -moz-box-shadow: 0px 2px 17px #262F86;-webkit-box-shadow: 0px 2px 17px #262F86; box-shadow: 0px 2px 17px #262F86;}
+			.nav-bg {position: fixed;top: 0;left: 0;width: 100%;height: 100%;background: rgba(27, 27, 27, .5);display: none;}
+			.nav-box {position: absolute;top: 0;left: -67.73%;width: 67.73%;height: 100%;padding-top: 1.173333rem;transition: ease left .4s;}
+			.nav-content {padding-top: .373333rem;width: 100%;height: 100%;background: #fff;border-radius: 0rem .133333rem .133333rem 0rem;}
+			.nav-item {height: 1.333333rem;display: flex;align-items: center;padding-left: .346667rem;}
+			.nav-icon img {height: .586667rem;vertical-align: bottom;}
+			.nav-name {margin-left: .72rem;font-size: .426667rem;color: #666;}
+			.nav-active .nav-name {color: #212121;}
+			.layout-btn {position: absolute;left: 0;bottom: 0;width: 100%;height: 1.333333rem;border-top: 1px solid #E0E0E0;display: flex;align-items: center;}
+			.layout {display: flex;align-items: center;padding-left: .346667rem;width: 100%;height: 100%;border: none;background: transparent;font-size: .426667rem;color: #999;}
+			.layout img {height: .586667rem;margin-right: .773333rem;}
+		</style>
+	</head>
+	<body>
+		<header class="header">
+			<span class="more" data="0">
+				<img src="../images/home.png" alt="">
+			</span>
+			<span>Trading</span>
+			<a href="Order.html" class="my-order">My Order</a>
+		</header>
+		<div class="m-body">
+			<div class="tab clearfix">
+				<ul>
+					<li class="action">Prime</li>
+					<li>Random</li>
+					<li>Self-Selected</li>
+				</ul>
+			</div>
+			
+			<div class="m-box">
+				<div class="box clearfix prime">
+					<div class="title clearfix">
+						<span>Serial</span>
+						<span>Account</span>
+						<span>Amount</span>
+						<span>Manage</span> 
+					</div>	
+					<ul>
+						
+					</ul>
+				</div>
+				<div class="box clearfix random" style="display: none;">
+					<div class="title clearfix">
+							<span>Serial</span>
+							<span>Account</span>
+							<span>Amount</span>
+							<span>Manage</span> 
+					</div>
+					<ul>
+						
+					</ul>
+				</div>
+				<div class="box clearfix selected" style="display: none;">
+					<div class="search">
+						<input class="input_name" type="text" placeholder="Please enter your account" />
+						<button class="get_name"></button>
+                        <span>Only trade once in 48 hours</span><span class="search_time"></span>
+					</div>
+					
+					<div class="title clearfix">
+						<span>Serial</span>
+						<span>Account</span>
+						<span>Amount</span>
+						<span>Manage</span> 
+					</div>	
+					<ul>
+
+					</ul>
+				</div>
+			</div>
+		</div>
+		<a href="Access.html" class="m-trading"><img src="../images/jia_icon@2x.png" /></a>
+		<div class="ly"></div>
+		<div class="m-megess m-megess1">
+				<div class="title">message <i class="close"></i> </div>
+				<div class="list">
+					<div class="top clearfix sk1_data">
+						<span></span>
+						<span></span>
+						<span></span>
+					</div>
+					<div class="Serial clearfix withdraw1">
+						
+					</div>
+				</div>
+				<div class="Conf-btn conf-btn1">Confirmation Operation</div>
+			</div>
+			<div class="m-megess m-megess2">
+					<div class="title">message <i class="close"></i> </div>
+					<div class="list">
+						<div class="top clearfix sk2_data">
+							<span></span>
+							<span></span>
+							<span></span>
+						</div>
+						<div class="Serial clearfix random1">
+							
+						</div>
+					</div>
+					<div class="Conf-btn conf-btn2">Confirmation Operation</div>
+				</div>
+				<div class="m-megess m-megess3">
+						<div class="title">message <i class="close"></i> </div>
+						<div class="list">
+							<div class="top clearfix sk3_data">
+								<span></span>
+								<span></span>
+								<span></span>
+							</div>
+							<div class="Serial clearfix selected1">
+								
+							</div>
+						</div>
+						<div class="Conf-btn conf-btn3">Confirmation Operation</div>
+					</div>
+		<div class="nav-bg">
+			<div class="nav-box">
+				<div class="nav-content">
+					<div class="nav-list">
+						<div class="nav-item" onclick="window.location.href='index.html'">
+							<div class="nav-icon"><img src="../images/lab_2homei_icon@2x.png" alt=""></div>
+							<div class="nav-name">Home</div>
+						</div>
+						<div class="nav-item" onclick="window.location.href='news.html'">
+							<div class="nav-icon"><img src="../images/lab_2News_icon@2x.png" alt=""></div>
+							<div class="nav-name">News</div>
+						</div>
+						<div class="nav-item nav-active">
+							<div class="nav-icon"><img src="../images/lab_1transaction_icon@2x.png" alt=""></div>
+							<div class="nav-name">Trading</div>
+						</div>
+						<div class="nav-item" onclick="window.location.href='assets.html'">
+							<div class="nav-icon"><img src="../images/lab_assets_icon@2x.png" alt=""></div>
+							<div class="nav-name">Transaction</div>
+						</div>
+						<div class="nav-item" onclick="window.location.href='my.html'">
+							<div class="nav-icon"><img src="../images/lab_mein_icon@2x.png" alt=""></div>
+							<div class="nav-name">My Profile</div>
+						</div>
+					</div>
+					<div class="layout-btn">
+						<button class="layout">
+							<img src="../images/lab_Sidebar_icon@2x.png" alt="">
+							<span>Logout</span>
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script type="text/html" id="withdraw">
+			<div class="tops">
+				<span>Serial</span>
+				<span>Account</span>
+				<span>Amount</span>
+				<span>Manage</span>
+			</div>
+			{{each info.withdraw.data val index}}
+			<div class="tops prime1_data">
+				<span>{{index}}</span>
+				<span>{{val.nick_name}}</span>
+				<span class="orange">{{val.total}}</span>
+				<span style="display:none">{{val.id}}</span>
+				<span><em></em></span>
+			</div>
+			{{/each}}
+	</script>
+	<script type="text/html" id="prime">
+		{{each info val index}}	
+			<li class="clearfix prime_list">
+				<span>{{index}}</span>
+				<span>{{val.nick_name}}</span>
+				<span class="red">${{val.overmoney}}</span>
+				<span style="display:none">{{val.level}}</span>
+				<span style="display:none">{{val.id}}</span>
+				<span class="send1">Trading</span> 
+			</li>
+		{{/each}}
+	</script>
+	<script type="text/html" id="random">
+		{{each info val index}}	
+			<li class="clearfix random_list">
+				<span>{{index}}</span>
+				<span>{{val.nick_name}}</span>
+				<span class="red">${{val.overmoney}}</span>
+				<span style="display:none">{{val.level}}</span>
+				<span style="display:none">{{val.id}}</span>
+				<span class="send2">Trading</span> 
+			</li>
+		{{/each}}
+	</script>
+	<script type="text/html" id="selected">
+		{{each info val index}}	
+			<li class="clearfix selected_list">
+				<span>{{index}}</span>
+				<span>{{val.nick_name}}</span>
+				<span class="red">${{val.overmoney}}</span>
+				<span style="display:none">{{val.level}}</span>
+				<span style="display:none">{{val.id}}</span>
+				<span class="send3">Trading</span> 
+			</li>
+		{{/each}}
+	</script>
+	<script>
+		$(function () {
+			$.ajax({
+                url: "../../index.php/index/Match/order",
+				type: 'POST',
+                dataType: 'json',
+                success: function(res){
+                    console.log(res)
+                    if(res.code=='0'){
+						$('.withdraw1').html(template("withdraw",res));
+						$('.random1').html(template("withdraw",res));
+						$('.selected1').html(template("withdraw",res));
+						}
+					else if (res.code == 1 && res.url == "login") {
+						layer.open({
+							content: 'You are not logged in',
+							skin: 'msg',
+							time: 2
+						})
+						setTimeout(function(){
+							window.location.href='introduce.html';
+						},500)
+					}
+                    else{
+                        layer.open({
+                            content: res.msg,
+                            skin: 'msg',
+                            time: 2
+                        });
+                        }
+                },
+			});
+			$.ajax({
+                url: "../../index.php/index/Match/index",
+				type: 'POST',
+				data:{type:1},
+                dataType: 'json',
+                success: function(res){
+                    if(res.code=='0'){
+						console.log(res)
+						$('.prime ul').html(template("prime",res));
+						$(".send1").click(function(){
+							$(this).parent().addClass('active');
+							var inde=$('.prime_list.active span').eq(0).text();
+							var name1=$('.prime_list.active span').eq(1).text();
+							var money1=$('.prime_list.active span').eq(2).text();
+							var level=$('.prime_list.active span').eq(3).text();
+							var store_id=$('.prime_list.active span').eq(4).text();
+							var name2='Account：'+name1;
+							var money2='Amount: '+money1;
+							var level1='Level Of Freedom：'+level;
+							$('.sk1_data span').eq(0).html(name2);
+							$('.sk1_data span').eq(1).html(money2);
+							$('.sk1_data span').eq(2).html(level1);
+							$(".ly,.m-megess1").show();
+						})
+						//隐藏
+						$(".close,.ly").click(function(){
+							$('.prime_list').removeClass('active');
+							$(".ly,.m-megess1").hide();
+						})
+                        }
+                    else{
+                        layer.open({
+                            content: res.msg,
+                            skin: 'msg',
+                            time: 2
+                        });
+                        }
+                },
+			});
+			$.ajax({
+                url: "../../index.php/index/Match/index",
+				type: 'POST',
+				data:{type:2},
+                dataType: 'json',
+                success: function(res){
+                    if(res.code=='0'){
+						$('.random ul').html(template("random",res));
+						$(".send2").click(function(){
+							$(this).parent().addClass('active');
+							var inde=$('.random_list.active span').eq(0).text();
+							var name1=$('.random_list.active span').eq(1).text();
+							var money1=$('.random_list.active span').eq(2).text();
+							var level=$('.random_list.active span').eq(3).text();
+							var name2='Account：'+name1;
+							var money2='Amount: '+money1;
+							var level1='Level Of Freedom：'+level;
+							console.log(level)
+							$('.prime2_data span').eq(0).html(inde);
+							$('.prime2_data span').eq(1).html(name1);
+							$('.prime2_data span').eq(2).html(money1);
+							$('.sk2_data span').eq(0).html(name2);
+							$('.sk2_data span').eq(1).html(money2);
+							$('.sk2_data span').eq(2).html(level1);
+							$(".ly,.m-megess2").show();
+						})
+						//隐藏
+						$(".close,.ly").click(function(){
+							$('.random_list').removeClass('active');
+							$(".ly,.m-megess2").hide();
+						})
+                        }
+                    else{
+                        layer.open({
+                            content: res.msg,
+                            skin: 'msg',
+                            time: 2
+                        });
+                        }
+                },
+			});
+           $.ajax({
+                                url: "../../index.php/index/Match/seachTime",
+                                type: 'POST',
+                                dataType: 'json',
+                                success: function(res){
+                                    console.log(res)
+                                    if(res.code=='0'){
+                                     var time_wz='Search the remaining'+res.info+ 'times daily';
+                                  	$('.search_time').html(time_wz);
+                                        }
+                                    else{
+                                        layer.open({
+                                            content: res.msg,
+                                            skin: 'msg',
+                                            time: 2
+                                        });
+                                        }
+                                },
+                            });
+			$('.get_name').off().on('click',function(){
+				var nick_name=$('.input_name').val();
+				$.ajax({
+                url: "../../index.php/index/Match/index",
+				type: 'POST',
+				data:{type:3,nick_name:nick_name},
+                dataType: 'json',
+                success: function(res){
+                    console.log(res)
+                    if(res.code=='0'){
+                      $.ajax({
+                                url: "../../index.php/index/Match/seachTime",
+                                type: 'POST',
+                                dataType: 'json',
+                                success: function(res){
+                                    console.log(res)
+                                    if(res.code=='0'){
+                                     var time_wz='Search the remaining'+res.info+ 'times daily';
+                                  	$('.search_time').html(time_wz);
+                                        }
+                                    else{
+                                        layer.open({
+                                            content: res.msg,
+                                            skin: 'msg',
+                                            time: 2
+                                        });
+                                        }
+                                },
+                            });
+						$('.selected ul').html(template("selected",res));
+						layer.open({
+                            content: 'Search success',
+                            skin: 'msg',
+                            time: 2
+						});
+						$(".send3").click(function(){
+							$(this).parent().addClass('active');
+							var inde=$('.selected_list.active span').eq(0).text();
+							var name1=$('.selected_list.active span').eq(1).text();
+							var money1=$('.selected_list.active span').eq(2).text();
+							var level=$('.selected_list.active span').eq(3).text();
+							var name2='Account：'+name1;
+							var money2='Amount: '+money1;
+							var level1='Level Of Freedom：'+level;
+							$('.prime3_data span').eq(0).html(inde);
+							$('.prime3_data span').eq(1).html(name1);
+							$('.prime3_data span').eq(2).html(money1);
+							$('.sk3_data span').eq(0).html(name2);
+							$('.sk3_data span').eq(1).html(money2);
+							$('.sk3_data span').eq(2).html(level1);
+							$(".ly,.m-megess3").show();
+						})
+						//隐藏
+						$(".close,.ly").click(function(){
+							$('.selected_list').removeClass('active');
+							$(".ly,.m-megess3").hide();
+						})
+                        }
+                    else{
+                        layer.open({
+                            content: res.msg,
+                            skin: 'msg',
+                            time: 2
+                        });
+                        }
+                },
+			});
+			})
+			$('.conf-btn1').off().on('click',function(){
+				var store_id=$('.prime_list.active span').eq(4).text();
+				var take_id =$('.prime1_data.action span').eq(3).text();
+				$.ajax({
+                url: "../../index.php/index/Match/matching",
+				type: 'POST',
+				data:{store_id:store_id,take_id:take_id},
+                dataType: 'json',
+                success: function(res){
+                    console.log(res)
+                    if(res.code=='0'){
+							layer.open({
+                            content: res.msg,
+                            skin: 'msg',
+                            time: 2
+                        });
+						setTimeout(() => {
+							location.reload();
+						}, 1500);
+                        }
+                    else{
+                        layer.open({
+                            content: res.msg,
+                            skin: 'msg',
+                            time: 2
+                        });
+                        }
+                },
+			});
+			})
+			$('.conf-btn2').off().on('click',function(){
+				var store_id=$('.random_list.active span').eq(4).text();
+				var take_id =$('.prime1_data.action span').eq(3).text();
+				$.ajax({
+                url: "../../index.php/index/Match/matching",
+				type: 'POST',
+				data:{store_id:store_id,take_id:take_id},
+                dataType: 'json',
+                success: function(res){
+                    console.log(res)
+                    if(res.code=='0'){
+						layer.open({
+                            content: res.msg,
+                            skin: 'msg',
+                            time: 2
+                        });
+						setTimeout(() => {
+							location.reload();
+						}, 1500);
+                        }
+                    else{
+                        layer.open({
+                            content: res.msg,
+                            skin: 'msg',
+                            time: 2
+                        });
+                        }
+                },
+			});
+			})
+			$('.conf-btn3').off().on('click',function(){
+				var store_id=$('.selected_list.active span').eq(4).text();
+				var take_id =$('.prime1_data.action span').eq(3).text();
+				$.ajax({
+                url: "../../index.php/index/Match/matching",
+				type: 'POST',
+				data:{store_id:store_id,take_id:take_id,match_way:1},
+                dataType: 'json',
+                success: function(res){
+                    console.log(res)
+                    if(res.code=='0'){
+						layer.open({
+                            content: res.msg,
+                            skin: 'msg',
+                            time: 2
+                        });
+						setTimeout(() => {
+							location.reload();
+						}, 1500);
+                        }
+                    else{
+                        layer.open({
+                            content: res.msg,
+                            skin: 'msg',
+                            time: 2
+                        });
+                        }
+                },
+			});
+			})
+		});
+	</script>
+	<script>
+		let more = document.querySelector('.more');
+		let navBg = document.querySelector('.nav-bg');
+		let navBox = document.querySelector('.nav-box');
+		more.addEventListener('click', function() {
+			if (this.getAttribute('data') == 0) {
+				navBg.style.display = 'block';
+				setTimeout(()=> {
+					navBox.style.left = '0%';
+				}, 10);
+				this.setAttribute('data', '1');
+			} else {
+				navBox.style.left = '-67.73%';
+				setTimeout(()=> {
+					navBg.style.display = 'none';
+				}, 400);
+				this.setAttribute('data', '0');
+			}
+		});
+		navBox.addEventListener('click', (e)=> {
+			if (e) {
+				e.stopPropagation();
+				e.preventDefault();
+			} else {
+				window.event.returnValue = false;
+				window.event.cancelBubble = true;
+			}
+		});
+		navBg.addEventListener('click', ()=> {
+			if (more.getAttribute('data') == 1) {
+				navBox.style.left = '-67.73%';
+				setTimeout(()=> {
+					navBg.style.display = 'none';
+				}, 400);
+				more.setAttribute('data', '0');
+			}
+		});
+		$(function(){
+			$('.tab ul li').click(function(){
+				$('.tab ul li').removeClass("action");
+				$(this).addClass("action");
+				$(".box").hide();
+				$(".box").eq($('.tab ul li').index(this)).show();
+			});
+			$(".Serial").on('click','.tops',function(){
+				$(this).addClass('action').siblings('').removeClass('action');
+			})
+		})
+	</script>
+</html>

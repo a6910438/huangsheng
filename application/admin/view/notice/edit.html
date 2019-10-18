@@ -1,0 +1,183 @@
+{extend name="layout/main" /}
+
+{block name="header"}
+
+{/block}
+
+{block name="content"}
+<script type="text/javascript" src='https://unpkg.com/wangeditor/release/wangEditor.min.js'></script>
+<section class="panel">
+    {if isset($info)}
+    <header class="panel-heading">
+        <h4>编辑文章</h4>
+    </header>
+    <div class="panel-body" style="padding-bottom: 50px">
+        <form class="form-horizontal" method="post" onsubmit="return false" role="form">
+            <div class="form-group">
+                <label class="col-sm-2 control-label">标题</label>
+
+                <div class="col-sm-5">
+                    <input type="text" value="{$info->title}" name="title" class="form-control"
+                           placeholder="请输入标题">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">类型</label>
+
+                <div class="col-sm-5">
+                    <select name="category" class="form-control">
+                        {foreach $cate as $key=>$item}
+                        <option {if $info->category == $key}selected{/if} value="{$key}">{$item}</option>
+                        {/foreach}
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">内容</label>
+
+                <div class="col-sm-10"  style="width: 480px;min-height: 600px" id="editor">
+                    {:htmlspecialchars_decode($info->content)}
+                </div>
+            </div>
+            <textarea style="display: none;" id="content" name="content" >{$info->content}</textarea>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">排序</label>
+
+                <div class="col-sm-5">
+                    <input type="text" value="{$info->sort ? $info->sort : 100}" name="sort" class="form-control"
+                           placeholder="排序">
+                </div>
+                <div class="col-sm-5 help-block">
+                    数字越小，排到最前面
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">是否发布</label>
+
+                <div class="col-sm-8">
+                    <label class="radio radio-custom pull-left">
+                        <input type="radio" {if $info->status == 1}checked{/if} name="status" value="1">
+                        <i class="radio "></i> 发布
+                    </label>
+                    <label class="radio radio-custom pull-left">
+                        <input type="radio" {if $info->status == 0}checked{/if} name="status" value="0">
+                        <i class="radio "></i> 不发布
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" data-url="{:url('admin/Notice/update',['id'=>$info->article_id])}"
+                            onclick="main.ajaxPosts(this)" class="btn btn-primary">确定修改
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+    {else /}
+    <header class="panel-heading">
+        <h4>添加文章</h4>
+    </header>
+    <div class="panel-body" style="padding-bottom: 50px">
+        <form class="form-horizontal" method="post" onsubmit="return false" role="form">
+            <div class="form-group">
+                <label class="col-sm-2 control-label">标题</label>
+
+                <div class="col-sm-5">
+                    <input type="text" value="" name="title" class="form-control"
+                           placeholder="请输入公告标题">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">类型</label>
+
+                <div class="col-sm-5">
+                    <select name="category" class="form-control">
+                        {foreach $cate as $key=>$item}
+                        <option value="{$key}">{$item}</option>
+                        {/foreach}
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">内容</label>
+
+                <div class="col-sm-10" style="width: 480px;min-height: 600px" id="editor">
+                    
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">排序</label>
+
+                <div class="col-sm-5">
+                    <input type="text" value="100" name="sort" class="form-control"
+                           placeholder="排序">
+                </div>
+                <div class="col-sm-5 help-block">
+                    数字越小，排到最前面
+                </div>
+            </div>
+            <textarea style="display: none;" id="content" name="content"></textarea>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">是否发布</label>
+
+                <div class="col-sm-5">
+                    <label class="radio radio-custom pull-left">
+                        <input type="radio" checked name="status" value="1">
+                        <i class="radio "></i> 发布
+                    </label>
+                    <label class="radio radio-custom pull-left">
+                        <input type="radio" name="status" value="0">
+                        <i class="radio "></i> 不发布
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" onclick="main.ajaxPosts(this)" data-url="{:url('admin/Notice/save')}"
+                            class="btn btn-primary">提交
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+    {/if}
+</section>
+{/block}
+
+
+{block name="footer"}
+    <script src="__PUBLIC__/admin/vendor/fuelux/radio.js"></script>
+    <script>
+        var E = window.wangEditor;
+        var editor = new E('#editor');
+        var $content = $('#content');
+        editor.customConfig.uploadFileName = 'image'
+        editor.customConfig.uploadImgServer = "{:url('upload/uploadEditor')}";
+        editor.customConfig.onchange = function (html) {
+            // 监控变化，同步更新到 textarea
+            $content.val(html)
+        };
+        editor.customConfig.menus = [
+            'head',  // 标题
+            'bold',  // 粗体
+            'fontSize',  // 字号
+            'fontName',  // 字体
+            'foreColor',  // 文字颜色
+            'backColor',  // 背景颜色
+            'link',  // 插入链接
+            'list',  // 列表
+            'justify',  // 对齐方式
+            'quote',  // 引用
+            'image',  // 插入图片
+        ]
+        editor.create()
+
+        $(function(){
+            $(".w-e-text-container").css('height','600px')
+        })
+    </script>
+{/block}

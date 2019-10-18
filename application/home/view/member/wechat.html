@@ -1,0 +1,101 @@
+{extend name='main'}
+
+{block name='body'}
+<div class="fish-head">
+    <a href="javascript:window.history.back();" class="head-back"><span>返回</span></a>
+    <h3 class="head-tit"><span>绑定微信</span></h3>
+    <a href="javascript:;" class="head-menu" v-if="names" @click="modify()"><span>修改</span></a>
+</div>
+<div class="fish-main" v-cloak>
+
+    <form class="daz-form content-box" action="" method="post" onsubmit="return false;">
+        <ul class="content-list">
+            <li>
+                <label class="content-label font2">微信</label>
+                <input v-if="!namesShow" type="text" placeholder="请输入微信账号" id="namesShow">
+                <input v-else type="text" placeholder="请输入微信账号" :value="names" readonly="">
+            </li>
+        </ul>
+    </form>
+    <div class="content-view" v-show="!namesShow">
+        <button class="content-btn" type="button" @click="send()">提交</button>
+    </div>
+    <!--
+    <form class="daz-form" action="" method="post" onsubmit="return false;">
+        <ul class="bus-list">
+            <li class="clearfix">
+                <div class="col-3">微信</div>
+                <div class="col-9" v-if="!namesShow">
+                    <input  type="text" placeholder="请输入微信" id="namesShow">
+                </div>
+                <div class="col-9" v-else>
+                    <input type="text" placeholder="请输入微信" :value="names" readonly="">
+                </div>
+            </li>
+        </ul>
+    </form>
+    <div class="foot-btn">
+        <a href="javascript:;" class="btn" @click="send()" v-show="!namesShow">提交</a>
+    </div>
+    -->
+</div>
+{include file='menu'}
+{/block}
+
+{block name='script'}
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            names: '',
+            namesShow: '',
+        },
+        computed: {
+            
+        },
+        methods: {
+            modify: function(){
+                this.namesShow='';
+            },
+            send: function(){
+                var self = this;
+                var namesShow = $('#namesShow').val();
+                if(!namesShow) return core.toast('请输入微信');
+                
+                core.load("{:url('index/setup/chat_num_edit')}", {
+                    chat_num: namesShow,
+                }, function(res){
+                    
+                    if(res.code==0){
+                        setTimeout(function(){
+                            window.history.go(-1);
+                        }, 300);
+                    }
+                    core.toast(res.msg);
+                })
+            },
+            member: function(){
+                var self = this;
+                core.load("{:url('/index/setup/index')}", {}, function(res){
+                    
+                    if(res.code==0){
+                        self.names=res.info.chat_num;
+                        self.namesShow=res.info.chat_num;
+                    }else{
+                        core.toast(res.msg);
+                    }
+                })
+            }
+        },
+        mounted: function(){
+            this.member();
+        }
+    });
+</script>
+{/block}
+
+{block name="style"}
+<style>
+
+</style>
+{/block}

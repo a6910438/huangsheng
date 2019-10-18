@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html id="register">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+    <title>注册</title>
+    <link href="/static/css/mui.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="/static/css/mui.loading.css"/>
+    <link rel="stylesheet" href="/static/css/public.css"/>
+</head>
+<style type="text/css">
+    .item-title{
+        text-indent:10px;
+        padding: 10px;
+        font-size: 16px;
+    }
+    .login-box-item{
+        margin-bottom: 0px; 
+    }
+    .login-area{
+/*        text-indent: 20px;*/
+        display: block;
+        margin-top: 20px;
+        text-align: center;
+        padding: .8em 2em;
+        background: #ea6c41;
+        border: none;
+        color: #fff;
+        position: static;
+        width: 100%;
+        margin-top: 3em;
+        border-radius: 20px;
+        margin-top: 10px;
+    }
+    .login-area a:hover{
+        color:#000;
+    }
+</style>
+<body class="login-body">
+<header class="mui-bar mui-bar-nav my-header">
+    <h1 class="mui-title">注册</h1>
+</header>
+<div class="mui-content login-content">
+    <img src="/static/img/logo.png" class="logo">
+    <div class="login-box">
+        <form id="register_form" action="{:url('publics/doRegister')}" method="post" onsubmit="return false">
+            <div class="item-title">邀请码</div>
+            <div class="login-box-item">
+                <input type="text" placeholder="邀请码" id="show_code" name="show_code" {if $showCode}readonly{/if} value="{$showCode}">
+                <input type="hidden" name="invite_code" id="invite_code" value="{$code}">
+            </div>
+<!--            <div class="item-title">昵称</div>
+            <div class="login-box-item">
+                <input type="text" placeholder="昵称" name="nick_name">
+            </div>-->
+            <div class="item-title">手机</div>
+            <div class="login-box-item">
+                <input type="text" id="mobile" placeholder="手机" name="mobile">
+            </div>
+            <div class="item-title">验证码</div>
+            <div class="login-box-item">
+                <input type="text" name="code" placeholder="验证码" style="width: 50%;">
+                <button type="button" data-url="{:url('publics/send')}" data-mobile="mobile" onclick="sendCode(this)"
+                        id="send-code" class="mui-btn mui-btn-warning send-code">发送验证码
+                </button>
+            </div>
+            <div class="item-title">登录密码</div>
+            <div class="login-box-item">
+                <input type="password" name="password" placeholder="登录密码">
+            </div>
+            <div class="item-title">交易密码</div>
+            <div class="login-box-item">
+                <input type="password" name="safe_password" placeholder="交易密码">
+            </div>
+            <div class="login-box-item login-btn" style="position: static;width: 100%" data-form="register_form"  onclick="ajaxPost(this)">注册
+            </div>
+            <a href="{:url('publics/index')}" class="login-area">已有账号？去登录</a>
+        </form>
+    </div>
+</div>
+</body>
+<script src="/static/js/jquery-1.11.1.min.js"></script>
+<script src="/static/js/mui.min.js"></script>
+<script src="/static/js/mui.loading.js"></script>
+<script src="/static/js/main.js"></script>
+<script type="text/javascript" charset="utf-8">
+    mui.init();
+    ;(function(){
+        $('#show_code').on('change keyup',function(){
+            $('#invite_code').val($(this).val());
+        })
+    })()
+</script>
+
+</html>

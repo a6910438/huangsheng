@@ -1,0 +1,97 @@
+{extend name="layout/main" /}
+
+{block name="header"}
+
+{/block}
+
+{block name="content"}
+<section class="panel">
+    <header class="panel-heading">
+        <h4>轮播图列表</h4>
+    </header>
+    <div class="panel-body" style="padding-bottom: 50px">
+        <form class="form-horizontal" action="{:url('carousels/index')}">
+            <div class="form-group">
+                <div class="col-xs-3">
+                    <select name="type" class="form-control">
+                        <option value="0">全部分类</option>
+                        {foreach $type as $key=>$item}
+                            <option {if $Request.get.type == $key}selected{/if} value="{$key}">{$item}</option>
+                        {/foreach}
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-color">搜索</button>
+                <a type="button" href="{:url('/admin/carousels/edit')}" class="btn btn-info">添加轮播图</a>
+            </div>
+        </form>
+        <table class="table table-bordered table-striped no-margin">
+            <thead>
+            <tr>
+                <th class="text-center">ID</th>
+                <th class="text-center">标题</th>
+                <th class="text-center">分类</th>
+                <th class="text-center">图片</th>
+                <th class="text-center">排序</th>
+                <th class="text-center">跳转链接</th>
+                <th class="text-center">提交时间</th>
+                <th class="text-center">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            {if !empty($list)}
+                {foreach $list as $entity}
+                <tr>
+                    <td style="vertical-align: middle" class="text-center">
+                        {$entity->id}
+                    </td>
+                    <td style="vertical-align: middle" class="text-center">
+                        {$entity->title}
+                    </td>
+                    <td style="vertical-align: middle" class="text-center">
+                        {$entity->getType()}
+                    </td>
+                    <td style="vertical-align: middle" class="text-center">
+                        <a href="{$entity->path}" target="_blank"><img src="{$entity->path}" width="100px"/></a>
+                    </td>
+                    <td style="vertical-align: middle" class="text-center">
+                        {$entity->order_number}
+                    </td>
+                    <td style="vertical-align: middle" class="text-center">
+                        {if $entity->url}<a href="{$entity->url}" target="_blank">{$entity->url}</a>{/if}
+                    </td>
+                    <td style="vertical-align: middle" class="text-center">
+                        {$entity->create_time}
+                    </td>
+                    <td style="vertical-align: middle" class="text-center">
+                        <a href="{:url('carousels/edit',['id'=>$entity->id])}" class="btn btn-xs btn-info">编辑</a>
+                        <a data-url="{:url('carousels/delete',['id'=>$entity->id])}" onclick="main.ajaxDelete(this)"
+                       data-msg="确定要删除该图片吗？" class="btn btn-xs btn-danger">删除</a>
+                    </td>
+                </tr>
+                {/foreach}
+            {else /}
+            <tr class="text-center">
+                <td colspan="5">暂无数据</td>
+            </tr>
+            {/if}
+            </tbody>
+        </table>
+        <div class="page">
+            {:htmlspecialchars_decode($list->render())}
+        </div>
+    </div>
+</section>
+{/block}
+
+
+{block name="footer"}
+<form action="{:url('admin/article/exportMessage')}" id="exportForm">
+    <input type="hidden" name="type" id="e_type">
+    <input type="hidden" name="keyword" id="e_keyword">
+    <input type="hidden" name="product_id" id="e_product_id">
+    <input type="hidden" name="status" id="e_status">
+</form> 
+<script>
+    
+</script>
+{/block}

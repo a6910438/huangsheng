@@ -1,0 +1,43 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>充值卡</title>
+    <!--head-->
+    {include file="layout/head" /}
+</head>
+<body>
+<header class="mui-bar mui-bar-nav my-header">
+    <a href="/index/member/index" class="mui-icon mui-icon-left-nav mui-pull-left"></a>
+    <h1 id="title" class="mui-title">充值卡</h1>
+</header>
+<div class="mui-content">
+    <ul class="mui-table-view my-view" style="margin-top: 10px;">
+        {foreach $list as $val}
+        <li class="mui-table-view-cell mine-list-item" onclick="show('{$val->qrcode}')">
+            <a>
+                <span>{$val->name}：￥{$val->price}</span>
+                <!--<span style="right: 0">{$val->create_time}</span>-->
+            </a>
+        </li>
+        {/foreach}
+    </ul>
+</div>
+<div style="display: none;top:35%;left: 21%;position: fixed;z-index: 999" id="credit_qrcode" >
+    <img id="img" src="" style="width: 200px;height: 200px;">
+    <p style="text-align: center;color: #fff;font-size: 21px">客服二维码</p>
+</div>
+</body>
+</html>
+<script src="/static/js/jquery-1.11.1.min.js"></script>
+<script>
+    function show(url){
+        var mask = mui.createMask(callback);//callback为用户点击蒙版时自动执行的回调；
+        mask.show();//显示遮罩
+        $('#img').attr('src', url);
+        $("#credit_qrcode").show();
+    }
+    function callback(){
+        $("#credit_qrcode").hide();
+    }
+</script>

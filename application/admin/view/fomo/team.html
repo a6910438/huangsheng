@@ -1,0 +1,103 @@
+{extend name="layout/main" /}
+
+{block name="header"}
+
+{/block}
+
+{block name="content"}
+<section class="panel">
+    <header class="panel-heading">
+        <h4>队伍列表</h4>
+    </header>
+    <div class="panel-body" style="padding-bottom: 50px">
+        <!-- <form class="form-horizontal" action="{:url('fomo/team')}">
+            <div class="form-group">
+                <div class="col-xs-3">
+                    <input type="text" id="keyword" value="{$keyword}" name="keyword" class="form-control" placeholder="请输入关键词搜索">
+                </div>
+                <button type="submit" class="btn btn-color">搜索</button>
+                <a type="button" href="{:url('/admin/fomo/edit')}" class="btn btn-info">添加队伍</a>
+            </div>
+        </form> -->
+        <table class="table table-bordered table-striped no-margin">
+            <thead>
+            <tr>
+                <th class="text-center">ID</th>
+                <th class="text-center">队标</th>
+                <th class="text-center">名称</th>
+                <th class="text-center">标语</th>
+                <th class="text-center">简介</th>
+                <th class="text-center">默认奖池比例</th>
+                <th class="text-center">默认F3D玩家分红比例</th>
+                <th class="text-center">奖池下一轮比例</th>
+                <th class="text-center">奖池团队分红比例</th>
+                <!-- <th class="text-center">奖池团队分红比例</th> -->
+                <th class="text-center">排序</th>
+                <th class="text-center">状态</th>
+                <th class="text-center">添加时间</th>
+                <th class="text-center">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            {if !empty($list)}
+                {foreach $list as $entity}
+                <tr>
+                    <td style="vertical-align: middle" class="text-center">
+                        {$entity->id}
+                    </td>
+                    <td style="vertical-align: middle" class="text-center">
+                        <a href="{$entity->image}" target="_blank"><img src="/zhao{$entity->image}" width="100px"/></a>
+                    </td>
+                    <td style="vertical-align: middle" class="text-center">
+                        {$entity->title}
+                    </td>
+                    <td style="vertical-align: middle" class="text-center">
+                        {$entity->content}
+                    </td>
+                    <td style="vertical-align: middle" class="text-center">
+                        {$entity->intro}
+                    </td>
+                    <td style="vertical-align: middle" class="text-center">
+                        {$entity->pond_scale} %
+                    </td>
+                    <td style="vertical-align: middle" class="text-center">
+                        {$entity->bonus_scale} %
+                    </td>
+                    <td style="vertical-align: middle" class="text-center">
+                        {$entity->next_scale} %
+                    </td>
+                    <td style="vertical-align: middle" class="text-center">
+                        {$entity->win_bonus_scale} %
+                    </td>
+                    <!-- <td style="vertical-align: middle" class="text-center">
+                        {$entity->bonus_scale} %
+                    </td> -->
+                    <td style="vertical-align: middle" class="text-center">
+                        {$entity->sort}
+                    </td>
+                     <td style="vertical-align: middle" class="text-center">
+                        {$entity->status()}
+                    </td>
+                    <td style="vertical-align: middle" class="text-center">
+                        {$entity->createtime()}
+                    </td>
+                    <td style="vertical-align: middle" class="text-center">
+                        <a href="{:url('fomo/edit',['id'=>$entity->id])}" class="btn btn-xs btn-info">编辑</a>
+                       <!--  <a data-url="{:url('fomo/delete',['id'=>$entity->id])}" onclick="main.ajaxDelete(this)"
+                       data-msg="确定要删除该队伍吗？" class="btn btn-xs btn-danger">删除</a> -->
+                    </td>
+                </tr>
+                {/foreach}
+            {else /}
+            <tr class="text-center">
+                <td colspan="5">暂无数据</td>
+            </tr>
+            {/if}
+            </tbody>
+        </table>
+        <div class="page">
+            {:htmlspecialchars_decode($list->render())}
+        </div>
+    </div>
+</section>
+{/block}

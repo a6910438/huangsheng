@@ -1,0 +1,138 @@
+{extend name="layout/main" /}
+
+{block name="header"}
+
+{/block}
+
+{block name="content"}
+<style>
+    .listli{
+           background-color: #fff;
+    }
+    .select {
+        color: #ffffff;
+        background-color: #1ec3c8;
+        border-color: #1ec3c8;
+    }
+    .select:hover{
+        color: #fff;
+    }
+</style>
+<div>
+    <ul>
+        <a href="{:url('admin/legal/index')}"><li class="btn listli {if $type == 1}select{/if}">收购订单</li></a>
+        <a href="{:url('admin/legal/sale')}"><li class="btn listli {if $type == 2}select{/if}">出售订单</li></a>
+        <a href="{:url('admin/legal/deal')}"><li class="btn listli {if $type == 3}select{/if}">交易订单</li></a>
+        <a href="{:url('admin/legal/iserror')}"><li class="btn listli {if $type == 4}select{/if}">错误订单</li></a>
+    </ul>
+</div>
+<section class="panel">
+    
+    <div class="panel-body" style="padding-bottom: 50px">
+        <form class="form-horizontal" {if $type == 1}action="{:url('admin/legal/index')}"{/if} {if $type == 2}action="{:url('admin/legal/sale')}"{/if}{if $type == 3}action="{:url('admin/legal/deal')}"{/if}{if $type == 4}action="{:url('admin/legal/iserror')}"{/if}  >
+            <div class="form-group">
+                {if $type != 4 }
+                
+                <div class="col-xs-3 no-pd-r">
+                    <select name="status" class="form-control">
+                        <option  value="0">全部状态</option>
+                        <option {if $Request.get.status == 1} selected {/if} value="1">等待付款</option>
+                        <option {if $Request.get.status == 2} selected {/if} value="2">等待收款</option>
+                        <option {if $Request.get.status == 3} selected {/if} value="3">交易完成</option>
+                        <option {if $Request.get.status == -1} selected {/if} value="-1">取消付款</option>
+                    </select>
+                </div>
+                {/if}
+                
+                <div class="col-xs-3 no-pd-l">
+                    <input type="text" value="{$Request.get.tid}" name="tid" class="form-control" placeholder="请输入订单号">
+                </div>
+                <div class="col-xs-1 no-pd-r">
+                    <select name="type" class="form-control">
+                        <option {if $Request.get.type == 'sale'} selected {/if} value="sale">出售人电话</option>
+                        <option {if $Request.get.type == 'buy'} selected {/if} value="buy">收购人电话</option>
+                    </select>
+                </div>
+                <div class="col-xs-3 no-pd-l">
+                    <input type="text" value="{$Request.get.keyword}" name="keyword" class="form-control" placeholder="请输入对应电话搜索">
+                </div>
+                <button type="submit" class="btn btn-color">搜索</button>
+            </div>
+        </form>
+        <table class="table table-bordered table-striped no-margin">
+            <thead>
+                <tr>
+                    <th class="text-center">订单号</th>
+                    <th class="text-center">购买人信息</th>
+                    <th class="text-center">类型</th>
+                    <th class="text-center">数量</th>
+                    <th class="text-center">交易单价</th>
+                    <th class="text-center">交易总额</th>
+                    <th class="text-center">出售人信息</th>
+                    <th class="text-center">交易状态</th>
+                    <th class="text-center">创建时间</th>
+                    {if $type == 4 }
+                    <th class="text-center">操作</th>
+                    {/if}
+                </tr>
+            </thead>
+            <tbody>
+            {if $list}
+                {foreach $list as $order}
+                    <tr>
+                        <td class="text-center">{$order->tid}</td>
+                        <td class="text-center">
+                            昵称：{$order->b_nick_name}<br>
+                            电话：{$order->b_mobile}
+                        </td>
+                        <td class="text-center">
+                            {$order->money_type}
+                        </td>
+                        <td class="text-center">
+                            {$order->number}
+                        </td>
+                        <td class="text-center">
+                            {$order->price}
+                        </td>
+                        <td class="text-center">
+                            {$order->totalprice} CNY
+                        </td>
+                        <td class="text-center">
+                            昵称：{$order->nick_name}<br>
+                            电话：{$order->mobile}
+                        </td>
+                        <td class="text-center">
+                            {$order->getStatus()}
+                        </td>
+                        <td class="text-center">
+                            {$order->getCreatetime($order->createtime)}
+                        </td>
+                        {if $order->status == -2}
+                        <td class="text-center">
+                            
+                            <a class="btn btn-xs btn-danger" data-msg="确定进行此操作吗" onclick="main.ajaxDelete(this)" data-url="{:url('admin/legal/update',['id'=>$order->id])}">确认收款</a>
+
+                            <a class="btn btn-xs btn-danger" data-msg="确定取消订单吗" onclick="main.ajaxDelete(this)" data-url="{:url('admin/legal/cancel',['id'=>$order->id])}">取消订单</a>
+                            
+                        </td>
+                        {/if} 
+                    </tr>
+                {/foreach}
+            {else /}
+                <tr class="text-center">
+                    <td colspan="8">暂无数据</td>
+                </tr>
+            {/if}
+            </tbody>
+        </table>
+        <div class="page">
+            {:htmlspecialchars_decode($list->render())}
+        </div>
+    </div>
+</section>
+{/block}
+
+
+{block name="footer"}
+
+{/block}

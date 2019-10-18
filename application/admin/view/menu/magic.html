@@ -1,0 +1,94 @@
+{extend name="layout/main" /}
+
+{block name="header"}
+
+{/block}
+
+{block name="content"}
+<section class="panel">
+    <header class="panel-heading">
+        <h4>会员明细列表</h4>
+    </header>
+    <div class="panel-body" style="padding-bottom: 50px">
+        <form class="form-horizontal" action="">
+            <div class="form-group">
+                <div class="col-xs-2 no-pd-r">
+                    <select name="type" id="type" class="form-control">
+                        <option value="0">全部类型</option>
+                        <option {if $Request.get.type == 1} selected {/if} value="1">后台充值</option>
+                        <option {if $Request.get.type == 2} selected {/if} value="2">购买金矿</option>
+                        <option {if $Request.get.type == 3} selected {/if} value="3">交易市场</option>
+                        <option {if $Request.get.type == 4} selected {/if} value="4">直推奖励</option>
+                        <option {if $Request.get.type == 7} selected {/if} value="7">认证直推奖励</option>
+                    </select>
+                </div>
+                <div class="col-xs-3 no-pd-l">
+                    <input type="text" id="keyword" value="{$Request.get.keyword}" name="keyword" class="form-control" placeholder="请输入会员昵称搜索">
+                </div>
+                <button type="submit" class="btn btn-color">搜索</button>
+                <button type="button" class="btn btn-success" id="export">导出</button>
+                {if $count}
+                &nbsp;&nbsp;总量：{$count}
+                {/if}
+            </div>
+        </form>
+        <table class="table table-bordered table-striped no-margin">
+            <thead>
+            <tr>
+                <th class="text-center">id</th>
+                <th class="text-center">会员账号</th>
+                <th class="text-center">金币数量</th>
+                <th class="text-center">变化前</th>
+                <th class="text-center">变化后</th>
+                <th class="text-center">类型</th>
+                <th class="text-center">备注</th>
+                <th class="text-center">时间</th>
+            </tr>
+            </thead>
+            <tbody>
+            {if !empty($list)}
+                {foreach $list as $entity}
+                <tr>
+                <form class="form-horizontal" method="post" onsubmit="return false" role="form">
+                    <td class="text-center">{$entity->id}</td>
+                    <td class="text-center">{$entity->mobile}</td>
+                    <td class="text-center">{$entity->magic}金币</td>
+                    <td class="text-center">{$entity->old}金币</td>
+                    <td class="text-center">{$entity->new}金币</td>
+                    <td class="text-center">{$entity->getType($entity->types)}</td>
+                    <td class="text-center">{$entity->remark}</td>
+                    <td class="text-center">{$entity->create_time}</td>
+                    </form>
+                </tr>
+                {/foreach}
+            {else /}
+            <tr class="text-center">
+                <td colspan="7">暂无数据</td>
+            </tr>
+            {/if}
+            </tbody>
+        </table>
+        <div class="page">
+            {:htmlspecialchars_decode($list->render())}
+        </div>
+    </div>
+</section>
+{/block}
+
+
+{block name="footer"}
+<form action="{:url('admin/user/exportRecharge')}" id="exportForm">
+    <input type="hidden" name="type" id="e_type">
+    <input type="hidden" name="keyword" id="e_keyword">
+</form> 
+<script>
+    //导出会员信息
+    $("#export").click(function(){
+        var keyword = $("#keyword").val();
+        var type = $("#type").val();
+        $('#e_keyword').val(keyword);
+        $('#e_type').val(type);
+        $("#exportForm").submit();
+    })
+</script>
+{/block}

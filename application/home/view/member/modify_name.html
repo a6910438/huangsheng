@@ -1,0 +1,71 @@
+{extend name='main'}
+
+{block name='body'}
+<div class="fish-head">
+    <a href="javascript:window.history.back();" class="head-back"><span>返回</span></a>
+    <h3 class="head-tit"><span>修改昵称</span></h3>
+    <!-- <a href="javascript:;" class="head-menu"><span>提交</span></a> -->
+</div>
+<div class="fish-main" v-cloak>
+    <form class="daz-form content-box" action="" method="post" onsubmit="return false;">
+        <ul class="content-list">
+            <li>
+                <label class="content-label font2">昵称</label>
+                <input type="text" placeholder="请输入昵称" v-model="names">
+            </li>
+        </ul>
+    </form>
+    <div class="content-view">
+        <button class="content-btn" type="button" @click="send()">提交</button>
+    </div>
+</div>
+{include file='menu'}
+{/block}
+
+{block name='script'}
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            names: '',
+        },
+        computed: {
+            
+        },
+        methods: {
+            send: function(){
+                var self = this;
+                if(!self.names) return core.toast('请输入昵称');
+                
+                core.load("{:url('index/setup/nick_name_edit')}", {
+                    names: self.names,
+                }, function(res){
+                    
+                    if(res.code==0){
+                        setTimeout(function(){
+                            window.history.go(-1);
+                        }, 300);
+                    }
+                    core.toast(res.msg);
+                })
+            }
+        },
+        mounted: function(){
+            
+        }
+    });
+</script>
+{/block}
+
+{block name="style"}
+<style>
+    .bus-list{padding-top:12px;}
+    .bus-list li{padding:12px;background-color:#182121;border-bottom:1px solid #0D1414;}
+    .bus-list li .getcode{position:absolute;top:-3px;right:0;background-color:#00D6E2;color:#fff;padding:5px 15px;border-radius:5px;}
+    .bus-list li input{background-color:#182121;color:#eee;}
+    .bus-list li select{background-color:#182121;color:#eee;}
+    .bus-list li .set-file{position:absolute;left:0;right:0;top:0;bottom:0;opacity:0;}
+    .foot-btn{padding:12px;}
+    .foot-btn .btn{display:block;text-align:center;padding:12px;border-radius:5px;background-color:#00D6E2;font-size:16px;}
+</style>
+{/block}

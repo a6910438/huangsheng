@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>注册</title>
+        {include file="t/head" /}
+        <link rel="stylesheet" type="text/css" href="/t/css/registered.css"/>
+        <style type="text/css">
+            .mui-icon-home:before {
+                content: none;
+            }
+            .mui-bar {
+                position: fixed;
+                z-index: 10;
+                right: 0;
+                left: 0;
+                height: 44px;
+                padding-right: 10px;
+                padding-left: 10px;
+                border-bottom: 0;
+                background-color: #f7f7f7;
+                -webkit-box-shadow:none; 
+                box-shadow:none; 
+                -webkit-backface-visibility: hidden;
+                backface-visibility: hidden;
+                bottom: 25px;
+            }
+            .mui-bar-tab .mui-tab-item {
+                display: table-cell;
+                overflow: hidden;
+                width: 1%;
+                height: 50px;
+                text-align: center;
+                vertical-align: middle;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                color: #333333;
+            }
+        </style>
+    </head>
+    <body style="background: white;">
+        <div class="mui-content">
+            <div class="logo">
+                <img src="/t/img/logo.png"/>
+            </div>
+            <div class="login-content">
+                <form id="login-form">
+                    <div class="ipttxt-row">
+                        <label><img src="/t/img/icon1.png"></label>
+                        <input id="account" type="text" class="mui-input" placeholder="手机号">
+                    </div>
+                    <div class="ipttxt-row">
+                        <label><img src="/t/img/icon2.png"></label>
+                        <input id="password" type="password" class="mui-input" placeholder="密码">
+                    </div>
+                    <div class="ipttxt-row">
+                        <label><img src="/t/img/icon2.png"></label>
+                        <input id="password" type="password" class="mui-input" placeholder="确认密码">
+                    </div>
+                    <div class="ipttxt-row">
+                        <label><img src="/t/img/icon3.png"></label>
+                        <input id="password" type="button" class="mui-input" value="注册" style="color:white;background: #39aeff;">
+                    </div>
+                </form>
+            </div>
+        </div>
+        <nav class="mui-bar mui-bar-tab " id="nav">
+            <a class="mui-tab-item mui-active" id="a1" href="{:url('login')}">
+                <span class="mui-icon mui-icon-home">
+                    <img src="/t/img/login.png" style="width: 26px;"/>
+                </span>
+                <span class="mui-tab-label">登录</span>
+            </a>
+            <a class="mui-tab-item mui-active" id="a1" href="{:url('register')}">
+                <span class="mui-icon mui-icon-home">
+                    <img src="/t/img/zhuc.png"/>
+                </span>
+                <span class="mui-tab-label">注册</span>
+            </a>
+            <a class="mui-tab-item mui-active" id="a1">
+                <span class="mui-icon mui-icon-home">
+                    <img src="/t/img/mima.png"/>
+                </span>
+                <span class="mui-tab-label">忘记密码</span>
+            </a>
+            <a class="mui-tab-item mui-active" id="a1">
+                <span class="mui-icon mui-icon-home">
+                    <img src="/t/img/app.png"/>
+                </span>
+                <span class="mui-tab-label">APP下载</span>
+            </a>
+        </nav>
+    </body>
+    <script type="text/javascript">
+        mui('body').on('tap', 'a', function () {
+            document.location.href = this.href;
+        });
+    </script>
+</html>

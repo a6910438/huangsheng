@@ -1,0 +1,60 @@
+{extend name="layout/main" /}
+
+{block name="header"}
+
+{/block}
+
+{block name="content"}
+<script src="__PUBLIC__/admin/js/laydate/laydate.js"></script>
+<link rel="stylesheet" href="__PUBLIC__/static/webuploader/webuploader.css">
+<script type="text/javascript" src='__PUBLIC__/static/webuploader/webuploader.js'></script>
+<section class="panel">
+
+    <header class="panel-heading">
+        <h4>{$info.nick_name}-冻结兑换</h4>
+    </header>
+    <div class="panel-body" style="padding-bottom: 50px">
+        <form class="form-horizontal" method="post" onsubmit="return false" role="form">
+
+<h5>冻结兑换</h5>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">冻结兑换</label>
+
+                <div class="col-sm-5">
+                    <select name="is_freezing" class="form-control">
+                        <option value="0" {if $info.is_freezing == '0'} selected {/if}>不冻结</option>
+                        <option value="1" {if $info.is_freezing == '1'} selected {/if}>冻结团队奖</option>
+                        <option value="2" {if $info.is_freezing == '2'} selected {/if}>冻结推广奖</option>
+						<option value="3" {if $info.is_freezing == '3'} selected {/if}>冻结团队奖推广奖</option>
+                    </select>
+                </div>
+            </div>
+			
+            <hr>
+			
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" data-url="{:url('update_freezing',['id'=>$info.id])}"
+                            onclick="main.ajaxPosts(this)" class="btn btn-primary">确定修改
+                    </button>
+                    <button type="button" onclick="javascript:history.back(-1);" class="btn btn-warning">返回
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+
+
+</section>
+{/block}
+
+
+{block name="footer"}
+<script src="/admin/vendor/fuelux/checkbox.js"></script>
+<script>
+
+</script>
+
+
+{/block}

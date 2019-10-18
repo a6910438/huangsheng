@@ -1,0 +1,37 @@
+<nav class="mui-bar mui-bar-tab " id="nav">
+    <a href="index.html" class="mui-tab-item mui-active" id="defaultTab">
+        <span class="mui-icon mui-icon-home">
+            <img src="/t/img/shou.png"/>
+        </span>
+        <span class="mui-tab-label" style="margin-top: 3px;">首页</span>
+    </a>
+    <a href="{:url('mall')}" class="mui-tab-item">
+        <span class="mui-icon mui-icon-email">
+            <img src="/t/img/shangc.png"/>
+        </span>
+        <span class="mui-tab-label" style="margin-top: 6px;">矿机商城</span>
+    </a>
+    <a href="{:url('market')}" class="mui-tab-item ">
+        <span class="mui-icon mui-icon-email">
+            <img src="/t/img/jiaoy.png"/>
+        </span>
+        <span class="mui-tab-label" style="margin-top: 9px;">交易市场</span>
+    </a>
+    <a href="{:url('login')}" class="mui-tab-item ">
+        <span class="mui-icon mui-icon-email">
+            <img src="/t/img/geren.png"/>
+        </span>
+        <span class="mui-tab-label">个人中心</span>
+    </a>
+    <a href="index.html" class="mui-tab-item ">
+        <span class="mui-icon mui-icon-email">
+            <img src="/t/img/fac.png"/>
+        </span>
+        <span class="mui-tab-label">FAC产业</span>
+    </a>
+</nav>
+<script type="text/javascript">
+    mui('body').on('tap', 'a', function () {
+        document.location.href = this.href;
+    });
+</script>

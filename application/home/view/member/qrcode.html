@@ -1,0 +1,67 @@
+{extend name='main'}
+
+{block name='body'}
+<div class="fish-head">
+    <a href="javascript:window.history.back();" class="head-back"><span>返回</span></a>
+    <h3 class="head-tit"><span>我的二维码</span></h3>
+    <!-- <a href="javascript:;" class="head-menu"><span>兑换</span></a> -->
+</div>
+<div class="fish-main" v-cloak>
+    <div class="img-box" :style="'background-image:url('+img+')'"></div>
+    <div class="qrcode-box">
+        <div style="background-color:#fff;padding:12px;"><div id="qrcode"></div></div>
+        <div style="text-align:center;color:#fff;margin-top:5px;">扫码立即参与酒乐宝</div>
+    </div>
+</div>
+{/block}
+
+{block name='script'}
+<script src="/fish/js/qrcode.min.js"></script>
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            code: core.getParame('code'),
+            img: '',
+        },
+        computed: {
+            
+        },
+        methods: {
+            bg: function(){
+                var self = this;
+                core.load("{:url('index/setup/get_invitation_img')}", {}, function(res){
+                    
+                    if(res.code==0){
+                        self.img=res.info;
+                    }else{
+                        core.toast(res.msg);
+                    }
+                })
+            }
+        },
+        mounted: function(){
+            if(this.code){
+                this.bg();
+                var url = location.protocol+'//'+location.host+"{:url('home/publics/register')}?code="+this.code;
+                var qrcode = new QRCode("qrcode", {
+                    text: url,
+                    width: 140,
+                    height: 140,
+                    colorDark : "#000000",
+                    colorLight : "#ffffff",
+                    correctLevel : QRCode.CorrectLevel.H
+                });
+            }
+        }
+    });
+</script>
+{/block}
+
+{block name="style"}
+<style>
+    .qrcode-box{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);}
+    .qrcode-box img{display:block;}
+    .img-box{background-image:url('/fish/img/qrcode.png');background-position:center center;background-repeat:no-repeat;position:absolute;width:100%;max-width:720px;height:100%;top:0;background-size:cover;}
+</style>
+{/block}

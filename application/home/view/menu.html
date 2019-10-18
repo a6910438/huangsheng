@@ -1,0 +1,15 @@
+<div style="height:4.5rem"></div>
+<div class="fish-foot clearfix">
+    <a class="col-4 {if request()->controller()=='Index'}act{/if}" href="{if request()->controller()=='Index'}javascript:;{else}{:url('home/index/index')}{/if}">
+        <i class="icon icon-home"></i>
+        <span>房产集市</span>
+    </a>
+    <a class="col-4 {if request()->controller()=='Pond'}act{/if}" href="{if request()->controller()=='Pond'}javascript:;{else}{:url('home/pond/index')}{/if}">
+        <i class="icon icon-dynamic"></i>
+        <span>我的资产</span>
+    </a>
+    <a class="col-4 {if request()->controller()=='Member'}act{/if}" href="{if request()->controller()=='Member'}javascript:;{else}{:url('home/member/center')}{/if}">
+        <i class="icon icon-shop"></i>
+        <span>个人中心</span>
+    </a>
+</div>

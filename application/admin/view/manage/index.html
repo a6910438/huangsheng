@@ -1,0 +1,80 @@
+{extend name="layout/main" /}
+
+{block name="header"}
+
+{/block}
+
+{block name="content"}
+<section class="panel">
+    <header class="panel-heading">
+        <h4>用户列表</h4>
+    </header>
+    <div class="panel-body" style="padding-bottom: 50px">
+        <form class="form-horizontal" action="">
+            <div class="form-group">
+                <div class="col-xs-3">
+                    <input type="text" value="{$Request.get.keyword}" name="keyword" class="form-control" placeholder="请输入用户名搜索">
+                </div>
+                <button type="submit" class="btn btn-color">搜索</button>
+                <a type="button" href="/admin/manage/create" class="btn btn-info">添加用户</a>
+            </div>
+        </form>
+        <table class="table table-bordered table-striped no-margin">
+            <thead>
+            <tr>
+                <th class="text-center">创建时间</th>
+                <th class="text-center">用户名</th>
+                <th class="text-center">状态</th>
+                <th class="text-center">用户分组</th>
+                <th class="text-center">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            {if !empty($list)}
+                {foreach $list as $entity}
+                <tr>
+                    <td class="text-center">{$entity->getCreateTime()}</td>
+                    <td class="text-center">{$entity->getName()}</td>
+                    <td class="text-center">
+                        {if $entity->isForbiddened()}
+                        <a class="btn btn-xs btn-danger">已禁用</a>
+                        <span>禁用时间：{$entity->getForbiddenTime()}</span>
+                        {else /}
+                        <a class="btn btn-xs btn-success">正常</a>
+                        {/if}
+                    </td>
+                    <td class="text-center">
+                        {$entity->getGroupName()}
+                    </td>
+                    <td class="text-center">
+                        {if $entity->isDefault() }
+                        <a class="btn btn-xs btn-danger">系统默认用户，不能修改</a>
+                        {else /}
+                                <a href="{:url('manage/edit',['id'=>$entity->id])}" class="btn btn-xs btn-info">编辑</a>
+                            {if $entity->isForbiddened()}
+                                <a data-url="{:url('manage/unforbidden',['id'=>$entity->id])}" onclick="main.ajaxDelete(this)" data-msg="确定要解禁此用户吗？" class="btn btn-xs btn-success">解禁</a>
+                            {else /}
+                                <a data-url="{:url('manage/delete',['id'=>$entity->id])}" onclick="main.ajaxDelete(this)" data-msg="确定要禁用此用户吗？" class="btn btn-xs btn-danger">禁用</a>
+                            {/if}
+                        {/if}
+                    </td>
+                </tr>
+                {/foreach}
+            {else /}
+            <tr class="text-center">
+                <td colspan="5">暂无数据</td>
+            </tr>
+            {/if}
+            </tbody>
+        </table>
+        <div class="page">
+            {$list->render()}
+        </div>
+    </div>
+</section>
+{/block}
+
+
+{block name="footer"}
+
+{/block}

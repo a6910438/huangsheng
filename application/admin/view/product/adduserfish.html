@@ -1,0 +1,103 @@
+{extend name="layout/main" /}
+
+{block name="header"}
+
+{/block}
+
+{block name="content"}
+
+<section class="panel">
+
+    <header class="panel-heading">
+        <h4>{$pool->name}指定</h4>
+    </header>
+    <div class="panel-body" style="padding-bottom: 50px">
+        <form class="form-horizontal" method="post" onsubmit="return false" role="form">
+            <div class="form-group">
+
+
+                <div class="col-sm-5">
+                    <input type="hidden" name="id" value="{$info->id}">
+                </div>
+
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">装修消耗GTC</label>
+                <div class="col-sm-5">
+                    <input type="text" value="{$pool->bait}" class="form-control" disabled>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">房产等级</label>
+                <div class="col-sm-5">
+                    <input type="text" value="{$pool->lv}" class="form-control" disabled>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">锁仓</label>
+                <div class="col-sm-5">
+                    <input type="text" value="{$pool->lock_position}%" class="form-control" disabled>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">收益</label>
+                <div class="col-sm-5">
+                    <input type="text" value="{$pool->profit}" class="form-control" disabled>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">收益时间</label>
+                <div class="col-sm-5">
+                    <input type="text" value="{$pool->contract_time}" class="form-control" disabled>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">房产id编号</label>
+                <div class="col-sm-5">
+                    <input type="text" value="{$info->id}" class="form-control" disabled>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">价值</label>
+                <div class="col-sm-5">
+                    <input type="text" value="{$info->worth}" class="form-control" disabled>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">用户手机号</label>
+                <div class="col-sm-5">
+                    <input type="text" value="" name="mobile" min="1" class="form-control"
+                           placeholder="用户手机号">
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" onclick="main.ajaxPosts(this)" data-url="{:url('userfishsave')}"
+                            class="btn btn-primary">提交
+                    </button>
+                    &nbsp;
+                    <button type="button" onclick="javascript:history.back(-1);" class="btn btn-warning">返回
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+</section>
+{/block}
+
+
+{block name="footer"}
+
+
+{/block}

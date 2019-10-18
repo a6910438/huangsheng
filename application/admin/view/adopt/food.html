@@ -1,0 +1,157 @@
+{extend name="layout/main" /}
+
+{block name="header"}
+
+{/block}
+
+{block name="content"}
+<style type="text/css">
+    .link-th{
+        color:blue;
+    }
+</style>
+<section class="panel">
+    <header class="panel-heading">
+        <h4>后台充值总计</h4>
+    </header>
+	<div class="panel-body" style="padding-bottom: 50px">
+
+       <form class="form-horizontal" action="{:url('food')}" >
+           <div class="form-group">
+               <div class="col-xs-1 no-pd-r">
+               <span class="form-control">开始时间</span>
+               </div>
+               <div class="col-xs-3 no-pd-l">
+                 <input type="date" value="{$Request.get.stime}" name="stime" class="form-control">
+               </div>
+               <div class="col-xs-1 no-pd-r">
+                   <span class="form-control"> 结束时间</span>
+               </div>
+               <div class="col-xs-3 no-pd-l">
+                   <input type="date" value="{$Request.get.ntime}" name="ntime" class="form-control">
+               </div>
+			   <button type="submit" class="btn btn-color">搜索</button>
+            </div>
+        </form>
+        <table class="table table-bordered table-striped no-margin">
+            <thead>
+            </thead>
+            <thead>
+            <tr>
+                <th class="text-center">名称</th>
+                <th class="text-center">数量</th>
+                <th class="text-center">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+			{foreach $list as $k=>$v}
+            <tr>
+                <td style="vertical-align: middle" class="text-center">
+					{$v.name}
+                </td>
+                <td style="vertical-align: middle" class="text-center">
+                    {$v.number}
+                </td>
+                <td style="vertical-align: middle" class="text-center">
+                  <a href="{:url('check_details')}?type={$k}&stime={$Request.get.stime}&ntime={$Request.get.ntime}">查看详情</a>
+                </td>
+
+            </tr>
+			{/foreach}
+            </tbody>
+        </table>
+    </div>
+	</section>
+	<!--<section class="panel">
+    <header class="panel-heading">
+        <h4>玩家充值详情</h4>
+    </header>
+    <div class="panel-body" style="padding-bottom: 50px">
+
+       <form class="form-horizontal" action="{:url('food')}" >
+           <div class="form-group">
+               <div class="col-xs-1 no-pd-r">
+               <span class="form-control">开始时间</span>
+               </div>
+               <div class="col-xs-2 no-pd-l">
+                 <input type="date" value="{$Request.get.stime}" name="stime" class="form-control">
+               </div>
+               <div class="col-xs-1 no-pd-r">
+                   <span class="form-control"> 结束时间</span>
+               </div>
+               <div class="col-xs-2 no-pd-l">
+                   <input type="date" value="{$Request.get.ntime}" name="ntime" class="form-control">
+               </div>
+            
+                <div class="col-xs-1 no-pd-r">
+                    <select name="type" class="form-control">
+                        <option {if $Request.get.type == 'ids'} selected {/if} value="ids">会员ID</option>
+
+                    </select>
+                </div>
+                <div class="col-xs-2 no-pd-l">
+                    <input type="text" value="{$Request.get.keyword}" name="keyword" class="form-control" placeholder="请输入关键词搜索">
+                </div>
+
+                <button type="submit" class="btn btn-color">搜索</button>
+            </div>
+        </form>
+
+
+
+
+        <table class="table table-bordered table-striped no-margin">
+            <thead>
+            </thead>
+            <thead>
+            <tr>
+                <th class="text-center">序号</th>
+                <th class="text-center">玩家ID</th>
+                <th class="text-center">玩家身份</th>
+				<th class="text-center">充值数量</th>
+                <th class="text-center">消耗数量</th>
+                <th class="text-center">金额</th>
+                <th class="text-center">剩余GTC数量</th>
+				<th class="text-center">转让对象</th>
+            </tr>
+            </thead>
+            <tbody>
+            {if !empty($list.list)}
+            {foreach $list as $entity}
+            <tr>
+                <td style="vertical-align: middle" class="text-center">
+                    
+                </td>
+                <td style="vertical-align: middle" class="text-center">
+                   
+                </td>
+                <td style="vertical-align: middle" class="text-center">
+                    
+                </td>
+                <td style="vertical-align: middle" class="text-center">
+                    
+                </td>
+                <td style="vertical-align: middle" class="text-center">
+                  <a href="{:url('details',['id'=>$entity->id,'stime'=>$Request.get.stime,'ntime'=>$Request.get.ntime])}">详情</a>
+                </td>
+
+            </tr>
+            {/foreach}
+            {else /}
+            <tr class="text-center">
+                <td colspan="9">暂无数据</td>
+            </tr>
+            {/if}
+            </tbody>
+        </table>
+        <div class="page">
+           
+        </div>
+    </div>
+</section>-->
+{/block}
+{block name="footer"}
+
+
+
+{/block}

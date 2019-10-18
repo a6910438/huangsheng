@@ -1,0 +1,52 @@
+{extend name='main'}
+
+{block name='body'}
+<div class="fish-head">
+    <a href="javascript:window.history.back();" class="head-back"><span>返回</span></a>
+    <h3 class="head-tit"><span v-text="info.title">公告</span></h3>
+    <!-- <a href="javascript:;" class="head-menu"><span>提交</span></a> -->
+</div>
+<div class="fish-main" v-cloak>
+    <!-- 文章内容 -->
+    <div class="content-box" v-html="info.content"></div>
+</div>
+{include file='menu'}
+{/block}
+
+{block name='script'}
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            id: core.getParame('id'),
+            info: '',
+        },
+        computed: {
+            
+        },
+        methods: {
+            detail: function(){
+                var self = this;
+
+                core.load("{:url('index/publics/get_article')}", { id: this.id }, function(res){
+                    
+                    if(res.code==0){
+                        self.info=res.info;
+                    }else{
+                        core.toast(res.msg);
+                    }
+                })
+            }
+        },
+        mounted: function(){
+            this.detail();
+        }
+    });
+</script>
+{/block}
+
+{block name="style"}
+<style>
+
+</style>
+{/block}

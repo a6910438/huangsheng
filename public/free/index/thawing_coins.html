@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Account Opening Fees Eagle Eye</title>
+    <link rel="icon" href="free.ico" type="image/x-icon"/> 
+    <link rel="stylesheet" href="../css/public.css">
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <script src="../build/flexible.js"></script>
+    <script src="../build/flexible_css.js"></script>
+    <script src="../js/layer.js"></script>
+    <script src="../js/jquery.js"></script>
+    <script src="../js/clipboard.min.js"></script>
+    <style>
+        html, body {background: #F5F5F5;}
+        input::-webkit-input-placeholder {color: #999;}
+        .header {position: fixed;top: 0px;left: 0px;width: 100%;height: 1.173333rem;line-height: 1.173333rem;text-align: center;color: #fff;background: linear-gradient(to left, #2A3176, #0A0F3E);z-index: 99999;}
+        .header span {font-size: .48rem;font-weight: bold;}
+        .goback {position: absolute;top: 0;left: .106667rem;display: flex;align-items: center;height: inherit;}
+        .goback img {width: .586667rem;}
+        .main {padding: 1.173333rem .373333rem 1.333333rem;}
+        .item {padding-top: .213333rem}
+        .item-title {padding-left: .426667rem;height: .693333rem;line-height: .693333rem;font-size: .426667rem;font-weight: bold;color: #333;}
+        .item-content {position: relative;display: flex;justify-content: space-between;align-items: center;padding: 0rem .32rem 0rem .426667rem;height: 1.173333rem;border-radius: .266667rem;background: #191F58;box-shadow: 0rem 0rem .4rem 0rem rgba(25, 31, 88, 0.5);}
+        .choice-list-box {position: absolute;top: 1.173333rem;left: 0;z-index: 9999;width: 100%;height: 0rem;overflow: hidden;transition: ease height .4s;}
+        .choice-list {width: 100%;text-align: center;background: #191F58;border-radius: .266667rem;border: 1px solid #fff;}
+        .choice-item {height: 1.173333rem;line-height: 1.173333rem;font-size: .48rem;color: #fff;}
+        .item-value {height: inherit;border: none;font-size: .426667rem;color: #fff;width: 80%;background: transparent;}
+        .item-content img {height: .586667rem;}
+        .triangle {transition: ease transform .4s;}
+        .copy-btn {padding: 0rem .106667rem;height: inherit;border: none;font-size: .426667rem;color: #fff;font-weight: bold;background: transparent;}
+        .popup-bg {position: fixed;top: 0;left: 0;z-index: 999999;width: 100%;height: 100%;background: rgba(27, 27, 27, .4);display: none;}
+        .popup-box {position: absolute;top: -100%;left: 0;display: flex;justify-content: center;align-items: center;padding: 0rem .373333rem;width: 100%;height: 100%;}
+        .popup-content {width: 100%;border-radius: .267777rem;background: #fff;}
+        .popup-img {display: flex;justify-content: center;padding-top: .56rem;}
+        .popup-img img {height: 3.2rem;}
+        .popup-tip {height: 2.026667rem;display: flex;justify-content: center;align-items: center;font-size: .533333rem;color: #333;font-weight: bold;}
+        .popup-btn {display: flex;justify-content: center;padding: .586667rem 0rem .746667rem;}
+        .popup-confirm {padding: 0rem 1.546667rem;height: 1.173333rem;line-height: 1.173333rem;border-radius: .266667rem;border: none;background: #262F86;text-align: center;font-size: .48rem;font-weight: bold;color: #fff;}
+        .price-explain {margin-top: .533333rem;padding: .16rem .426667rem .32rem;border-radius: .266667rem;background: #fff;}
+        .price-explain textarea {display: block;width: 100%;resize: none;font-size: .426667rem;color: #333;border: none;}
+        .btn-box {margin-top: 2rem;display: flex;justify-content: center;}
+        .confirm {padding: 0rem 1.92rem;min-width: 57.64%;height: 1.173333rem;line-height: 1.173333rem;text-align: center;font-size: .48rem;color: #fff;border: none;background: #262F86;}
+        .freeze-popup-bg {position: fixed;top: 0;left: 0;z-index: 999999;width: 100%;height: 100%;background: rgba(27, 27, 27, .4);}
+        .freeze-popup-box {position: absolute;left: 0;display: flex;justify-content: center;align-items: center;padding: 0rem .373333rem;width: 100%;height: 100%;}
+        .freeze-popup-content {padding: 0rem .426667rem;width: 100%;border-radius: .267777rem;background: #fff;}
+        .freeze-popup-tip {display: flex;justify-content: center;align-items: center;height: 1.173333rem;font-size: .48rem;color: #333;font-weight: bold;border-bottom: 1px solid #E0E0E0;}
+        .freeze-popup-choice {padding-top: .533333rem;}
+        .freeze-choice-item {display: flex;justify-content: space-between;align-items: center;margin-top: .426667rem;height: .8rem;}
+        .freeze-explain {font-size: .426667rem;color: #333;}
+        .freeze-choice {position: relative;width: .426667rem;height: .426667rem;border: 1px solid #333;border-radius: 50%;}
+        .freeze-type {position: absolute;top: .08rem;left: .08rem;width: .213333rem;height: .213333rem;border-radius: 50%;background: transparent;}
+        .freeze-active {background: #191F58;}
+        .freeze-service {margin-top: .64rem;display: flex;align-items: center;font-size: .32rem;color: #191F58;}
+        .freeze-service img {margin-right: .213333rem;height: .64rem;}
+        .freeze-popup-btn {padding: 1.146667rem 1.546667rem .72rem;}
+        .freeze-popup-confirm {display: block;width: 100%;height: 1.173333rem;line-height: 1.173333rem;border: none;border-radius: .266667rem;background: #262F86;font-size: .48rem;color: #fff;}
+        .set-file{
+            display: block;
+            position: absolute;
+            opacity: 0;
+            top: .3rem;
+            right: .3rem;
+            width: .586667rem;
+            height: .586667rem;
+                }
+        .tishi{    border: 1px solid #F24D4D;
+            display: inline-block;
+            width: .35rem;
+            height: .35rem;
+            border-radius: .32rem;
+            text-align: center;
+            line-height: .3rem;
+            margin-right: .1rem;
+        }
+        .img-box .img-item{text-align: center;margin-top: .6rem}
+        .img-box .img-item img{width: 4rem;}
+        .acti-error{background-color:rgba(0,0,0,.9);position:absolute;right:-7px;top:-9px;height:25px;width:25px;border-radius:50%;text-align:center;line-height:25px;}
+    </style>
+<body>
+    <header class="header">
+        <a href="javascript:history.back(-1);" class="goback">
+            <img src="../images/nav_arrow_icon@2x.png" alt="">
+        </a>
+        <span>Account Opening Fees Eagle Eye</span>
+    </header>
+    <main class="main">
+        <div class="list">
+            <div class="item">
+                <div class="item-title">Option One</div>
+                <div class="item-content" id="select">
+                    <input type="text" id="option-value" class="item-value" placeholder="Option One" readonly>
+                </div>
+            </div>
+            <div class="item">
+                <div class="item-title">Amount</div>
+                <div class="item-content">
+                    <input type="text" class="item-value purchase" placeholder="Extra Purchase">
+                </div>
+                <p class="purchase_error" style="display: none; margin-top:.1rem;color: #F24D4D;font-size: .32rem"><span class="tishi">!</span>Extra Purchase cannot be empty</p>
+            </div>
+            <div class="item">
+                    <div class="item-title">Payment Voucher</div>
+                    <div class="item-content">
+                        <input type="text" class="item-value" value="Select a Picture" readonly>
+                        <img id="img-file" src="../images/sc_img_icon@2x.png" alt=""><input type="file" accept="image/jpeg,image/jpg,image/png" id="upload" class="set-file">
+                    </div>
+                     <p class="img_error" style="display: none; margin-top:.1rem;color: #F24D4D;font-size: .32rem"><span class="tishi">!</span>Payment Voucher cannot be empty</p>                
+                </div>
+                <div class="img-box left clearfix"></div>
+            <div class="item">
+                <div class="item-title">Wallet Address</div>
+                <div class="item-content">
+                    <input type="text" class="item-value" id="wallet-address"  readonly>
+                    <button class="copy-btn" style="cursor: pointer;" data-clipboard-action="copy" data-clipboard-target="#wallet-address">Copy</button>
+                </div>
+            </div>
+        </div>
+        <div class="price-explain">
+            <textarea  name="" id="" cols="30" rows="4" readonly placeholder="Price：1Eagle Eye ＝1usdt (Minimum 20) Member will be responsible for paying transfer fees, this fees will be based on total amount of all transfers."></textarea>
+        </div>
+        <div class="btn-box">
+            <button class="confirm">Submit</button>
+        </div>
+    </main>
+    <div class="popup-bg">
+        <div class="popup-box">
+            <div class="popup-content">
+                <div class="popup-img">
+                    <img src="../images/jiedon_tip_icon@2x.png" alt="">
+                </div>
+                <div class="popup-tip">Under review..</div>
+                <div class="popup-btn">
+                    <button class="popup-confirm">determine</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="freeze-popup-bg">
+        <div class="freeze-popup-box">
+            <div class="freeze-popup-content">
+                <div class="freeze-popup-tip">Freeze type</div>
+                <div class="freeze-popup-choice">
+                    <div class="freeze-choice-item">
+                        <div class="freeze-explain">Did not confirm the payment on time</div>
+                        <div class="freeze-choice">
+                            <div class="freeze-type"></div>
+                        </div>
+                    </div>
+                    <div class="freeze-choice-item">
+                        <div class="freeze-explain">Failure to confirm receipt on time</div>
+                        <div class="freeze-choice">
+                            <div class="freeze-type"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="freeze-service" data-img="">
+                    <a href="">
+                    <img src="../images/kefu_icon@2x.png" alt="">
+                    <span>Feedback customer service</span>
+                    </a>
+                </div>
+                <div class="freeze-popup-btn">
+                    <button class="freeze-popup-confirm">determine</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    $(function () {
+        $.ajax({
+                url: "../../index.php/index/Access/recharge",
+				type: 'GET',
+                dataType: 'json',
+                success: function(res){
+                    if(res.code=='0'){
+                        $('#wallet-address').val(res.info.address);
+                        var nick_name=$("#wallet-address").data("nickname");
+                        }
+                    else{
+                        layer.open({
+                            content: res.msg,
+                            skin: 'msg',
+                            time: 2
+                        });
+                        }
+                },
+            })
+                 function getQueryString(name) { 
+                         var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i"); 
+                         var r = window.location.search.substr(1).match(reg); 
+                         if (r != null) return unescape(r[2]); 
+                         return null; 
+                     } 
+                     var nick_name=getQueryString('getname');
+                     var free_href='freezing_service.html?name='+nick_name;
+                     $('.freeze-service a').attr('href',free_href);
+        $('#upload').on('change', function(){
+                 $('.img_error').hide();
+		            var file = $(this)[0];
+		            var formData = new FormData();
+		            formData.append('file', file.files[0]);
+		            $.ajax({
+		                url: "../../index.php/index/Upload/uploadImg",
+		                type: 'POST',
+		                data: formData,
+		                contentType: false, // 注意这里应设为false
+		                processData: false,
+		                success: function(res){
+		                    console.log(res);
+		                    if(res.code==0){
+								var m_img=`
+		                        <div class="img-item">
+							        <img src="${res.data}" alt="">
+							    </div>`
+                                $('.img-box').append(m_img);
+                                $(".freeze-service").data("img",res.data);                          
+		                        var lenth = $('.img-box .img-item').length;
+		                        if(lenth>=1){
+		                            $('.set-file').hide();
+		                        } 
+		                        $('#img-total').html(lenth);
+		                        file.value = '';
+		                        layer.open({
+                                content: 'Upload success',
+                                skin: 'msg',
+                                time: 2
+                            });
+		                    }else{
+		                        layer.open({
+                                content: 'upload failed',
+                                skin: 'msg',
+                                time: 2
+                            });
+		                    }
+		                },
+		                error: function(XHR, textStatus, errorThrown) {
+		                    alert('网络错误！');
+		                }
+		            });
+		        });
+        function getQueryString(name) { 
+					var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i"); 
+					var r = window.location.search.substr(1).match(reg); 
+					if (r != null) return unescape(r[2]); 
+					return null; 
+                    } 
+            var ss_type = getQueryString('type');
+            if(ss_type==1){
+                $('.freeze-type').eq(0).addClass('freeze-active');
+                $('.freeze-popup-confirm').off().on('click',function(){
+                    $('.freeze-popup-bg').css('display','none');
+                    $('.freeze-popup-box').css('top','-100%');
+                    $('#option-value').val('Punish A activation coin');
+                 })
+            }
+            else if(ss_type==2){
+                $('.freeze-type').eq(1).addClass('freeze-active');
+                $('.freeze-popup-confirm').off().on('click',function(){
+                    $('.freeze-popup-bg').css('display','none');
+                    $('.freeze-popup-box').css('top','-100%');
+                $('#option-value').val('Punish B activation coin'); 
+                })
+            }
+            else{
+                $('.freeze-popup-confirm').off().on('click',function(){
+                    layer.open({
+                        content: "Please contact customer service",
+                        skin: 'msg',
+                        time: 2
+                    });
+                 })
+             }
+             $('.confirm').off().on('click',function(){
+                var purchase=$('.purchase').val();
+                var type=ss_type;
+                var nick_name=getQueryString('getname');
+                var trade_address=$('#wallet-address').val();
+                var pic=$(".freeze-service").data("img");
+                if(!purchase) return $('.purchase_error').show();
+                if(!pic) return $('.img_error').show();
+                $.ajax({
+                url: "../../index.php/index/publics/apply",
+				type: 'POST',
+				data:{nick_name:nick_name,type:type,pic:pic,trade_address:trade_address,num:purchase},
+                dataType: 'json',
+                success: function(res){
+                    console.log(res)
+                    if(res.code=='0'){
+						//显示
+                        $(".popup-bg").show();
+                        $(".popup-box").css('top','0');
+                      $('.popup-confirm').off().on('click',function(){
+                       setTimeout(function(){
+                            window.location.href="introduce.html";
+                        }, 1000);
+                 		})
+                        }
+                    else{
+                        layer.open({
+                            content: res.msg,
+                            skin: 'msg',
+                            time: 2
+                        });
+                        }
+                },
+            })
+            })
+    });
+</script>
+<script>
+    // let choiceListBox = document.querySelector('.choice-list-box');
+    // let choiceList = document.querySelector('.choice-list');
+    // let triangle = document.querySelector('.triangle');
+    // let select = document.querySelector('#select');
+    // let optionValue = document.querySelector('#option-value');
+    // let choiceItem = document.querySelectorAll('.choice-item');
+    // let freezeChoiceItem = document.querySelectorAll('.freeze-choice-item');
+    // let freezeType = document.querySelectorAll('.freeze-type');
+    // select.addEventListener('click', ()=> {
+    //     if (choiceListBox.offsetHeight > 0) {
+    //         choiceListBox.style.height = '0px';
+    //         triangle.style.transform = 'rotateZ(0deg)';
+    //     } else {
+    //         choiceListBox.style.height = choiceList.offsetHeight + 'px';
+    //         triangle.style.transform = 'rotateZ(180deg)';
+    //     };
+    // });
+    // choiceItem.forEach(item => {
+    //     item.addEventListener('click', ()=> {
+    //         optionValue.value = item.innerHTML;
+    //         choiceListBox.style.height = choiceList.offsetHeight + 'px';
+    //         triangle.style.transform = 'rotateZ(180deg)';
+    //     });
+    // });
+    // 复制邀请码
+    let clipboard = new ClipboardJS('.copy-btn');
+    clipboard.on('success', function(e) {
+        layer.open({
+            content: "复制成功",
+            skin: 'msg',
+            time: 2
+        });
+    });
+    clipboard.on('error', function(e) {
+        layer.open({
+            content: "复制成功",
+            skin: 'msg',
+            time: 2
+        });
+    });
+    // freezeChoiceItem.forEach((item, index) => {
+    //     item.addEventListener('click', ()=> {
+    //         freezeType.forEach(ele => {
+    //             ele.classList.remove('freeze-active');
+    //         });
+    //         freezeType[index].classList.add('freeze-active');
+    //     });
+    // });
+</script>
+</html>

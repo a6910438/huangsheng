@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Promotion</title>
+    <link rel="icon" href="free.ico" type="image/x-icon"/> 
+    <link rel="stylesheet" href="../css/public.css">
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <script src="../build/flexible.js"></script>
+    <script src="../build/flexible_css.js"></script>
+    <script src="../js/layer.js"></script>
+    <script src="../js/jquery.js"></script>
+    <script src="../js/clipboard.min.js"></script>
+    <script type="text/javascript" src="../js/template.js" ></script>
+    <style>
+        html, body {background: #F5F5F5;}
+        input::-webkit-input-placeholder {color: #999;}
+        .header {position: fixed;top: 0px;left: 0px;width: 100%;height: 1.173333rem;line-height: 1.173333rem;text-align: center;color: #fff;background: linear-gradient(to left, #2A3176, #0A0F3E);z-index: 99999;}
+        .header span {font-size: .48rem;font-weight: bold;}
+        .goback {position: absolute;top: 0;left: .106667rem;display: flex;align-items: center;height: inherit;}
+        .goback img {width: .586667rem;}
+        .main {padding: 1.173333rem .373333rem 1.333333rem;}
+        .box {margin-top: .373333rem;padding: .186667rem .24rem;background: #fff;border-radius: .266667rem;}
+        #promotion-links {display: block;width: 100%;line-height: .64rem;resize: none;font-size: .32rem;color: #333;text-align: center;word-break: break-all;word-wrap: break-word;border: none;}
+        .btn-box {margin-top: 1.6rem;display: flex;justify-content: center;}
+        .confirm {padding: 0rem .8rem;min-width: 57.64%;height: 1.173333rem;line-height: 1.173333rem;text-align: center;font-size: .48rem;color: #fff;border: none;background: #262F86;border-radius: .133333rem;box-shadow: 0rem 0rem .666667rem 0rem rgba(38, 47, 134, 0.5)}
+    </style>
+<body>
+    <header class="header">
+        <a href="javascript:history.back(-1);" class="goback">
+            <img src="../images/nav_arrow_icon@2x.png" alt="">
+        </a>
+        <span>Promotion</span>
+    </header>
+    <main class="main">
+        <div class="box">
+            <textarea name="" id="promotion-links" cols="30" rows="2"></textarea>
+        </div>
+        <div class="btn-box">
+            <button class="confirm copy-btn" style="cursor: pointer;" data-clipboard-action="copy" data-clipboard-target="#promotion-links">Click to copy</button>
+        </div>
+    </main>
+</body>
+<script>
+    $(function(){
+        var chat_num=$('#social-media').val();
+        var host = window.location.host;;
+        $.ajax({
+                url: "../../index.php/index/Member/spread",
+                type: 'POST',
+                dataType: 'json',
+                success: function(res){
+                    if(res.code=='0'){
+                        var get_info= host+'/free/index/register.html?invite_code='+res.info;
+                        $('#promotion-links').val(get_info); 
+                        }
+                    else{
+                        layer.open({
+                            content: res.msg,
+                            skin: 'msg',
+                            time: 2
+                        });
+                        }
+                },
+        })
+})
+</script>
+<script>
+    // 复制邀请码
+    let clipboard = new ClipboardJS('.copy-btn');
+    clipboard.on('success', function(e) {
+        layer.open({
+            content: "复制成功",
+            skin: 'msg',
+            time: 2
+        });
+    });
+    clipboard.on('error', function(e) {
+        layer.open({
+            content: "复制成功",
+            skin: 'msg',
+            time: 2
+        });
+    });
+</script>
+</html>

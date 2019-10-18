@@ -1,0 +1,82 @@
+{extend name="layout/main" /}
+
+{block name="header"}
+
+{/block}
+
+{block name="content"}
+<style type="text/css">
+    .link-th{
+        color:blue;
+    }
+</style>
+<section class="panel">
+    <header class="panel-heading">
+        <h4>领取用户列表</h4>
+    </header>
+    <div class="panel-body" style="padding-bottom: 50px">
+        <table class="table table-bordered table-striped no-margin">
+            <thead>
+            <tr>
+                <th class="text-center">玩家ID</th>
+                <th class="text-center">玩家身份</th>
+                <th class="text-center">时间</th>
+                <th class="text-center">订单状态</th>
+                <th class="text-center">用户状态</th>
+            </tr>
+            </thead>
+            <tbody>
+            {if !empty($list)}
+                {foreach $list as $entity}
+                <tr>
+                    <td style="vertical-align: middle" class="text-center">
+                        {$entity.invite_code}<br>
+                    </td>
+
+                    <td style="vertical-align: middle" class="text-center">
+                        {if $entity.lv == 3}
+						高级节点
+						{elseif $entity.lv == 2}
+						中级节点
+						{elseif $entity.lv == 1}
+						初级节点
+						{elseif $entity.lv == 0}
+						普通会员
+						{/if}
+                    </td>
+                    <td style="vertical-align: middle" class="text-center">
+                        {$entity.create_time|date='Y-m-d H:i:s',###}
+                    </td>
+                    <td style="vertical-align: middle" class="text-center">
+                        {$entity.status|getAUStatus}<br>
+                    </td>
+                    <td style="vertical-align: middle" class="text-center">
+                        {if $entity.ustatus == -1}
+                        <a class="btn btn-xs btn-danger">禁用</a>
+
+                        {elseif  $entity.ustatus == 0/}
+                        <a class="btn btn-xs btn-success">未激活</a>
+                        {else/}
+                        <a class="btn btn-xs btn-success">激活</a>
+                        {/if}
+                    </td>
+                </tr>
+                {/foreach}
+            {else /}
+            <tr class="text-center">
+                <td colspan="9">暂无数据</td>
+            </tr>
+            {/if}
+            </tbody>
+        </table>
+        <div class="page">
+            {:htmlspecialchars_decode($list->render())}
+        </div>
+    </div>
+</section>
+{/block}
+{block name="footer"}
+
+
+
+{/block}

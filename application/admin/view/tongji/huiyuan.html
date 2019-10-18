@@ -1,0 +1,54 @@
+{extend name="layout/main" /}
+
+{block name="header"}
+
+{/block}
+
+{block name="content"}
+<div class="row">
+    <div class="col-lg-3 col-md-3" style="padding-left: 0">
+        <section class="panel ">
+            <header class="panel-heading">
+                <h4>会员数量</h4>
+            </header>
+            <div class="panel-body">
+                <h3>{$user['total'] ? $user['total'] : 0}</h3>
+            </div>
+        </section>
+    </div>
+    <div class="col-lg-3 col-md-3" style="padding-left: 0">
+        <section class="panel ">
+            <header class="panel-heading">
+                <h4>有效会员数量</h4>
+            </header>
+            <div class="panel-body">
+                <h3>{$user['use_total'] ? $user['use_total'] : 0}</h3>
+            </div>
+        </section>
+    </div>
+    <div class="col-lg-3 col-md-3">
+        <section class="panel">
+            <header class="panel-heading">
+                <h4>今日会员注册数量</h4>
+            </header>
+            <div class="panel-body">
+                <h3>{$user['today'] ? $user['today'] : 0}</h3>
+            </div>
+        </section>
+    </div>
+    <div class="col-lg-3 col-md-3">
+        <section class="panel">
+            <header class="panel-heading">
+                <h4>今日会员激活数量</h4>
+            </header>
+            <div class="panel-body">
+                <h3>{$user['register_user'] ? $user['register_user'] : 0}</h3>
+            </div>
+        </section>
+    </div>
+
+</div>
+{/block}
+
+
+{block name="footer"}

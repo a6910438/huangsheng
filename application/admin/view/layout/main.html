@@ -1,0 +1,69 @@
+<!doctype html>
+<html class="no-js" lang="">
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="Flat, Clean, Responsive, admin template built with bootstrap 3">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1">
+    <title>后台管理</title>
+    <link rel="stylesheet" href="__PUBLIC__/admin/vendor/offline/theme.css">
+    <link rel="stylesheet" href="__PUBLIC__/admin/vendor/pace/theme.css">
+
+    <link rel="stylesheet" href="__PUBLIC__/admin/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="__PUBLIC__/admin/css/font-awesome.min.css">
+    <link rel="stylesheet" href="__PUBLIC__/admin/css/animate.min.css">
+
+    <link rel="stylesheet" href="__PUBLIC__/admin/css/panel.css">
+
+    <link rel="stylesheet" href="__PUBLIC__/admin/css/skins/palette.1.css" id="skin">
+    <link rel="stylesheet" href="__PUBLIC__/admin/css/fonts/style.1.css" id="font">
+    <link rel="stylesheet" href="__PUBLIC__/admin/css/jquery.confirm.css">
+    <link rel="stylesheet" href="__PUBLIC__/admin/css/main.css">
+
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <script src="__PUBLIC__/admin/vendor/jquery-1.11.1.min.js"></script>
+    <script src="__PUBLIC__/admin/vendor/modernizr.js"></script>
+    <style>
+        .panel-body{ overflow-y: auto;}
+    </style>
+    {block name="header"}{/block}
+</head>
+
+<body>
+<div class="app">
+    {include file="layout/header" /}
+
+    <section class="layout" style="padding-top: 50px">
+
+        {include file="layout/left" /}
+
+        <section class="main-content" >
+
+            <div class="content-wrap ">
+                {block name="content"}{/block}
+            </div>
+
+            <div class="site-overlay"></div>
+        </section>
+
+    </section>
+</div>
+
+<script src="__PUBLIC__/admin/bootstrap/js/bootstrap.js"></script>
+<script src="__PUBLIC__/admin/vendor/jquery.easing.min.js"></script>
+<script src="__PUBLIC__/admin/vendor/jquery.placeholder.js"></script>
+<script src="__PUBLIC__/admin/vendor/fastclick.js"></script>
+<script src="__PUBLIC__/admin/vendor/jquery.slimscroll.js"></script>
+<script src="__PUBLIC__/admin/vendor/offline/offline.min.js"></script>
+<script src="__PUBLIC__/admin/vendor/pace/pace.min.js"></script>
+<script src="__PUBLIC__/admin/js/off-canvas.js"></script>
+<script src="__PUBLIC__/admin/js/jquery.confirm.js"></script>
+<script src="__PUBLIC__/admin/js/main.js"></script>
+<script src="__PUBLIC__/admin/js/tapActive.js"></script>
+<script src="__PUBLIC__/admin/js/panel.js"></script>
+
+{block name="footer"}{/block}
+</body>
+</html>

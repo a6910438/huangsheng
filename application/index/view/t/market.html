@@ -1,0 +1,182 @@
+<!doctype html>
+<html>
+
+    <head>
+        <meta charset="UTF-8">
+        <title>交易市场</title>
+        {include file="t/head" /}
+        <link rel="stylesheet" type="text/css" href="/t/css/tradingMarket.css"/>
+        <script src="/t/js/echarts.js" type="text/javascript" charset="utf-8"></script>
+    </head>
+    <style type="text/css">
+        .mui-content h3{
+            text-align: center;
+            font-size: 20px;
+            font-weight: 200;
+            margin-top: 20px;
+            color: #666666;
+        }
+        #tradelist{
+            display: block;
+            width:100%;
+            margin-top: 10px;
+            background: #5e89ea;
+            border-radius: 30px;
+            line-height: 30px;
+            text-align: center;
+        }
+    </style>
+    <body style="background: white;">
+        <header class="mui-bar mui-bar-nav mui-bar-nav-bg">
+            <a id="icon-menu" class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+            <h1 class="mui-title">交易市场</h1>
+        </header>
+        <div class="mui-content" style="background: white;">
+            <div id="main" style="width: 95%;height:400px;margin: 0 auto;"></div>
+            <div style="height: 15px;background: #e8f5ff;margin-top: 10px;"></div>
+            <div id="lineMain" style="width: 95%;height:400px;margin: 0 auto;"></div>
+            <div style="height: 15px;background: #e8f5ff;margin-top: 10px;"></div>
+            <div class="cont">
+                <button class="btn1">A:小单</button>
+                <button class="btn2">B:大单(500个以上一单)</button>
+                <div class="module">
+                    <form action="" method="post">
+                        <div style="margin-left: 0;">
+                            单价:
+                            <span>0.00</span>￥
+                        </div>
+                        <div style="float: right;">买入</div>
+                        <div style="margin-left: 0;">数量</div>
+                        <div style="float: right;">卖出</div>
+                        <button>确认购买</button>
+                        <a href="javascript:;" id="tradelist">交易列表</a>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </body>
+    <script type="text/javascript">
+        $('#tradelist').click(function(){
+            window.location.href = "{:url('tradeList')}";
+        })
+        var myChart = echarts.init(document.getElementById('main'));
+        var option = {
+            title: {
+                text: '价格'
+            },
+            tooltip: {
+                trigger: 'axis',
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true,
+            },
+            xAxis: [{
+                    type: 'category',
+                    /*backgroundColor:'#67c4ff',*/
+                    splitLine: {show: false, }, //去除网格线
+                    /*splitArea : {show : true,},//保留网格区域*/
+                    boundaryGap: false,
+                    data: ['5-1', '6-1', '7-1', '8-1', '9-1']
+                }],
+            yAxis: [{
+                    type: 'value',
+                    /*backgroundColor:'#67c4ff',*/
+                    splitLine: {show: false},
+                    /*splitArea : {show : true}//保留网格区域*/
+                }],
+            series: [{
+                    name: '苹果',
+                    type: 'line',
+                    stack: '销量',
+                    /*areaStyle: {normal: {}},*/
+                    data: [1, 6, 2, 1]
+                },
+                {
+                    name: '香蕉',
+                    type: 'line',
+                    stack: '销量',
+                    data: [2, 3, 5, 3]
+                }
+            ]
+        };
+
+        myChart.setOption(option, true);
+
+
+
+        var myChart1 = echarts.init(document.getElementById('lineMain'));
+
+
+        var option2 = {
+            title: {
+                text: '量'
+            },
+            color: ['#3398DB'],
+            tooltip: {
+                trigger: 'axis',
+                // 坐标轴指示器，坐标轴触发有效
+                axisPointer: {
+                    // 默认为直线，可选为：'line' | 'shadow'
+                    type: 'shadow'        
+                }
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true
+            },
+            xAxis: [
+                {
+                    type: 'category',
+                    data: ['5-1', '6-1', '7-1', '8-1', '9-1'],
+                    splitLine: {show: false, }, //去除网格线
+                    axisTick: {
+                        alignWithLabel: true
+                    }
+                }
+            ],
+            yAxis: [
+                {
+                    type: 'value',
+                    splitLine: {show: false, }, //去除网格线
+                }
+            ],
+            series: [
+                {
+                    name: '直接访问',
+                    type: 'bar',
+                    barWidth: '20%',
+                    data: [5, 3, 2, 4, 6]
+                },
+                {
+                    name: '直接访问',
+                    type: 'bar',
+                    barWidth: '20%',
+                    data: [2, 1, 5, 4, 6]
+                },
+                {
+                    name: '直接访问',
+                    type: 'bar',
+                    barWidth: '20%',
+                    data: [5, 3, 2, 4, 6]
+                }
+            ]
+        };
+
+        myChart1.setOption(option2, true);
+
+        $('.btn1').click(function () {
+            $('.btn1').css('background', '#5e89ea');
+            $('.btn2').css('background', '#5eb4ea');
+        })
+        $('.btn2').click(function () {
+            $('.btn2').css('background', '#5e89ea');
+            $('.btn1').css('background', '#5eb4ea');
+        })
+    </script>
+</html>

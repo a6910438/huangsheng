@@ -1,0 +1,138 @@
+{extend name='main'}
+
+{block name='body'}
+<div class="fish-head">
+    <a href="javascript:window.history.back();" class="head-back"><span>返回</span></a>
+    <h3 class="head-tit"><span>收款账户</span></h3>
+    <a href="#modal1" class="head-link"><span>添加</span></a>
+</div>
+<div class="fish-main" v-cloak>
+    <ul class="content-list">
+        <li class="content-box" v-if="list.length>0" v-for="(vo,index) in list" @click="goDetail(vo.id, vo.types)">
+            <div class="bank-item">
+                <h4>{{vo.bank_name}}</h4>
+                <p>{{vo.account_num}}</p>
+            </div>
+            <button type="button" @click.stop="del(vo.id, index)">删除</button>
+        </li>
+    </ul>
+    <div class="dialog-bottom"></div>
+</div>
+<div id="modal1" class="modal" style="background:transparent">
+    <div class="modal-content content-box">
+        <div class="content-list">
+            <a href="{:url('home/member/collectionAdd')}?types=0">
+                <label>添加支付宝</label>
+                <i></i>
+            </a>
+            <a href="{:url('home/member/collectionAdd')}?types=1">
+                <label>添加微信</label>
+                <i></i>
+            </a>
+            <a href="{:url('home/member/collectionAdd')}?types=2">
+                <label>添加银行卡</label>
+                <i></i>
+            </a>
+        </div>
+    </div>
+</div>
+{include file='menu'}
+{/block}
+
+{block name='script'}
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            list: [],
+            page: 0,
+            status: true,
+        },
+        computed: {
+            
+        },
+        methods: {
+            goDetail: function(id, types){
+                location.href="{:url('home/member/collectionAdd')}?types="+types+"&id="+id;
+            },
+            del: function(id, index){
+                var self = this;
+                core.confirm('确认要删除该账户吗？', '提示', function(){
+                    core.load("{:url('/index/setup/receivablesdel')}", {id: id}, function(res){
+                        if(res.code==0){
+                            self.list.splice(index, 1);
+                        }
+                        core.toast(res.msg);
+                    })
+                })
+            },
+            loadList: function(){
+                var self = this;
+                var data = {
+                    page: self.page,
+                    limit: 12,
+                };
+
+                core.load("{:url('index/setup/receivableslist')}", data, function(res){
+                    
+                    if(res.code=='0'){
+                        for (var i = 0; i < res.info.length; i++) {
+                            // 0：支付宝，1：微信，2：银行
+                            if(res.info[i].types==0){
+                                res.info[i].type='/fish/img/alipay.png';
+                            }else if(res.info[i].types==1){
+                                res.info[i].type='/fish/img/wechat.png';
+                            }else if(res.info[i].types==2){
+                                res.info[i].type='/fish/img/bank.png';
+                            }
+                        }
+                        if(res.info.length>0) self.list = self.list.concat(res.info);
+                        if(!res.info || (res.info.length<data.limit)){
+                            self.status = false;
+                            $('.dialog-bottom').eq(0).html('已经加载全部数据');
+                        }else{
+                            $('.dialog-bottom').eq(0).html('正在加载...');
+                        }
+                    }else{
+                        core.toast(res.message);
+                    }
+                })
+            }
+        },
+        mounted: function(){
+            $('.modal').modal();
+            var self = this;
+            self.loadList();
+            // 下拉加载
+            $(window).off("scroll").on("scroll", function(e){
+                var totalheight = parseFloat($(this).height()) + parseFloat($(this).scrollTop());
+                if (($(document).height()<=totalheight) && self.status){
+                    self.page = ++self.page;
+                    self.loadList()
+                }
+            });
+        }
+    });
+</script>
+{/block}
+
+{block name="style"}
+<style>
+    .bank-item{
+        padding: 0.5rem 0.8rem;
+        margin-right: auto;
+        font-weight: bold;
+    }
+    .bank-item>h4{
+        font-size: 1rem;
+        line-height: 2rem;
+    }
+    .bank-item>p{
+        font-size: 1.4rem;
+        line-height: 2rem;
+    }
+    .bank-item+button{
+        margin-right: 0.8rem;
+    }
+</style>
+{/block}

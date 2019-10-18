@@ -1,0 +1,86 @@
+{extend name="layout/main" /}
+
+{block name="header"}
+
+{/block}
+
+{block name="content"}
+<section class="panel">
+
+    <header class="panel-heading">
+        <h3    >
+            <a style="color:red" href="javascript:history.go(-1)"><<< 返回</a>
+        </h3>
+    </header>
+    <div class="panel-body" style="padding-bottom: 50px">
+        <h4>投注详情</h4>
+        <table class="table table-bordered table-striped no-margin">
+            <thead>
+            <tr>
+                <th class="text-center">序号</th>
+                <th class="text-center">投注人</th>
+                <th class="text-center">投注奖号</th>
+                <th class="text-center">投注期数</th>
+                <th class="text-center">开奖状态</th>
+                <th class="text-center">中奖金额</th>
+            </tr>
+            </thead>
+            <tbody>
+            {if $list}
+            {foreach $list as $order}
+            <tr>
+                <td class="text-center">{$order->id}</td>
+                <td class="text-center">
+                    ID：{$order->nick_name}<br>
+                    用户名：{$order->email}
+                </td>
+                <td class="text-center">{$order->prize_number}</td>
+                <td class="text-center">{$order->periods}</td>
+                <td class="text-center">
+                    <?php
+                    if($order->grade > 0){
+                        $grade = explode(",", $order->grade);
+
+                        foreach($grade as $v){
+                            if($v == 1){
+                                echo '一等奖<br>';
+                            }elseif($v == 2){
+                                echo '二等奖<br>';
+                            }elseif($v == 3){
+                                echo '三等奖<br>';
+                            }elseif($v == 4){
+                                echo '幸运奖<br>';
+                            }
+                        }
+                    }else{
+                        if($order->grade == -1){
+                            echo '未开奖<br>';
+                        }elseif($order->grade == 0){
+                            echo '未中奖<br>';
+                        }else{
+                            echo '未知错误<br>';
+                        }
+                    }
+                    ?>
+                </td>
+                <td class="text-center">{$order->price}{if($order->money_type == 1)}BTC{elseif($order->money_type == 2)}ETH{elseif($order->money_type == 3)}EOS{/if}</td>
+            </tr>
+            {/foreach}
+            {else /}
+            <tr class="text-center">
+                <td colspan="8">暂无数据</td>
+            </tr>
+            {/if}
+            </tbody>
+        </table>
+
+
+    </div>
+
+</section>
+{/block}
+
+
+{block name="footer"}
+<script src="/admin/vendor/fuelux/checkbox.js"></script>
+{/block}

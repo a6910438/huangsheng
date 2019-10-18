@@ -1,0 +1,187 @@
+{extend name="layout/main" /}
+
+{block name="header"}
+
+{/block}
+
+{block name="content"}
+<section class="panel">
+    <header class="panel-heading">
+        <h4>会员列表</h4>
+    </header>
+    <div class="panel-body" style="padding-bottom: 50px">
+        <form class="form-horizontal" action="{:url('admin/user/index')}">
+            <div class="form-group">
+                <div class="col-xs-1 no-pd-r">
+                    <select name="level" class="form-control">
+                        <option  value="0">全部等级</option>
+                        <option {if $Request.get.level == 1} selected {/if} value="1">v1</option>
+                        <option {if $Request.get.level == 2} selected {/if} value="2">v2</option>
+                        <option {if $Request.get.level == 3} selected {/if} value="3">v3</option>
+                        <option {if $Request.get.level == 4} selected {/if} value="4">v4</option>
+                        <option {if $Request.get.level == 5} selected {/if} value="5">v5</option>
+                    </select>
+                </div>
+                <input type="hidden" value="{$Request.get.is_certification}" name="is_certification">
+                <div class="col-xs-1 no-pd-r">
+                    <select name="type" class="form-control">
+                        <option {if $Request.get.type == 'mobile'} selected {/if} value="mobile">电话号码</option>
+                        <option {if $Request.get.type == 'nick_name'} selected {/if} value="nick_name">昵称</option>
+                    </select>
+                </div>
+                <div class="col-xs-3 no-pd-l">
+                    <input type="text" value="{$Request.get.keyword}" name="keyword" class="form-control" placeholder="请输入关键词搜索">
+                </div>
+                <button type="submit" class="btn btn-color">搜索</button>
+                <a type="button" href="/admin/user/create" class="btn btn-info">添加会员</a>
+            </div>
+        </form>
+        <table class="table table-bordered table-striped no-margin">
+            <thead>
+            <tr>
+                <th class="text-center">基本信息</th>
+                <th class="text-center">邀请码</th>
+                <th class="text-center">上级信息</th>
+                <th class="text-center">联盟信息</th>
+                <th class="text-center">金币数量</th>
+                <th class="text-center">注册信息</th>
+                <th class="text-center">状态</th>
+                <th class="text-center">是否认证</th>
+                <th class="text-center">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            {if !empty($list)}
+                {foreach $list as $entity}
+                <tr>
+                    <td style="vertical-align: middle" class="text-center">
+                        昵称：{$entity->nick_name}【<strong style="color: red">{$entity->getLevel()}</strong>】<br>
+                        账号：{$entity->mobile}
+                    </td>
+                    <td style="vertical-align: middle" class="text-center">{$entity->invite_code}</td>
+                    <td style="vertical-align: middle" class="text-center">
+                        {if $entity->getParentInfo()}
+                            昵称：{$entity->getParentInfo()['nick_name']} <br>
+                            账号：{$entity->getParentInfo()['mobile']} <br>
+                        {else /}
+                            无
+                        {/if}
+                    </td>
+                    <td style="vertical-align: middle" class="text-center">
+                        人数：{$entity->getTeamInfo()['total']} 人 <br>
+                        开采率：{$entity->getTeamInfo()['rate']} kb/s <br>
+                    </td>
+                    <td style="vertical-align: middle" class="text-center">
+                        {$entity->magic}<br>
+                        <a href="{:url('user/magicList',['keyword'=>$entity->mobile])}" class="btn btn-xs btn-success">明细</a>
+                    </td>
+                    <td style="vertical-align: middle" class="text-center">
+                        时间：{$entity->register_time}<br>
+                        ip：{$entity->register_ip}
+                    </td>
+                    <td style="vertical-align: middle" class="text-center">
+                        {if $entity->status == -1}
+                        <a class="btn btn-xs btn-danger">禁用</a>
+                        <!-- <span>禁用时间：{$entity->getForbiddenTime()}</span> -->
+                        {else /}
+                        <a class="btn btn-xs btn-success">正常</a>
+                        {/if}
+                    </td>
+                    <td style="vertical-align: middle" class="text-center">
+                        {if $entity->is_certification == -1}
+                        <a class="btn btn-xs btn-danger">未认证</a>
+                        {else /}
+                        <a class="btn btn-xs btn-success">已认证</a>
+                        {/if}
+                    </td>
+                    <td style="vertical-align: middle" class="text-center">
+                        <a href="{:url('user/edit',['id'=>$entity->id])}" class="btn btn-xs btn-info">编辑</a>
+                            {if $entity->status == -1}
+                                <a data-url="{:url('user/unforbidden',['id'=>$entity->id])}" onclick="main.ajaxDelete(this)" data-msg="确定要解禁此会员吗？" class="btn btn-xs btn-success">解禁</a>
+                            {else /}
+                                <a data-url="{:url('user/delete',['id'=>$entity->id])}" onclick="main.ajaxDelete(this)" data-msg="确定要禁用此会员吗？" class="btn btn-xs btn-danger">禁用</a>
+                            {/if}
+
+                            {if $entity->is_certification == -1}
+                                <a href="{:url('user/certification',['id'=>$entity->id])}" class="btn btn-xs btn-success">去认证</a>
+                            {else /}
+                                <a href="{:url('user/certification',['id'=>$entity->id])}" class="btn btn-xs btn-success">认证信息</a>
+                            {/if}
+                        <a  href="{:url('user/recharge',['id'=>$entity->id])}" class="btn btn-xs btn-info">充值</a>
+                        <a  href="{:url('user/rechargemagic',['id'=>$entity->id])}" class="btn btn-xs btn-info">充值金矿</a>
+                        {if $entity->level < 5}
+                            <a onclick="upgrade(this)" data-level="{$entity->level}" data-id="{$entity->id}" class="btn btn-xs btn-info">手动升级</a>
+                        {/if}
+                    </td>
+                </tr>
+                {/foreach}
+            {else /}
+            <tr class="text-center">
+                <td colspan="9">暂无数据</td>
+            </tr>
+            {/if}
+            </tbody>
+        </table>
+        <div class="page">
+            {:htmlspecialchars_decode($list->render())}
+        </div>
+    </div>
+</section>
+{/block}
+
+{block name="footer"}
+<script>
+    function upgrade(e){
+        var id = $(e).attr('data-id');
+        var level = parseInt($(e).attr('data-level'));
+        var content = '<div class="text-center" style="border-top:1px solid #eee;padding-top: 20px">' +
+                '<form class="form-horizontal" id="user-level" method="post" onsubmit="return false" role="form">' +
+                '<div class="form-group"> <label class="col-sm-4 control-label">等级</label> <div class="col-sm-7"><select class="form-control" id="level">';
+        for(var i = level + 1; i<=5; i++){
+            content += '<option value="'+i+'">lv'+i+'</option>';
+        }
+            content += '</select></div></div><div class="form-group"> <label class="col-sm-4 control-label">送奖励</label><div class="col-sm-7"><select class="form-control" id="is_reward">' +
+                '<option value="1">赠送</option><option value="0">不赠送</option></select></div></div></form></div>';
+
+        $.confirm({
+            title: '<strong style="color: #c7254e;font-size: 16px">会员升级</strong>',
+            content: content,
+            confirmButton: '确定',
+            confirmButtonClass: 'btn btn-info',
+            cancelButton: '取消',
+            cancelButtonClass: 'btn btn-danger',
+            animation: 'scaleY',
+            theme: 'material',
+            confirm: function () {
+                var levels = $("#user-level").find("#level").val();
+                var is_reward = $("#user-level").find("#is_reward").val();
+                $.ajax({
+                    url: "{:url('user/level')}",
+                    method: 'POST',
+                    data:{
+                        user_id:id,
+                        level:levels,
+                        is_reward:is_reward
+                    },
+                    dataType: 'json',
+                    success: function (response) {
+                        if(response.code == 1){
+                            main.waringAlert(response.message)
+                        }else{
+                            if (response.toUrl) {
+                                window.location.href = response.toUrl;
+                                return false;
+                            }else{
+                                window.location.reload();
+                                return false;
+                            }
+                        }
+                    },
+                })
+            }
+
+        });
+    }
+</script>
+
+{/block}

@@ -1,0 +1,99 @@
+{extend name="layout/main" /}
+
+{block name="header"}
+
+{/block}
+
+{block name="content"}
+<script src="__PUBLIC__/admin/js/laydate/laydate.js"></script>
+<section class="panel">
+    <header class="panel-heading">
+        <h4>团队冻结详情</h4>
+        <a href="{:url('admin/team/freeze')}" class="btn btn-success ">返回</a>
+    </header>
+    <div class="panel-body" style="padding-bottom: 50px">
+        <form class="form-horizontal" action="{:url('admin/team/freezedetail')}" >
+            <div class="form-group">
+                <div class="col-xs-1 no-pd-r">
+                    <select name="type" class="form-control">
+                        <option {if $Request.get.type == 'nick_name'} selected {/if} value="nick_name">用户名称</option>
+                    </select>
+                </div>
+                <div class="col-xs-3 no-pd-l">
+                    <input type="text" value="{$Request.get.keyword}" name="keyword" class="form-control" placeholder="请输入关键词搜索">
+                    <input type="hidden" value="{$Request.param.id}" name="id">
+                </div>
+                <div class="col-xs-2 no-pd-2">
+                    <input type="text" value="{$Request.get.startTime}" name="startTime" id="startTime" class="form-control" placeholder="请输入开始时间">
+                </div>
+                <div class="col-xs-2 no-pd-2">
+                    <input type="text" value="{$Request.get.endTime}" name="endTime" id="endTime" class="form-control" placeholder="请输入结束时间">
+                </div>
+                <button type="submit" class="btn btn-color">搜索</button>
+            </div>
+        </form>
+        <table class="table table-bordered table-striped no-margin">
+            <thead>
+                <tr>
+                    <th class="text-center">冻结ID</th>
+                    <th class="text-center">用户名称</th>
+                    <th class="text-center">金额</th>
+                    <th class="text-center">利息</th>
+                    <th class="text-center">类型</th>
+                    <th class="text-center">状态</th>
+                    <th class="text-center">取款时间</th>
+                </tr>
+            </thead>
+            <tbody>
+            {if $list}
+                {foreach $list as $order}
+                    <tr>
+                        <td class="text-center">{$order->id}</td>
+                        <td class="text-center">
+                           {$order->nick_name}
+                        </td>
+                        <td class="text-center">
+                            {$order->num}
+                        </td>
+                        <td class="text-center">
+                            {$order->interest}
+                        </td>
+                        <td class="text-center">
+                            {$order->getStatus($order->status)}
+                        </td>
+                        <td class="text-center">
+                            {$order->getTypes($order->types)}
+                        </td>
+                        <td class="text-center">
+                            {$order->create_time}
+                        </td>
+                    </tr>
+                {/foreach}
+            {else /}
+                <tr class="text-center">
+                    <td colspan="8">暂无数据</td>
+                </tr>
+            {/if}
+            </tbody>
+        </table>
+        <div class="page">
+            {:htmlspecialchars_decode($list->render())}
+        </div>
+    </div>
+</section>
+<script>
+    laydate.render({
+        elem: '#startTime',
+        type: 'datetime'
+    });
+    laydate.render({
+        elem: '#endTime',
+        type: 'datetime'
+    });
+</script>
+{/block}
+
+
+{block name="footer"}
+
+{/block}

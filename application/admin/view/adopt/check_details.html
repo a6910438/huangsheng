@@ -1,0 +1,105 @@
+{extend name="layout/main" /}
+
+{block name="header"}
+
+{/block}
+
+{block name="content"}
+<style type="text/css">
+    .link-th{
+        color:blue;
+    }
+</style>
+<section class="panel">
+    <header class="panel-heading">
+        <h4>后台充值详情</h4>
+    </header>
+    <div class="panel-body" style="padding-bottom: 50px">
+
+       <form class="form-horizontal" action="{:url('check_details')}" >
+           <div class="form-group">
+
+               <div class="col-xs-1 no-pd-r">
+               <span class="form-control">开始时间</span>
+               </div>
+               <div class="col-xs-2 no-pd-l">
+
+                 <input type="date" value="{$Request.get.stime}" name="stime" class="form-control">
+               </div>
+               <div class="col-xs-1 no-pd-r">
+                   <span class="form-control"> 结束时间</span>
+               </div>
+               <div class="col-xs-2 no-pd-l">
+                   <input type="date" value="{$Request.get.ntime}" name="ntime" class="form-control">
+               </div>
+			   <div class="col-xs-1 no-pd-r">
+                    <select name="type" class="form-control">
+                        <option {if $Request.get.type == 'ids'} selected {/if} value="ids">玩家ID</option>
+                    </select>
+                </div>
+                <div class="col-xs-2 no-pd-l">
+                    <input type="text" value="{$Request.get.keyword}" name="keyword" class="form-control" placeholder="请输入关键词搜索">
+                </div>
+               <button type="submit" class="btn btn-color">搜索</button>
+
+            </div>
+        </form>
+
+
+
+
+        <table class="table table-bordered table-striped no-margin">
+            <thead>
+            <tr>
+                <th class="text-center">序号</th>
+                <th class="text-center">玩家ID</th>
+				<th class="text-center">玩家身份</th>
+                <th class="text-center">充值数量</th>
+
+            </tr>
+            </thead>
+            <tbody>
+            {if !empty($list)}
+            {foreach $list as $key=>$entity}
+            <tr>
+                <td style="vertical-align: middle" class="text-center">
+                    {$key+1}
+                </td>
+                <td style="vertical-align: middle" class="text-center">
+                    {$entity.invite_code}
+                </td>
+                <td style="vertical-align: middle" class="text-center">
+                    {if $entity.lv == 3}
+					高级节点
+					{elseif $entity.lv == 2}
+					中级节点
+					{elseif $entity.lv == 1}
+					初级节点
+					{elseif $entity.lv == 0}
+					普通会员
+					{/if}
+                </td>
+                <td style="vertical-align: middle" class="text-center">
+                    {$entity.number}
+                </td>
+
+            </tr>
+            {/foreach}
+            {else /}
+            <tr class="text-center">
+                <td colspan="9">暂无数据</td>
+            </tr>
+            {/if}
+            </tbody>
+        </table>
+        <div class="page">
+            {:htmlspecialchars_decode($list->render())}
+        </div>
+    </div>
+</section>
+{/block}
+{block name="footer"}
+
+
+
+{/block}

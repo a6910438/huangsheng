@@ -1,0 +1,98 @@
+{extend name="layout/main" /}
+
+{block name="header"}
+
+{/block}
+
+{block name="content"}
+<section class="panel">
+    <header class="panel-heading">
+        <h4>网站配置</h4>
+    </header>
+    <div class="panel-body" style="padding-bottom: 50px">
+        <table class="table table-bordered table-striped no-margin">
+            <thead>
+            <tr>
+                <th class="text-center">序号</th>
+                <th class="text-center">名称</th>
+                <th class="text-center">key值</th>
+                <th class="text-center">value值</th>
+                <th class="text-center">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            {foreach $list as $key=>$config}
+            <tr>
+                <td class="text-center" style="vertical-align: middle; ">{$key+1}</td>
+                <td class="text-center" style="vertical-align: middle; ">{$config->name}</td>
+                <td class="text-center" style="vertical-align: middle; ">{$config->key}</td>
+                {if $config->key == 'credit_qrcode'}
+                    <td class="text-center" style="vertical-align: middle; ">
+                        <img src="{$config->value}" style="width: 80px;height: 80px;" class="qrcode">
+                        <input type="hidden" value="{$config->value}" id="{$config->key}">
+                        <input type="file" style="display: none" class="file">
+                    </td>
+                    {else /}
+                    <td class="text-center" style="vertical-align: middle; ">
+                        <input type="text" id="{$config->key}" style="text-align: center" class="form-control"
+                               value="{$config->value}">
+                    </td>
+                {/if}
+                <td class="text-center" style="vertical-align: middle; ">
+                    <a onclick="updateConfig(this)" data-key="{$config->key}" class="btn btn-xs btn-primary">确认修改</a>
+                </td>
+            </tr>
+            {/foreach}
+            </tbody>
+        </table>
+
+    </div>
+</section>
+{/block}
+
+
+{block name="footer"}
+<script>
+    function updateConfig(e) {
+        var key = $(e).attr('data-key');
+        var value = $("#" + key).val();
+        $.post("{:url('config/save')}", {key: key, value: value}, function (data) {
+            if (data.code == 1) {
+                main.waringAlert(data.message);
+            } else {
+                main.waringAlert(data.message);
+                window.location.reload();
+            }
+        }, 'json')
+    }
+</script>
+<script>
+    $(".qrcode").click(function(){
+        $(".file").click();
+    })
+    $(".file").change(function(){
+        var $this = $(this);
+        var file = this.files[0];
+        if(file.length == 0)
+        {
+            main.waringAlert("请选择要上传的图片");
+            return false;
+        }
+        var data = new FormData();
+        data.append('image',file);
+        $.ajax({
+            url:"/admin/upload/uploadEditor",
+            type:"post",
+            data:data,
+            processData:false,
+            contentType:false,
+            dataType:'json',
+            success:function(data){
+                var url = data.data[0];
+                $('.qrcode').attr('src', url);
+                $('#credit_qrcode').val(url);
+            }
+        })
+    })
+</script>
+{/block}

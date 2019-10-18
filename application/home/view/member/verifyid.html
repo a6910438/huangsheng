@@ -1,0 +1,148 @@
+{extend name='main'}
+
+{block name='body'}
+<div class="fish-head">
+    <a href="javascript:window.history.back();" class="head-back"><span>返回</span></a>
+    <h3 class="head-tit"><span>实名认证</span></h3>
+    <!-- <a href="javascript:;" class="head-menu"><span>提交</span></a> -->
+</div>
+<div class="fish-main" v-cloak>
+    <form class="content-box" action="" method="post" onsubmit="return false;">
+        <ul class="content-list">
+            <li>
+                <label class="content-label font5">真实姓名</label>
+                <input type="text" placeholder="请输入真实姓名" v-model="id_name">
+            </li>
+            <li>
+                <label class="content-label font5">身份证号码</label>
+                <input type="text" placeholder="请输入身份证号码" v-model="id_number">
+            </li>
+        </ul>
+    </form>
+    <div class="content-view">
+        <button type="button" class="content-btn" v-on:click="submit">提交</button>
+    </div>
+</div>
+
+{include file='menu'}
+{/block}
+
+{block name='script'}
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            id_name: '',
+            id_number: '',
+            id_image_a: '',
+            id_image_b: '',
+        },
+        computed: {
+            
+        },
+        methods: {
+            /*
+            chooseImage: function(e){
+                e.stopPropagation();
+                e.preventDefault();
+                let fileInput = $(e.target).next("input[type=file]");
+                fileInput.click();
+                fileInput.click();
+            },
+            uploadGetUrl: function(file,callBack){
+                if(!file) return core.toast("请选择图片");
+                if (!/\.(gif|jpg|jpeg|png|GIF|JPEG|JPG|PNG)$/.test(file.name)) {
+                    return core.toast("图片类型必须是[.gif,jpeg,jpg,png]中的一种");
+                }
+                if (file.size > 6*1024*1024) {
+                    return core.toast("图片大小不能超过6M");
+                }
+                var formData = new FormData();
+                formData.append('file', file);
+                formData.append('token', localStorage.uid);
+                var id = '';
+
+                $.ajax({
+                    url: "{:url('/index/upload/uploadimg')}",
+                    type: 'POST',
+                    data: formData,
+                    contentType: false, // 注意这里应设为false
+                    processData: false,
+                    beforeSend: function(){id=core.loading();},
+                    complete: function(){
+                        core.rmLoading(id);
+                    },
+                    success: function(res){
+                        if(res.code=='0'){
+                            try {
+                                callBack(res);
+                            } catch (error) {
+                                
+                            }
+                        }
+                        core.toast(res.msg);
+                        if(res.code=='1'){
+                            setTimeout(function(){
+                                window.history.go(0);
+                            }, 1000);
+
+                        }
+                    },
+                    error: function(XHR, textStatus, errorThrown) {
+                        core.toast('网络错误！');
+                    }
+                });
+            },
+            upload_a:function(e){
+                this.uploadGetUrl(e.target.files[0],(res)=>{
+                    this.id_image_a = res.info.url;
+                })
+            },
+            upload_b:function(e){
+                this.uploadGetUrl(e.target.files[0],(res)=>{
+                    this.id_image_b = res.info.url;
+                })
+            },
+            */
+            submit: function(){
+                if(!this.id_name) return core.toast('请输入姓名');
+                if(!this.id_number) return core.toast('请输入身份证号码');
+                core.load("{:url('index/member/submitverify')}", {
+                    id_name: this.id_name,
+                    id_number: this.id_number
+                }, (res)=>{
+                    if(res.code==0){
+                        this.id_name = '';
+                        this.id_number = '';
+                        core.toast(res.msg);
+                        setTimeout(function(){
+                            window.history.go(-1);
+                        }, 1500);
+                    }
+                    core.toast(res.msg);
+                })
+            }
+        },
+        mounted: function(){
+            
+        }
+    });
+</script>
+{/block}
+
+{block name="style"}
+<style>
+    .img-box{
+        overflow: hidden;
+    }
+    .img-box>img{
+        display: block;
+        max-width: 100%;
+        margin: 0 auto;
+    }
+    label+button{
+        margin-left: 0.8rem;
+        margin-right: auto;
+    }
+</style>
+{/block}

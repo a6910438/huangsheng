@@ -1,0 +1,91 @@
+{extend name="layout/main" /}
+
+{block name="header"}
+
+{/block}
+
+{block name="content"}
+<style type="text/css">
+    .link-th{
+        color:blue;
+    }
+</style>
+<section class="panel">
+    <header class="panel-heading">
+        <h4>轮播图列表</h4>
+    </header>
+    <div class="panel-body" style="padding-bottom: 50px">
+         <div class="row clearfix " style="margin-bottom: 15px">
+            <a type="button" href="/admin/Wheelplanting/create" class="btn btn-info">轮播图添加</a>
+        </div>
+        <table class="table table-bordered table-striped no-margin">
+            <thead>
+            <tr>
+                <th class="text-center">ID</th>
+                <th class="text-center">备注</th>
+                <th class="text-center">图片</th>
+                <th class="text-center">排序</th>
+                <th class="text-center">状态</th>
+                <th class="text-center">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            {if !empty($list)}
+            {foreach $list as $entity}
+            <tr>
+                <td style="vertical-align: middle" class="text-center">
+                    {$entity.id}
+                </td>
+                <td style="vertical-align: middle" class="text-center">
+                    {$entity.remarks}
+                </td>
+                <td style="vertical-align: middle" class="text-center">
+                    <img  src="{$entity.img}" alt="" style="height: 40px">
+                </td>
+
+                <td style="vertical-align: middle" class="text-center">
+                    {$entity.sort}
+                </td>
+                <td style="vertical-align: middle" class="text-center">
+                    {if $entity.status == 0 }
+                    隐藏
+                    {else}
+                    显示
+                    {/if}
+                </td>
+
+                <td style="vertical-align: middle" class="text-center">
+
+                    <a href="{:url('edit',['id'=>$entity.id])}" class="btn btn-xs btn-info">修改</a>
+
+
+
+                    {if $entity.status == 0 }
+                    <a data-url="{:url('activation',['id'=>$entity.id])}" onclick="main.ajaxDelete(this)" data-msg="确定要显示？" class="btn btn-xs btn-success">显示</a>
+
+                    {else}
+                    <a data-url="{:url('freeze',['id'=>$entity.id])}" onclick="main.ajaxDelete(this)" data-msg="确定要关闭？" class="btn btn-xs btn-warning">隐藏</a>
+                    {/if}
+                </td>
+
+                </td>
+            </tr>
+            {/foreach}
+            {else /}
+            <tr class="text-center">
+                <td colspan="9">暂无数据</td>
+            </tr>
+            {/if}
+            </tbody>
+        </table>
+        <div class="page">
+            {:htmlspecialchars_decode($list->render())}
+        </div>
+    </div>
+</section>
+{/block}
+{block name="footer"}
+
+
+
+{/block}

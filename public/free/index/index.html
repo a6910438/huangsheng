@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Home</title>
+    <link rel="icon" href="free.ico" type="image/x-icon"/> 
+    <link rel="stylesheet" href="../css/video-js.min.css">
+    <link rel="stylesheet" href="../css/news.css">
+    <link rel="stylesheet" href="../css/public.css">
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <script src="../build/flexible.js"></script>
+    <script src="../build/flexible_css.js"></script>
+    <script src="../js/layer.js"></script>
+    <script src="../js/jquery.js"></script>
+    <script src="../js/video.min.js"></script>
+    <script src="../js/clipboard.min.js"></script>
+    <script src="../js/news.js"></script>
+    <script src="../js/template.js"></script>
+    <script src="../js/logout.js"></script>
+    <style>
+        html, body {background: #F5F5F5;height: 100%;}
+        .main{height: 100%;}
+        input::-webkit-input-placeholder {color: #999;}
+        textarea::-webkit-input-placeholder {color: #999;}
+        .header {position: fixed;top: 0px;left: 0px;width: 100%;height: 1.173333rem;line-height: 1.173333rem;text-align: center;color: #fff;background: linear-gradient(to left, #2A3176, #0A0F3E);z-index: 99999;}
+        .header span {font-size: .48rem;font-weight: bold;}
+        .more {position: absolute;top: 0;left: .373333rem;display: flex;align-items: center;height: inherit;}
+        .more img {width: .773333rem;}
+        .main {padding: 1.173333rem 0rem 1.333333rem;}
+        .balance-box {position: relative;}
+        .balance-box img {width: 100%;vertical-align: bottom;}
+        .balance-content {position: absolute;top: 50%;left: 45.9%;margin-top: -0.906667rem;}
+        .balance {height: 1.12rem;line-height: 1.12rem;font-size: .773333rem;color: #fff;font-weight: bold;}
+        .company {height: .693333rem;line-height: .693333rem;font-size: .48rem;color: #fff;}
+        .list {background: #fff;}
+        .item {display: flex;justify-content: space-between;align-items: center;padding: 0rem .213333rem 0rem .4rem;height: 1.173333rem;border-bottom: 1px solid #E0E0E0;font-size: .426667rem;color: #666;}
+        .more-icon {height: .586667rem;}
+        .btn-box {margin-top: 3.2rem;display: flex;justify-content: center;}
+        .confirm {padding: 0rem .8rem;min-width: 53.33%;height: 1.173333rem;line-height: 1.173333rem;text-align: center;font-size: .48rem;color: #fff;border: none;background: #262F86;border-radius: .133333rem;box-shadow: 0rem 0rem .666667rem rgba(38, 47, 134, 0.5);}
+        .nav-bg {z-index: 999; position: fixed;top: 0;left: 0;width: 100%;height: 100%;background: rgba(27, 27, 27, .5);display: none;}
+        .nav-box {z-index:999;position: absolute;top: 0;left: -67.73%;width: 67.73%;height: 100%;padding-top: 1.173333rem;transition: ease left .4s;}
+        .nav-content {padding-top: .373333rem;width: 100%;height: 100%;background: #fff;border-radius: 0rem .133333rem .133333rem 0rem;}
+        .nav-item {height: 1.333333rem;display: flex;align-items: center;padding-left: .346667rem;}
+        .nav-icon img {height: .586667rem;vertical-align: bottom;}
+        .nav-name {margin-left: .72rem;font-size: .426667rem;color: #666;}
+        .nav-active .nav-name {color: #212121;}
+        .layout-btn {position: absolute;left: 0;bottom: 0;width: 100%;height: 1.333333rem;border-top: 1px solid #E0E0E0;display: flex;align-items: center;}
+        .layout {display: flex;align-items: center;padding-left: .346667rem;width: 100%;height: 100%;border: none;background: transparent;font-size: .426667rem;color: #999;}
+        .layout img {height: .586667rem;margin-right: .773333rem;}
+        .video-js { background: transparent;}
+        .vjs-poster {background: transparent;}
+        .bird{width: 10rem;margin: auto;height: 4rem;position: relative}
+        .bird img{width:40%;height: 3.567rem;position: absolute;left: .4rem;}
+        .bird_text{position: absolute;top: 1.9rem;right: 0;width: 70%}
+        #my-video{width: 90%;margin: auto;height:4.5945rem;background: #252525;border-radius: .27rem}
+        .video-js .vjs-tech {
+                /* height: 100%; */
+                width: 100%;
+            }
+    </style>
+<body>
+    <header class="header">
+        <span class="more" data="0">
+            <img src="../images/home.png" alt="">
+        </span>
+        <span>Home</span>
+    </header>
+    <main class="main">
+       <!-- content -->
+    <div id="index_content">
+        
+    </div>
+    <!-- end -->
+    </main>
+    <div class="nav-bg">
+        <div class="nav-box">
+            <div class="nav-content">
+                <div class="nav-list">
+                    <div class="nav-item nav-active" onclick="window.location.href='index.html'">
+                        <div class="nav-icon"><img src="../images/lab_2homei_icon@2x.png" alt=""></div>
+                        <div class="nav-name">Home</div>
+                    </div>
+                    <div class="nav-item" onclick="window.location.href='news.html'">
+                        <div class="nav-icon"><img src="../images/lab_2News_icon@2x.png" alt=""></div>
+                        <div class="nav-name">News</div>
+                    </div>
+                    <div class="nav-item" onclick="window.location.href='Trading.html'">
+                        <div class="nav-icon"><img src="../images/lab_transaction_icon@2x.png" alt=""></div>
+                        <div class="nav-name">Trading</div>
+                    </div>
+                    <div class="nav-item" onclick="window.location.href='assets.html'">
+                        <div class="nav-icon"><img src="../images/lab_assets_icon@2x.png" alt=""></div>
+                        <div class="nav-name">Transaction</div>
+                    </div>
+                    <div class="nav-item" onclick="window.location.href='my.html'">
+                        <div class="nav-icon"><img src="../images/lab_1mein_icon@2x.png" alt=""></div>
+                        <div class="nav-name">My Profile</div>
+                    </div>
+                </div>
+                <div class="layout-btn">
+                    <button class="layout">
+                        <img src="../images/lab_Sidebar_icon@2x.png" alt="">
+                        <span>Logout</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script type="text/html" id="content">
+       <div class="bird">
+            <img src="../images/bird.png" alt="">
+            <div class="bird_text">
+                <p>Welcome</p>
+                <p>Freedom Eagle</p>
+            </div>
+        </div>
+        <div class="bf_text">
+            <p><marquee direction="left" scrolldelay="100">
+                {{each info.data val}}
+                <span style="padding-right: 1rem">{{val.take_user}} and {{val.store_user}} match successfully</span>
+                {{/each}}
+            </marquee></p>
+        </div>
+        <div class="index_video">
+            <video id="my-video" class="video-js vjs-default-skin vjs-big-play-centered" controls preload="none"
+                data-setup="{}">
+                <source src="../../{{info.video.src}}" type="video/mp4">
+            </video>
+        </div>
+</script>
+<script>
+    let more = document.querySelector('.more');
+    let navBg = document.querySelector('.nav-bg');
+    let navBox = document.querySelector('.nav-box');
+    more.addEventListener('click', function() {
+        if (this.getAttribute('data') == 0) {
+            navBg.style.display = 'block';
+            setTimeout(()=> {
+                navBox.style.left = '0%';
+            }, 10);
+            this.setAttribute('data', '1');
+            $('.index_video').hide();
+        } else {
+            navBox.style.left = '-67.73%';
+            setTimeout(()=> {
+                navBg.style.display = 'none';
+            }, 400);
+            this.setAttribute('data', '0');
+            $('.index_video').show();
+        }
+    });
+    navBox.addEventListener('click', (e)=> {
+        if (e) {
+            e.stopPropagation();
+            e.preventDefault();
+        } else {
+            window.event.returnValue = false;
+            window.event.cancelBubble = true;
+        }
+    });
+    navBg.addEventListener('click', ()=> {
+        if (more.getAttribute('data') == 1) {
+            navBox.style.left = '-67.73%';
+            setTimeout(()=> {
+                navBg.style.display = 'none';
+            }, 400);
+            more.setAttribute('data', '0');
+            $('.index_video').show();
+        }
+    });  
+</script>
+<script>
+    $(function () {       
+        $.ajax({
+        url: "../../index.php/index/Match/order",
+        type: 'POST',
+        dataType: 'json',
+        async: true,
+        crossDomain: true,
+        success: function(res) {
+            if (res.code == 1 && res.url == "login") {
+                layer.open({
+                    content: 'You are not logged in',
+                    skin: 'msg',
+                    time: 2
+                })
+                setTimeout(function(){
+                    window.location.href='introduce.html';
+                },1000) 
+                
+            }
+        }
+        })
+        $.ajax({
+                url: "../../index.php/index/Index/index",
+                type: 'POST',
+                dataType: 'json',
+                success: function(res){
+                    console.log(res)
+                    if(res.code=='0'){
+                            $('#index_content').html(template('content',res));
+                            var myPlayer = videojs('my-video');
+                            videojs("my-video").ready(function () {
+                                var myPlayer = this;
+                            });
+                        }
+                    else{
+                        layer.open({
+                            content: res.message,
+                            skin: 'msg',
+                            time: 2
+                        });
+                        }
+                },
+            });
+        var height1=$(document.body).height();
+        var height2=$('header').height();
+        var height3=height1-height2;
+        $('#index_content').height(height3);
+        $('#index_content').css('background-size','cover');
+    })
+</script>
+</html>

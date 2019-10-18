@@ -1,0 +1,2794 @@
+{extend name='main'}
+
+{block name='body'}
+<!-- <div class="fish-head">
+    <h3 class="head-tit"><span>个人中心</span></h3>
+
+</div>
+<div class="fish-main" v-cloak>
+    <div class="center-info content-box">
+        <div class="info-top clearfix">
+            <div class="top-img">
+                <img :src="info.avatar" alt="">
+                <input type="file" accept="image/*" id="upload" class="set-file" @change="upload()">
+                <div class="top-setting">
+                    <a href="{:url('home/member/setting')}"><i class="icon icon-setting"></i></a>
+                </div>
+            </div>
+            <div>
+                <div class="top-name">
+                    <strong>{{info.nick_name}}</strong> 
+                    <span>({{info.lv_name}})</span>
+                </div>
+                <div class="top-id">
+                    ID : {{info.invite_code}} 
+                    <span v-if="info.is_active==1">(已激活)</span> 
+                    <span v-else>(未激活)</span> 
+                    手机 : {{info.mobile}}
+                </div>
+            </div>
+        </div>
+        <div class="info-member clearfix">
+            <a href="{:url('home/member/bait')}" class="col-4">
+                <div class="member-num">{{info.now_bait || '0.00'}}</div>
+                <label class="member-text">GTC</label>
+            </a>
+            <a href="{:url('home/member/integral')}" class="col-4">
+                <div class="member-num">{{info.now_integral || '0.00'}}</div>
+                <label class="member-text">积分</label>
+            </a>
+            <a href="{:url('home/member/gcLog')}" class="col-4">
+                <div class="member-num">{{info.gc || '0.00'}}</div>
+                <label class="member-text">GC</label>
+            </a>
+        </div>
+        <div class="info-member clearfix">
+            <a href="{:url('home/member/culture')}" class="col-6">
+                <div class="member-num">{{info.now_profit || '0.00'}}</div>
+                <label class="member-text">房产收益</label>
+            </a>
+            <a href="{:url('home/member/extension')}" class="col-6">
+                <div class="member-num">{{info.now_extension || '0.00'}}</div>
+                <label class="member-text">推广收益</label>
+            </a>
+        </div>
+    </div>
+    <ul class="center-list content-box clearfix">
+        <li class="col-4">
+            <a href="{:url('home/member/adoption')}">
+                <div><i class="icon center01-act"></i></div>
+                <div>抢购记录</div>
+            </a>
+        </li>
+        <li class="col-4">
+            <a href="{:url('home/member/transfer')}">
+                <div><i class="icon center02-act"></i></div>
+                <div>转让记录</div>
+            </a>
+        </li>
+        <li class="col-4">
+            <a href="{:url('home/member/appointment')}">
+                <div><i class="icon center03-act"></i></div>
+                <div>预约记录</div>
+            </a>
+        </li>
+        <li class="col-4">
+            <a href="{:url('home/member/exchange')}">
+                <div><i class="icon center09-act"></i></div>
+                <div>闪兑</div>
+            </a>
+        </li>
+        <li class="col-4">
+            <a href="{:url('home/member/withdraw')}">
+                <div><i class="icon center10-act"></i></div>
+                <div>GC提币</div>
+            </a>
+        </li>
+        <li class="col-4" @click="profit()">
+            <a href="javascript:;">
+                <div><i :class="info.is_team==1?'icon center04-act':'icon center04'"></i></div>
+                <div :style="info.is_team==1?'':'color:#999'">团队收益</div>
+            </a>
+        </li>
+        <li class="col-4">
+            <a href="{:url('home/member/inviteFriend')}">
+                <div><i class="icon center05-act"></i></div>
+                <div>邀请好友</div>
+            </a>
+        </li>
+     
+        <li class="col-4">
+            <a :href="(info.is_active==0||info.is_verify==1)?'javascript:;':'{:url('home/member/verifyid')}'">
+                <div><i :class="(info.is_active==0||info.is_verify==1)?'icon center11':'icon center11-act'"></i></div>
+                <div>实名认证</div>
+            </a>
+        </li>
+        <li class="col-4">
+            <a href="{:url('home/member/customer')}">
+                <div><i class="icon center07-act"></i></div>
+                <div>客服中心</div>
+            </a>
+        </li>
+        <li class="col-4">
+            <a :href="info.is_active==0?'javascript:;':'{:url('home/member/wechat')}'">
+                <div><i :class="info.is_active==0?'icon center08':'icon center08-act'"></i></div>
+                <div>绑定微信</div>
+            </a>
+        </li>
+        <li class="col-4">
+            <a href="{:url('home/member/noticelist')}">
+                <div><i class="icon center12-act"></i></div>
+                <div>系统公告</div>
+            </a>
+        </li>
+    </ul>
+</div> -->
+
+
+
+<!-- <div class="center_box">
+    <img  class="img1" src="/fish/img/center1.png" alt="">
+    <div class="center_top">
+        <img src="/fish/img/img3.png" alt="" style="position: relative; top:8.66rem; right:-19rem; width:4.25rem; height:4.45rem;">
+        <div class="top_one">
+             <img  class="img2" src="/fish/img/img2.png" alt=""> 
+        </div>
+        <img  src="/fish/img/img6.png" alt="" style="position:relative; width:16.8rem; height:16.48.1rem;top:-24rem;background-size: contain; left:3.2rem;"> 
+       
+    </div>
+    <div class="center_list">
+       
+    </div>
+   
+
+</div> -->
+
+
+
+<div class="box_center">
+    <div class="box_topp">
+
+        <div @click="rightMax" class="right_X">
+            <a href="{:url('home/member/setting')}"></a>
+        </div>
+        <div class="top-img new_topImg">
+                <div style="width:10.46rem; height:10.18rem; overflow: hidden;border-radius: 50%;position:relative;">
+                    <img :src="info.avatar" alt="" style="width:10.46rem; height:10.18rem; border-radius: 50%; ">
+                    <input type="file" accept="image/*" id="upload" class="set-file" @change="upload()">
+               </div>
+
+        </div>
+        <div>
+            <div class="top-name new_top-name">
+                <strong >{{info.nick_name}}</strong>
+                <span>({{info.lv_name}})</span>
+             </div>
+            <div class="top-id new_id">
+                <div style="font-size:17px; color:#3A3026;font-weight:bold;font-family:Rubik;">ID : {{info.invite_code}}</div>
+                <span class="span2_id" v-if="info.is_active==1">(已激活)</span>
+
+            </div>
+            <div class="new_phone">
+                <span v-else>(未激活)</span>
+                手机 : {{info.mobile}}
+            </div>
+        </div>
+
+        <div class="hy">
+            <div class="hy_box">
+                <div style="font-size:27px; color:#fff;">商会成员</div>
+                <div >
+                    <img  style="width:3.68rem; height:3.96rem; margin-top:1rem" src="/fish/img/center99.png" alt="">
+                </div>
+                <div style="font-size:21px; colro:#fff;">X{{info.teamnum}}</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="centerFooter">
+        <div class="center_content" style="color:#fff">
+            <div @click="verifiedMax">实名认证</div>
+            <div @click="ManagementBtn">商会管理</div>
+            <div @click=" invFriendBtn">邀请好友</div>
+            <!-- <div>
+                <a href="{:url('home/member/inviteFriend')}">邀请好友</a>
+            </div> -->
+            <div @click="ActivateAccount">激活账户</div>
+            <div @click="systemicationBtn">系统公告</div>
+            <!-- <div>
+                <a href="{:url('home/member/noticelist')}">系统公告</a>
+            </div> -->
+            <div @click="CusServiceBtn">客服中心</div>
+            <!-- <div>
+                <a href="{:url('home/member/customer')}">客服中心</a>
+            </div> -->
+            <div @click="BindWeChatBtn">绑定微信</div>
+            <!-- <div>
+                <a :href="info.is_active==0?'javascript:;':'{:url('home/member/wechat')}'">绑定微信</a>
+
+               
+            </div> -->
+        </div>
+    </div>
+
+</div>
+
+
+
+<!-- 设置弹框 -->
+<div class="set_details" v-show="setclose">
+    <div id="set_banner" class="lazy">
+		<div class="title-box title-blue">
+			设置
+		</div>
+            <div class="detailsImg setImg set_aaa" @click="setMax">
+                <img src="/fish/img/assets10.png" alt="">
+            </div>
+            <div class="logout_btn btnLili" @click="logoutBtn" >
+                退出登录
+                    <!-- <img src="/fish/img/assets56.png" alt=""> -->
+                </div>
+            <div class="set_content" style="margin-top: 2rem;">
+                <div class="set_content1">
+                    <div>用户名</div>
+                    <div style="margin-left:2.5rem; width:10rem; text-align:right;">{{info.nick_name}}</div>
+                    <div @click="nikeBtn">
+                        <img src="/fish/img/assets100.png" alt="">
+                    </div>
+                </div>
+                <div class="set_content2">
+                   <div>登录密码</div>
+                   <div>
+                        <div @click="logPassBtn">
+                            <img src="/fish/img/assets100.png" alt="">
+                        </div>
+                   </div>
+                </div>
+                <div class="set_content2">
+                    <div>支付密码</div>
+                    <div>
+                        <div @click="payPasswordBtn">
+                            <img src="/fish/img/assets100.png" alt="">
+                        </div>
+                    </div>
+                </div>
+                <div class="set_content2">
+                    <div>关于我们</div>
+                    <div>
+                        <div @click="aboutMeBtn">
+                            <img src="/fish/img/assets100.png" alt="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="margin-top:3rem;">fanseco</div>
+            <div class="rules">
+                <div>本网络游戏适合年满13周岁以上的用户使用；</div>
+                <div>为了您的健康，请合理控制游戏时间。</div>
+                <div> 抵制不良游戏，拒绝盗版游戏。注意自我保护，谨防受骗上当。</div>
+                <div>适度游戏益脑，沉迷游戏伤身。合理安排时间，享受健康生活。</div>
+            </div>
+
+    </div>
+</div>
+
+
+
+<!-- 确定离开游戏弹框 -->
+<div class="set_details" v-show="setclose1">
+    <div id="xureBtn">
+        <div class="xureBtnBox">
+            <div class="CorrectBtn" @click="goWway()">
+                    <img src="/fish/img/assets58.png"  alt="">
+            </div>
+            <div class="wrongBtn" @click="noWayBtn" >
+                 <img src="/fish/img/assets59.png" alt="">
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 修改昵称弹框 -->
+<div class="set_details" v-show="setclose2">
+    <div id="nickname" class="lazy">
+		<div class="title-box title-blue">
+					修改昵称
+				</div>
+            <div class="detailsImg setImg  hhhjjj" @click="nicknameMax">
+                    <img src="/fish/img/assets10.png" alt="">
+            </div>
+            <div class="logout_btn btnLili111" @click="send()">
+                提交
+                    <!-- <img src="/fish/img/asets62.png" alt=""> -->
+            </div>
+        <div style="padding-top:4rem">
+            <div class="nickname_input">
+                <input  type="text" placeholder="请输入新昵称" v-model="names">
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- 修改昵称成功弹框 -->
+<div class="set_details a1" v-show="setclose3">
+    <div id="success_nickname">
+        <div class="success_nicknameImg" @click="successNnickname">
+            <img src="/fish/img/assets10.png" alt="">
+        </div>
+        <div class="blue_max">修改昵称</div>
+        <div style="color:#FFE9C9; font-size:61px; line-height:35rem; text-align: center;">修改成功</div>
+    </div>
+</div>
+
+<!-- 修改登录密码 -->
+<div class="set_details"  v-show="setclose4">
+    <div class="modify_password ">
+		<div class="title-box title-blue" style="font-size:17px;line-height:2.5rem;">
+					修改登录密码
+				</div>
+        <div class="detailsImg setImg gouogu" @click="passwordMax">
+            <img src="/fish/img/assets10.png" alt="">
+        </div>
+        <div class="logout_btn hahhahha" @click="send1()">
+            提交
+                <!-- <img src="/fish/img/asets62.png" alt=""> -->
+        </div>
+        <div class="password_content">
+            <div class="nickname_input" style="margin-top:4rem;">
+                <input  type="password" v-model="new_pwd" placeholder="请输入新密码">
+            </div>
+            <div class="nickname_input" style="margin-top:1.9rem;">
+                <input type="password" v-model="confirm_pwd" placeholder="请确认新密码">
+            </div>
+            <div class="nickname_input" style="display:flex; margin-top:2.0rem;">
+                <input v-model="phone_code"  placeholder="请确认验证码" style="width:61%; text-indent: 1rem;">
+                <div style="width:6.125rem; height:2.2rem;position: relative;" @click="getcode()">
+                    <img :src="src" alt="" style="width:6.125rem; height:2.2rem;position: absolute;left: 1.2rem;top: 0.1rem">
+                    <span style="width:6.125rem; text-align:center; height:2.2rem;position: absolute;left: 1.2rem;top: 0.1rem">{{num}}</span>
+                </div>
+            </div>
+            <div class="password_bottom" style="margin-top:5.5rem;">
+                <div style="margin-left:1rem;"> 注：为确保账号安全，本次操作需要验证当前手机号</div>
+                <div style="margin-left:1rem;"> 当前绑定手机号为：{{info.mobile}}</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 修改支付密码 -->
+
+<div class="set_details"  v-show="setclose12">
+    <div class="Modify_paymentPassword ">
+		<div class="title-box title-blue" style="font-size:17px;line-height:5rem;line-height:2.5rem;">
+					修改支付密码
+				</div>
+        <div class="detailsImg setImg  gouogu" @click="paymentPasswordBtn">
+            <img src="/fish/img/assets10.png" alt="">
+        </div>
+        <div class="logout_btn hahhahha " @click="send2()">
+            提交
+                <!-- <img src="/fish/img/asets62.png" alt=""> -->
+        </div>
+        <div class="password_content">
+            <div class="nickname_input" style="margin-top:4rem;">
+                <input type="password" v-model="new_pwd" placeholder="请输入新密码">
+            </div>
+            <div class="nickname_input" style="margin-top:2rem;">
+                <input type="password" v-model="confirm_pwd" placeholder="请确认新密码">
+            </div>
+            <div class="nickname_input" style="display:flex; margin-top:2rem;">
+                <input v-model="phone_code"  placeholder="请确认验证码" style="width:61%; text-indent: 1rem;">
+                <div style="width:6.125rem; height:2.2rem;position: relative;" @click="getcode1()">
+                    <img :src="src" alt="" style="width:6.125rem; height:2.2rem;position: absolute;left: 1.2rem;top: 0.1rem">
+                    <span style="width:6.125rem; text-align:center; height:2.2rem;position: absolute;left: 1.2rem;top: 0.1rem">{{num}}</span>
+                </div>
+            </div>
+            <div class="password_bottom" style="margin-top:5.5rem;">
+                <div style="margin-left:1rem;"> 注：为确保账号安全，本次操作需要验证当前手机号</div>
+                <div  style="margin-left:1rem;"> 当前绑定手机号为：{{info.mobile}}</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<!-- <div class="set_details" v-show="setclose12">
+        <div class="Modify_paymentPassword">
+            <div class="detailsImg setImg" @click="paymentPasswordBtn">
+                <img src="/fish/img/assets10.png" alt="">
+            </div>
+            <div class="submitBtn_nickname">
+                    <img src="/fish/img/asets62.png" alt="">
+            </div>
+            <div class="password_content">
+                <div class="nickname_input" style="margin-top:3rem;">
+                    <input  placeholder="请输入新密码">
+                </div>
+                <div class="nickname_input" style="margin-top:3rem;">
+                    <input type="password" placeholder="请确认新密码" >
+                </div>
+                <div class="nickname_input" style="display:flex; margin-top:3rem;">
+                    <input placeholder="请确认验证码" style="width:61%;">
+                    <div style="width:6.125rem; height:2.2rem;position: relative;">
+                        <img src="/fish/img/assets65.png" alt="" style="width:6.125rem; height:2.2rem;position: absolute;top: 0;left: 0">
+                    </div>
+                   
+                </div>
+                <div class="password_bottom">
+                    <div> 注：为确保账号安全，本次操作需要验证当前手机号</div>
+                    <div> 当前绑定手机号为：{{info.mobile}}</div>
+                </div>
+            </div>
+        </div>
+    </div> -->
+
+
+
+<!-- 修改登录密码成功弹框 -->
+<div class="set_details"  v-show="setclose5">
+    <div id="success_password">
+        <div class="success_nicknameImg" @click="successPassword">
+            <img src="/fish/img/assets10.png" alt="">
+        </div>
+        <div style="font-size:15px;" class="blue_max">修改登录密码</div>
+        <div class="zzz_max">修改成功</div>
+    </div>
+</div>
+
+<!-- 修改支付密码成功弹框 -->
+<div class="set_details"  v-show="setclose6">
+        <div id="Payment_password">
+            <div class="success_nicknameImg" @click="paysuccessPassword">
+                <img src="/fish/img/assets10.png" alt="">
+            </div>
+            <div style="font-size:15px;" class="blue_max">修改支付密码</div>
+            <div class="zzz_max">修改成功</div>
+        </div>
+    </div>
+
+    <!-- 实名认证成功弹框 -->
+    <div class="set_details"  v-show="setclose7">
+        <div id="success_nickname">
+            <div class="success_nicknameImg" @click="VerifiedMaxBox">
+                <img src="/fish/img/assets10.png" alt="">
+            </div>
+            <div class="yanqing_box">实名认证</div>
+            <div class="zzz_max">认证成功</div>
+        </div>
+    </div>
+    <!-- 实名认证失败弹框 -->
+    <div class="set_details"  v-show="setclose8">
+            <div id="success_nickname">
+                <div id="wwliww " class="detailsImg setImg wwli" @click="failureMax">
+                    <img src="/fish/img/assets10.png" alt="">
+                </div>
+                <div class="yanqing_box">实名认证</div>
+                <div class="zzz_max">认证失败</div>
+                <div style="margin-top:22rem;" class="prompt">您的姓名或身份证号码填写有误，请核对后重新输入</div>
+            </div>
+        </div>
+
+
+        <!-- 邀请好友复制成功弹框 -->
+        <div class="set_details hy11"  v-show="setclose9">
+            <div id="success_nickname">
+                <div class="success_nicknameImg" @click="InviteRiendsBtn">
+                    <img src="/fish/img/assets10.png" alt="">
+                </div>
+                <div class="yanqing_box">邀请好友</div>
+                <div class="zzz_max">复制成功</div>
+            </div>
+        </div>
+
+        <!-- 激活账号成功弹框 -->
+        <div class="set_details"   v-show="setclose10">
+            <div id="success_nickname">
+                    <div class="success_nicknameImg" @click="accountBtn">
+                        <img src="/fish/img/assets10.png" alt="">
+                    </div>
+                    <div class="yanqing_box1">激活账号</div>
+                    <div class="zzz_max">激活成功</div>
+            </div>
+        </div>
+
+
+        <!-- 微信绑定成功弹框 -->
+        <div class="set_details"  v-show="setclose11">
+            <div id="success_nickname">
+                <div class="success_nicknameImg" @click="WeChatBtn">
+                    <img src="/fish/img/assets10.png" alt="">
+                </div>
+                <div class="yanqing_box2">绑定微信</div>
+                <div class="zzz_max">绑定成功</div>
+            </div>
+        </div>
+
+
+        <!-- 关于我们弹框 -->
+        <div class="set_details"  v-show="setclose13">
+            <div id="about" class="lazy">
+				<div class="title-box title-blue">
+							关于我们
+						</div>
+                <div class="detailsImg setImg gouogu " @click="aboutBtn">
+                    <img src="/fish/img/assets10.png" alt="">
+                </div>
+                <div class="about_content">
+                    <!-- <div  v-html="info1.content"></div> -->
+                    <div v-html='aboutUs'></div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- 实名认证弹框 -->
+        <div class="set_details" v-show="setclose14">
+            <div id="Real-name" class="lazy">
+                <div class="detailsImg setImg gouogu " @click="RealnameBtn">
+                    <img src="/fish/img/assets10.png" alt="">
+                </div>
+                <div class="yanqing_box" style="top:-2.5rem; left:7rem;">实名认证</div>
+                <div class="logout_btn hahhahha" @click="reanBtnSbmit">
+                    提交
+                        <!-- <img src="/fish/img/asets62.png" alt=""> -->
+                </div>
+                <div class="Real-name_content">
+                    <div class="name_Real">
+                        <div>姓    名</div>
+                        <input style="color:#fff" v-model="id_name" placeholder="请输入真实姓名">
+                    </div>
+                    <div class="idCard">
+                        <div>身份证号</div>
+                        <input style="color:#fff" v-model="id_number" placeholder="请填写身份证号码">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <!-- 商会管理弹框 -->
+        <div class="set_details" v-show="setclose15">
+            <div id="Chamber" class="lazy">
+				<div class="yanqing_box" style="top:-2.5rem; left:7.5rem;">
+							商会管理
+						</div>
+                <div class="detailsImg setImg gouogu " @click="ChamberBtn">
+                    <img src="/fish/img/assets10.png" alt="">
+                </div>
+                <div class="Chamber_content">
+                    <div class="Chamber_title">
+                        <div>商会领袖</div>
+                        <div style="font-family:Rubik;font-weight:bold; font-size:17px;">{{lxMax}}</div>
+                    </div>
+                    <div class="member_aa">
+                        <div>招募成员</div>
+                        <div style="line-height:2rem; text-align: right;">
+                            <div  v-for="vo in list11">{{vo.nick_name}}
+                            <span style="text-align:right;font-family:Rubik;font-size:17px;font-weight:bold; ">{{vo.user_code}}</span>
+                        </div>
+
+                        </div>
+                    </div>
+                    <div class="member_bb">
+                        <div>
+                            <span>商会人数：</span>
+                            <span style="font-family:Rubik; ">{{info.teamnum}}</span>
+                        </div>
+                        <div>
+                            <span>招募人数：</span>
+                            <span style="font-family:Rubik; ">{{info.pushnum}}</span>
+                        </div>
+                        <div>
+                            <span>激活人数：</span>
+                            <span style="font-family:Rubik; ">{{info.activationnum}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- 邀请好友弹框 -->
+        <div class="set_details" v-show="setclose16">
+            <div id="invite_friends" class="lazy" style="height: 33rem!important;">
+				<div class="yanqing_box " style="top:-2.5rem; left:7rem;">
+							邀请好友
+						</div>
+                <div class="detailsImg setImg yaoqing" @click="friendaaaBtn">
+                  <img src="/fish/img/assets10.png" alt="">
+                </div>
+                <div class="Copy_invitation" @click="copyInviteCode">
+                    复制邀请码
+                    <!-- <img src="/fish/img/assets78.png" alt=""> -->
+                </div>
+                <div class="friendsBox">
+                    <div style="font-size:27px;">我的邀请码</div>
+                    <div style="font-size:27px;">
+                            <input style="outline: none; background:none; color:#fff; font-size:27px; text-align:center; width: 100%" type="text" readonly  id="invite-code" :value="info.invite_code">
+                    </div>
+                    <div>
+                        <img  v-bind:src="info.invite_code ? '/home/tools/qrcode.html?code='+location.protocol+'//'+location.host+'{:url('home/publics/register')}?code='+info.invite_code : '#'" alt="二维码"/>
+                        <!-- <img src="/fish/img/assets10.png" alt=""> -->
+                    </div>
+                    <div style="font-size:14px; margin-top:0.5rem;">扫码加入大富豪</div>
+                    <div style="font-size:22px;margin-top:1rem; border-bottom: 1px solid #6D6D6D">邀请记录</div>
+                    <div class="Invitation_record">
+                        <div class="Invitation_list">
+                            <div :class="tabid1 == 1?'active':''" @click="friendBtn(1)" style="text-align:left;">全部 : {{info.pushnum}}</div>
+                            <div :class="tabid1 == 2?'active':''" @click="friendBtn(2)">激活用户 ： {{info.activationnum}}</div>
+                            <div :class="tabid1 == 3?'active':''" @click="friendBtn(3)" style="text-align:right">未激活用户 ：{{info.unactivationnum}}</div>
+                        </div>
+                        <div class="tab_invi" v-if="list11.length>0">
+                            <div v-for="vo in list11"  class="vitationList">
+                                <div style="width:10rem; text-align:left;">{{vo.nick_name}}<span style="font-family:Rubik;">（{{vo.mobile}}）</span></div>
+                                <div style="margin-left:1rem; font-family:Rubik;"><span>{{vo.register_time}}</span></div>
+                            </div>
+                        </div>
+
+                        <div v-if="list11.length == 0" style="margin-top:2rem;">暂无数据</div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- 客服中心弹框 -->
+        <div class="set_details" v-show="setclose17">
+                <div id="client" class="lazy">
+					<div class="yanqing_box2" style="top:-2.5rem; left:7rem;">
+								客服中心
+							</div>
+                    <div class="detailsImg setImg gouogu " @click="clientBtn">
+                        <img src="/fish/img/assets10.png" alt="">
+                    </div>
+                    <div>
+                        <div class="client_box">
+                            <div style="margin-top: 4rem;">
+                                <div class="client_tilte" v-if="list.length>0" v-for="vo in list" @click="showKfDeatis(vo)">
+                                    <span>{{vo.title}}</span>
+                                    <div style="width:1.5rem; height:1.5rem;">
+                                        <img src="/fish/img/assets100.png" alt="" style="width:1.5rem; height:1.5rem; vertical-align: middle;">
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+        </div>
+
+
+          <!-- 客服中心详情弹框 -->
+          <div class="set_details" v-show="setclose100">
+                <div id="client" class="lazy">
+					<div class="yanqing_box2" style="top:-2.5rem; left:7rem;" >
+								客服中心
+							</div>
+                    <div class="detailsImg setImg gouogu " @click="clientBtnBtn">
+                        <img src="/fish/img/assets10.png" alt="">
+                    </div>
+                    <div class="detail_box">
+                        <!-- <div style="text-align:center;">{{info2.title}}</div> -->
+                        <div v-html="info2.content"></div>
+                    </div>
+                </div>
+
+        </div>
+
+        <!-- 系统公告弹框 -->
+        <div class="set_details" v-show="setclose18">
+                <div id="system_notification" class="lazy">
+					<div class="title-box title-blue1">
+								系统公告
+							</div>
+                    <div class="detailsImg setImg gouogu" @click="systemBtn">
+                        <img src="/fish/img/assets10.png" alt="">
+                    </div>
+                    <div class="client_box systemNew" id='my1' style="margin-top: 4rem;">
+                            <div>
+                                <div class="sy_tilte" v-if="list10.length>0" v-for="vi in list10" @click="clientDetails(vi)">
+                                    <span>{{vi.title}}</span>
+                                    <span style="font-family:Rubik; ">{{vi.create_time}}</span>
+                                    <div style="width:1.5rem; height:1.5rem; display:flex; align-items: center;">
+                                        <img src="/fish/img/assets100.png" alt="" style="width:1.5rem; height:1.5rem; vertical-align: middle;display:flex; align-items: center;">
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                </div>
+
+        </div>
+         <!-- 系统公告弹框详情 -->
+         <div class="set_details" v-show="setclose101">
+                <div id="system_notification" class="lazy">
+					<div class="title-box title-blue1">
+								系统公告
+							</div>
+                    <div class="detailsImg setImg gouogu" @click="delsystemBtn">
+                        <img src="/fish/img/assets10.png" alt="">
+                    </div>
+                    <div class="system_content">
+                            <div v-html="info3.content"></div>
+                        </div>
+                </div>
+
+        </div>
+
+
+        <!-- 绑定微信弹框 -->
+        <div class="set_details" v-show="setclose19">
+                <div id="Bind_WeChat" class="lazy">
+					<div class="yanqing_box2" style="top:-2.5rem; left:7rem;">
+								绑定微信
+							</div>
+                        <div class="detailsImg setImg gouogu " @click="bindWeChatBtn">
+                                <img src="/fish/img/assets10.png" alt="">
+                        </div>
+                        <div class="logout_btn hahhahha" @click="weChatBtn">
+                               确认绑定
+                        </div>
+                    <div style="padding-top:4rem">
+                        <div class="nickname_input">
+                            <input style="width:90%; text-align: center;" v-model="wenames" placeholder="请输入您的微信账号">
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- 激活账号弹框 -->
+            <div class="set_details" v-show="setclose20">
+                <div id="activate_account" class="lazy">
+					<div class="yanqing_box1" style="top:-2.5rem; left:7rem;">
+								激活账户
+							</div>
+                        <div class="detailsImg activateImg" @click="activateAccountBtn">
+                                <img src="/fish/img/assets10.png" alt="">
+                        </div>
+                        <div class="logout_btn hahhahha" @click="send3()">
+                            确认激活
+                                <!-- <img src="/fish/img/assets84.png" alt=""> -->
+                        </div>
+                        <div class="activate_content">
+                            <div class="activate_content1">
+                                <div>好友ID:</div>
+                                <input v-model="mobileId" placeholder="请输入对方 ID" style="color:#fff;">
+                            </div>
+                            <div class="activate_content2">
+                                <div>转出数量：</div>
+                                <div style="text-align:left; width:9rem;">
+                                    <input type="number" v-model="numBer" style="outline: none; background:none;width:8rem; height:100%;font-size:17px; color:#fff;">
+                                </div>
+                            </div>
+                            <div class="activate_content3">
+                                <div style="display:flex;" @click="activeLeft(1)">
+                                    <div class="li" :class="tabidd2==1? 'activeee': ''"  style="position:relative;width:0.56rem; height:0.56rem; background:rgba(255, 255, 255, 0.2); border-radius: 50%; ;margin-top:0.2rem;">
+                                        <div class="li_left"></div>
+                                    </div>
+                                    <div style="margin-left:1rem">使用GTC激活</div>
+                                </div>
+                                <div style="display:flex; margin-left:2.5rem;" @click="activeLeft(2)">
+                                    <div class="li" :class="tabidd2==2? 'activeee': ''"  style="position:relative;width:0.56rem; height:0.56rem; background:rgba(255, 255, 255, 0.2);border-radius: 50%; ;margin-top:0.2rem;">
+                                        <div class="li_left"></div>
+                                    </div>
+                                    <div style="margin-left:1rem">使用精粹激活</div>
+                                </div>
+                            </div>
+                            <div class="activate_content4">
+                                <div>交易密码：</div>
+                                <input type="password" v-model="passwordPay"  placeholder="请输入您交易密码" style="color:#fff;">
+                            </div>
+                            <div class="activate_content5"></div>
+                        </div>
+                        <div style="font-size:10px;margin-top:8rem;font-family:PingFang SC;">「大富豪」新账户需要您为您的好友转入50GTC 或50精粹激活账号</div>
+                </div>
+            </div>
+
+{include file='menu'}
+{/block}
+
+{block name='script'}
+<script>
+    //   document.addEventListener("DOMContentLoaded", function() {
+    //         var lazyloadImages = document.querySelectorAll(".lazy");
+    //         var imageObserver = new IntersectionObserver(function(entries, observer) {
+    //             entries.forEach(function(entry) {
+    //                 if (entry.isIntersecting) {
+    //                     var image = entry.target;
+    //                     image.classList.remove("lazy");
+    //                     imageObserver.unobserve(image);
+    //                 }
+    //             });
+    //         });
+    //         lazyloadImages.forEach(function(image) {
+    //             imageObserver.observe(image);
+    //         });
+    //     });
+            
+
+
+
+
+
+
+
+
+    var app = new Vue({
+        el: '#app',
+        data: {
+            info: '',
+            aboutUs: '',//关于我们弹框内容
+            setclose:false,  //设置弹框  
+            setclose1:false,  //确定离开游戏弹框 
+            setclose2:false, //修改昵称弹框   
+            setclose3:false,  //修改昵称成功弹框
+            setclose4:false,  //修改登录密码
+            setclose5:false,  //修改登录密码成功弹框
+            setclose6:false, //修改支付密码成功弹框
+            setclose7:false, //实名认证成功弹框  
+            setclose8:false, //实名认证失败弹框  
+            setclose9:false, //邀请好友复制成功弹框 
+            setclose10:false, //激活账号成功弹框  
+            setclose11:false, //微信绑定成功弹框  
+            setclose12:false, //修改支付密码
+            setclose13:false, //关于我们弹框
+            setclose14 :false, //实名认证弹框 
+            setclose15:false, //商会管理弹框
+            setclose16:false, //邀请好友弹框
+            setclose17:false, //客服中心弹框
+            setclose18:false, //系统公告弹框  
+            setclose19:false, //绑定微信弹框 
+            setclose20:false, //激活账号弹框
+            setclose100:false,  //客服中心详情弹框
+            setclose101 :false,  //系统公告弹框详情
+            tabidd2 :1,
+            names:'',
+            phone_code :'',
+            src: '/fish/img/assets65.png',
+            tabid1:1,
+            num: '',
+            new_pwd :'',
+            confirm_pwd :'',
+            info1:'',
+            type: core.getParame('type'),
+            id: core.getParame('id'),
+            info2:'',
+            list: [],
+            page: 0,
+            status: true,
+            id_number:'',
+            id_name:'',
+            list1:[],
+            list2:[],
+            list3:[],
+            list11: [],
+            wenames:'',
+            list10:[],
+            info3:'',
+            status1: true,
+            status2: true,
+            status3: true,
+            mobileId:'',  //激活对方的Id
+            numBer:'', //激活数量
+            passwordPay:'',  //激活交易密码
+            lxMax:'',
+            showSm: false,//是否展示实名认证按钮,
+            isloding1: false,
+            allLoad1: false,
+        },
+        computed: {
+
+        },
+        methods: {
+            send3(){  //激活账户
+                var that = this;
+                var obj = {
+                    mobile: this.mobileId,
+                    num: this.numBer,
+                    pwd:this.passwordPay,
+                }
+                core.load(this.tabidd2 == 1?"{:url('index/my/bait_out_ylb')}":"{:url('index/my/integral_out_ylb')}", obj , function(res){
+                    if(res.code==0){
+                        that.setclose20 = false;
+                        that.setclose10 = true;
+
+                    }
+                    core.toast(res.msg);
+
+                })
+            },
+            delsystemBtn(){
+                this.setclose101 = false;
+            },
+            reanBtnSbmit(){
+                if(!this.id_name) return core.toast('请输入姓名');
+                if(!this.id_number) return core.toast('请输入身份证号码');
+                core.load("{:url('index/member/submitverify')}", {
+                    id_name: this.id_name,
+                    id_number: this.id_number
+                }, (res)=>{
+                    if(res.code==0){
+                        this.id_name = '';
+                        this.id_number = '';
+                        // core.toast(res.msg);
+                        this.setclose14 = false;
+                        this.setclose7 = true;
+                    }else{
+                        this.setclose14 = false;
+                        this.setclose8 = true;
+                        // core.toast(res.msg);
+                    }
+
+                })
+
+            },
+            weChatBtn(){
+                var self = this;
+                core.load("{:url('index/setup/chat_num_edit')}", {
+                    chat_num: self.wenames,
+                }, function(res){
+                    console.log(res)
+                    if(res.code==0){
+                        self.setclose19 = false;
+                        self.setclose11 = true;
+
+                    }
+                    // core.toast(res.msg);
+                })
+
+            },
+            showKfDeatis(vo) {
+                var self = this;
+                core.load("{:url('index/publics/get_article')}", { id: vo.id }, function(res){
+                    console.log(res)
+                    if(res.code==0){
+                        self.info2=res.info;
+                        self.setclose100 = true;
+                    }else{
+                        core.toast(res.msg);
+                    }
+                })
+            },
+            clientDetails(vi){
+                var self = this;
+                core.load("{:url('index/publics/get_article')}", { id: vi.id }, function(res){
+                    console.log(res)
+                    if(res.code==0){
+                        self.info3=res.info;
+                        this.setclose18 = false;
+                        self.setclose101 = true;
+                    }else{
+                        core.toast(res.msg);
+                    }
+                })
+
+
+            },
+            clientBtnBtn(){
+                this.setclose100 = false;
+            },
+            loadList: function(){   //客服中心列表
+                var self = this;
+                var data = {
+                    page: self.page,
+                    limit: 12,
+                };
+
+                core.load("{:url('index/publics/customer_service')}", data, function(res){
+                    console.log(res)
+                    if(res.code=='0'){
+                        self.list = self.list.concat(res.info);                       
+                    }else{
+                        core.toast(res.message);
+                    }
+                })
+            },
+
+
+
+            loadList3: function(){   //邀请好友列表
+                var self = this;
+                var type = self.tabid1 - 1;
+                var data = {
+                    type,
+                    limit: 999,
+                    page: 0,
+                };
+                core.load("{:url('index/my/invitationlist')}", data, function(res){
+                    if(res.code =="0"){
+                        self.list11 = res.info
+                        if(self.list11.length>0){
+                            self.lxMax =  res.info[0].team_code
+                        }else{
+                            self.lxMax = ''
+                        }
+
+                    }
+                })
+                return false
+                var page = '';
+
+                if(self.type==1){
+                    if(!self.status1) return;
+                    page = self.page1;
+                    self.page1 = ++self.page1;
+                }else if(self.type==2){
+                    if(!self.status2) return;
+                    page = self.page2;
+                    self.page2 = ++self.page2;
+                }else if(self.type==3){
+                    if(!self.status3) return;
+                    page = self.page3;
+                    self.page3 = ++self.page3;
+                }
+                var data = {
+                    type: (self.type-1),
+                    limit: 12,
+                    page: page,
+                };
+                core.load("{:url('index/my/invitationlist')}", data, function(res){
+                    console.log(res)
+                    if(res.code =="0"){
+                        if(self.type==1){
+                            if(res.info.length>0){
+                                self.list1 = self.list1.concat(res.info);
+                            }
+                        }
+                    }else if(self.type==2){
+                        if(res.info.length>0) self.list2 = self.list2.concat(res.info);
+                        if(!res.info || (res.info.length<data.limit)){
+                            self.status2 = false;
+                        }
+                    }else if(self.type==3){
+                        if(res.info.length>0) self.list3 = self.list3.concat(res.info);
+                        if(!res.info || (res.info.length<data.limit)){
+                            self.status3 = false;
+                        }
+                    }
+                })
+            },
+
+
+            loadList1: function(){  //系统公共类表
+                var self = this;
+                var data = {
+                    page: this.page,
+                    limit: 10,
+                };
+                self.isloding1 = true;
+                core.load("{:url('index/publics/get_notice_list')}", data, (res)=>{
+                    self.isloding1 = false;
+                    if( res.code==0 ){
+                        
+                        self.list10 = self.list10.concat(res.info);
+                        console.log(self.list10)
+                        if (res.info.length < 10) {
+                            self.allLoad1 = true
+                        }
+                    }else{
+                        core.toast(res.msg);
+                    }
+                })
+
+            },
+
+
+
+
+
+            detail: function(){  //关于我们内容
+                var self = this;
+                core.load("{:url('index/publics/get_outs')}", { }, function(res){
+                    if(res.code==0){
+                        self.info1=res.info;
+                    }else{
+                        core.toast(res.msg);
+                    }
+                })
+            },
+            detail1: function(){   //客服中心详情内容
+
+            },
+
+
+
+            goWway(){  // 退出登录接口
+                localStorage.uid='';
+				 localStorage.logintype=0;
+                //localStorage.clear();
+                core.toast('成功退出登录！');
+                // 跳转到首页
+                setTimeout(function(){
+                    window.location.href = "{:url('home/publics/login')}";
+                }, 300);
+
+            },
+            noWayBtn(){
+                this.setclose1 = false;
+            },
+            noGoWay(){
+                this.setclose1 = false;
+
+            },
+            getcode: function(){  //发送验证码接口
+                var that = this;
+                if (this.num != "") return;
+                core.load("{:url('/index/publics/send')}", {
+                    mobile: this.info.mobile,
+                    types: 1,
+                }, function(res){
+                    if (res.code=='0') {
+                        var n = 60;
+                        var timer = setInterval(function(){
+                            --n
+                            if (n <= 1) {
+                                that.src = '/fish/img/assets65.png';
+                                that.num = '';
+                                clearInterval(timer);
+                            } else {
+                                that.src = '/fish/img/assets101.png';
+                                that.num = n + 's';
+                            }
+                        }, 1000);
+                    }
+                    core.toast(res.msg);
+                });
+            },
+
+
+            getcode1: function(){  //发送验证码接口
+                var that = this;
+                if (this.num != "") return;
+                core.load("{:url('/index/publics/send')}", {
+                    mobile: this.info.mobile,
+                    types: 2,
+                }, function(res){
+                    if (res.code=='0') {
+                        var n = 60;
+                        var timer = setInterval(function(){
+                            --n
+                            if (n <= 1) {
+                                that.src = '/fish/img/assets65.png';
+                                that.num = '';
+                                clearInterval(timer);
+                            } else {
+                                that.src = '/fish/img/assets101.png';
+                                that.num = n + 's';
+                            }
+                        }, 1000);
+                    }
+                    core.toast(res.msg);
+                });
+            },
+            send: function(){ //修改昵称接口
+                var self = this;
+                if(!self.names) return core.toast('请输入昵称');
+                var reg = /^[\da-zA-Z\u4E00-\u9FA5]{1,8}$/;
+                if(!reg.test(self.names)){
+                    return core.toast('请输入1-8位昵称');
+                    return false;
+                }
+                core.load("{:url('index/setup/nick_name_edit')}", {
+                    names: self.names,
+                }, function(res){
+                    if(res.code==0){
+                        self.setclose3 = true;
+                        setTimeout(function(){
+                            // window.history.go(-1);
+                            window.location.href="/home/member/center.html"
+                        }, 1000);
+                    }
+                    // core.toast(res.msg);
+                })
+            },
+
+            send1:function(){ //修改登录密码接口
+                var self = this;
+                var url = '';
+                var data = '';
+                if(!self.new_pwd) return core.toast('请输入新密码');
+                var reg1 = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,12}$/
+                if(!reg1.test(self.new_pwd)){
+                    return core.toast('请输入6-12位数字跟字母组成的新密码');
+                    return false;
+                }
+                if(!self.confirm_pwd){
+                    return core.toast('请输入确认密码');
+                    return false;
+                }
+                if(self.new_pwd!==self.confirm_pwd) return core.toast('输入的两次密码不一致');
+                if(!self.phone_code) return core.toast('请输入短信验证码');
+                  var reg2 =/^\d{6}$/
+                  if(!reg2.test(self.phone_code)){
+                    return core.toast('请输入6位数字的验证码');
+                    return false;
+                  }
+                    url="{:url('index/publics/changesave')}";
+                    data={
+                        mobile: self.info.mobile,
+                        phone_code: self.phone_code,
+                        new_pwd: self.new_pwd,
+                    };
+                core.load(url, data, function(res){
+                    if(res.code==0){
+                        self.setclose5 = true;
+                        setTimeout(function(){
+                            window.location.href="/home/member/center.html"
+                        },1000)
+                    }
+                    core.toast(res.msg);
+                })
+            },
+
+            send2:function(){ //修改支付密码接口
+                var self = this;
+                var url = '';
+                var data = '';
+                if(!self.new_pwd) return core.toast('请输入新密码');
+                var reg3 = /^\d{6}$/
+                if(!reg3.test(self.new_pwd)){
+                    return core.toast('请输入6位数字新密码');
+                }
+                if(!self.confirm_pwd) return core.toast('请再次输入新密码');
+                if(self.new_pwd!==self.confirm_pwd) return core.toast('输入的两次密码不一致');
+                if(!self.phone_code) return core.toast('请输入短信验证码');
+                var reg4 =/^\d{6}$/
+                  if(!reg4.test(self.phone_code)){
+                    return core.toast('请输入6位数字的验证码');
+                    return false;
+                  }
+                    url="{:url('/index/my/changepyasave')}";
+                    data={
+                        phone_code: self.phone_code,
+                        pay_pwd: self.new_pwd,
+                    };
+                core.load(url, data, function(res){
+                    if(res.code==0){
+                        self.setclose6 = true;
+                        setTimeout(function(){
+                            window.location.href="/home/member/center.html"
+                        },1000)
+                    }
+                    core.toast(res.msg);
+                })
+            },
+            copyInviteCode: function() {  //复制邀请码
+                if(!this.info.invite_code){
+                    core.toast('未获取到邀请码');
+                    return;
+                };
+                var input = document.getElementById('invite-code');
+                const len = input.value.length;
+                if (input.createTextRange) {
+                    //ie
+                    const range = input.createTextRange();
+                    range.collapse(true);
+                    range.moveStart('character', 0);//起始光标
+                    range.moveEnd('character', len);//结束光标
+                    range.select();//不兼容苹果
+                } else {
+                    //firefox/chrome
+                    input.setSelectionRange(0, len);
+                    input.focus();
+                }
+                //input.select();
+                if(document.execCommand("copy")){
+                    console.log(111)
+                    this.setclose9 = true;
+                    this.setclose16 = false;
+                    // core.toast('复制邀请码成功');
+                }else{
+                    core.toast('复制邀请码失败');
+                };
+            },
+
+
+
+
+            rightMax(){
+                this.aboutUs = this.info1.content;
+                this.setclose = true;
+                // window.location.href=("{:url('home/member/setting')}")
+            },
+            ActivateAccount(){
+                this.setclose20 = true;
+            },
+            activeLeft(n){
+                console.log(n)
+                this.tabidd2 = n;
+            },
+            systemicationBtn(){
+                this.setclose18 = true;
+                if (this.list10.length > 0) return;
+                this.loadList1();
+
+            },
+            nikeBtn(){
+                this.setclose2 = true;
+                this.setclose = false;
+            },
+            BindWeChatBtn(){
+                if(this.info.is_active==0) return;
+                this.setclose19 = true;
+            },
+            aboutMeBtn(){
+                this.setclose13 = true;
+                this.setclose = false;
+            },
+            invFriendBtn(){
+                this.setclose16 = true;
+            },
+            logPassBtn(){
+                this.setclose4 = true;
+                this.setclose = false;
+            },
+            payPasswordBtn(){
+                this.setclose12 = true;
+                this.setclose = false;
+            },
+            logoutBtn(){
+                this.setclose1 = true;
+            },
+            CusServiceBtn(){
+                if (this.list.length > 0) return;
+                this.loadList();
+                this.setclose17 = true;
+            },
+            ManagementBtn(){
+                this.setclose15 = true;
+            },
+            verifiedMax(){
+                //未激活或已实名不能点击
+                if (!this.showSm) return;
+                this.setclose14 = true;
+            },
+            friendBtn(n){
+                this.tabid1 = n;
+                this.loadList3();
+            },
+            nicknameMax(){
+                this.setclose2 = false;
+            },
+            successNnickname(){
+                this.setclose3 = false;
+            },
+            passwordMax(){
+                this.setclose4 = false;
+            },
+            setMax(){
+                this.setclose = false;
+            },
+            successPassword(){
+                this.setclose5 = false;
+            },
+            paysuccessPassword(){
+                this.setclose6 = false;
+            },
+            VerifiedMaxBox(){
+                this.setclose7 = false;
+            },
+            failureMax(){
+                this.setclose8 = false;
+            },
+            InviteRiendsBtn(){
+                this.setclose9 = false;
+            },
+            accountBtn(){
+                this.setclose10 = false;
+            },
+            WeChatBtn(){
+                this.setclose11 = false;
+            },
+            paymentPasswordBtn(){
+                this.setclose12 = false;
+            },
+            aboutBtn(){
+                this.setclose13 = false;
+            },
+            RealnameBtn(){
+                this.setclose14 = false;
+            },
+            ChamberBtn(){
+                this.setclose15 = false;
+            },
+            friendaaaBtn(){
+                this.setclose16 = false;
+            },
+            clientBtn(){
+                this.setclose17 = false;
+            },
+            systemBtn(){
+                this.setclose18 = false;
+                
+            },
+            bindWeChatBtn(){
+                this.setclose19 = false;
+            },
+            activateAccountBtn(){
+                this.setclose20 = false;
+            },
+
+
+            profit: function(){
+                if(this.info.is_team==1){
+                    location.href="{:url('home/member/teamProfit')}"
+                }else{
+                    core.toast('您未绑定微信帐号或还不是团队长');
+                }
+            },
+            upload: function(){
+                var self = this;
+                var file = $('#upload')[0];
+                if (file.value == '' || file.value == null) {
+                    return core.toast("请上传图片");
+                }
+                if (!/\.(gif|jpg|jpeg|png|GIF|JPG|PNG)$/.test(file.value)) {
+                    file.value = "";
+                    return core.toast("图片类型必须是[.gif,jpeg,jpg,png]中的一种");
+                }
+                if (file.files[0].size > 2*1024*1024) {
+                    file.value = "";
+                    return core.toast("图片大小不能超过2M");
+                }
+                var formData = new FormData();
+                formData.append('file', file.files[0]);
+                formData.append('token', localStorage.uid);
+                var id = '';
+
+                $.ajax({
+                    url: "{:url('/index/upload/uploadimg')}",
+                    type: 'POST',
+                    data: formData,
+                    contentType: false, // 注意这里应设为false
+                    processData: false,
+                    beforeSend: function(){id=core.loading();},
+                    complete: function(){core.rmLoading(id);},
+                    success: function(res){
+
+                        if(res.code=='0'){
+                            file.value = '';
+                            core.load("{:url('index/setup/avatar_edit')}", { url: res.info.url }, function(data){
+
+                                if(data.code==0){
+                                    self.info.avatar = res.info.url;
+                                }
+                                core.toast(data.msg);
+                            })
+                        }
+                        core.toast(res.msg);
+                    },
+                    error: function(XHR, textStatus, errorThrown) {
+                        core.toast('网络错误！');
+                    }
+                });
+            },
+            member: function(){
+                var self = this;
+                core.load("{:url('/index/setup/index')}", {}, function(res){
+                    if(res.code==0){
+                        self.info=res.info;
+                        //未激活或已实名不能点击
+                        if (self.info.is_active == 0 || self.info.is_verify == 1){
+                            self.showSm = false;
+                        } else {
+                            self.showSm = true;
+                        }
+                    }else{
+                        core.toast(res.msg);
+                    }
+                })
+            }
+        },
+        mounted: function(){
+            var self = this;
+            this.member();
+            this.detail();
+            this.loadList3();
+            $('#my1').on('scroll', function () {
+                console.log(self.isloding1, self.allLoad1)
+                if (self.isloding1 || self.allLoad1) {
+                    return false;
+                }
+                
+                var scrollTop = $(this).scrollTop()
+                var ks_area = $(this).innerHeight();
+                var nScrollHight = 0;
+                nScrollHight = $(this)[0].scrollHeight;
+                if (scrollTop + ks_area >= nScrollHight) {
+                    
+                    self.page = ++self.page;
+                    self.loadList1()
+                }
+            });
+        }
+    });
+</script>
+{/block}
+
+{block name="style"}
+<style>
+    .set_content1 div:nth-child(3){
+        width:1.5rem;
+        /* height:1.5rem; */
+        margin-left:2.4rem;
+    }
+.blue_max{
+    background-image:url('/fish/img/assets888.png');
+    background-size: 100% 100%;
+    width:7.875rem;
+    height:5.375rem;
+    color:#FFE9C9;
+    font-size:22px;
+    text-align:center;
+    position:absolute;
+    left:9rem;
+    top:4.5rem;
+    line-height:4.878rem;
+
+}
+.yanqing_box{
+    background-image:url('/fish/img/assets444.png');
+    background-size: 100% 100%;
+    width:7.875rem;
+    height:5.375rem;
+    color:#FFE9C9;
+    font-size:22px;
+    text-align:center;
+    position:absolute;
+    left:9rem;
+    top:4.5rem;
+    line-height:4.878rem;
+}
+.yanqing_box1{
+    background-image:url('/fish/img/assets4441.png');
+    background-size: 100% 100%;
+    width:7.875rem;
+    height:5.375rem;
+    color:#FFE9C9;
+    font-size:22px;
+    text-align:center;
+    position:absolute;
+    left:9rem;
+    top:4.5rem;
+    line-height:4.878rem;
+}
+.yanqing_box2{
+    background-image:url('/fish/img/assets4443.png');
+    background-size: 100% 100%;
+    width:7.875rem;
+    height:5.375rem;
+    color:#FFE9C9;
+    font-size:22px;
+    text-align:center;
+    position:absolute;
+    left:9rem;
+    top:4.5rem;
+    line-height:4.878rem;
+}
+    .tab_invi{
+        overflow: scroll;
+        /* overflow-y: scroll; */
+        height:5rem;
+        width:100%;
+        -webkit-overflow-scrolling: touch;
+        -moz-overflow-scrolling:touch;
+        -o-overflow-scrolling:touch
+        /* overflow-scrolling: touch; */
+    }
+    #wwliww{
+        top:1rem !important;
+    }
+    .tab_invi >div:nth-last-child(1){
+        border-bottom: 0;
+    }
+    .vitationList{
+        display:flex;
+        font-size:12px;
+        border-bottom: 1px solid rgb(206,202,202);
+        line-height:2rem;
+        margin-top:0.5rem;
+    }
+
+    .system_content{
+        padding:1.5rem;
+        overflow-y: scroll;
+        height:80%;
+        -webkit-overflow-scrolling: touch;
+        /* overflow-scrolling: touch; */
+        margin-top: 3.5rem;
+        overflow-x: hidden;
+        -moz-overflow-scrolling:touch;
+       -o-overflow-scrolling:touch
+    }
+    .hhhjjj{
+        top:-1.5rem !important;
+    }
+    .systemNew{
+        height:80%;
+        overflow: scroll;
+        -webkit-overflow-scrolling: touch;
+        -moz-overflow-scrolling:touch;
+        -o-overflow-scrolling:touch
+        /* overflow-scrolling: touch; */
+    }
+    .detail_box{
+        padding-left:1.5rem;
+        padding-right:1.5rem;
+        height:80%;
+        margin-top: 2.5rem;
+    }
+    .detail_box img{
+        width:100%;
+        /* width:80%; */
+        height:20rem;
+    }
+    .client_box{
+        padding-left:1.5rem;
+        padding-right:1.5rem;
+    }
+    .sy_tilte{
+        margin-top:0.3rem;
+        display:flex;
+        border-bottom: 1px solid #6D6D6D;
+        /* line-height:3rem; */
+        font-size:1rem;
+        justify-content: center;
+        align-items: center;
+        min-height: 2rem;
+    }
+    .sy_tilte  span:nth-child(1){
+        width:5rem;
+    }
+    .sy_tilte  span:nth-child(2){
+        margin-left:2rem;
+        font-size:14px;
+        width:11rem;
+        display:flex;
+        align-items: center;
+    }
+    .client_tilte{
+        display:flex;
+        height:3.5rem;
+        line-height:3.5rem;
+        border-bottom: 1px solid #6D6D6D;
+        justify-content: space-between;
+    }
+    .li div{
+        display: none;
+    }
+    .li.activeee div{
+        display: block;
+    }
+    .activate_content3{
+        display:flex;
+        font-size:10px;
+        margin-top:1rem;
+    }
+    .active{
+        color:#fff !important;
+        opacity: 1 !important;
+    }
+    .about_content{
+       width:90%;
+       height:83%;
+        margin: 3.3rem auto;
+       overflow: scroll;
+       -webkit-overflow-scrolling: touch;
+       -moz-overflow-scrolling:touch;
+       -o-overflow-scrolling:touch
+       /* overflow-scrolling: touch; */
+
+    }
+    .li_left{
+        width:0.4rem;
+        height:0.4rem;
+        background:#fff;
+        border-radius: 50%;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-top: -0.2rem;
+        margin-left: -0.2rem
+    }
+    .activateImg{
+        left:19.5rem !important;
+        top:-1.5rem;
+    }
+    .activate_content{
+        font-size:22px;
+        margin-top:3rem;
+    }
+    .activate_content1{
+        width:19rem;
+        height:2.5rem;
+        background:url("/fish/img/assets61.png") 0 0 no-repeat;
+        background-size: 100% 100%;
+        margin:0 auto;
+        line-height:2.5rem;
+        text-indent: 20px;
+        margin-top:4.8rem;
+        display:flex;
+
+    }
+    .zzz_max{
+        font-size:61px;
+        text-align: center;
+        line-height:35rem;
+        color:#FFE9C9;
+    }
+    .set_aaa{
+        top:-1rem !important;
+        left:19.5rem !important;
+    }
+    .activate_content1 div:nth-child(1){
+        letter-spacing: 4px;
+    }
+    .activate_content1 input{
+        background:none;
+        outline: none;
+        font-size:17px;
+        width:57%;
+        margin-left:0.8rem;
+    }
+    .btnLili{
+        position:absolute !important;
+        top:27rem !important;
+        left:7.5rem !important;
+    }
+    .btnLili111{
+        position:absolute !important;
+        top:27rem !important;
+        left:7.5rem !important;
+        font-size:20px !important;
+    }
+    .activate_content2{
+        width:19rem;
+        height:2.5rem;
+        background:url("/fish/img/assets61.png") 0 0 no-repeat;
+        background-size: 100% 100%;
+        margin:0 auto;
+        line-height:2.5rem;
+        text-indent: 20px;
+        margin-top:1rem;
+        display:flex;
+    }
+    .activate_content4{
+        width:19rem;
+        height:2.5rem;
+        background:url("/fish/img/assets61.png") 0 0 no-repeat;
+        background-size: 100% 100%;
+        margin:0 auto;
+        line-height:2.5rem;
+        text-indent: 20px;
+        /* margin-top:3rem; */
+        display:flex;
+        margin-top:1rem;
+    }
+    .activate_content4 input{
+        outline: none;
+        background:none;
+        font-size:17px;
+        width:57%;
+    }
+    .member_aa{
+        display:flex;
+        justify-content: space-between;
+        margin-top:1rem;
+        border-bottom: 1px solid #6D6D6D;
+        height:10rem;
+        overflow: scroll;
+        -webkit-overflow-scrolling: touch;
+        -moz-overflow-scrolling:touch;
+        -o-overflow-scrolling:touch
+        /* overflow-scrolling: touch; */
+    }
+    .friendsBox{
+        padding-left:1.5rem;
+        padding-right:1.5rem;
+        text-align:center;
+		position: relative;
+		top: -3rem;
+    }
+    .Copy_invitation{
+        background: url("/fish/img/button.png") 0 0 no-repeat;
+        background-size: 100% 100%;
+        width:7.125rem;
+        height:4.22rem;
+        position:relative;
+        left:7.5rem;
+        top:20rem;
+        color:#fff;
+        font-weight:400;
+        line-height:4.2rem;
+        text-align:center;
+        font-family:MF XingYan(Noncommercial);
+        text-shadow:0px 0px 9px rgba(0, 0, 0, 0.42);
+        top:31rem;
+    }
+    .Copy_invitation img{
+        width:7.125rem;
+        height:4.22rem;
+    }
+    .Invitation_list{
+        display:flex;
+        font-size:14px;
+        font-family:MF XingYan(Noncommercial);
+        font-weight:400;
+        color:#333;
+        padding-top:.5rem;
+        overflow-y: scroll;
+        overflow-x: hidden;
+        -webkit-overflow-scrolling: touch;
+        -moz-overflow-scrolling:touch;
+        -o-overflow-scrolling:touch
+        /* overflow-scrolling: touch; */
+    }
+    .Invitation_list >div{
+        flex:1;
+    }
+    .friendsBox >div:nth-child(1){
+        margin-top:0.5rem;
+    }
+    .friendsBox >div:nth-child(2){
+        margin-top:0.1rem;
+    }
+    .friendsBox >div:nth-child(3){
+        width: 12.79rem;
+        height:12.33rem;
+        background:#fff;
+        border-radius: 11px;
+        display:flex;
+        margin:0 auto;
+        justify-content: center;
+        align-items: center;
+        margin-top:0.5rem;
+
+    }
+    .friendsBox div:nth-child(3) img{
+        width:10.6rem;
+        height:10.6rem;
+        display:flex;
+
+    }
+  
+    .Chamber_title{
+        height:2rem;
+        border-bottom: 1px solid #6D6D6D;
+        display:flex;
+        justify-content: space-between;
+    }
+    .member_bb{
+        display:flex;
+        color:#fff;
+        font-size:14px;
+        margin-top:6rem;
+    }
+    .member_bb >div{
+        flex:1;
+    }
+    .Chamber_content{
+        padding-left:1.5rem;
+        padding-right:1.5rem;
+        padding-top:3rem;
+        font-size:17px;
+        margin-top:1rem;
+    }
+    .Real-name_content{
+        padding:1rem 1rem 0 1rem;
+        font-size:17px;
+        color:#fff;
+        margin-top:4rem;
+    }
+    .name_Real{
+        letter-spacing:0.8rem;
+    }
+    .idCard,.name_Real{
+        height:3.53rem;
+        border-bottom: 1px solid #6D6D6D;
+        display:flex;
+        line-height:3.53rem;
+
+    }
+   .idCard input{
+       background:none;
+       outline: none;
+       margin-left:1rem;
+   }
+   .name_Real input{
+      background:none;
+       outline: none;
+       margin-left:1rem;
+
+   }
+    .prompt{
+        font-size:10px;
+        color:#fff;
+        text-align:center;
+        margin-top:14rem;
+        font-family:PingFang SC;
+        font-weight:400;
+        color:rgba(255,255,255,1);
+    }
+    .password_bottom{
+        padding-left:1.6rem;
+        font-family:PingFang SC;
+        font-weight:400;
+        color:rgba(255,255,255,1);
+        font-size:10px;
+        margin-top:3rem;
+        opacity: 0.8;
+        line-height:17px;
+    }
+    #success_nickname{
+        /* width:26rem; */
+        height:35rem;
+        background:url("/fish/img/assets555.png") 0 0 no-repeat;
+        background-size: 100% 100%;
+        margin:auto;
+        width:99%;
+
+    }
+    /* #success_nickname.lazy {
+            background-image: none;
+        } */
+    #success_password{
+        /* width:26rem; */
+        height:35rem;
+        background:url("/fish/img/assets555.png") 0 0 no-repeat;
+        background-size: 100% 100%;
+        margin:auto;
+        width:99%;
+    }
+    /* #success_password.lazy {
+            background-image: none;
+        } */
+   #Payment_password{
+       /* width:26rem; */
+        height:35rem;
+        background:url("/fish/img/assets555.png") 0 0 no-repeat;
+        background-size: 100% 100%;
+        margin:auto;
+        width:99%;
+   }
+   /* #Payment_password.lazy {
+            background-image: none;
+        } */
+
+
+   #Verified_success{
+        width:26rem;
+        height:35rem;
+        background:url("/fish/img/assets68.png") 0 0 no-repeat;
+        background-size: 100% 100%;
+        margin:auto;
+   }
+   /* #Verified_success.lazy {
+            background-image: none;
+        } */
+   #Invite_riends{
+        width:26rem;
+        height:35rem;
+        background:url("/fish/img/assets70.png") 0 0 no-repeat;
+        background-size: 100% 100%;
+        margin:auto;
+   }
+   /* #Invite_riends.lazy {
+            background-image: none;
+        } */
+
+   #account_successfully{
+        width:26rem;
+        height:35rem;
+        background:url("/fish/img/assets71.png") 0 0 no-repeat;
+        background-size: 100% 100%;
+        margin:auto;
+   }
+   /* #account_successfully.lazy {
+            background-image: none;
+        } */
+   #WeChat{
+        width:26rem;
+        height:35rem;
+        background:url("/fish/img/assets72.png") 0 0 no-repeat;
+        background-size: 100% 100%;
+        margin:auto;
+   }
+   /* #WeChat.lazy {
+            background-image: none;
+        } */
+   #about{
+        /* width:22.4rem; */
+        height:31rem;
+        background:url("/fish/img/assets74.png") 0 0 no-repeat;
+        background-size: 100% 100%;
+        margin:auto;
+        /* position:relative;
+        top:6.5rem; */
+        position:absolute;
+        left:0;
+        top:-6rem;
+        right:0;
+        bottom: 0;
+        width:87%;
+   }
+   /* #about.lazy {
+            background-image: none;
+        } */
+   #client{
+        /* width:22.4rem; */
+        height:31rem;
+        background:url("/fish/img/assets79.png") 0 0 no-repeat;
+        background-size: 100% 100%;
+        margin:auto;
+        position:absolute;
+        left:0;
+        top:0;
+        right:0;
+        bottom: 0;
+        width:87%;
+        /* position:relative;
+        top:6.5rem; */
+   }
+   /* #client.lazy {
+            background-image: none;
+        } */
+   #system_notification{
+        /* width:22.4rem; */
+        height:31rem;
+        background:url("/fish/img/assets80.png") 0 0 no-repeat;
+        background-size: 100% 100%;
+        margin:auto;
+        /* position:relative;
+        top:6.5rem; */
+        position:absolute;
+        left:0;
+        top:0;
+        right:0;
+        bottom: 0;
+        width:87%;
+   }
+   /* #system_notification.lazy {
+            background-image: none;
+        } */
+   #Real-name{
+        /* width:22.4rem; */
+        height:31rem;
+        background:url("/fish/img/assets75.png") 0 0 no-repeat;
+        background-size: 100% 100%;
+        margin:auto;
+        /* position:relative;
+        top:6.5rem; */
+        position:absolute;
+        left:0;
+        top:0;
+        right:0;
+        bottom: 0;
+        width:87%;
+
+   }
+   /* #Real-name.lazy {
+            background-image: none;
+        } */
+   #Chamber{
+       width:87%;
+        /* width:22.4rem; */
+        height:31rem;
+        background:url("/fish/img/assets76.png") 0 0 no-repeat;
+        background-size: 100% 100%;
+        margin:auto;
+        position:absolute;
+        left:0;
+        right:0;
+        bottom: 0;
+        top:0;
+   }
+   
+ /* #Chamber.lazy {
+            background-image: none;
+        } */
+   #invite_friends{
+        /* width:22.4rem; */
+        /* height:36rem; */
+        background:url("/fish/img/assets77.png") 0 0 no-repeat;
+        background-size: 100% 100%;
+        margin:auto;
+        /* position:relative;
+        top:6.5rem; */
+        height:36rem;
+       position:absolute;
+       left:0;
+       top:-4rem;
+       right:0;
+       bottom: 0;
+       width:87%;
+
+
+   }
+   /* #invite_friends.lazy {
+            background-image: none;
+        } */
+
+   .yaoqing{
+       top:-1rem !important;
+       /* left:21.5rem !important */
+       
+   }
+   .Verified_failure{
+        width:22.4rem;
+        height:31rem;
+        background:url("/fish/img/assets69.png") 0 0 no-repeat;
+        background-size: 100% 100%;
+        margin:auto;
+        position:fixed;
+        left:0;
+        top:0;
+        right:0;
+        bottom: 0;
+        /* position:relative;
+        top:6.5rem; */
+   }
+   
+ /* #Verified_failure.lazy {
+            background-image: none;
+        } */
+
+   .wwli{
+       top:5.5rem !important;
+       left:21.5rem !important;
+   }
+   /* .Verified_failure{
+        width:26rem;
+        height:42.5rem;
+        background:url("/fish/img/assets69.png") 0 0 no-repeat;
+        background-size: 100% 100%;
+        margin:auto;
+   } */
+    .success_nicknameImg{
+        width:3.8rem;
+        height:3.9rem;
+        /* position:relative; */
+        left:21.5rem;
+        top:6rem;
+        position:absolute;
+    }
+    .success_nicknameImg img{
+        width:3.8rem;
+        height:3.9rem;
+    }
+    .nickname_input{
+        width:19rem;
+        height:2.5rem;
+        background:url("/fish/img/assets61.png") 0 0 no-repeat;
+        background-size: 100% 100%;
+        margin:0 auto;
+        line-height:2.5rem;
+        text-indent: 20px;
+
+    }
+    .submitBtn_nickname{
+        width:7.125rem;
+        height:4.21rem;
+        position:fixed;
+        left:9rem;
+        top:40rem;
+    }
+    .hahhahha{
+        position:absolute !important;
+        top:27rem !important;
+        left:7.5rem !important;
+    }
+    .submitBtn_nickname img{
+        width:7.125rem;
+        height:4.21rem;
+    }
+    .nickname_input input{
+        background:none;
+        outline: none;
+        font-family:MF XingYan(Noncommercial);
+        font-weight:400;
+        color:rgba(255,255,255,1);
+        opacity:0.5;
+        font-size:17px;
+    }
+    #nickname{
+        /* width:22.4rem; */
+        height:31rem;
+        background:url("/fish/img/assets60.png") 0 0 no-repeat;
+        background-size: 100% 100%;
+        position:absolute;
+        left:0;
+        /* top:-6rem; */
+        right:0;
+        bottom: 0;
+        margin:auto;
+        width:87%;
+        top:0;
+
+
+    }
+    
+ /* #nickname.lazy {
+            background-image: none;
+        } */
+    #Bind_WeChat{
+        /* width:22.4rem; */
+        height:31rem;
+        background:url("/fish/img/assets81.png") 0 0 no-repeat;
+        background-size: 100% 100%;
+        margin:auto;
+        /* position: relative ;
+        top:6.5rem; */
+        position:absolute;
+        left:0;
+        top:0;
+        right:0;
+        bottom: 0;
+        margin:auto;
+        width:87%;
+    }
+    /* #Bind_WeChat.lazy {
+            background-image: none;
+        } */
+    #activate_account{
+        /* width:22.4rem; */
+        height:31rem;
+        background:url("/fish/img/assets83.png") 0 0 no-repeat;
+        background-size: 100% 100%;
+        margin:auto;
+        /* position: relative ;
+        top:6.5rem; */
+        padding-left:1.7rem;
+        padding-right:1.7rem;
+        position:absolute;
+        left:0;
+        top:0;
+        right: 0;
+        bottom: 0;
+        width:87%;
+    }
+
+    /* #activate_account.lazy {
+            background-image: none;
+        } */
+    .modify_password{
+        /* width:22.4rem; */
+        height:29rem;
+        background:url("/fish/img/assets999.png") 0 0 no-repeat;
+        background-size: 100% 100%;
+        margin:auto;
+        left:0;
+        top:-6rem;
+        right:0;
+        bottom: 0;
+        position:absolute;
+        width:87%;
+        /* position: relative ;
+        top:6.5rem; */
+    }
+    /* #modify_password.lazy {
+            background-image: none;
+        } */
+    .gouogu{
+        top:-1.5rem !important;
+    }
+    .Modify_paymentPassword{
+        /* width:22.4rem; */
+        height:29rem;
+        background:url("/fish/img/assets999.png") 0 0 no-repeat;
+        background-size: 100% 100%;
+        margin:auto;
+        /* position: relative ;
+        top:6.5rem; */
+        position: absolute;;
+        left:0;
+        top:-6rem;
+        right:0;
+        bottom: 0;
+        margin:auto;
+        width:87%;
+    }
+
+    /* #Modify_paymentPassword.lazy {
+            background-image: none;
+        } */
+    #xureBtn{
+    width:21.1rem;
+    height:31rem;
+    /* position: relative ; */
+    /* top:6.5rem; */
+    background:url("/fish/img/assets57.png") 0 10rem no-repeat;
+    background-size: 100%;
+    margin:auto;
+    position:fixed;
+    left:0;
+    top:0;
+    right:0;
+    bottom: 0;
+}
+/* #xureBtn.lazy {
+            background-image: none;
+        } */
+.xureBtnBox{
+    padding:17.3rem  2rem 0 2rem ;
+    display:flex;
+    justify-content: space-between;
+}
+.xureBtnBox img{
+    width:4.75rem;
+    height:4.75rem;
+}
+    .logout_btn{
+        background: url("/fish/img/button.png") 0 0 no-repeat;
+        background-size: 100% 100%;
+        width:7.125rem;
+        height:4.22rem;
+        position:fixed;
+        left:9.5rem;
+        font-size:20px;
+        color:#fff;
+        font-weight:400;
+        line-height:4.2rem;
+        text-align:center;
+        font-family:MF XingYan(Noncommercial);
+        text-shadow:0px 0px 9px rgba(0, 0, 0, 0.42);
+        top:40rem;
+    }
+    .logout_btn img{
+        width:7.125rem;
+        height:4.22rem;
+    }
+    .rules{
+        font-size:11px;
+        font-family:PingFang SC;
+        font-weight:400;
+        color:rgba(255,255,255,1);
+        line-height:22px;
+        margin-top:1rem;
+    }
+
+    .set_content1 div:nth-child(3) img{
+        vertical-align: middle;
+        width:1.5rem;
+        height:1.5rem;
+    }
+    .set_content2{
+        display:flex;
+        justify-content: space-between;
+
+    }
+    .set_content2 img{
+        width:1.5rem;
+        height:1.5rem;
+        vertical-align: middle;
+    }
+    .center_content{
+        padding-top: 3rem;
+        width: 19rem;
+        display: flex;
+        flex-wrap: wrap;
+        text-align: center;
+        font-size: 14px;
+        color: #fff;
+        height: 13rem;
+        margin-top: -1rem;
+        padding-left: 0.6rem;
+    }
+    .set_content{
+
+        font-size:17px;
+        font-family:MF XingYan(Noncommercial);
+        font-weight:400;
+        color:rgba(255,255,255,1);
+    }
+    .set_content >div{
+        height:3.54rem;
+        border-bottom: 1px solid #6D6D6D;
+        display:flex;
+        line-height:4.54rem;
+    }
+    .detailsImg{
+        width: 3.8rem;
+        height: 3.9rem;
+        /* position: relative; */
+        position:absolute;
+        right:-0.9rem;
+        /* left: 19.5rem; */
+        /* top: 1.5rem; */
+        /* width:3.8rem;
+        height:0.9rem;
+        position:relative;
+        left:19.5rem;
+        top:1.5rem; */
+}
+.detailsImg>img{
+    width:3.8rem;
+    height:3.7rem;
+}
+    .set_details{
+    position: fixed;
+    left:0px;
+    top:0px;
+    background:rgba(0, 0, 0, 0.8);
+    width:100%;  /*宽度设置为100%，这样才能使隐藏背景层覆盖原页面*/
+    height:100%;
+    filter:alpha(opacity=60);  /*设置透明度为60%*/
+    /* opacity:0.8;  非IE浏览器下设置透明度为60% */
+    z-index:999;
+    }
+    #set_banner{
+    /* width:22.3rem; */
+    /* height:36rem; */
+    /* position: relative;; */
+    top:6.5rem;
+    /* background:url("/fish/img/assets27.png") 0 0 no-repeat; */
+    background-size: 100% 100%;
+    margin:auto;
+    height:33rem;
+    position:absolute;
+    left:0;top:-5rem;
+    right:0;
+    bottom: 0;
+    padding:1px 1.5rem 0 1.5rem;
+    width:87%;
+}
+
+/* #set_banner.lazy {
+            background-image: none;
+        } */
+
+    .center_content a{
+        color:#fff;
+    }
+    .center_content div{
+        height:3rem;
+        line-height:3rem;
+        /* position:relative;
+        top:-1rem; */
+    }
+    .center_content div:nth-child(1){
+        background:url("/fish/img/footer1.png") 0 0 no-repeat;
+        width:5.63rem;
+        height:3rem;
+        background-size: 100% 100%;
+
+    }
+    .center_content div:nth-child(3n-1){
+        margin-left:0.5rem;
+    }
+    .center_content div:nth-child(3n){
+        margin-left:0.5rem;
+    }
+    .center_content div:nth-child(2){
+        background:url("/fish/img/footer2.png") 0 0 no-repeat;
+        width:5.63rem;
+        height:3rem;
+        background-size: 100% 100%;
+    }
+    .center_content div:nth-child(3){
+        background:url("/fish/img/footer3.png") 0 0 no-repeat;
+        width:5.63rem;
+        height:3rem;
+        background-size: 100% 100%;
+    }
+    .center_content div:nth-child(4){
+        background:url("/fish/img/footer4.png") 0 0 no-repeat;
+        width:5.63rem;
+        height:3rem;
+        background-size: 100% 100%;
+    }
+    .center_content div:nth-child(5){
+        background:url("/fish/img/footer5.png") 0 0 no-repeat;
+        width:5.63rem;
+        height:3rem;
+        background-size: 100% 100%;
+    }
+    .center_content div:nth-child(6){
+        background:url("/fish/img/footer6.png") 0 0 no-repeat;
+        width:5.63rem;
+        height:3rem;
+        background-size: 100% 100%;
+    }
+    .center_content div:nth-child(7){
+        background:url("/fish/img/footer7.png") 0 0 no-repeat;
+        width:5.63rem;
+        height:3rem;
+        background-size: 100% 100%;
+    }
+    .centerFooter{
+        background: url("/fish/img/center98.png") center center no-repeat;
+        width: 100%;
+        height: 16.8rem;
+        background-size: 100% 100%;
+        display: flex;
+        justify-content: center;
+        margin-bottom: 7rem !important;
+        margin:-2rem auto;
+        font-family:MF XingYan(Noncommercial)
+
+    }
+    .hy_box{
+        width:16.46rem;
+        height:4.625rem;
+        background:url("/fish/img/center23.png") 0 0 no-repeat;
+        background-size: 100% 100%;
+        display:flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .hy{
+        width:100%;
+        height:4.625rem;
+        display:flex;
+        justify-content: center;
+        align-items: center;
+        margin-top:0.5rem;
+    }
+    .new_phone{
+        font-size:14px;
+        font-family:MF XingYan(Noncommercial);
+        font-weight:400;
+        color:#3A3026;
+    }
+    .span2_id{
+        font-size:11px;
+        font-family:MF XingYan(Noncommercial);
+        font-weight:400;
+        color:rgba(58,48,38,1);
+        margin-left:.5rem;
+        margin-top:0.3rem;
+    }
+    .new_phone{
+        display:flex;
+        justify-content: center;
+        align-content: center;
+    }
+    .new_id{
+        display:flex;
+        justify-content: center;
+        align-content: center;
+    }
+    .new_top-name{
+        display:flex;
+        justify-content: center;
+        align-content: center;
+    }
+    .new_top-name >strong{
+        font-size:26px;
+        font-family:Rubik;
+        font-weight:bold;color:rgba(255,255,255,1);
+        text-shadow:0px 4px 2px rgba(0, 0, 0, 0.42);
+        color:#F2E1C0;
+    }
+    .new_top-name >span{
+        margin-left:0.5rem;
+        color:#F2E1C0;
+        font-size:11px;
+        font-family:MF XingYan(Noncommercial);
+        text-shadow:0px 4px 2px rgba(0, 0, 0, 0.42);
+        margin-top:1rem;
+    }
+
+    .new_topImg{
+        width:100%;
+        height:12.18rem;
+        display:flex;
+        justify-content: center;
+        align-items: center;
+        margin-top:6rem;
+    }
+    .right_X{
+        background:url("/fish/img/img3.png") 0 0 no-repeat;
+        background-size: 100% 100%;
+        width:3.1rem;
+        height:3.2rem;
+        position: relative;
+        top:5rem;
+        right:-81%
+    }
+    .box_topp{
+        width:100%;
+        height:36.75rem;
+        background:url("/fish/img/center_img1.png") 0 0 no-repeat;
+        background-size: 100% 100%
+    }
+    .box_center{
+        width:100%;
+        height:54rem;;
+        background:url("/fish/img/center1.png") 0 0 no-repeat;
+        /* background-size: 100% 100%; */
+
+    }
+    .center_list{
+        margin-top:-2rem;
+        width:100%;
+        height:16.81rem;
+        background:url("/fish/img/fish11.png") 0 0 no-repeat;
+        background-size: 100% 100%;
+        z-index:999;
+
+
+    }
+    .img2{
+        width:100%;
+        height:100%;
+
+    }
+    .img3{
+        width:8.5rem;
+        height:8.9rem;
+    }
+    .top_one{
+        width:90%;
+        height:90%;
+        margin:auto;
+
+    }
+    .center_top{
+        width:100%;
+        height:37rem;
+        z-index:99;
+        position:relative;
+        top:-3rem;
+
+
+
+    }
+  .img1{
+      width:100%;
+      height:100%;
+      position:fixed;
+      left:0;
+      top:0;
+      right: 0;
+      bottom: 0;
+      background-size: 100%;
+  }
+    .fish-head{
+        background-color: rgba(50, 50, 50,0.9);
+    }
+    .head-tit{font-weight:bold;}
+    .center-info{
+        margin:12px 12px 1rem;
+        color: #c38e00;
+        /*
+        background:#182121;
+        border-radius:8px;
+        */
+    }
+    .center-info a{
+        color: #c38e00;
+    }
+
+    .info-top{
+        padding:12px;
+    }
+    .info-top .top-setting{
+        position: absolute;
+        right: 0;
+        top: 0;
+    }
+    .info-top .top-img{
+        position:relative;
+        overflow:hidden;
+        margin: 0rem 1rem;
+        /*
+        width: 60px;
+        height: 60px;
+        */
+    }
+    .info-top .top-img img{
+        margin:0 auto;
+        position:relative;
+        overflow:hidden;
+        border-width: 8px;
+        border-style: solid;
+        border-color: rgb(250, 250, 250);
+        border-radius: 50%;
+        background-color: rgb(255, 255, 255);
+        box-shadow: inset 0px 5px 6px 0px rgba(117, 100, 88, 0.3);
+        width:6rem;
+        height:6rem;
+        display:block;
+    }
+    .info-top .top-name{font-size:18px;margin-top:5px; text-align: center;}
+    .info-top .top-name strong{
+        font-size: 1.2rem;
+        font-weight: bold;
+    }
+    .info-top .top-name span{font-size:0.6rem;margin-left:10px;}
+    .info-top .top-id{font-size: 0.6rem; text-align: center;}
+
+    .info-member{
+        padding:0 0 1rem;
+        text-align:center;
+        font-weight: bold;
+    }
+    .info-member .member-num{font-size:16px;}
+    /*.info-member:nth-child(2) .member-num{color:#e1190d;font-size:14px;}*/
+    .info-member .member-text{
+        font-size: 0.7rem;
+    }
+    .icon-setting{background-image:url('/fish/img/icon-setting.png');width:22px;height:22px;}
+    .center-list{
+        text-align:center;
+        margin:12px;
+        padding: 12px;
+    }
+    /*
+    .center-list li{
+
+    }
+    */
+    .center-list li a{
+        display:block;margin:12px 0;border-left:1px solid rgb(202, 181, 166);color:#c4afa0
+    }
+    .center-list li:nth-child(1) a,
+    .center-list li:nth-child(4) a,
+    .center-list li:nth-child(7) a,
+    .center-list li:nth-child(10) a,
+    .center-list li:nth-child(13) a{
+        border-left: none;
+    }
+    .center-list li a .icon{height:40px;width:40px;margin-bottom:8px;}
+    .center01-act{background-image:url('/fish/img/center01-act.png');}
+    .center02-act{background-image:url('/fish/img/center02-act.png');}
+    .center03-act{background-image:url('/fish/img/center03-act.png');}
+    .center04{background-image:url('/fish/img/center04.png');}
+    .center04-act{background-image:url('/fish/img/center04-act.png');}
+    .center05-act{background-image:url('/fish/img/center05-act.png');}
+    .center06{background-image:url('/fish/img/center06.png');}
+    .center06-act{background-image:url('/fish/img/center06-act.png');}
+    .center07-act{background-image:url('/fish/img/center07-act.png');}
+    .center08{background-image:url('/fish/img/center08.png');}
+    .center08-act{background-image:url('/fish/img/center08-act.png');}
+    .center09-act{background-image:url('/fish/img/center09-act.png');}
+    .center10-act{background-image:url('/fish/img/center10-act.png');}
+    .center11{background-image:url('/fish/img/center11.png');}
+    .center11-act{background-image:url('/fish/img/center11-act.png');}
+    .center12-act{background-image:url('/fish/img/center12-act.png');}
+    .set-file{position: absolute;left:0;right: 0;top:0;bottom: 0;opacity:0;}
+	
+	
+	/*--改版--*/
+		.title-box{
+			       text-align: center;
+			       width: 7rem;
+			       height: 5rem;
+			       background-size: 100% 100%;
+			       margin: 0 auto;
+			       position: absolute;
+			       top: -2rem;
+			       left: 7.5rem;
+			       padding-top: 1.2rem;
+			       font-size: 1.3rem;
+			}
+			.title-blue{
+				background-image:url('/fish/img/assets888.png');
+                background-size: 100% 100%;
+                text-align:center;
+                font-size:22px;
+                color:#FFE9C9;
+                font-family:MF XingYan(Noncommercial);
+                width:7.875rem;
+                height:5.375rem;
+
+			}
+            .title-blue1{
+                background-image:url('/fish/img/assetsred.png')
+            }
+			.lazy{
+				background-image:url('/fish/img/assets999.png')!important;
+				height: 29rem!important;
+			}
+			/* .detailsImg{
+				top:-1rem!important
+			} */
+</style>
+{/block}

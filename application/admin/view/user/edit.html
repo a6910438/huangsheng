@@ -1,0 +1,187 @@
+{extend name="layout/main" /}
+
+{block name="header"}
+
+{/block}
+
+{block name="content"}
+<section class="panel">
+    {if isset($info)}
+    <header class="panel-heading">
+        <h4>编辑会员</h4>
+    </header>
+    <div class="panel-body" style="padding-bottom: 50px">
+        <form class="form-horizontal" method="post" onsubmit="return false" role="form">
+            <div class="form-group">
+                <label class="col-sm-2 control-label">GC地址</label>
+                <div class="col-sm-5">
+                    <input type="text" value="{$info->gc_address}" disabled class="form-control"
+                           placeholder="GC地址">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">用户名</label>
+                <div class="col-sm-5">
+                    <input type="text" value="{$info->nick_name}" name="nick_name" class="form-control"
+                           placeholder="请输入用户名">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">登录密码</label>
+
+                <div class="col-sm-5">
+                    <input type="password" name="password" class="form-control" placeholder="登录密码">
+                </div>
+                <div class="class-sm-5">
+                    <span class="help-block">如果不填写就不会修改</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">确认密码</label>
+                <div class="col-sm-5">
+                    <input type="password" value="" name="re_password" class="form-control" placeholder="登录密码">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">交易密码</label>
+
+                <div class="col-sm-5">
+                    <input type="password" name="trad_password" class="form-control" placeholder="交易密码">
+                </div>
+                <div class="class-sm-5">
+                    <span class="help-block">如果不填写就不会修改</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">确认交易密码</label>
+
+                <div class="col-sm-5">
+                    <input type="password" name="re_trad_password" class="form-control" placeholder="交易密码">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">会员等级</label>
+
+                <div class="col-sm-5">
+					<select name="lv" class="form-control">
+                        <option {if $info->lv == 0} selected {/if} value="1">普通会员</option>
+						<option {if $info->lv == 1} selected {/if} value="2">初级节点</option>
+						<option {if $info->lv == 2} selected {/if} value="3">中级节点</option>
+						<option {if $info->lv == 3} selected {/if} value="4">高级节点</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" data-url="{:url('admin/user/update',['id'=>$info->id])}"
+                            onclick="main.ajaxPosts(this)" class="btn btn-primary">确定修改
+                    </button>
+                    &nbsp;
+                    <button type="button" onclick="javascript:history.back(-1);" class="btn btn-warning">返回
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+    {else /}
+    <header class="panel-heading">
+        <h4>会员注册</h4>
+    </header>
+    <div class="panel-body" style="padding-bottom: 50px">
+        <form class="form-horizontal" method="post" onsubmit="return false" role="form">
+            <div class="form-group">
+                <label class="col-sm-2 control-label">推荐手机号</label>
+
+                <div class="col-sm-5">
+                    <input type="text" value="" name="higher" class="form-control"
+                           placeholder="请输入推荐人手机号">
+                </div>
+                <div class="col-sm-3 help-block">
+                    手机号，添加了不能被修改.无推荐人请填写0
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">手机号</label>
+
+                <div class="col-sm-5">
+                    <input type="text" value="" name="mobile" class="form-control"
+                           placeholder="请输入用手机号">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">用户名</label>
+
+                <div class="col-sm-5">
+                    <input type="text" value="" name="nick_name" class="form-control"
+                           placeholder="请输入用户名">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">登录密码</label>
+
+                <div class="col-sm-5">
+                    <input type="password" name="password" class="form-control" placeholder="请输入登录密码">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">重复登录密码</label>
+
+                <div class="col-sm-5">
+                    <input type="password" name="re_password" class="form-control" placeholder="请再次输入登录密码">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">交易密码</label>
+
+                <div class="col-sm-5">
+                    <input type="password" value="" name="trad_password" class="form-control"
+                           placeholder="请输入交易密码">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">重复交易密码</label>
+
+                <div class="col-sm-5">
+                    <input type="password" value="" name="re_trad_password" class="form-control"
+                           placeholder="请再次输入交易密码">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">会员等级</label>
+
+                <div class="col-sm-5">
+                    <select name="lv" class="form-control">
+                        <option value="1">普通会员</option>
+						<option value="2">初级节点</option>
+						<option value="3">中级节点</option>
+						<option value="4">高级节点</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">备注</label>
+                <div class="col-sm-5">
+                    <input type="text" value="" name="remake" class="form-control"
+                           placeholder="请输入备注">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" onclick="main.ajaxPosts(this)" data-url="{:url('admin/user/save')}"
+                            class="btn btn-primary">提交
+                    </button>
+                    &nbsp;
+                    <button type="button" onclick="javascript:history.back(-1);" class="btn btn-warning">返回
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+    {/if}
+</section>
+{/block}
+
+
+{block name="footer"}
+    <script src="/admin/vendor/fuelux/checkbox.js"></script>
+{/block}

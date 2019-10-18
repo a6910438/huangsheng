@@ -1,0 +1,34 @@
+<script src="/static/js/jquery-1.11.1.min.js"></script>
+<script src="/static/js/mui.loading.js"></script>
+<script src="/static/js/main.js"></script>
+<script src="/static/js/mui.zoom.js"></script>
+<script src="/static/js/mui.previewimage.js"></script>
+<script src="/static/js/swiper-4.2.0.min.js"></script>
+
+<script type="text/javascript">
+	mui.init()
+	mui.previewImage();
+	mui('body').on('tap','a',function(){
+		window.top.location.href=this.href;
+	});
+	mui('.mui-scroll-wrapper').scroll({
+		deceleration: 0.0005 //flick 减速系数，系数越大，滚动速度越慢，滚动距离越小，默认值0.0006
+	});
+	mui('body').on('tap','.my-tips',function(){
+		mui.alert($(this).attr('data-msg'))
+	})
+	$(function () {
+	    debugger
+		$(".mui-tab-item").removeClass('mui-active');
+		$(".mui-tab-item").each(function () {
+			var current = window.location.href;
+			console.log(current);
+			if (current == $(this).attr('href')) {
+				$(this).addClass('mui-active');
+				var image = $(this).find('img').attr('data-image');
+				$(this).find('img').attr('src','/static/img/'+image+'1.png')
+			}
+		})
+	})
+</script>
+	

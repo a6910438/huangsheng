@@ -1,0 +1,57 @@
+{extend name='main'}
+
+{block name='body'}
+<div class="fish-head">
+    <a href="javascript:window.history.back();" class="head-back"><span>返回</span></a>
+    <h3 class="head-tit"><span>关于我们</span></h3>
+    <!-- <a href="javascript:;" class="head-menu"><span>提交</span></a> -->
+</div>
+<div class="fish-main" v-cloak>
+    <div class="content-box">
+        <div class="content" v-html="info.content"></div>
+    </div>
+    <div class="dialog-bottom">已经加载全部！</div>
+</div>
+{include file='menu'}
+{/block}
+
+{block name='script'}
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            info: '',
+        },
+        computed: {
+
+        },
+        methods: {
+            detail: function(){
+                var self = this;
+
+                core.load("{:url('index/publics/get_outs')}", { }, function(res){
+                    
+                    if(res.code==0){
+                        self.info=res.info;
+                    }else{
+                        core.toast(res.msg);
+                    }
+                })
+            }
+        },
+        mounted: function(){
+            this.detail();
+        }
+    });
+</script>
+{/block}
+
+{block name="style"}
+<style>
+    .content{
+        position:relative;
+        overflow:hidden;
+        padding:1rem;
+    }
+</style>
+{/block}

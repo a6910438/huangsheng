@@ -1,0 +1,65 @@
+{extend name="layout/main" /}
+
+{block name="header"}
+
+{/block}
+
+{block name="content"}
+<section class="panel">
+    <header class="panel-heading">
+        <h4>会员明细列表</h4>
+    </header>
+    <div class="panel-body" style="padding-bottom: 50px">
+        <form class="form-horizontal" action="">
+            <div class="form-group">
+                <div class="col-xs-3">
+                    <input type="text" value="{$Request.get.keyword}" name="keyword" class="form-control" placeholder="请输入会员昵称搜索">
+                </div>
+                <button type="submit" class="btn btn-color">搜索</button>
+            </div>
+        </form>
+        <table class="table table-bordered table-striped no-margin">
+            <thead>
+            <tr>
+                <th class="text-center">id</th>
+                <th class="text-center">会员昵称</th>
+                <th class="text-center">金币数量</th>
+                <th class="text-center">变化前</th>
+                <th class="text-center">变化后</th>
+                <th class="text-center">原因</th>
+                <th class="text-center">创建时间</th>
+            </tr>
+            </thead>
+            <tbody>
+            {if !empty($margiclist)}
+                {foreach $margiclist as $entity}
+                <tr>
+                <form class="form-horizontal" method="post" onsubmit="return false" role="form">
+                    <td class="text-center">{$entity->id}</td>
+                    <td class="text-center">{$entity->nick_name}</td>
+                    <td class="text-center">{$entity->margic}</td>
+                    <td class="text-center">{$entity->old}金币</td>
+                    <td class="text-center">{$entity->new}金币</td>
+                    <td class="text-center">{$entity->remark}</td>
+                    <td class="text-center">{$entity->create_time}</td>
+                    </form>
+                </tr>
+                {/foreach}
+            {else /}
+            <tr class="text-center">
+                <td colspan="7">暂无数据</td>
+            </tr>
+            {/if}
+            </tbody>
+        </table>
+        <div class="page">
+            {:htmlspecialchars_decode($margiclist->render())}
+        </div>
+    </div>
+</section>
+{/block}
+
+
+{block name="footer"}
+
+{/block}

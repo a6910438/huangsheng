@@ -1,0 +1,78 @@
+{extend name="layout/main" /}
+
+{block name="header"}
+
+{/block}
+
+{block name="content"}
+<section class="panel">
+    <header class="panel-heading">
+        <h4>团队冻结统计</h4>
+    </header>
+    <div class="panel-body" style="padding-bottom: 50px">
+        <form class="form-horizontal" action="{:url('admin/Team/freeze')}" >
+            <div class="form-group">
+
+                <div class="col-xs-1 no-pd-r">
+                    <select name="type" class="form-control">
+                        <option {if $Request.get.type == 'nick_name'} selected {/if} value="nick_name">团队长昵称</option>
+                    </select>
+                </div>
+                <div class="col-xs-3 no-pd-l">
+                    <input type="text" value="{$Request.get.keyword}" name="keyword" class="form-control" placeholder="请输入关键词搜索">
+                </div>
+                <button type="submit" class="btn btn-color">搜索</button>
+            </div>
+        </form>
+        <table class="table table-bordered table-striped no-margin">
+            <thead>
+                <tr>
+                    <th class="text-center">团队ID</th>
+                    <th class="text-center">团队长昵称</th>
+                    <th class="text-center">团队人数</th>
+                    <th class="text-center">团队冻结数</th>
+                    <th class="text-center">团队冻结金额</th>
+                    <th class="text-center">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+            {if $list}
+                {foreach $list as $order}
+                    <tr>
+                        <td class="text-center">{$order->id}</td>
+                        <td class="text-center">
+                           {$order->nick_name}
+                        </td>
+                        <td class="text-center">
+                            {$order->teamCount}
+                        </td>
+                        <td class="text-center">
+                            {$order->freeze_order}
+                        </td>
+                        <td class="text-center">
+                            {$order->total}
+                        </td>
+                        <td class="text-center">
+                            <a class="btn btn-xs btn-primary" href="{:url('freezeDetail',['id'=>$order->id])}">详情</a>
+                        </td>
+
+                    </tr>
+                {/foreach}
+            {else /}
+                <tr class="text-center">
+                    <td colspan="8">暂无数据</td>
+                </tr>
+            {/if}
+            </tbody>
+        </table>
+        <div class="page">
+            {:htmlspecialchars_decode($list->render())}
+        </div>
+    </div>
+</section>
+{/block}
+
+
+{block name="footer"}
+
+{/block}

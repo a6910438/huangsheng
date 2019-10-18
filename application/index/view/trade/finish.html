@@ -1,0 +1,118 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>交易</title>
+    {include file="layout/head" /}
+    <style>
+        .trade-btn {
+            background: #ffce1b;
+            color: #fff;
+            padding: 10px;
+            border: 1px solid #ffce1b;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+<header class="mui-bar mui-bar-nav my-header">
+    <a class="mui-icon mui-icon-left-nav mui-pull-left" href="{:url('member/index')}"></a>
+
+    <h1 id="title" class="mui-title">交易</h1>
+</header>
+
+<div style="top: 44px;z-index: 50;"
+     class="mui-segmented-control mui-segmented-control-inverted mui-segmented-control-primary my-tabs">
+    <a class="mui-control-item " href="{:url('trade/buy')}">
+        买入
+    </a>
+    <a class="mui-control-item " href="{:url('trade/sale')}">
+        卖出
+    </a>
+    <a class="mui-control-item " href="{:url('trade/index')}">
+        交易中
+    </a>
+    <a class="mui-control-item mui-active">
+        已完成
+    </a>
+</div>
+<div class="mui-content">
+    <div class="mui-scroll-wrapper">
+        <div class="mui-scroll">
+            <div class="mui-table-view my-list"  style="top: 85px;">
+                {foreach $list as $order}
+                <ul class="my-list-item">
+                    <li class="clear">
+                        <span class="left">
+                            <span>编号:</span>
+                            <span class="value">{$order['order_number']}</span>
+                        </span>
+                        <span class="right">
+                            {if $order['is_comment'] == 1}
+                                已评论
+                                {else/}
+                                未评论
+                            {/if}
+                        </span>
+                    </li>
+                    <li class="clear">
+                        <span class="left">
+                            <span>类型:</span>
+                            <span class="value">
+                                {if ($order['types'] == 1 && $order['user_id'] == $ownId) || ($order['types'] == 2 && $order['target_user_id'] == $ownId)}
+                                    买入交易
+                                {/if}
+                                 {if ($order['types'] == 2 && $order['user_id'] == $ownId) || ($order['types'] == 1 && $order['target_user_id'] == $ownId)}
+                                    出售
+                                {/if}
+                            </span>
+                        </span>
+                    </li>
+                    <li class="clear">
+                        <span class="left">
+                            <span>数量:</span>
+                            <span class="value">{$order['number']} 金币</span>
+                        </span>
+                    </li>
+                    <li class="clear">
+                        <span class="left">
+                            <span>单价:</span>
+                            <span class="value">{:sprintf('%.3f',$order['price'])} ¥</span>
+                        </span>
+                    </li>
+                    <li class="clear">
+                        <span class="left">
+                            <span>总价:</span>
+                            <span class="value">
+                                {:sprintf('%.3f',$order['total_price'])} ¥
+<!--                                <strong style="color: #ffce1b;margin-left: 10px">{$order['total_price_china']}
+                                    CNY</strong>-->
+                            </span>
+                        </span>
+                    </li>
+                    <li class="clear">
+                        <span class="left">
+                            <span>时间:</span>
+                            <span class="value">{:date('Y-m-d H:i:s',$order['finish_time'])}</span>
+                        </span>
+                        <span class="right">
+                            <a href="{:url('trade/fdetail',['id'=>$order['id']])}"
+                               class="trade-btn">详细</a>
+                        </span>
+                    </li>
+                </ul>
+                {/foreach}
+                {if empty($list)}
+                <div>
+                    <img class="noneview" src="/static/img/noneview.png">
+                </div>
+                {/if}
+            </div>
+
+        </div>
+    </div>
+</div>
+</body>
+{include file="layout/footer" /}
+
+</html>

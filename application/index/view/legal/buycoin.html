@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+	<title>购买币</title>
+	<script type="text/javascript" src="/static/build/flexible_css.js"></script>
+    <script type="text/javascript" src="/static/build/flexible.js"></script>
+    <script type="text/javascript" src="/static/js/jquery.js"></script>
+	<link href="/static/css/mui.min.css" rel="stylesheet" />
+	<link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="/static/css/buy_coin.css">
+    <script src="/static/js/mui.min.js"></script>
+    <script type="text/javascript" charset="utf-8">
+        mui.init();
+    </script>
+</head>
+<body>
+	<header class="head">
+		<div style="height:1.28rem;" onclick="javascript:window.history.back(-1);" class="goback"><img style="display:block;padding-top:0.4rem;" src="/static/images/goback.png"></div>
+		<span class="fb_account">购买USDT</span>
+	</header>
+	<div class="buyer">
+		<div>
+			<div class="green_block"></div>
+			<div class="buyer_name"><img src="/static/images/vip_bl@2x.png">{$nickname}</div>
+			<div class="pay_way">
+				<img src="/static/images/bank_card@2x.png" alt="">
+				<img src="/static/images/Alipay@2x.png" alt="">
+				<img src="/static/images/wechat_pay@2x.png" alt="">
+			</div>
+		</div>
+		<div>
+			<div>
+				<span class="trade_sheet">5983</span>
+				<span>交易单</span>
+			</div>
+			<div>
+				<span class="turnover">85%</span>
+				<span>成交率</span>
+			</div>
+			<div>
+				<span class="time_of_payment">5'23"</span>
+				<span>放币时效</span>
+			</div>
+		</div>
+	</div>
+	<div class="input_box">
+		<div class="input_item">
+			<label class="price">价格<span>(CNY)</span></label>
+			<input type="number" id="price" name="price" value="{$price}" disabled>
+		</div>
+		<div class="input_item">
+			<label>金额<span>(CNY)</span></label>
+			<input type="number" id="totalprice" placeholder="限额400-5626.28" max={$totalprice}>
+			<span class="check_all" >全部</span>
+		</div>
+		<div class="input_item">
+			<label>数量<span>(CNY)</span></label>
+			<input type="number" id="number" max="{$number}" placeholder="请输入购买数量">
+			<span class="check_all">全部</span>
+		</div>
+	</div>
+	<div class="buy_btn_box">
+		<button class="buy_btn" style="line-height:0;" isbuy = '0' disabled="false" onclick="buy(this)">购买</button>
+	</div>
+</body>
+<script type="text/javascript">
+	$('input').bind('input propertychange', function() {
+		var inputval = 0;
+		for (var i = 0; i < $('input').length; i++) {
+			if ($('input').eq(i).val().length > 0) {
+				inputval++;
+			}
+		}
+		if (inputval === $('input').length) {
+			$('.buy_btn').attr('isbuy',1);
+			$('.buy_btn').removeAttr('disabled');
+			$('.buy_btn').css('background', '#4AB96E');
+		} else {
+			$('.buy_btn').attr('isbuy',0);
+			$('.buy_btn').attr('disabled',true);
+			$('.buy_btn').css('background', '#E0E5E6');
+		}
+	})
+
+	$('.check_all').unbind('click').click(function(){
+		$('#number').val($('#number').attr('max'));
+		$('#totalprice').val($('#totalprice').attr('max'));
+	});
+
+	function countPrice(e){
+		
+		var price = $('.buy_price').val();
+		var number = $('.buy_number').val();
+		var totalprice = price*number;
+		totalprice = Math.floor(totalprice * 100) / 100;
+		if(totalprice>0){
+			$('.buy_totalprice').val(totalprice);
+		}else{
+			$('.buy_totalprice').val('');
+		}
+	}
+
+	//买入
+    function buy(target) {
+    	var isbuy = $(target).attr('isbuy');
+  
+    	if(isbuy==0){
+    		return false;
+    	}
+        var price = parseFloat($("#buy-price").val() ? $("#buy-price").val() : 0);
+        var number = parseFloat($("#buy-number").val() ? $("#buy-number").val() : 0);
+        if (!checkParams(price, number)) {
+            return false;
+        }
+        var $this = $(target);
+        mui.showLoading("处理中..", "div");
+        $this.attr('disabled', true);
+        $.post("{:url('market/buy')}", {number: number, price: price}, function (data) {
+            mui.hideLoading();
+            $this.attr('disabled', false);
+            if (data.code == 0) {
+                mui.confirm(data.message, '', ['去查看', '取消'], function (e) {
+                    if (e.index == 0) {
+                        window.location.href = data.toUrl;
+                    } else {
+                        window.location.reload();
+                    }
+                })
+            } else {
+                mui.alert(data.message);
+                if(data.toUrl){
+                    window.location.href = data.toUrl;
+                }
+            }
+
+        }, 'json')
+    }
+
+    function checkParams(price, number) {
+        var price_min = parseFloat("");
+        var price_max = parseFloat("");
+        var number_min = parseFloat("");
+        var number_max = parseFloat("");
+        var loose_min = parseFloat("");
+        var loose_max = parseFloat("");
+        var whole_min = parseFloat("");
+        var whole_max = parseFloat("");
+
+//        if (!(/^\d+(\.\d{1,2})?$/.test(price))) {
+//            mui.alert('单价最多为2位小数');
+//            return false;
+//        }
+
+//        if(number < 100){
+//            if(price > loose_max || price < loose_min){
+//                mui.alert('散币单价在' + loose_min + '-' + loose_max + '之间');
+//                return false;
+//            }
+//        }
+//
+//        if(number >= 100){
+//            if(price > whole_max || price < whole_min){
+//                mui.alert('整币单价在' + whole_min + '-' + whole_max + '之间');
+//                return false;
+//            }
+//        }
+        if (!(/^[1-9]\d*$/.test(number))) {
+            mui.alert('数量必须为大于1的正整数');
+            return false;
+        }
+        if (number_min > 0 && number < number_min) {
+            mui.alert('数量在' + number_min + '-' + number_max + '之间');
+            return false;
+        }
+        if (number_max > 0 && number > number_max) {
+            mui.alert('数量在' + number_min + '-' + number_max + '之间');
+            return false;
+        }
+
+        return true;
+    }
+
+</script>
+</html>

@@ -1,0 +1,119 @@
+{extend name='main'}
+
+{block name='body'}
+<div class="fish-head">
+    <a href="javascript:window.history.back();" class="head-back"><span>返回</span></a>
+    <h3 class="head-tit"><span>房产收益</span></h3>
+    <!-- <a href="javascript:;" class="head-menu"><span>转出</span></a> -->
+</div>
+<div class="fish-main" v-cloak>
+    <div id="bait-top" class="content-box">
+        <div class="top-text">房产收益</div>
+        <div class="top-num">{{info.now_profit || '0.00'}}</div>
+    </div>
+    <div class="content-box" v-if="list.length>0">
+        <ul class="content-list">
+            <li v-for="vo in list">
+                <div>
+                    <div class="list-top">编号：{{vo.order_number}}</div>
+                    <div class="list-tit">{{vo.name}}</div>
+                    <div class="list-tip">{{vo.create_time}}</div>
+                </div>
+                <div>
+                    <span class="green" v-if="vo.number>0">+{{vo.number}}</span>
+                    <span class="red" v-else>{{vo.number}}</span>
+                </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div class="dialog-bottom"></div>
+</div>
+{include file='menu'}
+{/block}
+
+{block name='script'}
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            info: '',
+            list: [],
+            page: 1,
+            status: true,
+        },
+        computed: {
+            
+        },
+        methods: {
+            member: function(){
+                var self = this;
+                core.load("{:url('/index/setup/index')}", {}, function(res){
+                    
+                    if(res.code==0){
+                        self.info=res.info;
+                    }else{
+                        core.toast(res.msg);
+                    }
+                })
+            },
+            loadList: function(){
+                var self = this;
+                var data = {
+                    page: self.page,
+                    limit: 12,
+                };
+
+                core.load("{:url('index/my/fish_culture_list')}", data, function(res){
+                    
+                    if(res.code=='0'){
+                        if(res.info.length>0) self.list = self.list.concat(res.info);
+                        if(!res.info || (res.info.length<data.limit)){
+                            self.status = false;
+                            $('.dialog-bottom').text('已经加载全部数据');
+                        }else{
+                            $('.dialog-bottom').text('正在加载...');
+                        }
+                    }else{
+                        core.toast(res.msg)
+                    }
+                })
+            },
+        },
+        mounted: function(){
+            var self = this;
+            self.member();
+            self.loadList();
+            // 下拉加载
+            $(window).off("scroll").on("scroll", function(e){
+                var totalheight = parseFloat($(this).height()) + parseFloat($(this).scrollTop());
+                if (($(document).height()<=totalheight) && self.status){
+                    self.page = ++self.page;
+                    self.loadList()
+                }
+            });
+        }
+    });
+</script>
+{/block}
+
+{block name="style"}
+<style>
+    #bait-top{
+        text-align: center;
+        position: relative;
+        padding: 2rem 1rem;
+    }
+    #bait-top .top-text{
+        font-size:1rem;
+    }
+    #bait-top .top-num{
+        font-size:3rem;
+        font-weight:bold;
+    }
+    .content-list>li>div:last-child{
+        margin-left: auto;
+    }
+
+</style>
+{/block}

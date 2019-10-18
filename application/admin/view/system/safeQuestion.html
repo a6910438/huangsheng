@@ -1,0 +1,85 @@
+{extend name="layout/main" /}
+
+{block name="header"}
+
+{/block}
+
+{block name="content"}
+<section class="panel">
+    <header class="panel-heading">
+        <h4>安全问题设置</h4>
+    </header>
+    <div class="panel-body" style="padding-bottom: 50px">
+        <form class="form-horizontal" action="">
+            <div class="form-group">
+                <a type="button" href="{:url('createSafeQuestion')}" class="btn btn-info">添加新问题</a>
+            </div>
+        </form>
+        <table class="table table-bordered table-striped no-margin">
+            <thead>
+            <tr>
+                <th class="text-center">序号</th>
+                <th class="text-center">题号</th>
+                <th class="text-center">题目</th>
+                <th class="text-center">状态</th>
+                <th class="text-center">创建时间</th>
+                <th class="text-center">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            {if !empty($list)}
+            {foreach $list as $k=> $entity}
+            <tr>
+                <td class="text-center">{$entity->id}</td>
+                <td class="text-center">{$entity->arr($k+1)}</td>
+                <td class="text-center">{$entity->title}</td>
+                <td class="text-center">{$entity->getStatus($entity->status)}</td>
+                <td class="text-center">{$entity->create_time}</td>
+                <td class="text-center">
+                    {if $entity->status == 1}
+                    <a data-url="{:url('safeQuestionClose',['id'=>$entity->id])}" onclick="main.ajaxDelete(this)"
+                       data-msg="确定禁用该问题吗？" class="btn btn-xs btn-warning">禁用</a>
+                    {elseif $entity->status == 2}
+                    <a data-url="{:url('safeQuestionOpen',['id'=>$entity->id])}" onclick="main.ajaxDelete(this)"
+                       data-msg="确定启用该问题吗？" class="btn btn-xs btn-success">启用</a>
+                    {/if}
+                    <a href="{:url('updateSafeQuestion',['id'=>$entity->id])}" class="btn btn-xs btn-primary">编辑问题</a>
+                    <a data-url="{:url('delSafeQuestion',['id'=>$entity->id])}" onclick="main.ajaxDelete(this)"
+                       data-msg="确定要删除该问题吗？" class="btn btn-xs btn-danger">删除</a>
+                </td>
+            </tr>
+            {/foreach}
+            {else /}
+            <tr class="text-center">
+                <td colspan="5">暂无数据</td>
+            </tr>
+            {/if}
+            </tbody>
+        </table>
+        <div class="page">
+            {:htmlspecialchars_decode($list->render())}
+        </div>
+    </div>
+</section>
+{/block}
+
+
+{block name="footer"}
+<script>
+    function showContent(e){
+        $.dialog({
+            title: '答案列表',
+            content: $(e).attr('data-content')
+        });
+    }
+    ws1 = new WebSocket("wss://real.okex.com:10442/ws/v3");
+    ws1.onopen = function() {
+        console.log("连接成功");
+        ws1.send('{"op": "subscribe", "args": ["swap/trade:BTC-USD-SWAP"]}');
+
+    };
+    ws1.onmessage = function(e) {
+        console.log( e);
+    };
+</script>
+{/block}

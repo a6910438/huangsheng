@@ -1,0 +1,165 @@
+{extend name='main'}
+
+{block name='body'}
+<div class="fish-head">
+    <a href="javascript:window.history.back();" class="head-back"><span>返回</span></a>
+    <h3 class="head-tit" v-if="type==1"><span>修改登录密码</span></h3>
+    <h3 class="head-tit" v-else><span>修改支付密码</span></h3>
+    <!-- <a href="javascript:;" class="head-menu"><span>提交</span></a> -->
+</div>
+<div class="fish-main" v-cloak>
+    <div class="content-view">
+        <div style="padding:12px 12px 0;color:#ccc;">
+            <div>*为确保账号安全，需要验证当前手机</div>
+            <div style="font-size:16px;">当前绑定手机号码：{{info.mobile}}</div>
+        </div>
+    </div>
+    <form class="daz-form content-box" action="" method="post" onsubmit="return false;">
+        
+        <ul class="content-list">
+            <!-- <li v-if="type==1">
+                <labl class="content-label font5">旧密码</div>
+                <input type="password" placeholder="请输入旧密码" v-model="old_pwd">
+            </li> -->
+            <li>
+                <label class="content-label font5">短信验证</label>
+                <input type="text" style="width: 5rem;" placeholder="请输入短信验证码" v-model="phone_code">
+                <button class="getcode" @click="getcode()">发送验证码</button>
+            </li>
+            <li>
+                <label class="content-label font5">新密码</label>
+                <input type="password" placeholder="请输入新密码" v-model="new_pwd">
+            </li>
+            <li>
+                <label class="content-label font5">确认新密码</label>
+                <input type="password" placeholder="请再次输入新密码" v-model="confirm_pwd">
+            </li>
+        </ul>
+    </form>
+    <div class="content-view">
+        <button class="content-btn" type="button" @click="send()">提交</button>
+    </div>
+</div>
+{include file='menu'}
+{/block}
+
+{block name='script'}
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            type: core.getParame('type'),
+            info: '',
+            phone_code: '',
+            old_pwd: '',
+            new_pwd: '',
+            confirm_pwd: '',
+        },
+        computed: {
+            
+        },
+        methods: {
+            getcode: function(){
+                var that = $(event.currentTarget);
+                if(that.attr('disabled')) return;
+
+                core.load("{:url('/index/publics/send')}", {
+                    mobile: this.info.mobile,
+                    types: this.type,
+                }, function(res){
+                    
+                    if (res.code=='0') {
+                        that.html('60s').attr('disabled', true);
+                        var timer = setInterval(function(){
+                            var num = parseInt(that.text());
+                            if (num <= 1) {
+                                that.html('重新获取').removeAttr('disabled');
+                                clearInterval(timer);
+                            } else {
+                                that.html(--num+'s');
+                            }
+                        }, 1000);
+                    }
+                    core.toast(res.msg);
+                });
+            },
+            send: function(){
+                var self = this;
+                var url = '';
+                var data = '';
+
+                if(self.type==1){
+                    // if(!self.old_pwd) return core.toast('请输入旧密码');
+                    if(!self.phone_code) return core.toast('请输入短信验证码');
+                    if(!self.new_pwd) return core.toast('请输入新密码');
+                    if(!self.confirm_pwd) return core.toast('请再次输入新密码');
+                    if(self.new_pwd!==self.confirm_pwd) return core.toast('输入的两次密码不一致');
+
+                    url="{:url('index/publics/changesave')}";
+                    data={
+                        mobile: self.info.mobile,
+                        phone_code: self.phone_code,
+                        new_pwd: self.new_pwd,
+                    };
+                }else{
+                    if(!self.phone_code) return core.toast('请输入短信验证码');
+                    if(!self.new_pwd) return core.toast('请输入新密码');
+                    if(!self.confirm_pwd) return core.toast('请再次输入新密码');
+                    if(self.new_pwd!==self.confirm_pwd) return core.toast('输入的两次密码不一致');
+
+                    url="{:url('/index/my/changepyasave')}";
+                    data={
+                        phone_code: self.phone_code,
+                        pay_pwd: self.new_pwd,
+                    };
+                }
+
+                core.load(url, data, function(res){
+                    
+                    if(res.code==0){
+                        if(self.type==1){
+                            localStorage.clear();
+                            // 跳转到首页
+                            setTimeout(function(){
+                                window.location.href = "{:url('home/publics/login')}";
+                            }, 3000);
+                        }else{
+                            setTimeout(function(){
+                                window.history.go(-1);
+                            }, 3000);
+                        }
+                    }
+                    core.toast(res.msg);
+                })
+            },
+            member: function(){
+                var self = this;
+                core.load("{:url('/index/setup/index')}", {}, function(res){
+                    
+                    if(res.code==0){
+                        self.info=res.info;
+                    }else{
+                        core.toast(res.msg);
+                    }
+                })
+            },
+        },
+        mounted: function(){
+            this.member();
+        }
+    });
+</script>
+{/block}
+
+{block name="style"}
+<style>
+    .bus-list{padding-top:12px;}
+    .bus-list li{padding:12px;background-color:#182121;border-bottom:1px solid #0D1414;}
+    .bus-list li .getcode{position:absolute;top:-3px;right:0;background-color:#00D6E2;color:#fff;padding:5px 15px;border-radius:5px;}
+    .bus-list li input{background-color:#182121;color:#eee;}
+    .bus-list li select{background-color:#182121;color:#eee;}
+    .bus-list li .set-file{position:absolute;left:0;right:0;top:0;bottom:0;opacity:0;}
+    .foot-btn{padding:12px;}
+    .foot-btn .btn{display:block;text-align:center;padding:12px;border-radius:5px;background-color:#00D6E2;font-size:16px;}
+</style>
+{/block}

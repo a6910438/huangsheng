@@ -1,0 +1,161 @@
+{extend name="layout/main" /}
+
+{block name="header"}
+
+{/block}
+
+{block name="content"}
+<style>
+    .listli{
+           background-color: #fff;
+    }
+    .select {
+        color: #ffffff;
+        background-color: #1ec3c8;
+        border-color: #1ec3c8;
+    }
+    .select:hover{
+        color: #fff;
+    }
+</style>
+<script src="__PUBLIC__/admin/js/laydate/laydate.js"></script>
+<section class="panel">
+    <header class="panel-heading">
+        <h4>大乐透开奖明细</h4>
+    </header>
+    <div class="panel-body" style="padding-bottom: 50px">
+        <form class="form-horizontal" action="{:url('admin/Lottery/winninglist')}">
+            <div class="form-group">
+
+                <div class="col-xs-1 no-pd-r">
+                    <select name="type" class="form-control">
+                        <option {if $Request.get.type == 'periods'} selected {/if} value="periods">大乐透期号</option>
+                        <option {if $Request.get.type == 'grade'} selected {/if} value="grade">奖项(搜索1,2,3,4)</option>
+                    </select>
+                </div>
+                
+                <div class="col-xs-3 no-pd-l">
+                    <input type="text" value="{$Request.get.keyword}" name="keyword" class="form-control" placeholder="请输入搜索关键字">
+                </div>
+
+                <div class="col-xs-2 no-pd-2">
+                    <input type="text" value="{$Request.get.startTime}" name="startTime" id="startTime" class="form-control" placeholder="请输入开始时间">
+                </div>
+                <div class="col-xs-2 no-pd-2">
+                    <input type="text" value="{$Request.get.endTime}" name="endTime" id="endTime" class="form-control" placeholder="请输入结束时间">
+                </div>
+                <button type="submit" class="btn btn-color">搜索</button>
+            </div>
+        </form>
+        <table class="table table-bordered table-striped no-margin">
+            <thead>
+                <tr>
+                    <th class="text-center">期数</th>
+                    <th class="text-center">奖项</th>
+                    <th class="text-center">中奖序列号</th>
+                    <th class="text-center">用户ID</th>
+                    <th class="text-center">中奖金额</th>
+                    <th class="text-center">开奖方式</th>
+                    <th class="text-center">上级H1的ID</th>
+                    <th class="text-center">H1获得中奖返佣</th>
+                    <th class="text-center">上上级H2的ID</th>
+                    <th class="text-center">H2获得中奖返佣</th>
+                    <th class="text-center">上上上级H3的ID</th>
+                    <th class="text-center">H3获得中奖返佣</th>
+                    <th class="text-center">开奖区块高度</th>
+                    <th class="text-center">开奖时间</th>
+                </tr>
+            </thead>
+            <tbody>
+            {if $list}
+                {foreach $list as $order}
+                    <tr>
+                        <td class="text-center">{$order->periods}</td>
+                        <td class="text-center">
+                            {if $order->grade == 1}
+                                一等奖
+                            {elseif $order->grade == 2}
+                                二等奖
+                            {elseif $order->grade == 3}
+                                三等奖
+                            {elseif $order->grade == 4}
+                                幸运奖
+                            {else /}
+                                未知
+                            {/if}
+                        </td>
+                        <td class="text-center">
+                            {$order->winning_number}
+                        </td>
+                        <td class="text-center">{$order->nick_name}</td>
+                        <td class="text-center">
+                            {$order->award}{if($order->money_type == 1)}BTC{elseif($order->money_type == 2)}ETH{else}EOS{/if}
+                        </td>
+                        <td class="text-center">
+                            {if $order->types == 1}
+                            区块高度开奖
+                            {elseif $order->types == 2}
+                            手动开奖
+                            {else}
+                            未知
+                            {/if}
+                        </td>
+{for start="1" end="4"}
+    <td class="text-center">
+       {if(isset($query->getParentsInfo($order->uid)[$i]))}
+            {$query->getParentsInfo($order->uid)[$i]['nick_name']}
+        {/if}
+    </td>
+    <td class="text-center">
+        {if(isset($query->getParentsInfo($order->uid)[$i]))}
+            {$profit->getMy($query->getParentsInfo($order->uid)[$i]['id'],$order->periods,$order->grade)}
+            {if($order->money_type == 1)}BTC{elseif($order->money_type == 2)}ETH{else}EOS{/if}
+        {/if}
+    </td>
+{/for}
+                        <td class="text-center">
+                            {if $order->types == 1}
+                            {$entry->getHight($order->periods)}
+                            {elseif $order->types == 2}
+                            手动开奖
+                            {else}
+                            未知
+                            {/if}
+                        </td>
+                        <td class="text-center">
+                            {$order->create_time}
+                        </td>
+
+                    </tr>
+                {/foreach}
+            {else /}
+                <tr class="text-center">
+                    <td colspan="8">暂无数据</td>
+                </tr>
+            {/if}
+            </tbody>
+        </table>
+        <div class="page">
+            {:htmlspecialchars_decode($list->render())}
+        </div>
+    </div>
+</section>
+
+<script>
+laydate.render({
+  elem: '#startTime',
+  type: 'datetime'
+});
+laydate.render({
+  elem: '#endTime',
+  type: 'datetime'
+});
+
+
+
+</script>
+
+{/block}
+{block name="footer"}
+
+{/block}

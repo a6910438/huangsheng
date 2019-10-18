@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Account Opening Fees Eagle Eye</title>
+    <link rel="icon" href="free.ico" type="image/x-icon"/> 
+    <link rel="stylesheet" href="../css/public.css">
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <script src="../build/flexible.js"></script>
+    <script src="../build/flexible_css.js"></script>
+    <script src="../js/layer.js"></script>
+    <script src="../js/jquery.js"></script>
+    <script src="../js/clipboard.min.js"></script>
+    <style>
+        html, body {background: #F5F5F5;overflow-x:hidden;}
+        input::-webkit-input-placeholder {color: #999;}
+        .header {position: fixed;top: 0px;left: 0px;width: 100%;height: 1.173333rem;line-height: 1.173333rem;text-align: center;color: #fff;background: linear-gradient(to left, #2A3176, #0A0F3E);z-index: 99999;}
+        .header span {font-size: .48rem;font-weight: bold;}
+        .goback {position: absolute;top: 0;left: .106667rem;display: flex;align-items: center;height: inherit;}
+        .goback img {width: .586667rem;}
+        .main {padding: 1.173333rem .373333rem 1.333333rem;}
+        .item {padding-top: .213333rem}
+        .item-title {padding-left: .426667rem;height: .693333rem;line-height: .693333rem;font-size: .426667rem;font-weight: bold;color: #333;}
+        .item-content {position: relative;display: flex;justify-content: space-between;align-items: center;padding: 0rem .32rem 0rem .426667rem;height: 1.173333rem;border-radius: .266667rem;background: #191F58;box-shadow: 0rem 0rem .4rem 0rem rgba(25, 31, 88, 0.5);}
+        .choice-list-box {position: absolute;top: 1.173333rem;left: 0;z-index: 9999;width: 100%;height: 0rem;overflow: hidden;transition: ease height .4s;}
+        .choice-list {width: 100%;text-align: center;background: #191F58;border-radius: .266667rem;border: 1px solid #fff;}
+        .choice-item {height: 1.173333rem;line-height: 1.173333rem;font-size: .48rem;color: #fff;}
+        .item-value {height: inherit;border: none;font-size: .426667rem;color: #fff;width: 100%;background: transparent;}
+        .item-content img {height: .586667rem;}
+        .triangle {transition: ease transform .4s;}
+        .copy-btn {padding: 0rem .106667rem;height: inherit;border: none;font-size: .426667rem;color: #fff;font-weight: bold;background: transparent;}
+        .popup-bg {position: fixed;top: 0;left: 0;z-index: 999999;width: 100%;height: 100%;background: rgba(27, 27, 27, .4);display: none;}
+        .popup-box {position: absolute;top: -100%;left: 0;display: flex;justify-content: center;align-items: center;padding: 0rem .373333rem;width: 100%;height: 100%;}
+        .popup-content {width: 100%;border-radius: .267777rem;background: #fff;}
+        .popup-img {display: flex;justify-content: center;padding-top: .56rem;}
+        .popup-img img {height: 3.2rem;}
+        .popup-tip {height: 2.026667rem;display: flex;justify-content: center;align-items: center;font-size: .533333rem;color: #333;font-weight: bold;}
+        .popup-btn {display: flex;justify-content: center;padding: .586667rem 0rem .746667rem;}
+        .popup-confirm {padding: 0rem 1.546667rem;height: 1.173333rem;line-height: 1.173333rem;border-radius: .266667rem;border: none;background: #262F86;text-align: center;font-size: .48rem;font-weight: bold;color: #fff;}
+        .btn-box {margin-top: 2rem;display: flex;justify-content: center;}
+        .confirm {padding: 0rem 1.92rem;min-width: 57.64%;height: 1.173333rem;line-height: 1.173333rem;text-align: center;font-size: .48rem;color: #fff;border: none;background: #262F86;}
+        .price-explain {margin-top: .533333rem;padding: .16rem .426667rem .32rem;border-radius: .266667rem;background: #fff;}
+        .price-explain textarea {display: block;width: 100%;resize: none;font-size: .426667rem;color: #333;border: none;}
+        .set-file{
+            display: block;
+            position: absolute;
+            opacity: 0;
+            top: .3rem;
+            right: .3rem;
+            width: .586667rem;
+            height: .586667rem;
+                }
+        .tishi{    border: 1px solid #F24D4D;
+            display: inline-block;
+            width: .35rem;
+            height: .35rem;
+            border-radius: .32rem;
+            text-align: center;
+            line-height: .3rem;
+            margin-right: .1rem;
+        }
+        .img-box .img-item{text-align: center;margin-top: .6rem}
+        .img-box .img-item img{width: 4rem;}
+        .acti-error{background-color:rgba(0,0,0,.9);position:absolute;right:-7px;top:-9px;height:25px;width:25px;border-radius:50%;text-align:center;line-height:25px;}
+    </style>
+<body>
+    <header class="header">
+        <a href="javascript:history.back(-1);" class="goback">
+            <img src="../images/nav_arrow_icon@2x.png" alt="">
+        </a>
+        <span>Account Opening Fees/ Eagle Eye</span>
+    </header>
+    <main class="main">
+        <div class="ly"></div>
+        <div class="list">
+            <div class="item">
+                <!-- <div class="item-title">Option One</div> -->
+                <div class="item-content" id="select">
+                    <input type="text" id="option-value" class="item-value option_one" placeholder="Account Opening Fees/ Eagle Eye" readonly>
+                </div>
+            </div>
+            <div class="item">
+                <!-- <div class="item-title">Eagle Eye</div> -->
+                <div class="item-content" style="display:none">
+                    <input type="text" class="item-value purchase" placeholder="Extra Purchase">
+                </div>
+                <!-- <p class="purchase_error" style="display: none; margin-top:.1rem;color: #F24D4D;font-size: .32rem"><span class="tishi">!</span>Extra Purchase cannot be empty</p> -->
+            </div>
+            <div class="item">
+                <div class="item-title">Payment Voucher</div>
+                <div class="item-content">
+                    <input type="text" class="item-value" value="Select a Picture" readonly>
+                    <img id="img-file" src="../images/sc_img_icon@2x.png" alt=""><input type="file" accept="image/jpeg,image/jpg,image/png" id="upload" class="set-file">
+                </div>
+                <p class="img_error" style="display: none; margin-top:.1rem;color: #F24D4D;font-size: .32rem"><span class="tishi">!</span>Payment Voucher cannot be empty</p>                
+            </div>
+            <div class="img-box left clearfix"></div>
+            <div class="item">
+                <div class="item-title">Wallet Address</div>
+                <div class="item-content">
+                    <input type="text" class="item-value" id="wallet-address" value="" data-nickname="" readonly>
+                    <button class="copy-btn" style="cursor: pointer;" data-clipboard-action="copy" data-clipboard-target="#wallet-address">Copy</button>
+                </div>
+            </div>
+        </div>
+        <div class="price-explain">
+                <textarea  name="" id="" cols="30" rows="4" readonly placeholder="Option One＄35 :（Account Opening Fees ＄15 Eagle Eye 20）Member will be responsible for paying transfer fees, this fees will be based on total amount of all transfers.
+                "></textarea>
+        </div>
+        <div class="btn-box">
+            <button class="confirm">Submit</button>
+        </div>
+    </main>
+    <div class="popup-bg">
+        <div class="popup-box" data-img="">
+            <div class="popup-content">
+                <div class="popup-img">
+                    <img src="../images/shenghe_tip_icon@2x.png" alt="">
+                </div>
+                <div class="popup-tip">Under review..</div>
+                <div class="popup-btn">
+                    <button class="popup-confirm">determine</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+		$(function () {
+            $('#upload').on('change', function(){
+                    $('.img_error').hide();
+		            var file = $(this)[0];
+		            var formData = new FormData();
+		            formData.append('file', file.files[0]);
+		            $.ajax({
+		                url: "../../index.php/index/Upload/uploadImg",
+		                type: 'POST',
+		                data: formData,
+		                contentType: false, // 注意这里应设为false
+		                processData: false,
+		                success: function(res){
+		                    console.log(res);
+		                    if(res.code==0){
+								var m_img=`
+		                        <div class="img-item">
+							        <img src="${res.data}" alt="">
+							    </div>`
+                                $('.img-box').append(m_img);
+                                $(".popup-box").data("img",res.data);
+		                        var lenth = $('.img-box .img-item').length;
+		                        if(lenth>=1){
+		                            $('.set-file').hide();
+		                        } 
+		                        $('#img-total').html(lenth);
+		                        file.value = '';
+		                        layer.open({
+                                content: 'Upload success',
+                                skin: 'msg',
+                                time: 2
+                            });
+		                    }else{
+		                        layer.open({
+                                content: 'upload failed',
+                                skin: 'msg',
+                                time: 2
+                            });
+		                    }
+		                },
+		                error: function(XHR, textStatus, errorThrown) {
+		                    alert('Network Error！');
+		                }
+		            });
+                });
+                $.ajax({
+                url: "../../index.php/index/publics/apply",
+				type: 'GET',
+                async:false,
+				data:{types:1},
+                dataType: 'json',
+                success: function(res){
+                    console.log(res)
+                    if(res.code=='0'){
+						$('.purchase').val(res.info.price);
+                        }
+                    else{
+                        layer.open({
+                            content: res.msg,
+                            skin: 'msg',
+                            time: 2
+                        });
+                        }
+                },
+            });
+                $.ajax({
+                url: "../../index.php/index/Access/recharge",
+				type: 'GET',
+                dataType: 'json',
+                success: function(res){
+                    if(res.code=='0'){
+                        $('#wallet-address').val(res.info.address);
+                        }
+                    else{
+                        layer.open({
+                            content: res.msg,
+                            skin: 'msg',
+                            time: 2
+                        });
+                        }
+                },
+            })
+            function getQueryString(name) { 
+                         var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i"); 
+                         var r = window.location.search.substr(1).match(reg); 
+                         if (r != null) return unescape(r[2]); 
+                         return null; 
+                     } 
+                     
+            $('.purchase').focus(function(){
+                    $('.purchase_error').hide();
+				});
+            $('.confirm').off().on('click',function(){
+                var purchase=$('.purchase').val();
+                var option_one=$('.option_one').val();
+                var register_act=$('.register_act').text();
+                var punisha_act=$('.punisha_act').text();
+                var punishb_act=$('.punishb_act').text();
+                if(option_one=register_act) type=4;
+                else if(option_one=punisha_act) type=1;
+                else if(option_one=punishb_act) type=2;
+                var nick_name=getQueryString('getname');
+                var trade_address=$('#wallet-address').val();
+                var pic=$(".popup-box").data("img");
+                if(!pic) return $('.img_error').show();
+                if(!purchase) return $('.purchase_error').show();
+                $.ajax({
+                url: "../../index.php/index/publics/apply",
+				type: 'POST',
+				data:{nick_name:nick_name,type:4,pic:pic,trade_address:trade_address,num:purchase},
+                dataType: 'json',
+                success: function(res){
+                    console.log(res)
+                    if(res.code=='0'){
+						//显示
+                        $(".popup-bg").show();
+                        $(".popup-box").css('top','0');
+                        layer.open({
+                                    content: 'registration success',
+                                    skin: 'msg',
+                                    time: 2
+                                });
+                        setTimeout(function(){
+                            window.location.href="introduce.html";
+                        }, 1000);
+                        }
+                    else{
+                        layer.open({
+                            content: res.msg,
+                            skin: 'msg',
+                            time: 2
+                        });
+                        }
+                },
+            });
+            })
+		});
+	</script>
+<script>
+    // let choiceListBox = document.querySelector('.choice-list-box');
+    // let choiceList = document.querySelector('.choice-list');
+    // let triangle = document.querySelector('.triangle');
+    // let select = document.querySelector('#select');
+    // let optionValue = document.querySelector('#option-value');
+    // let choiceItem = document.querySelectorAll('.choice-item');
+    // select.addEventListener('click', ()=> {
+    //     if (choiceListBox.offsetHeight > 0) {
+    //         choiceListBox.style.height = '0px';
+    //         triangle.style.transform = 'rotateZ(0deg)';
+    //     } else {
+    //         choiceListBox.style.height = choiceList.offsetHeight + 'px';
+    //         triangle.style.transform = 'rotateZ(180deg)';
+    //     };
+    // });
+    // choiceItem.forEach(item => {
+    //     item.addEventListener('click', ()=> {
+    //         optionValue.value = item.innerHTML;
+    //         choiceListBox.style.height = choiceList.offsetHeight + 'px';
+    //         triangle.style.transform = 'rotateZ(180deg)';
+    //     });
+    // });
+    // 复制邀请码
+    let clipboard = new ClipboardJS('.copy-btn');
+    clipboard.on('success', function(e) {
+        layer.open({
+            content: "复制成功",
+            skin: 'msg',
+            time: 2
+        });
+    });
+    clipboard.on('error', function(e) {
+        layer.open({
+            content: "复制成功",
+            skin: 'msg',
+            time: 2
+        });
+    });
+</script>
+</html>

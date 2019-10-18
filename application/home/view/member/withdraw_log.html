@@ -1,0 +1,204 @@
+﻿{extend name='main'}
+
+{block name='body'}
+<div class="fish-head">
+    <a href="javascript:window.history.back();" class="head-back"><span>返回</span></a>
+    <h3 class="head-tit"><span>{$title}</span></h3>
+</div>
+<div class="fish-main" v-cloak>
+    <div id="bait-top" class="content-box">
+        <div class="top-text">当前 GC</div>
+        <div class="top-num">{{info.gc || '0.00'}}</div>
+    </div>
+    <div class="content-box">
+        <ul class="tabs">
+            <li class="tab"><a @click="typeFun(1)" href="#test1">待处理</a></li>
+            <li class="tab"><a @click="typeFun(2)" href="#test2">成功</a></li>
+            <li class="tab"><a @click="typeFun(3)" href="#test3">失败</a></li>
+        </ul>
+        <div id="test1">
+            <ul class="content-list">
+                <li v-if="list1.length>0" v-for="vo in list1" class="clearfix">
+                    <div>
+                        <div><span>提币地址 : </span><small>{{vo.wallet_address}}</small></div>
+                        <div><span>提币数量 : </span>{{vo.amount}}</div>
+                        <div><span>手续费 : </span>{{vo.commission}}</div>
+                        <div><span>提交时间 : </span>{{vo.create_time}}</div>
+                    </div>
+                </li>
+            </ul>
+            <div class="dialog-bottom"></div>
+        </div>
+        <div id="test2">
+            <ul class="content-list">
+                <li v-if="list2.length>0" v-for="vo in list2" class="clearfix">
+                    <div>
+                        <div><span>提币地址 : </span><small>{{vo.wallet_address}}</small></div>
+                        <div><span>提币数量 : </span>{{vo.amount}}</div>
+                        <div><span>手续费 : </span>{{vo.commission}}</div>
+                        <div><span>提交时间 : </span>{{vo.create_time}}</div>
+                        <div><span>完成处理时间 : </span>{{vo.done_time}}</div>
+                    </div>
+                </li>
+            </ul>
+            <div class="dialog-bottom"></div>
+        </div>
+        <div id="test3">
+            <ul class="content-list">
+                <li v-if="list3.length>0" v-for="vo in list3" class="clearfix">
+                    <div>
+                        <div><span>提币地址 : </span><small>{{vo.wallet_address}}</small></div>
+                        <div><span>提币数量 : </span>{{vo.amount}}</div>
+                        <div><span>手续费 : </span>{{vo.commission}}</div>
+                        <div><span>提交时间 : </span>{{vo.create_time}}</div>
+                        <div><span>完成处理时间 : </span>{{vo.done_time}}</div>
+                    </div>
+                </li>
+            </ul>
+            <div class="dialog-bottom"></div>
+        </div>
+    </div>
+</div>
+{include file='menu'}
+{/block}
+
+{block name='script'}
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            info: '',
+            type: 1,
+            list1: [],
+            page1: 1,
+            status1: true,
+            list2: [],
+            page2: 1,
+            status2: true,
+            list3: [],
+            page3: 1,
+            status3: true,
+            feed: ''
+        },
+        computed: {
+            
+        },
+        methods: {
+            
+            member: function(){
+                core.load("{:url('/index/setup/index')}", {}, (res)=>{
+                    
+                    if(res.code==0){
+                        this.info=res.info;
+                    }else{
+                        core.toast(res.msg);
+                    }
+                })
+            },
+            typeFun: function(id){
+                if(this.type==id) return;
+                this.type = id;
+                if( this.type==1 ){
+                    if( this.page1!=1 ) return;
+                }else if( this.type==2 ){
+                    if( this.page2!=1 ) return;
+                }else if( this.type==3 ){
+                    if( this.page3!=1 ) return;
+                };
+                this.loadList();
+            },
+            loadList: function(){
+                var page = '';
+                if(this.type==1){
+                    if(!this.status1) return;
+                    page = this.page1;
+                    this.page1 = ++this.page1;
+                }else if(this.type==2){
+                    if(!this.status2) return;
+                    page = this.page2;
+                    this.page2 = ++this.page2;
+                }else if(this.type==3){
+                    if(!this.status3) return;
+                    page = this.page3;
+                    this.page3 = ++this.page3;
+                }
+                var data = {
+                    type: this.type-1,
+                    limit: 5,
+                    page: page
+                };
+                core.load("{:url('index/withdraw/list')}", data, (res)=>{
+                    
+                    if(res.code=='0'){
+                        if(this.type==1){
+                            if(res.info.data.length>0) this.list1 = this.list1.concat(res.info.data);
+                            if( res.info.last_page <= res.info.current_page ){
+                                this.status1 = false;
+                                $('.dialog-bottom').eq(0).html('已经加载全部数据');
+                            }else{
+                                $('.dialog-bottom').eq(0).html('正在加载...');
+                            }
+                        }else if(this.type==2){
+                            if(res.info.data.length>0) this.list2 = this.list2.concat(res.info.data);
+                            if( res.info.last_page <= res.info.current_page ){
+                                this.status2 = false;
+                                $('.dialog-bottom').eq(1).html('已经加载全部数据');
+                            }else{
+                                $('.dialog-bottom').eq(1).html('正在加载...');
+                            } 
+                        }else if(this.type==3){
+                            if(res.info.data.length>0) this.list3 = this.list3.concat(res.info.data);
+                            if( res.info.last_page <= res.info.current_page ){
+                                this.status3 = false;
+                                $('.dialog-bottom').eq(2).html('已经加载全部数据');
+                            }else{
+                                $('.dialog-bottom').eq(2).html('正在加载...');
+                            }
+                        }
+                    }else{
+                        core.toast(res.msg);
+                    }
+                })
+            },
+        },
+        mounted: function(){
+            //$('.modal').modal();
+            $('ul.tabs').tabs();
+            //this.feedFun();
+            this.member();
+            this.loadList();
+            // 下拉加载
+            $(window).off("scroll").on("scroll", (e)=>{
+                var totalheight = parseFloat($(this).height()) + parseFloat($(this).scrollTop());
+                if (($(document).height()-100<=totalheight)){
+                    this.loadList()
+                }
+            });
+        }
+    });
+</script>
+{/block}
+
+
+{block name="style"}
+<style>
+    #bait-top{
+        text-align: center;
+        position: relative;
+        padding: 1rem 1rem;
+    }
+    #bait-top .top-text{
+        font-size:1rem;
+    }
+    #bait-top .top-num{
+        font-size:3rem;
+        font-weight:bold;
+    }
+    .content-list>li>div:last-child{
+        margin-left: auto;
+    }
+    .dialog-bottom{
+        color: #E02737;
+    }
+</style>
+{/block}

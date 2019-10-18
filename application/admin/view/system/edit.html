@@ -1,0 +1,97 @@
+{extend name="layout/main" /}
+
+{block name="header"}
+
+{/block}
+
+{block name="content"}
+<section class="panel">
+    {if isset($info)}
+    <header class="panel-heading">
+        <h4>编辑会员</h4>
+    </header>
+    <div class="panel-body" style="padding-bottom: 50px">
+        <form class="form-horizontal" method="post" onsubmit="return false" role="form">
+            <div class="form-group">
+                <label class="col-sm-2 control-label">用户名</label>
+                <div class="col-sm-5">
+                    <input type="text" value="{$info->manage_name}" name="manage_name" class="form-control"
+                           placeholder="请输入用户名">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">登录密码</label>
+
+                <div class="col-sm-5">
+                    <input type="password" name="password" class="form-control" placeholder="登录密码">
+                </div>
+                <div class="class-sm-5">
+                    <span class="help-block">如果不填写就不会修改</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">确认密码</label>
+                <div class="col-sm-5">
+                    <input type="password" value="" name="re_password" class="form-control" placeholder="登录密码">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" data-url="{:url('updateAdmin',['id'=>$info->id])}"
+                            onclick="main.ajaxPosts(this)" class="btn btn-primary">确定修改
+                    </button>
+                    &nbsp;
+                    <button type="button" onclick="javascript:history.back(-1);" class="btn btn-warning">返回
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+    {else /}
+    <header class="panel-heading">
+        <h4>会员注册</h4>
+    </header>
+    <div class="panel-body" style="padding-bottom: 50px">
+        <form class="form-horizontal" method="post" onsubmit="return false" role="form">
+            <div class="form-group">
+                <label class="col-sm-2 control-label">管理员账号</label>
+
+                <div class="col-sm-5">
+                    <input type="text" value="" name="username" class="form-control"
+                           placeholder="请输入会员账号">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">登录密码</label>
+
+                <div class="col-sm-5">
+                    <input type="password" name="password" class="form-control" placeholder="请输入登录密码">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">重复登录密码</label>
+
+                <div class="col-sm-5">
+                    <input type="password" name="re_password" class="form-control" placeholder="请再次输入登录密码">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" onclick="main.ajaxPosts(this)" data-url="{:url('createAdmin')}"
+                            class="btn btn-primary">提交
+                    </button>
+                    &nbsp;
+                    <button type="button" onclick="javascript:history.back(-1);" class="btn btn-warning">返回
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+    {/if}
+</section>
+{/block}
+
+
+{block name="footer"}
+    <script src="/admin/vendor/fuelux/checkbox.js"></script>
+{/block}

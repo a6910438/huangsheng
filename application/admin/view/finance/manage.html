@@ -1,0 +1,238 @@
+{extend name="layout/main" /}
+
+{block name="header"}
+
+{/block}
+
+{block name="content"}
+<script src="__PUBLIC__/admin/js/laydate/laydate.js"></script>
+<section class="panel">
+    <header class="panel-heading">
+        <h4>管控列表</h4>
+    </header>
+    <div class="panel-body" style="padding-bottom: 50px">
+        <form class="form-horizontal" action="{:url('admin/Finance/manage')}" >
+            <div class="form-group">
+                <div class="col-xs-1 no-pd-r">
+                    <select name="recommend" class="form-control">
+                        <option  value="0">有无推荐</option>
+                        <option {if $Request.get.recommend == 1}selected{/if} value="1">有推荐</option>
+                        <option {if $Request.get.recommend == 2}selected{/if} value="2">无推荐</option>
+                    </select>
+                </div>
+                <div class="col-xs-1 no-pd-r">
+                    <select name="manage_status" class="form-control">
+                        <option  value="0">管控状态</option>
+                        {foreach $ManageStatus as $key=>$item}
+                        <option {if $Request.get.manage_status == $key}selected{/if} value="{$key}">{$item}</option>
+                        {/foreach}
+                    </select>
+                </div>
+                <div class="col-xs-2 no-pd-2">
+                    固定资产
+                    <input type="text" value="{$Request.get.oldMin}" name="oldMin" class="form-control" placeholder="请输入固定资产最小金额">
+                    <input type="text" value="{$Request.get.oldMax}" name="oldMax" class="form-control" placeholder="请输入固定资产最大金额">
+                </div>
+                <div class="col-xs-2 no-pd-2">
+                    现在资产
+                    <input type="text" value="{$Request.get.nowMin}" name="nowMin" class="form-control" placeholder="请输入现在资产最小金额">
+                    <input type="text" value="{$Request.get.nowMax}" name="nowMax" class="form-control" placeholder="请输入现在资产最大金额">
+                </div>
+                <div class="col-xs-1 no-pd-r">
+                    <select name="type" class="form-control">
+                        <option {if $Request.get.type == 'nick_name'} selected {/if} value="nick_name">用户名称</option>
+                    </select>
+                </div>
+                <div class="col-xs-3 no-pd-l">
+                    <input type="text" value="{$Request.get.keyword}" name="keyword" class="form-control" placeholder="请输入关键词搜索">
+                </div>
+                <div class="col-xs-2 no-pd-2">
+                    <input type="text" value="{$Request.get.startTime}" name="startTime" id="startTime" class="form-control" placeholder="请输入开始时间">
+                </div>
+                <div class="col-xs-2 no-pd-2">
+                    <input type="text" value="{$Request.get.endTime}" name="endTime" id="endTime" class="form-control" placeholder="请输入结束时间">
+                </div>
+                <button type="submit" class="btn btn-color">搜索</button>
+                <a  class="btn btn-info" id="lockAll">管控所选</a>
+                <a  class="btn btn-success" id="openAll">解除所选</a>
+            </div>
+        </form>
+
+        <table class="table table-bordered table-striped no-margin">
+            <thead>
+                <tr>
+                    <th class="text-center"><input type="checkbox" name="allCheckbox"></th>
+                    <th class="text-center">ID</th>
+                    <th class="text-center">用户昵称</th>
+                    <th class="text-center">用户状态</th>
+                    <th class="text-center">冻结存单</th>
+                    <th class="text-center">固定资产</th>
+                    <th class="text-center">现在资产</th>
+                    <th class="text-center">盈亏</th>
+                    <th class="text-center">已生成的取单</th>
+                    <th class="text-center">管控状态</th>
+                    <th class="text-center">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+            {if $list}
+                {foreach $list as $order}
+                    <tr>
+                        <td class="text-center"><input type="checkbox" name="layTableCheckbox" value="{$order->id}"></td>
+                        <td class="text-center">{$order->id}</td>
+                        <td class="text-center">
+                            {$order->nick_name}
+                        </td>
+                        <td class="text-center">
+                            {$query->getStatus($order->status)}
+                        </td>
+                        <td class="text-center">
+                            {$order->store}
+                        </td>
+                        <td class="text-center">
+                            {$order->old}
+                        </td>
+                        <td class="text-center">
+                            {$order->now}
+                        </td>
+                        <td class="text-center">
+                            {$order->loss}
+                        </td>
+                        <td class="text-center">
+                            <a  href="{:url('Finance/userTakeList',['id'=>$order->id])}" class="btn btn-xs btn-success">{$order->withdraw}</a>
+                        </td>
+                        <td class="text-center">
+                            {$query->getManageStatus($order->manage_status)}
+                        </td>
+                        <td class="text-center">
+                            {if $order->manage_status == 1}
+                            <a data-url="{:url('Finance/lockOne',['id'=>$order->id])}" onclick="main.ajaxDelete(this)" data-msg="确定要管控此会员吗？" class="btn btn-xs btn-success">管控</a>
+                            {else /}
+                            <a data-url="{:url('Finance/openOne',['id'=>$order->id])}" onclick="main.ajaxDelete(this)" data-msg="确定要解除此会员管控状态吗？" class="btn btn-xs btn-warning">解除</a>
+                            {/if}
+                            <a  href="{:url('Finance/manageStoreUser',['id'=>$order->id])}" class="btn btn-xs btn-default">存款</a>
+                            <a href="{:url('Finance/manageUser',['id'=>$order->id])}" class="btn btn-xs btn-info">取款</a>
+                            <a data-url="{:url('user/delete',['id'=>$order->id])}" onclick="showContent(this)" data-content="{$order->feedback($order->id)}" class="btn btn-xs btn-danger">反馈</a>
+                        </td>
+                    </tr>
+                {/foreach}
+            {else /}
+                <tr class="text-center">
+                    <td colspan="8">暂无数据</td>
+                </tr>
+            {/if}
+            </tbody>
+        </table>
+        <div class="page">
+            {:htmlspecialchars_decode($list->render())}
+        </div>
+    </div>
+</section>
+<script>
+    laydate.render({
+        elem: '#startTime',
+        type: 'datetime'
+    });
+    laydate.render({
+        elem: '#endTime',
+        type: 'datetime'
+    });
+
+    $("input[name='allCheckbox']").on('click', function(){
+        if($(this).is(':checked')){
+            $("input[name='layTableCheckbox']").prop("checked","checked");
+        }else{
+            $("input[name='layTableCheckbox']").prop("checked", "");
+        }
+    });
+
+    $("input[name='layTableCheckbox']").on('click', function(){
+        if($(this).is(':checked')){
+            var is = true;
+            $("input[name='layTableCheckbox']").each(function(index, el) {
+                if(!$(this).is(':checked')){
+                    is = false;
+                }
+            });
+            if(is) $("input[name='allCheckbox']").prop("checked", "checked");
+        }else{
+            $("input[name='allCheckbox']").prop("checked", "");
+        }
+    });
+
+    $('#lockAll').on('click', function(){
+        var arr = [];
+        $("input[name='layTableCheckbox']").each(function(index, el) {
+            if($(this).is(':checked')){
+                arr.push($(this).val())
+            }
+        });
+        var str = arr.join(',');
+        console.log(arr);
+            $.ajax({
+                url: "{:url('Finance/lockAll')}",
+                type: 'POST',
+                data:{id:str},
+                dataType: 'json',
+                success: function(res){
+                    if(res.code=='0'){
+                        if (res.toUrl) {
+                            window.location.href = res.toUrl;
+                            return false;
+                        }else{
+                            window.location.reload();
+                            return false;
+                        }
+                    } else{
+                        main.waringAlert(res.message);
+                    }
+                },
+            });
+    })
+    $('#openAll').on('click', function(){
+        var arr = [];
+        $("input[name='layTableCheckbox']").each(function(index, el) {
+            if($(this).is(':checked')){
+                arr.push($(this).val())
+            }
+        });
+        var str = arr.join(',');
+        console.log(arr);
+
+        $.ajax({
+            url: "{:url('Finance/openAll')}",
+            type: 'POST',
+            data:{id:str},
+            dataType: 'json',
+            success: function(res){
+                if(res.code=='0'){
+                    if (res.toUrl) {
+                        window.location.href = res.toUrl;
+                        return false;
+                    }else{
+                        window.location.reload();
+                        return false;
+                    }
+                } else{
+                    main.waringAlert(res.message);
+                }
+            },
+        });
+
+    })
+
+</script>
+<script>
+    function showContent(e){
+        $.dialog({
+            title: '反馈内容',
+            content: $(e).attr('data-content')
+        });
+    }
+</script>
+{/block}
+
+
+{block name="footer"}
+
+{/block}

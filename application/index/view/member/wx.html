@@ -1,0 +1,83 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>绑定微信</title>
+	<!--head-->
+	{include file="layout/head" /}
+</head>
+<body>
+<header class="mui-bar mui-bar-nav my-header">
+    <a href="/index/member/set" class="mui-icon mui-icon-left-nav mui-pull-left"></a>
+
+    <h1 id="title" class="mui-title">微信</h1>
+</header>
+<div class="mui-content container setting">
+    <form class="mui-input-group" action="{:url('member/updateUser')}" method="post" onsubmit="return false" id="submitForm">
+        <div class="mui-input-row my-input-row">
+            <label>账号</label>
+            <input type="text" class="mui-input" placeholder="请输入微信账号" name="wx" value="{$list->wx}">
+        </div>
+        <input type="hidden" class="mui-input" id="wx_image_url" name="wx_image_url" value="{$list->wx_image_url}">
+        <div class="mui-input-row my-input-row  upload">
+            <img class="left" style="" src="/static/img/wechat.png">
+            <span class="left">上传微信收款二维码</span>
+        </div>
+        <div class="white-box" style="padding: 10px;">
+            {if $list->wx_image_url}
+				<img id="show" class="uploadFile" style="width: 100px;display: block;margin: auto;" src="{$list->wx_image_url}">
+				{else /}
+				<img id="show" class="uploadFile" style="width: 100px;display: block;margin: auto;" src="/static/img/tj.png">
+			{/if}
+        </div>
+        <input type="file" id="file" name="wx_image_url" style="display: none;">
+    </form>
+    <button data-form="submitForm" onclick="ajaxPost(this)"  type="submit" class="mui-btn mui-btn-warning my-btn" >确定</button>
+</div>
+</body>
+{include file="layout/footer" /}
+<script type="text/javascript">
+    mui.init()
+    mui.previewImage();
+    mui('.mui-scroll-wrapper').scroll({
+        deceleration: 0.0005 //flick 减速系数，系数越大，滚动速度越慢，滚动距离越小，默认值0.0006
+    });
+    $(".uploadFile").click(function(){
+		$("#file").click();
+	})
+	$("#file").change(function(){
+		var $this = $(this);
+		var file = this.files[0];
+		if(file.length == 0)
+		{
+			mui.alert("请选择要上传的图片");
+			return false;
+		}
+		var data = new FormData();
+		data.append('image',file);
+		// console.log(data);return false;
+		mui.showLoading("正在上传...");
+		$.ajax({
+			url:"/index/upload/uploadEditor",
+			type:"post",
+			data:data,
+			processData:false,
+			contentType:false,
+			dataType:'json',
+			success:function(data){
+				var url = data.data[0];
+				if(data.errno == 0)
+				{
+					mui.hideLoading();
+					$("#show").attr("src", url);
+					$("#wx_image_url").val(url);
+				}
+				else
+				{
+					mui.alert(data.fail);
+				}
+			}
+		})
+	})
+</script>
+</html>

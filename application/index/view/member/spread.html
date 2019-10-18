@@ -1,0 +1,35 @@
+<!doctype html>
+<html style="height: 100%">
+<head>
+    <title>招募</title>
+    {include file="layout/head" /}
+</head>
+<style type="text/css">
+    #saveimg{
+        position: fixed;
+        bottom: 0px;
+        width: 100%;
+        padding:15px;
+        font-size: 16px;
+        color:#fff;
+        background: #ea6c41;
+    }
+</style>
+<body style="height: 100%">
+<header class="mui-bar mui-bar-nav my-header">
+    <a href="{:url('member/index')}" class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+    <h1 class="mui-title">招募</h1>
+</header>
+    <div class="mui-content" style="height: 100%;">
+        <img src="{$path}" style="width:100%;">
+    </div>
+    <div id="saveimg" class="mui-text-center">长按图片保存到手机</div>
+
+{include file="layout/footer" /}
+</body>
+<script type="text/javascript">
+    ;(function(){
+        
+    })()
+    </script>
+</html>

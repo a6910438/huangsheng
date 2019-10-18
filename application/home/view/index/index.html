@@ -1,0 +1,2272 @@
+{extend name='main'}
+
+{block name='body'}
+<div class="fish-head" style="margin-bottom: 6%;">
+	<!-- <a href="javascript:window.history.back();" class="head-back"><span>返回</span></a> -->
+	<h3 class="head-tit"><img class="title-logo" src="http://oss.inewgo.net/resource/imgs/img/title-logo.png"></h3>
+	<!--<a href="#modal-success" class="head-link"><span>测试成功抢购</span></a>-->
+</div>
+<div class="fish-main" v-cloak>
+	<!--广播-->
+	<div class="scroll-box">
+		<ul>
+			<li v-for="item in gmess"><img src="http://oss.inewgo.net/resource/imgs/img/messlogo.png" class="">{{item}}</li>
+		</ul>
+	</div>
+	<div class="fish-banner" v-if="wheel.length>1">
+		<div id="Swipe" class="swipe">
+			<div class="swipe-wrap">
+				<div class="swipe-item" v-for="(vo,index) in wheel" v-if="wheel.length>0&&wheel[index].type==1">
+					<a :href="vo.url || 'javascript:;'"><img :src="vo.img" :alt="vo.remarks"></a>
+				</div>
+				<div class="swipe-item" v-if="wheel[0]&&wheel[0].data.length>0&&wheel[0].type==2">
+					<div class="ranking-list">
+						<h2><img class="star-bg" src="http://oss.inewgo.net/resource/imgs/img/star.png">房产利润每周排行榜</h2>
+						<div style="position: relative;top:-.2rem">
+							<p><span class="tb1">名次</span><span class="tb2">房产利润</span><span class="tb3"></span><span class="tb4">名称</span></p>
+							<p v-if="wheel[0].data[0]"><span class="tb1">第一名</span>
+								<span class="longall tb2">
+									<i class="longleft"></i>
+									<span class="longbox">
+										<i class="longing" :style="longCheck(wheel[0].data[0].percentage)"></i>
+									</span>
+								</span>
+								<span class="tb3">{{wheel[0].data[0].profit_number}} GTC</span><span class="tb4">{{wheel[0].data[0].nick_name|newName}}</span></p>
+							<p v-if="wheel[0].data[1]"><span class="tb1">第二名</span>
+								<span class="longall tb2">
+									<i class="longleft"></i>
+									<span class="longbox">
+										<i class="longing" :style="longCheck(wheel[0].data[1].percentage)"></i>
+									</span>
+								</span>
+								<span class="tb3">{{wheel[0].data[1].profit_number}} GTC</span><span class="tb4">{{wheel[0].data[1].nick_name|newName}}</span></p>
+							<p v-if="wheel[0].data[2]"><span class="tb1">第三名</span>
+								<span class="longall tb2">
+									<i class="longleft"></i>
+									<span class="longbox">
+										<i class="longing" :style="longCheck(wheel[0].data[2].percentage)"></i>
+									</span>
+								</span>
+								<span class="tb3">{{wheel[0].data[2].profit_number}} GTC</span><span class="tb4">{{wheel[0].data[2].nick_name|newName}}</span></p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<ol class="swipe-dot clearfix">
+			<li v-if="wheel.length>0" v-for="(vo,index) in wheel" :class="index==0?'act':''"></li>
+		</ol>
+	</div>
+	<div class="fish-banner" v-else>
+		<img :src="vo.img" :alt="vo.remarks" v-for="vo in wheel" width="100%" />
+	</div>
+
+	<!-- 标题 -->
+
+	<div class="page-title">
+		<div class="realestatefair"></div>
+	</div>
+	<!-- 列表 -->
+	<ul class="fish-list">
+		<li v-if="info.length>0" v-for="(vo, index) in info" :style="indexCheck(index)">
+			<!-- <div class="endofsnapup" v-if="vo.status==5">
+				本轮抢购已结束<br>房产正在建造中
+			</div> -->
+			<div class="box-top-img"></div>
+			<div class="fish-img">
+				<img src="http://oss.inewgo.net/resource/imgs/img/jian-ing.png" v-if="vo.status==5" class="jian-ing" />
+				<img :src="vo.img" alt="">
+			</div>
+			<div class="fish-name">
+				<h3 class="info-title font-set1">{{vo.name|checkFontLong}}</h3>
+				<p>{{vo.en_name}}</p>
+				<!--<h3 class="info-title">{{vo.remarks}}</h3>-->
+				<div class="info-price"><span>价格{{vo.worth_min*1}}-{{vo.worth_max*1}}</span></div>
+			</div>
+			<div class="fish-info">
+				<div class="info-item">
+					<label>合约收益 :</label>
+					<strong>{{vo.profit*1}}%</strong>
+				</div>
+				<div class="info-item">
+					<label>抢购时间 :</label>
+					<span>{{vo.start_time}}~{{vo.end_time}}</span>
+				</div>
+				<div class="info-item">
+					<label>智能预约 :</label>
+					<span>{{vo.subscribe_bait*1}}</span>
+					<small>GTC</small>
+				</div>
+				<div class="info-item">
+					<label style="letter-spacing: 0.3rem">装修</label><label style="letter-spacing: normal">费 :</label>
+					<span>{{vo.bait*1}}</span>
+					<small>GTC/天</small>
+				</div>
+				<div class="info-item">
+					<label>智能合约 :</label>
+					<span>{{Math.ceil(vo.contract_time/24)}}</span>
+					<small>天</small>
+				</div>
+			</div>
+			<div class="fish-btn">
+				<a href="javascript:;" v-if="vo.status==0" class="list-btn btn01"><span></span></a>
+				<!--未开放-->
+				<a href="javascript:;" v-if="vo.status==1" class="list-btn btn02" @click="appointment(vo.id, index, 0,vo)"><span></span></a>
+				<!--立即<br>预约-->
+				<a href="javascript:;" v-if="vo.status==2" class="list-btn btn03"><span></span></a>
+				<!--待领取-->
+				<!-- 3=>领取 7=>即抢 -->
+				<a href="javascript:;" v-if="vo.status==3 || vo.status==7" class="list-btn btn04" @click="adopt(vo.id, index ,vo)"><span></span></a>
+				<!--立即<br>抢购-->
+				<a href="javascript:;" v-if="vo.status==4" class="list-btn btn05"><span></span></a>
+				<!--排队中-->
+				<a href="javascript:;" v-if="vo.status==5" class="list-btn btn06"><span></span></a>
+				<!--建造中-->
+				<a href="javascript:;" v-if="vo.status==6" class="list-btn btn07"><span></span></a>
+				<!--已领取-->
+				<a href="javascript:;" v-if="vo.status==8" class="list-btn btn08" @click="toDetail(vo.fid,vo)"><span></span></a>
+				<!--待支付-->
+				<a href="javascript:;" v-if="vo.status==9" class="list-btn btn09"><span></span></a>
+				<!--待确认-->
+				<div class="info-item" v-if="vo.status==0" style="margin-right: 1rem;">
+					<label>暂未开放</label>
+				</div>
+				<div class="info-item" v-else>
+					<label>即时抢购 :</label>
+					<span>{{vo.rob_bait*1}}</span>
+					<small>GTC</small>
+				</div>
+			</div>
+		</li>
+	</ul>
+	<div class="dialog-bottom">更多种类，敬请期待</div>
+</div>
+<!-- <div id="modal-success" class="modal" style="background:none;box-shadow:none;">
+	<div class="content-box">
+		<h3>恭喜抢购成功</h3>
+		<div>
+			<img :src="adoption.img" alt="资产图片">
+		</div>
+		<div>
+			<strong>{{adoption.name}}</strong>
+			<p>价值：{{adoption.worth}} GTC</p>
+		</div>
+		<img src="/uploads/20190531/1fa3e056927840058ab9dddea963d6e7.png" alt="">
+	</div>
+	<div class="content-view">
+		<a class="content-btn" :href="'{:url('home/member/detail')}?type=1&id='+adoption.f_id">去支付</a>
+	</div>
+</div> -->
+<!-- 预约弹窗 -->
+<div class="modal2" v-show="pop" @click="closepop(event)">
+	<!-- 弹窗内容 -->
+	<div class="modal-content">
+		<div class="title-head">
+			预约详情
+		</div>
+		<img src="http://oss.inewgo.net/resource/imgs/img/assets10.png" class="winclosebtn" @click="closepopwin()">
+		<div class="modal-body don-form">
+			<div class="input-box content-box">
+				<div>
+					<img :src="wininfo.img" class="hoursimg" />
+					<span class="hoursbox yellowcolor">
+						<p class="hoursname">{{wininfo.name}}</p>
+						<p class="pricefont">价格{{wininfo.worth_min*1}}-{{wininfo.worth_max*1}}</p>
+					</span>
+
+				</div>
+				<div class="messbox">
+					<p><span>合约收益：</span><span class="redcolor hoursname">{{wininfo.profit*1}}%</span></p>
+					<p><span>抢购时间：</span><span>{{wininfo.start_time}}~{{wininfo.end_time}}</span></p>
+					<p><span>预约费用：</span><span>{{wininfo.subscribe_bait*1}} GTC</span></p>
+					<p><span>装修费用：</span><span>{{wininfo.bait*1}} GTC/天</span></p>
+					<p><span>合约时间：</span><span>{{Math.ceil(wininfo.contract_time/24)}} 天</span></p>
+					<p class="redcolor"><span>即时抢购：</span><span>{{wininfo.rob_bait*1}} GTC</span></p>
+				</div>
+				<p>
+					<span class="gtc-bg" :class="{'gtc-bg2': gtcbg }" @click="gtc()"><i></i>GTC 预约</span>
+					<span class="essence" :class="{'essence2':essence}" @click="essences()"><i></i>精粹预约</span>
+				</p>
+			</div>
+			<div class="">
+
+			</div>
+		</div>
+		<div class="appointment" @click="appointments">立即预约</div>
+	</div>
+</div>
+
+<!-- 抢购弹窗 -->
+<div class="modal2 buybox" v-show="pop2" id="myModal" @click="closepop2(event)" style="padding-top: 0;">
+	<!-- 弹窗内容 -->
+	<div class="modal-content buyboxbg">
+		<img src="http://oss.inewgo.net/resource/imgs/img/assets10.png" class="winclosebtn" @click="closepop2win()">
+		<div class="modal-body don-form">
+			<div class="title-head" style="padding-top: 10.5rem;">
+				<!-- 待支付 -->
+			</div>
+			<div class="input-box content-box" style="padding-top: 2.5rem;">
+				<div>
+					<img :src="adoption.img" class="hoursimg" />
+					<span class="hoursbox yellowcolor">
+						<p class="hoursname">{{adoption.name}}</p>
+						<p class="pricefont">价格{{adoption.worth_min*1}}-{{adoption.worth_max*1}}</p>
+					</span>
+
+				</div>
+				<div class="messbox">
+					<p><span>合约收益：</span><span class="redcolor hoursname">{{adoption.profit*1}}%</span></p>
+					<p><span>抢购时间：</span><span>{{adoption.start_time|timestampToTime}}~{{adoption.end_time|timestampToTime}}</span></p>
+					<p><span>预约费用：</span><span>{{adoption.subscribe_bait*1}} GTC</span></p>
+					<p><span>装修费用：</span><span>{{adoption.bait*1}} GTC/天</span></p>
+					<p><span>合约时间：</span><span>{{Math.ceil(adoption.contract_time/24)}} 天</span></p>
+					<!-- <p class="redcolor"><span>即时抢购：</span><span>{{adoption.rob_bait*1}} GTC</span></p> -->
+				</div>
+			</div>
+
+		</div>
+
+	</div>
+	<div class="input-box don-form paybox2">
+		<div class="input-item"><span>支付金额:</span> <input type="text" disabled="disabled" placeholder="请输入" autocomplete="off"
+			 v-model="adoption.worth+'GTC'"></div>
+		<div class="input-item"><span>支付密码:</span> <input type="password" placeholder="请输入" autocomplete="off" v-model="gtc_pwd"></div>
+	</div>
+	<div class="appointment paymentbtn" @click="paymentbtn($event)">立即支付</div>
+</div>
+
+<!--警告弹窗-->
+<div class="modal2" v-show="popwin">
+
+	<!-- 弹窗内容 -->
+	<div class="warning">
+		<span class="closebtn" @click="closebtn">
+			<img style="width: 100%;" src="http://oss.inewgo.net/resource/imgs/img/assets10.png">
+		</span>
+		<div class="modal-body don-form">
+			<div class="input-box input-box2">
+				<h1>当前 GTC 余额不足</h1>
+				<h2 id="looktime"></h2>
+				<p>倒计时</p>
+				<p class="tip">
+					注：请在抢购成功后2小时内完成支付，否则您的账户将被封禁24小时，<br /> 多次抢购成功未支付系统可能将您的账户永久封禁。
+				</p>
+				<div class="input-foot2">
+					<div type="submit" class="foot-btn foot-btn2" @click="charge">
+						<span style="position: relative;top: -.5rem;">立即充币</span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!--充值弹窗-->
+<div class="modal2" v-show="popwin2">
+	<!-- 弹窗内容 -->
+	<div class="warning rechargebox">
+		<span class="closebtn" @click="closebtn2" style="top: -1rem;">
+			<img style="width: 100%;" src="http://oss.inewgo.net/resource/imgs/img/assets10.png">
+		</span>
+		<div class="modal-body don-form">
+			<div class="title-box title-blue">
+				立即充币
+			</div>
+			<div class="input-box input-box2" style="padding-top:2rem ;">
+				<div class="input-foot2">
+					<span type="submit" class="foot-btn foot-btn3" @click="WalletaaBtn">钱包充币</span>
+					<span type="submit" class="foot-btn foot-btn4" @click="flashFlashBtn">闪兑</span>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- 闪兑 -->
+<div class="Asset_details" v-show="close18">
+	<div class="new_flash">
+		<div class="title-box title-blue">
+			兑换
+		</div>
+		<div class="detailsImg" @click="flashMax">
+			<img src="http://oss.inewgo.net/resource/imgs/img/assets10.png" alt="">
+		</div>
+		<div class="new_flashImg" @click="recordhMax">
+			立即兑换
+		</div>
+		<div class="flash_box">
+			<div class="flash_content">
+				<div class="flash_content1">
+					<div>当前{{form}}:{{gt_num}}</div>
+					<div></div>
+				</div>
+				<div class="flash_content2">
+					<div>{{form}}:</div>
+					<input placeholder="兑换数量" type="number" step="0.01" autofocus v-model="eth">
+				</div>
+				<div class="flash_content3" @click="swap">
+					<img src="http://oss.inewgo.net/resource/imgs/img/assets37.png" alt="">
+				</div>
+				<div class="flash_content2 flash_content4">
+					<div>{{to}}:</div>
+					<input type="text" placeholder="收到数量" readonly v-bind:value="Number(eth*exchange_rate).toFixed(2)" />
+				</div>
+				<div class="flash_content5">
+					<div>当前汇率：</div>
+					<div>{{exchange_rate || '0.00'}}</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</div>
+
+
+<!-- 闪兑成功弹框 -->
+<div class="Asset_details" v-show="close19">
+	<div id="flash_successful" class="lazy">
+		<div class="detailsImg flashsuccessfulMax" @click="flashsuccessfulMax">
+			<img src="http://oss.inewgo.net/resource/imgs/img/assets10.png" alt="">
+		</div>
+		<div class="zichang_bxomax1">
+			闪兑
+		</div>
+		<div style="color:#FFE9C9; font-size:61px; line-height:35rem; text-align: center;">闪兑成功</div>
+
+	</div>
+</div>
+
+<!-- 钱包充币 -->
+<div class="Asset_details" v-show="close23">
+	<div class="Wallet">
+		<div class="title-box title-blue">
+			钱包充币
+		</div>
+		<div class="detailsImg" @click="WalletMax">
+			<img src="http://oss.inewgo.net/resource/imgs/img/assets10.png" alt="">
+		</div>
+		<div class="new_flashImg Walletbtn" @click="copyGcAddress">
+			立即充币
+		</div>
+		<div class="Wallet_content">
+			<div>GC-Wallet</div>
+			<div style="display: none;">{{info.gc_address || 'null'}}</div>
+			<input id="gc-address" type="text" readonly v-bind:value="info.gc_address" class="gc-address">
+			<div>
+				<!-- <img src="http://oss.inewgo.net/resource/imgs/img/assets35.png" alt=""> -->
+				<img v-bind:src="info.gc_address ? '/home/tools/qrcode.html?code='+info.gc_address : '#'" alt="二维码" />
+			</div>
+			<div>请转入GC</div>
+		</div>
+	</div>
+</div>
+
+
+<!-- 钱包充币复制地址 -->
+<div class="Asset_details" v-show="close24">
+	<div id="copy_address" class="lazy">
+		<div class="detailsImg cyll" @click="copyAddress">
+			<img src="http://oss.inewgo.net/resource/imgs/img/assets10.png" alt="">
+		</div>
+		<div class="zichang_bxo11" style="left:9.2rem;">钱包充币</div>
+		<div style="color:#FFE9C9; font-size:61px;text-align: center; padding:5rem;">复制地址成功</div>
+	</div>
+</div>
+<!--
+<div id="modal1" class="modal" style="background:none;box-shadow:none;">
+    <div class="success-img">
+    	<img :src="adoption.img" alt="">
+        <!--img src="/uploads/20190531/1fa3e056927840058ab9dddea963d6e7.png" alt=""-->
+<!--
+    </div>
+    <div style="position:relative;">
+        <div style="position:relative;z-index:1;"><img src="http://oss.inewgo.net/resource/imgs/img/success.gif" alt="" style="display:block;width: 65%;margin: 57px auto 20px auto;"></div>
+        <div style="position:absolute;left:0;top:0;z-index:0"><img src="http://oss.inewgo.net/resource/imgs/img/success-bg.png" alt="" width="100%"></div>
+    </div>
+    <div style="position:absolute;bottom:8px;text-align:center;width:100%;z-index:123;"><a class="success-btn" :href="'{:url('home/member/detail')}?type=1&id='+adoption.f_id">支付</a></div>
+</div>
+-->
+{include file='menu'}
+{/block}
+
+{block name='script'}
+<script src="/fish/js/swipe.js"></script>
+<script>
+	var app = new Vue({
+		el: '#app',
+		data: {
+			info: [],
+			wheel: [],
+			notice: [],
+			adoption: '',
+			pop: false,
+			gtcbg: false,
+			essence: true,
+			pop2: false,
+			popwin: false,
+			wininfo: {},
+			id: '',
+			fish_msg: '',
+			gtc_pwd: '',
+			payType: 1, //精粹/Gtc
+			pay_type: '',
+			popwin2: false,
+			close18: false,
+			close19: false,
+			close23: false,
+			close24: false,
+			/*闪兑*/
+			exchange_rate: 1.00,
+			exchange_rate_gc: 1.00,
+			eth: '',
+			form: 'GC',
+			to: 'GTC',
+			default_url: "{:url('/index/exchange/gc_to_gtc')}",
+			url_gc_to_gtc: "{:url('/index/exchange/gc_to_gtc')}",
+			url_gtc_to_gc: "{:url('/index/exchange/gtc_to_gc')}",
+			gc_num: '',
+			gtc_num: '',
+			gt_num: '',
+			gmess: [],
+			btnType:''
+		},
+		filters: {
+			timestampToTime: function(timestamp) {
+				var date = new Date(timestamp * 1000); //时间戳为10位需*1000，时间戳为13位的话不需乘1000
+				var Y = date.getFullYear() + '-';
+				var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
+				var D = (date.getDate() < 10 ? '0' + date.getDate() : date.getDate()) + ' ';
+				var h = (date.getHours() < 10 ? '0' + date.getHours() : date.getHours()) + '';
+				var m = (date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()) + '';
+				var s = (date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds());
+				return h + ":" + m;
+			},
+			newName: function(name) {
+				let newStr;
+				if (name) {
+					if (name.length === 2) {
+						newStr = name.substr(0, 1) + '*';
+					} else if (name.length > 2) {
+						let char = '';
+						for (let i = 0, len = name.length - 2; i < len; i++) {
+							char += '*';
+						}
+						newStr = name.substr(0, 1) + char + name.substr(-1, 1);
+					} else {
+						newStr = name;
+					}
+				}
+
+				return newStr;
+			},
+			checkFontLong: function(val) {
+				if (val.length == 2) {
+					var arr = val.split('');
+					arr2 = arr[0] + ' ' + arr[1];
+					return arr2;
+				}
+				return val;
+			}
+		},
+
+		methods: {
+			toDetail: function(id, item) {
+				var self = this;
+				self.wininfo = item;
+				// $(e.target).remove();
+				$('.modal-content').css('height', '29rem');
+				$('.content-box').css('margin-top', '9rem');
+				$('.modal2').css('padding-top', '0')
+				self.pop2 = true;
+				if (id) {
+					// location.href = "{:url('home/member/detail')}?type=1&id=" + id
+					self.id = id;
+				} else {
+					core.toast('参数错误！')
+				}
+			},
+			/*
+            countDown: function(index){
+                var self = this;
+                var times = self.info[index].count_down;
+                if (times>0) {
+                    self.info[index].timer=setInterval(function(){
+                        // console.log(times);
+                        times--;
+                        if(times<=0){
+                            clearInterval(self.info[index].timer);
+                            self.goStatus(index);
+							self.success();
+                        }
+                    }, 1000);
+                }else{
+                    self.goStatus(index);
+					self.success();
+                }
+            },
+            goStatus: function(index){
+                var self =  this;
+                core.load("{:url('index/pool/get_pool_status')}", { 
+                    pool_id: self.info[index].id 
+                }, function(res){
+                    if(res.code==0){
+                        self.info[index].status=res.info.to_status;
+                        self.info[index].count_down=res.info.count_down;
+                        if(res.info.fid){ self.info[index].fid=res.info.fid; }
+                        // 重新请求
+                        self.countDown(index);
+                    }else{
+                        core.toast(res.msg);
+                    }
+                })
+            },
+            */
+			goDetail: function(id) {
+				location.href = "{:url('home/member/detail')}?type=1&id=" + id
+			},
+			success: function() {
+
+				var self = this;
+				core.load("{:url('index/pool/adoption_success')}", {}, function(res) {
+
+					if (res.code == 0) {
+						if (res.info && res.info.length > 0) {
+							$('.buybox .modal-content').css('height', '28rem');
+							$('.paymentbtn').show();
+							$('.buybox .title-head').show();
+							$('.buybox .paybox2').show();
+							self.pop2 = true;
+							self.adoption = res.info[0];
+							// $('#modal-success').modal('open');
+
+							self.id = res.info[0].f_id;
+							self.fishDetail();
+						}
+					} else {
+						core.toast(res.msg);
+					}
+				})
+			},
+			appointment: function(id, index, type, item) {
+				$('.winclosebtn').show();
+				$('.gtc-bg').css('pointer-events', 'auto');
+				$('.essence').css('pointer-events', 'auto');
+				$('.modal-content').css('height', '26rem');
+				$('.content-box').css('margin-top', '0rem');
+				$('.modal-content').removeClass('reservationsucc');
+				$('.modal2').css('padding-top', '4rem')
+				$('.title-head').text('立即预约').show().removeClass('title-headsucc');
+				$('.appointment').text('立即预约').show();
+				var self = this;
+				self.pop = true;
+				self.wininfo = item;
+				self.id = id;
+				self.btnType=1;
+			},
+			appointments(e) {
+				
+				var self = this;
+				if (self.btnType==1) {
+					core.load("{:url('index/fish/appointment_fish')}", {
+						pool_id: self.id,
+						types: 0,
+						pay_type: self.payType
+					}, function(res) {
+						if (res.code == 0) {
+							$('.winclosebtn').hide();
+							$('.gtc-bg').css('pointer-events', 'none');
+							$('.essence').css('pointer-events', 'none');
+							$('.modal-content').addClass('reservationsucc');
+							$(e.target).hide();
+							$('.title-head').text('预约成功').addClass('title-headsucc');
+							$('.modal-content').css('height', '35rem');
+							// $('.content-box').css('margin-top', '7.5rem');
+							$('.modal2').css('padding-top', '0')
+							self.loadList();
+							// window.location.reload();
+							// self.info[index].status=2;
+							setTimeout(self.closepopwin, 1500);
+						}
+						core.toast(res.msg);
+					})
+				}else{
+					core.load("{:url('index/fish/adopt_fish')}", {
+						pool_id: self.id,
+						pay_type: self.payType
+					}, function(res) {
+						if (res.code == 0) {
+							$('.winclosebtn').hide();
+							$('.gtc-bg').css('pointer-events', 'none');
+							$('.essence').css('pointer-events', 'none');
+							$('.modal-content').addClass('reservationsucc');
+							$(e.target).hide();
+							$('.title-head').text('抢购成功').addClass('title-headsucc');
+							$('.modal-content').css('height', '35rem');
+							// $('.content-box').css('margin-top', '7.5rem');
+							$('.modal2').css('padding-top', '0')
+							self.loadList();
+							setTimeout(self.closepopwin, 1500);
+							// window.location.reload();
+							// self.info[index].status=6;
+						}
+						core.toast(res.msg);
+					})
+				}
+				
+			},
+			adopt: function(id, index, item) {
+				var self = this;
+				if(item.status==3){
+					core.load("{:url('index/fish/adopt_fish')}", {
+						pool_id: id,
+					}, function(res) {
+						if (res.code == 0) {
+							window.location.reload();
+							// self.info[index].status=6;
+						}
+						core.toast(res.msg);
+					})
+				}else{
+					$('.winclosebtn').show();
+					$('.gtc-bg').css('pointer-events', 'auto');
+					$('.essence').css('pointer-events', 'auto');
+					$('.modal-content').css('height', '26rem');
+					$('.content-box').css('margin-top', '0rem');
+					$('.modal-content').removeClass('reservationsucc');
+					$('.modal2').css('padding-top', '4rem')
+					$('.title-head').text('立即抢购').show().removeClass('title-headsucc');
+					$('.appointment').text('立即抢购').show();
+					self.pop = true;
+					self.wininfo = item;
+					self.btnType=2;
+					self.id=id;
+				}
+			
+			},
+			/*
+			noticeFun: function(){
+			    var self = this;
+			    core.load("{:url('index/publics/get_notice')}", {}, function(res){
+			        
+			        if(res.code==0){
+			            self.notice=res.info;
+			            // 公告滚动
+			            var noticeEl = $('.notice');
+			            var height = noticeEl.find("li:first").height();
+			            (noticeEl.find("li").length>1) && setInterval(function(){
+			                noticeEl.animate({
+			                    marginTop : "-"+height+"px"
+			                }, 500, function(){
+			                    $(this).css({
+			                        marginTop : "0"
+			                    }).find("li:first").appendTo(this);
+			                });
+			            },3000);
+			        }else{
+			            core.toast(res.msg);
+			        }
+			    })
+			},
+			*/
+			planting: function() {
+				var self = this;
+				core.load("{:url('index/publics/get_wheel_planting')}", {}, function(res) {
+					if (res.code == 0) {
+						self.wheel = res.info;
+						setTimeout(function() {
+							// 轮播图
+							var elem = document.getElementById('Swipe');
+							var dot = $('.swipe-dot li');
+							var mySwipe = Swipe(elem, {
+								auto: 5000,
+								// continuous: false,
+								// disableScroll: true,
+								// stopPropagation: true,
+								callback: function(index, element) {
+									dot.not(dot.eq(index).addClass('act')).removeClass('act');
+								},
+								// transitionEnd: function(index, element) {}
+							});
+						});
+					} else {
+						core.toast(res.msg);
+					}
+				})
+			},
+			loadList: function() {
+				core.load("{:url('index/pool/index')}", {}, (res) => {
+					if (res.code == 0) {
+						Vue.set(this, 'info', res.info);
+						// this.info = res.info;
+						if (this.info.length > 0) {
+							this.success();
+						}
+					} else {
+						core.toast(res.msg);
+					}
+				})
+
+			},
+			indexCheck(v) {
+				return 'z-index:-' + v
+			},
+			gtc() {
+				this.gtcbg = false;
+				this.essence = true;
+				this.payType = 1;
+			},
+			essences() {
+				this.gtcbg = true;
+				this.essence = false;
+				this.payType = 0;
+			},
+
+			paymentbtn(e) {
+				var self = this;
+				if (!this.gtc_pwd) {
+					core.toast('请输入交易密码');
+				} else if (parseFloat(self.pay_type.user_balance) < parseFloat(self.adoption.worth)) {
+					// var maxtime =6000; //一个小时，按秒计算，自己调整!
+					self.popwin = true;
+					self.fishDetail();
+					this.CountDown();
+				} else {
+					core.load("{:url('index/my/over_order')}", {
+						oid: this.fish_msg.order_id,
+						trad_password: this.gtc_pwd,
+						pay_type: this.payType,
+					}, function(res) {
+						if (res.code == 0) {
+							$('.buybox .modal-content').addClass('paysucc');
+							$('.paymentbtn').hide();
+							$('.buybox .title-head').hide();
+							$('.buybox .paybox2').hide();
+							$('.buybox .modal-content').css('height', '32rem');
+							$('.buybox .content-box').css('margin-top', '11rem');
+							$('.buybox .input-box').css('padding-top', '3.5rem');
+							self.loadList();
+						}
+						core.toast(res.msg)
+					})
+				}
+
+			},
+			CountDown() {
+				var maxtime = this.pay_type.pay_allow_time;
+				if (maxtime >= 0) {
+					h = Math.floor(maxtime / 3600);
+					m = Math.floor(maxtime % 3600 / 60);
+					s = Math.floor(maxtime % 60); //不足60的就是秒，够60就是分
+					h = h < 10 ? '0' + h : h;
+					m = m < 10 ? '0' + m : m;
+					s = s < 10 ? '0' + s : s;
+					msg = h + ":" + m + ":" + s;
+					document.all["looktime"].innerHTML = msg;
+					if (maxtime == 5 * 60) alert("还剩5分钟");
+					--maxtime;
+				} else {
+					// clearInterval(timer);
+					// alert("时间到，结束!");
+				}
+
+				setInterval(function() {
+					if (maxtime >= 0) {
+						h = Math.floor(maxtime / 3600);
+						m = Math.floor(maxtime % 3600 / 60);
+						s = Math.floor(maxtime % 60); //不足60的就是秒，够60就是分
+						h = h < 10 ? '0' + h : h;
+						m = m < 10 ? '0' + m : m;
+						s = s < 10 ? '0' + s : s;
+						msg = h + ":" + m + ":" + s;
+						document.all["looktime"].innerHTML = msg;
+						if (maxtime == 5 * 60) alert("还剩5分钟");
+						--maxtime;
+					} else {
+						// clearInterval(timer);
+						// alert("时间到，结束!");
+					}
+				}, 1000);
+
+				// if (maxtime >= 0) {
+				//     minutes = Math.floor(maxtime / 60);
+				//     seconds = Math.floor(maxtime % 60);
+				//     msg = "距离结束还有" + minutes + "分" + seconds + "秒";
+				//     document.all["timer"].innerHTML = msg;
+				//     if (maxtime == 5 * 60)alert("还剩5分钟");
+				//         --maxtime;
+				// } else{
+				//     clearInterval(timer);
+				//     alert("时间到，结束!");
+				// }
+			},
+			fishDetail: function() {
+				core.load("{:url('index/my/turn_msg')}", {
+					fid: this.id
+				}, (res) => {
+					//
+					if (res.code == 0) {
+						this.fish_msg = res.info.fish_msg;
+						this.pay_type = res.info.pay_type;
+						//
+						// if(res.info.pay_type.status == 2){
+						//     this.receivable(res.info.purchase_msg.f_uid);
+						// }
+					} else {
+						core.toast(res.msg);
+					}
+				})
+			},
+			closepop: function(event) {
+				var btn = document.querySelector(".modal-content");
+				if (btn) {
+					if (!btn.contains(event.target)) { //按钮.app-download以外的区域
+						this.pop = false;
+						// window.location.reload();
+					}
+				}
+			},
+			// closepop2: function(event) {
+			// 	var btn = document.querySelector(".buyboxbg");
+			// 	if (btn) {
+			// 		if (!btn.contains(event.target)) { //按钮.app-download以外的区域
+			// 			this.pop2 = false;
+			// 		}
+			// 	}
+			// },
+			closepopwin() {
+				this.pop = false;
+			},
+			closepop2win() {
+				this.pop2 = false;
+			},
+			closebtn() {
+				this.popwin = false;
+			},
+			charge() {
+				this.popwin2 = true;
+			},
+			closebtn2() {
+				this.popwin2 = false
+			},
+			WalletaaBtn() {
+				this.close23 = true;
+				core.load("{:url('/index/setup/index')}", {}, (res) => {
+					if (res.code == 0) {
+						this.info = res.info;
+					} else {
+						core.toast(res.msg);
+					}
+				})
+			},
+			flashFlashBtn() {
+				this.close18 = true;
+			},
+			flashMax() {
+				this.close18 = false;
+			},
+			recordhMax() {
+				this.close15 = false;
+				core.load(this.default_url, {
+					eth: this.eth
+				}, (res) => {
+					if (res.code == 666) {
+						this.eth = '';
+						this.close19 = true;
+					}
+					core.toast(res.msg);
+				});
+			},
+			flashsuccessfulMax() {
+				this.close19 = false;
+			},
+			WalletMax() {
+				this.close23 = false;
+			},
+			copyAddress() {
+				this.close24 = false;
+			},
+			/*············闪兑···············*/
+			swap: function() {
+				if (this.form == 'GC') {
+					this.exchange_rate = Number(1 / this.exchange_rate_gc).toFixed(4);
+					this.default_url = this.url_gtc_to_gc;
+					this.form = "GTC";
+					this.to = "GC";
+					this.gt_num = this.gtc_num;
+				} else {
+					this.exchange_rate = this.exchange_rate_gc;
+					this.default_url = this.url_gc_to_gtc;
+					this.form = "GC";
+					this.to = "GTC";
+					this.gt_num = this.gc_num;
+				}
+			},
+			autoLoad: function() {
+				core.load("{:url('/index/exchange/get_rate')}", {}, (res) => {
+					if (res.code == 666) {
+						this.exchange_rate = res.data.rate;
+						this.exchange_rate_gc = res.data.rate;
+						this.gt_num = res.data.gc_num;
+						this.gc_num = res.data.gc_num;
+						this.gtc_num = res.data.gtc_num;
+					}
+				});
+			},
+			exchange: function() {
+				core.load(this.default_url, {
+					eth: this.eth
+				}, (res) => {
+					if (res.code == 666) {
+						this.eth = '';
+					}
+					core.toast(res.msg);
+				});
+			},
+			copyGcAddress: function() {
+				if (!this.info.gc_address) {
+					core.toast('未获取到钱包地址');
+					return;
+				};
+				var input = document.getElementById('gc-address');
+				const len = input.value.length;
+				if (input.createTextRange) {
+					//ie
+					const range = input.createTextRange();
+					range.collapse(true);
+					range.moveStart('character', 0); //起始光标
+					range.moveEnd('character', len); //结束光标
+					range.select(); //不兼容苹果
+				} else {
+					//firefox/chrome
+					input.setSelectionRange(0, len);
+					input.focus();
+				}
+				//input.select();
+				if (document.execCommand("copy")) {
+					core.toast('复制钱包地址成功');
+					this.close24 = true;
+				} else {
+					core.toast('复制钱包地址失败');
+				};
+			},
+			longCheck(val) {
+				var newval = val * 100;
+				return 'width:' + newval + '%'
+			}
+
+		},
+		updated() {
+			// var indexUlLi=document.getElementsByClassName('fish-list')[0].getElementsByTagName('li');
+			// // setTimeout(function(){  console.log(indexUlLi.length) }, 3000);
+			// 	for (var i=0;i<indexUlLi.length;i++) {
+			// 	}
+		},
+		created() {
+			// 获取屏幕宽度
+			var width = document.documentElement.clientWidth;
+			if (width < 1024) {
+				// 设置根元素字体大小。此时为宽的10等分
+				document.documentElement.style.fontSize = width / 26 + 'px';
+				// document.querySelectorAll(".info-title")[0].style.fontSize = width / 260 + 'rem';
+			}
+
+		},
+		mounted: function() {
+			var self = this;
+			$('.modal').modal();
+			this.loadList();
+			this.planting();
+			//this.noticeFun();
+			//this.success();
+			// $('#modal1').modal('open');
+			// this.adopt();
+			this.autoLoad();
+			this.CountDown();
+
+			// // 初始化一个 WebSocket 对象
+			var ws = new WebSocket('wss://big.bittrust.vip/wss');
+
+			// 建立 web socket 连接成功触发事件
+			ws.onopen = function() {
+				// 使用 send() 方法发送数据
+				var myArray = {
+					"type": "robMessage"
+				};
+				ws.send(JSON.stringify(myArray));
+			};
+
+			// 接收服务端数据时触发事件
+			ws.onmessage = function(evt) {
+				if (evt) {
+					var received_msg = unescape(evt.data.replace(/\\u/g, '%u'));
+					var received_msg2 = received_msg.substr(0, received_msg.length - 2).substr(2);
+					var myArray = new Array();
+					myArray = received_msg2.split('","');
+					// received_msg = JSON.parse(myArray);
+					var checkobj = "type\"\:\"ping";
+					if (myArray.length > 1) {
+						self.gmess = myArray;
+					} else if (myArray[0].toString() == checkobj) {
+						console.log('连接中...');
+					} else {
+						self.gmess.shift();
+						self.gmess = self.gmess.concat(myArray);
+					}
+				}
+
+			};
+
+			// 断开 web socket 连接成功触发事件
+			// ws.onclose = function() {
+			//   alert('连接已关闭...');
+			// };
+
+			//获得当前<ul>
+			var $uList = $(".scroll-box ul");
+			var timer = null;
+			//触摸清空定时器
+			$uList.hover(function() {
+					clearInterval(timer);
+				},
+				function() { //离开启动定时器
+					timer = setInterval(function() {
+							scrollList($uList);
+						},
+						3000);
+				}).trigger("mouseleave"); //自动触发触摸事件
+			//滚动动画
+			function scrollList(obj) {
+				//获得当前<li>的高度
+				var scrollHeight = $("ul li:first").height();
+				//滚动出一个<li>的高度
+				$uList.stop().animate({
+						marginTop: -scrollHeight
+					},
+					600,
+					function() {
+						//动画结束后，将当前<ul>marginTop置为初始值0状态，再将第一个<li>拼接到末尾。
+						$uList.css({
+							marginTop: 0
+						}).find("li:first").appendTo($uList);
+					});
+			}
+		}
+	});
+	// var modal = document.getElementById('myModal');
+	// // 在用户点击其他地方时，关闭弹窗
+	// window.onclick = function(event) {
+	// 	if (event.target == modal) {
+	// 		modal.style.display = "none";
+	// 	}
+	// }
+</script>
+{/block}
+
+{block name="style"}
+<style>
+	#modal-success>div.content-box>h3 {
+		text-align: center;
+		line-height: 3rem;
+		font-weight: bold;
+		font-size: 1.2rem;
+	}
+
+	#modal-success>div.content-box>div:nth-child(2) {
+		margin-bottom: 0.5rem;
+	}
+
+	#modal-success>div.content-box>div:nth-child(2)>img {
+		width: 6ren;
+		height: 4rem;
+		display: block;
+		margin: 0 auto;
+	}
+
+	#modal-success>div.content-box>div:nth-child(3) {
+		text-align: center;
+		line-height: 1.6rem;
+	}
+
+	#modal-success>div.content-box>div:nth-child(3)>strong {
+		font-size: 1rem;
+		line-height: 1.8rem;
+		font-weight: bold;
+	}
+
+	.fish-head {
+		background-image: url("http://oss.inewgo.net/resource/imgs/img/center1.png");
+	}
+
+	.head-tit {
+		font-weight: bold;
+	}
+
+	.title-logo {
+		height: 4rem;
+		padding: 0.6rem;
+	}
+
+	/*
+    .fish-notice{padding:6px 0;background:#182121;margin-top:-1px;}
+    .notice-wrap{height:22px;overflow:hidden;}
+    .notice-wrap li{overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}
+    .icon-notice{background-image:url('http://oss.inewgo.net/resource/imgs/img/icon-notice.png');height:14px;width:14px;margin-right:5px;}
+    */
+
+	.fish-banner {
+		position: relative;
+		margin: 0 0.5rem;
+		border-radius: 1rem;
+		overflow: hidden;
+	}
+
+	.fish-banner img {
+		height: 10.5rem;
+	}
+
+	.swipe {
+		overflow: hidden;
+		visibility: hidden;
+		position: relative;
+		max-height: 156px;
+	}
+
+	.swipe-wrap {
+		overflow: hidden;
+		position: relative;
+	}
+
+	.swipe-wrap>.swipe-item {
+		float: left;
+		width: 100%;
+		position: relative;
+	}
+
+	.swipe-wrap>.swipe-item img {
+		display: block;
+		width: 100%;
+		max-height: 156px;
+	}
+
+	.swipe-dot {
+		overflow: hidden;
+		text-align: right;
+		position: absolute;
+		bottom: -1rem;
+		left: 0;
+		width: 100%;
+		margin: 0;
+		padding: 0;
+		padding: 12px 20px;
+	}
+
+	.swipe-dot li {
+		box-sizing: border-box;
+		border-radius: 50%;
+		height: 8px;
+		width: 8px;
+		margin: 0 4px;
+		display: inline-block;
+		background-color: #ccc;
+	}
+
+	.swipe-dot li.act {
+		background-color: #00D6E2;
+	}
+
+	.index-title {
+		margin: 0.8rem;
+	}
+
+	.index-title>img {
+		width: 6rem;
+		display: block;
+		margin: 0 auto;
+	}
+
+
+	.fish-list {
+		position: relative;
+		z-index: 0;
+	}
+
+	.page-title {
+		position: relative;
+		z-index: 1;
+		margin-top: 1rem;
+	}
+
+	.fish-list>li {
+		margin: .4rem 0.5rem;
+		/* overflow:hidden; */
+		background-image: url('http://oss.inewgo.net/resource/imgs/img/index-item-bg.png');
+		background-repeat: no-repeat;
+		background-size: 100% 100%;
+		color: #886F5C;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		padding: 0.5rem 0;
+		height: 6.5rem;
+		position: relative;
+	}
+
+	.fish-list>li .fish-img {
+		position: relative;
+		background-image: url('http://oss.inewgo.net/resource/imgs/img/index-item-img-border-right.png');
+		background-repeat: no-repeat;
+		background-position-x: 100%;
+		background-size: auto 100%;
+	}
+
+	.jian-ing {
+		position: absolute;
+		top: 1rem;
+		left: -.5rem;
+		width: 4rem !important;
+	}
+
+	.fish-list>li .fish-img img {
+		width: 6rem;
+		height: 4rem;
+		display: block;
+		padding: 0 0.8rem;
+	}
+
+	.fish-list>li>.fish-name {
+		width: 6rem;
+		height: 3.6rem;
+		display: flex;
+		flex-direction: column;
+		/*overflow: hidden;*/
+	}
+
+	.fish-list>li>.fish-name>.info-title {
+		font-size: 1.6rem;
+		font-weight: bold;
+		line-height: 1rem;
+	}
+
+	.fish-list>li>.fish-name>.info-title:first-child {
+		font-style: italic;
+		text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3);
+	}
+
+	.fish-list>li>.fish-name>.info-price {
+		font-size: 0.5rem;
+		margin-top: auto;
+		font-weight: bold;
+	}
+
+	.fish-list>li>.fish-info {
+		margin: 0 auto;
+		line-height: 0.8rem;
+		font-weight: bold;
+	}
+
+	.fish-list>li>.fish-info>.info-item:first-child {
+		/*line-height: 1rem;*/
+	}
+
+	.fish-list>li>.fish-info>.info-item {
+		white-space: nowrap;
+	}
+
+	.fish-list>li>.fish-info>.info-item>label {
+		font-size: 0.5rem;
+	}
+
+	.fish-list>li>.fish-info>.info-item>strong {
+		font-size: 1.25rem;
+		text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3);
+		font-weight: 900;
+		color: #E24E44;
+	}
+
+	.fish-list>li>.fish-info>.info-item>small {
+		font-size: 0.5rem;
+	}
+
+	.fish-list>li>.fish-info>.info-item span {
+		font-size: 0.5rem;
+	}
+
+	.fish-list>li>.fish-btn {
+		margin-right: 0.5rem;
+		display: flex;
+		flex-direction: column;
+		align-items: flex-end;
+	}
+
+	.fish-list>li>.fish-btn>.list-btn {
+		display: block;
+		text-align: center;
+		margin: auto 0.5rem 0.3rem;
+		font-size: 0.6rem;
+		font-weight: bold;
+		line-height: 0.8rem;
+		color: white;
+		width: 3rem;
+		height: 3rem;
+		background-image: url('http://oss.inewgo.net/resource/imgs/img/index-btn-buy.png');
+		background-repeat: no-repeat;
+		background-size: 100% 100%;
+		display: flex;
+		justify-content: center;
+		align-content: center;
+		align-items: center;
+		text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
+	}
+
+	.fish-list>li>.fish-btn>.info-item {
+		line-height: 0.8rem;
+		font-weight: bold;
+		font-size: 0.5rem;
+		color: #E24E44;
+	}
+
+	.fish-list>li>.fish-btn>.info-item>small {
+		font-size: 0.5rem;
+	}
+
+	.fish-list>li>.fish-btn>.info-item>span {
+		font-size: 0.5rem
+	}
+
+	.fish-list>li>.fish-btn>.info-btn {
+		font-size: 0.6rem;
+	}
+
+	.fish-list>li .list-btn.gray {
+		background-image: url('http://oss.inewgo.net/resource/imgs/img/index-btn-yy.png');
+	}
+
+	.fish-list>li .list-btn.grow {
+		background-image: url('http://oss.inewgo.net/resource/imgs/img/index-btn-buy.png');
+	}
+
+	.success-btn {
+		display: inline-block;
+		background-color: #00D6E2;
+		color: #FFEA59;
+		border: 2px solid #FFEA59;
+		font-size: 16px;
+		padding: 4px 33px;
+		border-radius: 25px;
+	}
+
+	.success-img {
+		position: absolute;
+		z-index: 50;
+	}
+
+	.success-img img {
+		max-width: 40%;
+		display: block;
+		margin: auto;
+		margin-top: 124px;
+
+	}
+
+	.realestatefair {
+		background: url('http://oss.inewgo.net/resource/imgs/img/realestatefair.png');
+		width: 99%;
+		height: 9rem;
+		display: block;
+		background-size: 100% 100%;
+		margin: 0 auto;
+	}
+
+	.box-top-img {
+		width: 17.5rem;
+		height: 4rem;
+		background: url(http://oss.inewgo.net/resource/imgs/img/topBoxBg.png);
+		position: absolute;
+		background-size: 100% 100%;
+		top: -2.6rem;
+	}
+
+	/*按钮*/
+	.fish-list>li>.fish-btn>.btn01 {
+		background-image: url('http://oss.inewgo.net/resource/imgs/img/btn01.png');
+	}
+
+	.fish-list>li>.fish-btn>.btn02 {
+		background-image: url('http://oss.inewgo.net/resource/imgs/img/btn02.png');
+	}
+
+	.fish-list>li>.fish-btn>.btn03 {
+		background-image: url('http://oss.inewgo.net/resource/imgs/img/btn03.png');
+	}
+
+	.fish-list>li>.fish-btn>.btn04 {
+		background-image: url('http://oss.inewgo.net/resource/imgs/img/btn04.png');
+	}
+
+	.fish-list>li>.fish-btn>.btn05 {
+		background-image: url('http://oss.inewgo.net/resource/imgs/img/btn05.png');
+	}
+
+	.fish-list>li>.fish-btn>.btn06 {
+		background-image: url('http://oss.inewgo.net/resource/imgs/img/btn01.png');
+	}
+
+	.fish-list>li>.fish-btn>.btn07 {
+		background-image: url('http://oss.inewgo.net/resource/imgs/img/btn07.png');
+	}
+
+	.fish-list>li>.fish-btn>.btn08 {
+		background-image: url('http://oss.inewgo.net/resource/imgs/img/btn08.png');
+	}
+
+	.fish-list>li>.fish-btn>.btn09 {
+		background-image: url('http://oss.inewgo.net/resource/imgs/img/btn09.png');
+	}
+
+	.ranking-list {
+
+		background: url(http://oss.inewgo.net/resource/imgs/img/num-bg.png);
+		background-size: 100% 100%;
+		padding: .3rem 0 0rem;
+		min-height: 156px;
+	}
+
+	.ranking-list img {
+		position: relative;
+		top: .5rem;
+	}
+
+	.star-bg {
+		width: 1.875rem !important;
+		height: 1.875rem !important;
+		display: inline-block !important;
+	}
+
+	.ranking-list h2 {
+		text-align: center;
+		font-size: 1.25rem
+	}
+
+	.ranking-list span {
+		font-size: 0.7rem;
+		display: inline-block;
+	}
+
+	.ranking-list p {
+		padding: 0 1rem;
+	}
+
+	.tb1 {
+		width: 20%;
+		text-align: center;
+	}
+
+	.tb2 {
+		width: 23%;
+		margin: 0 .5rem;
+		text-align: center;
+	}
+
+	.tb3 {
+		width: 30%;
+		text-align: center;
+	}
+
+	.tb4 {
+		width: 18%;
+		text-align: center;
+	}
+
+	.don-form .input-item input {
+		width: 70%;
+		padding: 0rem 1rem;
+		line-height: 2rem;
+		font-size: 1rem;
+		background-color: transparent;
+		/* background-image: url(http://oss.inewgo.net/resource/imgs/img/login-input-bg.png); */
+		background-repeat: no-repeat;
+		background-size: 100% 100%;
+		color: #fff;
+		font-family: fontset2;
+	}
+
+	.don-form .input-item {
+		position: relative;
+		margin-bottom: 14px;
+		background: #A19080;
+		background-size: 100% 100%;
+		border-radius: .3rem;
+	}
+
+	.don-form .input-item span {
+		display: inline-block;
+		width: 6rem;
+		color: #fff;
+		text-align: center;
+		font-size: 1.25rem;
+	}
+
+	.don-form .input-item input {
+		width: 60%;
+		padding: 0rem 1rem;
+		line-height: 2rem;
+		font-size: 1rem;
+		background-color: transparent;
+		/* background-image: url(http://oss.inewgo.net/resource/imgs/img/login-input-bg.png); */
+		background-repeat: no-repeat;
+		background-size: 100% 100%;
+		color: #fff;
+		font-family: fontset2;
+	}
+
+	.don-form .input-foot {
+		/* padding: 2rem 0; */
+		position: relative;
+		top: 8.5rem;
+	}
+
+	.don-form .input-foot2 {
+		/* padding: 2rem 0; */
+		position: relative;
+		top: 2.5rem;
+	}
+
+	.don-form .foot-btn {
+		display: block;
+		/* padding: 0 3rem; */
+		margin: 0 auto;
+		line-height: 3.7rem;
+		color: #fff;
+		border-radius: 1.5rem;
+		font-size: 1rem;
+		background-image: url('http://oss.inewgo.net/resource/imgs/img/Bt_select.png');
+		background-repeat: no-repeat;
+		background-size: 100% 100%;
+		text-align: center;
+		width: 6.4rem;
+		height: 3.75rem;
+	}
+
+	.don-form .foot-btn2 {
+		background-image: url('http://oss.inewgo.net/resource/imgs/img/button.png') !important;
+		background-size: 100% 100%;
+		color: #fff;
+		padding: .2rem 0 0;
+	}
+
+	/* 弹窗 (background) */
+	.modal2 {
+		/* 默认隐藏 */
+		position: fixed;
+		z-index: 101;
+		padding-top: 4rem;
+		left: 0;
+		top: 0 !important;
+		width: 100%;
+		height: 100%;
+		overflow: auto;
+		background-color: rgb(0, 0, 0);
+		background-color: rgba(0, 0, 0, 0.4);
+		bottom: 0 !important;
+		max-width: initial;
+		max-height: initial;
+	}
+
+	/* 弹窗内容 */
+	.modal-content {
+		position: relative;
+		background: url('http://oss.inewgo.net/resource/imgs/img/reservationbg.png');
+		background-size: 100% 100%;
+		margin: auto;
+		padding: 0;
+		width: 23rem;
+		height: 26rem;
+		box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+		-webkit-animation-name: animatetop;
+		-webkit-animation-duration: 0.4s;
+		animation-name: animatetop;
+		animation-duration: 0.4s
+	}
+
+	/* 添加动画 */
+	@-webkit-keyframes animatetop {
+		from {
+			top: -300px;
+			opacity: 0
+		}
+
+		to {
+			top: 0;
+			opacity: 1
+		}
+	}
+
+	@keyframes animatetop {
+		from {
+			top: -300px;
+			opacity: 0
+		}
+
+		to {
+			top: 0;
+			opacity: 1
+		}
+	}
+
+	/* 关闭按钮 */
+	.close,
+	.close2 {
+		color: white;
+		float: right;
+		font-size: 28px;
+		font-weight: bold;
+	}
+
+	.close:hover,
+	.close:focus {
+		color: #000;
+		text-decoration: none;
+		cursor: pointer;
+	}
+
+	.modal-header {
+		padding: 2px 16px;
+		color: white;
+	}
+
+	.modal-body {
+		padding: 2px 16px;
+	}
+
+	.modal-footer {
+		padding: 2px 16px;
+		color: white;
+	}
+
+	.content-box {
+		width: 15rem;
+		background: transparent;
+		color: #3A3026;
+		padding: 3rem 0 0 1rem;
+		margin: 0 auto 0;
+	}
+
+	.hoursimg {
+		width: 5.3rem;
+		height: 4.25rem;
+	}
+
+	.hoursname {
+		font-size: 2rem
+	}
+
+	.pricefont {
+		font-size: .5rem;
+	}
+
+	.hoursbox {
+		display: inline-block;
+	}
+
+	.messbox p span:first-of-type {
+		width: 5rem;
+		display: inline-block;
+		margin-left: 2rem;
+		font-size: .81rem;
+	}
+
+	.messbox p span:last-of-type {
+		font-size: .81rem;
+	}
+
+	.essence {
+		font-size: .9rem;
+	}
+
+	.essence i {
+		background: url('http://oss.inewgo.net/resource/imgs/img/essence.png');
+		width: 2.6rem;
+		height: 2.6rem;
+		display: inline-block;
+		background-size: 100% 100%;
+		vertical-align: middle;
+	}
+
+	.essence2 i {
+		background: url('http://oss.inewgo.net/resource/imgs/img/essence2.png');
+		background-size: 100% 100%;
+		color: #3A3026;
+	}
+
+	.essence2 {
+		color: #6C6358;
+	}
+
+	.gtc-bg {
+		font-size: .9rem;
+	}
+
+	.gtc-bg i {
+		background: url('http://oss.inewgo.net/resource/imgs/img/gtc-bg.png');
+		width: 2.6rem;
+		height: 2.6rem;
+		display: inline-block;
+		background-size: 100% 100%;
+		vertical-align: middle;
+	}
+
+	.gtc-bg2 i {
+		background: url('http://oss.inewgo.net/resource/imgs/img/gtc-bg2.png');
+		background-size: 100% 100%;
+	}
+
+	.gtc-bg2 {
+		color: #6C6358;
+	}
+
+	.appointment {
+		width: 9.5rem;
+		height: 5.6rem;
+		background: url('http://oss.inewgo.net/resource/imgs/img/button.png');
+		background-size: 100% 100%;
+		margin: 2rem auto 0;
+		text-align: center;
+		padding-top: 1.5rem;
+		font-size: 1.3rem;
+	}
+
+	.reservationsucc {
+		background: url('http://oss.inewgo.net/resource/imgs/img/reservationsucc.png');
+		background-size: 100% 100%;
+	}
+
+	.buyboxbg {
+		background: url('http://oss.inewgo.net/resource/imgs/img/buy-bg.png');
+		background-size: 100% 100%;
+	}
+
+	.paybox2 {
+		background: url(http://oss.inewgo.net/resource/imgs/img/paymentbox.png);
+		padding: 1.5rem 2rem 1rem;
+		background-size: 100% 100%;
+		width: 20rem;
+		margin: 0 auto 0;
+	}
+
+	.paymentbtn {
+		background: url('http://oss.inewgo.net/resource/imgs/img/button.png');
+		background-size: 100% 100%;
+		margin-top: 0;
+	}
+
+	.paysucc {
+		background: url('http://oss.inewgo.net/resource/imgs/img/paysucc.png');
+		background-size: 100% 100%;
+	}
+
+	.closebtn {
+		right: -1rem;
+		color: white;
+		float: right;
+		font-size: 28px;
+		font-weight: bold;
+		width: 3rem;
+		height: 3rem;
+		display: block;
+		position: absolute;
+		background: url(http://oss.inewgo.net/resource/imgs/img/assets10.png);
+		top: 1rem;
+	}
+
+	.warning {
+		position: relative;
+		background: url(http://oss.inewgo.net/resource/imgs/img/warning.png);
+		background-size: 100% 100%;
+		height: 16rem !important;
+		width: 21.5rem;
+		margin: 7rem auto;
+	}
+
+	.tip {
+		font-family: "microsoft yahei";
+		color: #fff;
+		font-size: .5rem;
+		text-align: center;
+		margin-top: 1rem;
+	}
+
+	.input-box2 {
+		text-align: center;
+		padding-top: 5rem;
+	}
+
+	.input-box2 h1 {
+		font-size: 1.5rem;
+	}
+
+	.input-box2 h2 {
+		font-size: 1.3rem;
+	}
+
+	.endofsnapup {
+		width: 100%;
+		position: absolute;
+		height: 100%;
+		background: rgb(50, 50, 50, 0.5);
+		color: #fff;
+		text-align: center;
+		padding-top: 1rem;
+		font-size: 1.5rem;
+	}
+
+	.ranking-list-bg {
+		height: auto !important;
+		display: inline-block !important;
+		width: 24% !important;
+		position: relative;
+		top: .25rem;
+	}
+
+	.rechargebox {
+		height: 13.5rem !important;
+		background-image: url(http://oss.inewgo.net/resource/imgs/img/assets6666.png);
+		margin-top: 9.5rem;
+	}
+
+	.foot-btn3 {
+		background-image: url(http://oss.inewgo.net/resource/imgs/img/assets8.png) !important;
+		background-size: 100% 100%;
+		display: inline-block !important;
+	}
+
+	.foot-btn4 {
+		background-image: url(http://oss.inewgo.net/resource/imgs/img/assets8.png) !important;
+		display: inline-block !important;
+	}
+
+	.Asset_details {
+		position: fixed;
+		left: 0px;
+		top: 0px;
+		background: rgba(0, 0, 0, 0.8);
+		width: 100%;
+		/*宽度设置为100%，这样才能使隐藏背景层覆盖原页面*/
+		height: 100%;
+		filter: alpha(opacity=60);
+		/*设置透明度为60%*/
+		/* opacity:0.8;  非IE浏览器下设置透明度为60% */
+		z-index: 999;
+	}
+
+	.new_flash {
+		width: 22.3rem;
+		height: 34rem;
+		position: relative;
+		top: 5.5rem;
+		background: url(http://oss.inewgo.net/resource/imgs/img/assets999.png) 0 0 no-repeat;
+		background-size: 100%;
+		margin: auto;
+	}
+
+
+	.new_flashImg {
+		width: 7.4rem;
+		height: 4.21rem;
+		position: fixed;
+		left: 9rem !important;
+		top: 37rem;
+		background: url(/fish/img/button.png);
+		background-size: 100% 100%;
+		text-align: center;
+		font-size: 1.2rem;
+		line-height: 4rem;
+	}
+
+	.flash_box {
+		padding-left: 1.7rem;
+		padding-right: 1.7rem;
+		/* padding-top: 4rem; */
+	}
+
+	.detailsImg>img {
+		width: 3.8rem;
+		height: 3.9rem;
+	}
+
+	.new_flashImg img {
+		width: 7.1rem;
+		height: 4.21rem;
+	}
+
+	.flash_content5 {
+		font-size: 27px;
+		margin-top: 1.5rem;
+		justify-content: center;
+	}
+
+	.flash_content3 img {
+		width: 4.46rem;
+		height: 4.46rem;
+		margin: 0.4rem auto;
+	}
+
+	.flash_content3 {
+		margin-top: 0.2rem;
+	}
+
+	.flash_content4 {
+		margin-top: 0.2rem !important;
+	}
+
+	.flash_content>div {
+		display: flex;
+	}
+
+	.flash_content1 div:nth-child(1) {
+		font-size: 27px;
+	}
+
+	.flash_content1 div:nth-child(2) {
+		font-size: 32px;
+
+	}
+
+	.flash_content2 {
+		text-indent: 8px;
+		width: 19rem;
+		height: 2.43rem;
+		font-size: 22px;
+		background: url("http://oss.inewgo.net/resource/imgs/img/asets36.png") 0 0 no-repeat;
+		background-size: 100% 100%;
+		margin-top: 1.5em;
+		line-height: 2.43rem;
+
+	}
+
+	.flash_successful {
+		width: 100%;
+		width: 25.3rem;
+		height: 43.4rem;
+		background: url(http://oss.inewgo.net/resource/imgs/img/assets38.png) 0 0 no-repeat;
+		background-size: 100%;
+		margin: auto;
+	}
+
+	.detailsImg {
+		width: 3.8rem;
+		height: 3.9rem;
+		position: relative;
+		left: 19.5rem;
+		top: 1.5rem;
+	}
+
+	.flashsuccessfulMax {
+		top: 7.2rem !important;
+		left: 20.5rem !important;
+	}
+
+	.detailsImg>img {
+		width: 3.8rem;
+		height: 3.9rem;
+	}
+
+	.Wallet {
+		width: 22.3rem;
+		height: 34rem;
+		position: relative;
+		top: 5.5rem;
+		background: url(http://oss.inewgo.net/resource/imgs/img/assets999.png) 0 0 no-repeat;
+		background-size: 100% 100%;
+		margin: auto;
+	}
+
+	.detailsImg {
+		width: 3.8rem;
+		height: 3.9rem;
+		position: relative;
+		left: 19.5rem;
+		top: -.5rem;
+	}
+
+	/* .new_flashImg {
+		width: 7.4rem;
+		height: 4.21rem;
+		position: fixed;
+		left: 11rem;
+		top: 40rem;
+	} */
+
+	.Wallet_content {
+		padding-left: 1.81rem;
+		padding-right: 1.81rem;
+		padding-top: 2rem;
+		text-align: center;
+	}
+
+	.detailsImg>img {
+		width: 3.8rem;
+		height: 3.9rem;
+	}
+
+	..new_flashImg img {
+		width: 7.1rem;
+		height: 4.21rem;
+	}
+
+	.Wallet_content {
+		padding-left: 1.81rem;
+		padding-right: 1.81rem;
+		padding-top: 2rem;
+		text-align: center;
+	}
+
+	.Wallet_content div:nth-child(1) {
+		font-family: Rubik;
+		font-weight: bold;
+		color: rgba(255, 255, 255, 1);
+		font-size: 17px;
+	}
+
+	.Wallet_content div:nth-child(2) {
+		font-family: Rubik;
+		font-weight: 400;
+		color: rgba(255, 255, 255, 1);
+		font-size: 11px;
+		margin-top: 1.5rem;
+	}
+
+	.Wallet_content div:nth-child(3) {
+		width: 16.56rem;
+		height: 15.93rem;
+		background: rgba(255, 255, 255, 1);
+		border-radius: 15px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		margin-top: 2rem;
+		margin: 2rem auto;
+	}
+
+	.Wallet_content div:nth-child(3) img {
+		width: 13.75rem;
+		height: 13.75rem;
+	}
+
+	.Wallet_content div:nth-child(4) {
+		font-family: MF XingYan(Noncommercial);
+		font-weight: 400;
+		color: rgba(255, 255, 255, 1);
+		font-size: 27px;
+		margin-top: 1.28rem;
+	}
+
+	.copy_address {
+		height: 43.4rem;
+		background: url(http://oss.inewgo.net/resource/imgs/img/assets54.png) 0 0 no-repeat;
+		background-size: 100% 100%;
+		margin: auto;
+	}
+
+
+	.gc_img {
+		top: 7rem !important;
+		left: 21.5rem !important;
+	}
+
+	.detailsImg>img {
+		width: 3.8rem;
+		height: 3.9rem;
+	}
+
+	.flash_box input {
+		font-size: 1.5rem;
+		text-indent: 1rem;
+		background: transparent;
+		color: #fff;
+	}
+
+	.gc-address {
+		width: 100%;
+		font-size: .75rem;
+		text-align: center;
+		background: transparent;
+		color: #fff;
+	}
+
+	.scroll-box {
+		width: 100%;
+		height: 1.7rem;
+		font-size: .8rem;
+		overflow: hidden;
+		position: relative;
+		top: -1rem;
+	}
+
+	.scroll-box ul {
+		list-style: none;
+		width: 100%;
+		height: 100%;
+	}
+
+	.scroll-box ul li {
+		width: 100%;
+		height: 40px;
+		box-sizing: border-box;
+		line-height: 40px;
+		text-align: left;
+	}
+
+	.scroll-box ul li img {
+		width: 1.5rem;
+		position: relative;
+		top: .2rem;
+		margin-left: 1rem;
+	}
+
+	.longall {
+		background: url(http://oss.inewgo.net/resource/imgs/img/longall.png);
+		height: 1.2rem;
+		background-size: 100% 100%;
+		position: relative;
+		padding-right: .4rem;
+		top: .4rem;
+	}
+
+	.longleft {
+		background: url(http://oss.inewgo.net/resource/imgs/img/longleft.png);
+		width: 2rem;
+		height: 2.6rem;
+		left: -.8rem;
+		display: inline-block;
+		position: absolute;
+		background-size: 100% 100%;
+		top: -.8rem;
+		z-index: 1;
+	}
+
+	.longing {
+		background: #980500;
+		height: .5rem;
+		display: inline-block;
+		position: absolute;
+		left: 0;
+		top: 0.27rem;
+		border-radius: 1rem;
+	}
+
+	.longbox {
+		position: absolute;
+		left: 0;
+		right: .35rem;
+	}
+
+	.winclosebtn {
+		width: 3.5rem;
+		position: absolute;
+		right: 0;
+		top: 0;
+	}
+
+	@media screen and (max-width: 355px) {
+		.fish-list>li>.fish-name>.info-title {
+			font-size: 1rem;
+		}
+
+		.fish-list>li .fish-img img {
+			width: 3.5rem;
+			height: 2rem;
+		}
+	}
+
+	.title-head {
+		text-align: center;
+		padding-top: 2rem;
+		font-size: 2rem;
+	}
+
+	/*--改版--*/
+	.title-box {
+		text-align: center;
+		width: 7rem;
+		height: 4.8rem;
+		background-size: 100% 100%;
+		margin: 0 auto;
+		position: absolute;
+		top: -2rem;
+		left: 7.5rem;
+		line-height: 4.5rem;
+		font-size: 1.3rem;
+		color: blanchedalmond;
+	}
+
+	.title-blue {
+		background-image: url('/fish/img/blue.png')
+	}
+
+	/*成功弹窗*/
+	#flash_successful {
+		width: 100%;
+		width: 25.3rem;
+		height: 35rem;
+		background: url(http://oss.inewgo.net/resource/imgs/img/assets555.png) 0 0 no-repeat;
+		background-size: 100% 100%;
+		margin: auto;
+	}
+
+	.flashsuccessfulMax {
+		top: 5.2rem !important;
+		left: 21rem !important;
+	}
+
+	.zichang_bxomax1 {
+		background: url(http://oss.inewgo.net/resource/imgs/img/blue.png) 0 0 no-repeat;
+		width: 7.875rem;
+		height: 5.93rem;
+		position: absolute;
+		left: 9rem;
+		background-size: 100% 100%;
+		top: 4.5rem;
+		text-align: center;
+		font-size: 22px;
+		color: #FFE9C9;
+		line-height: 6rem;
+		font-family: MF XingYan(Noncommercial);
+	}
+
+	#copy_address {
+		height: 35rem;
+		background: url(http://oss.inewgo.net/resource/imgs/img/assets555.png) 0 0 no-repeat;
+		background-size: 100% 100%;
+		margin: auto;
+		padding-top: 7rem;
+	}
+
+	.cyll {
+		left: 21.2rem !important;
+		top: -1.5rem;
+	}
+
+	.zichang_bxo11 {
+		background: url(http://oss.inewgo.net/resource/imgs/img/blue.png) 0 0 no-repeat;
+		width: 7.875rem;
+		height: 5.93rem;
+		position: absolute;
+		left: 8.2rem;
+		background-size: 100% 100%;
+		top: 4.5rem;
+		text-align: center;
+		font-size: 22px;
+		color: #FFE9C9;
+		line-height: 6rem;
+		font-family: MF XingYan(Noncommercial);
+	}
+
+	.fish-name p {
+		margin-top: .3rem;
+		font-size: .6rem;
+	}
+	.title-headsucc{
+		padding-top: 7rem;
+	}
+</style>
+{/block}

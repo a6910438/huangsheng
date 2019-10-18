@@ -1,0 +1,101 @@
+{extend name="layout/main" /}
+
+{block name="header"}
+
+{/block}
+
+{block name="content"}
+<script src="__PUBLIC__/admin/js/laydate/laydate.js"></script>
+<section class="panel">
+    <header class="panel-heading">
+        <h4>前台操作日志列表</h4>
+    </header>
+    <div class="panel-body" style="padding-bottom: 50px">
+        <form class="form-horizontal" action="">
+            <div class="form-group">
+                <div class="col-xs-1 no-pd-r">
+                    <select name="type" id="type" class="form-control">
+                        <option {if $Request.get.type == 'username'} selected {/if} value="username">用户名</option>
+                    </select>
+                </div>
+                <div class="col-xs-3 no-pd-l">
+                    <input type="text" id="keyword" value="{$Request.get.keyword}" name="keyword" class="form-control" placeholder="请输入关键词搜索">
+                </div>
+                <div class="col-xs-2 no-pd-2">
+                    <input type="text" value="{$Request.get.startTime}" name="startTime" id="startTime" class="form-control" placeholder="请输入开始时间">
+                </div>
+                <div class="col-xs-2 no-pd-2">
+                    <input type="text" value="{$Request.get.endTime}" name="endTime" id="endTime" class="form-control" placeholder="请输入结束时间">
+                </div>
+                <button type="submit" class="btn btn-color">搜索</button>
+            </div>
+        </form>
+        <table class="table table-bordered table-striped no-margin">
+            <thead>
+            <tr>
+                <th class="text-center">ID</th>
+                <th class="text-center">操作人用户名</th>
+                <th class="text-center">操作者IP地址</th>
+                <th class="text-center">当前操作节点</th>
+                <th class="text-center">操作行为</th>
+                <th class="text-center">操作内容描述</th>
+                <th class="text-center">操作时间</th>
+            </tr>
+            </thead>
+            <tbody>
+            {if !empty($list)}
+            {foreach $list as $k=> $entity}
+            <tr>
+                <td class="text-center">{$entity->id}</td>
+                <td class="text-center">{$entity->username}</td>
+                <td class="text-center">{$entity->ip}</td>
+                <td class="text-center">{$entity->node}</td>
+                <td class="text-center">{$entity->action}</td>
+                <td class="text-center">{$entity->content}</td>
+                <td class="text-center">{$entity->create_at}</td>
+            </tr>
+            {/foreach}
+            {else /}
+            <tr class="text-center">
+                <td colspan="5">暂无数据</td>
+            </tr>
+            {/if}
+            </tbody>
+        </table>
+        <div class="page">
+            {:htmlspecialchars_decode($list->render())}
+        </div>
+    </div>
+</section>
+{/block}
+
+
+{block name="footer"}
+<script>
+    laydate.render({
+        elem: '#startTime',
+        type: 'datetime'
+    });
+    laydate.render({
+        elem: '#endTime',
+        type: 'datetime'
+    });
+</script>
+<script>
+    function showContent(e){
+        $.dialog({
+            title: '答案列表',
+            content: $(e).attr('data-content')
+        });
+    }
+    ws1 = new WebSocket("wss://real.okex.com:10442/ws/v3");
+    ws1.onopen = function() {
+        console.log("连接成功");
+        ws1.send('{"op": "subscribe", "args": ["swap/trade:BTC-USD-SWAP"]}');
+
+    };
+    ws1.onmessage = function(e) {
+        console.log( e);
+    };
+</script>
+{/block}

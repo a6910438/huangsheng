@@ -1,0 +1,194 @@
+{extend name="layout/main" /}
+
+{block name="header"}
+
+{/block}
+
+{block name="content"}
+<link rel="stylesheet" href="http://cdn.staticfile.org/webuploader/0.1.5/webuploader.css">
+<script type="text/javascript" src='http://cdn.staticfile.org/webuploader/0.1.5/webuploader.min.js'></script>
+<script src="/zhao/public/admin/vendor/fuelux/radio.js"></script>
+<style type="text/css">
+    
+</style>
+<section class="panel">
+    <header class="panel-heading">
+        <h4>{$title}</h4>
+    </header>
+    <div class="panel-body" style="padding-bottom: 50px">
+        <form class="form-horizontal" method="post" onsubmit="return false" role="form">
+             <input type="hidden" value="24" name="time" class="form-control"
+                           placeholder="请输入倒计时间">
+           <!--  <div class="form-group">
+                <label class="col-sm-2 control-label">倒计时（小时）</label>
+
+                <div class="col-sm-5">
+                    <input type="text" value="{$info['time']}" name="time" class="form-control"
+                           placeholder="请输入倒计时间">
+                </div>
+            </div> -->
+            <div class="form-group">
+                <label class="col-sm-2 control-label">赢家比例（%）</label>
+                <div class="col-sm-5">
+                    <input type="text" value="{$info['play_scale']}" name="play_scale" class="form-control"
+                           placeholder="请输入赢家比例">
+                </div>
+                <div class="col-sm-5 help-block">
+                        
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">平台抽佣比例（%）</label>
+                <div class="col-sm-5">
+                    <input type="text" value="{$info['team_scale']}" name="team_scale" class="form-control"
+                           placeholder="请输入平台抽佣比例">
+                </div>
+                <div class="col-sm-5 help-block">
+                        
+                </div>
+            </div>
+            <!-- <div class="form-group">
+                <label class="col-sm-2 control-label">分红比例（%）</label>
+                <div class="col-sm-5">
+                    <input type="text" value="{$info['bonus_scale']}" name="bonus_scale" class="form-control"
+                           placeholder="请输入分红比例">
+                </div>
+                <div class="col-sm-5 help-block">
+                    
+                </div>
+            </div> -->
+            
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" data-url="{:url('admin/fomo/savegame',['id'=>$info['id']])}"
+                            onclick="main.ajaxPosts(this)" class="btn btn-primary">确定提交
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+    
+</section>
+{/block}
+
+
+{block name="footer"}
+    <script>
+        // 初始化Web Uploader
+var uploader = WebUploader.create({
+
+    // 选完文件后，是否自动上传。
+    auto: true,
+
+    // 文件接收服务端。
+    server: "{:url('upload/uploadImg')}",
+
+    // 选择文件的按钮。可选。
+    // 内部根据当前运行是创建，可能是input元素，也可能是flash.
+    pick: {
+        id:'#filePicker',
+        multiple:true
+    },
+
+    // 只允许选择图片文件。
+    accept: {
+        title: 'Images',
+        extensions: 'gif,jpg,jpeg,bmp,png',
+        mimeTypes: 'image/jpg,image/jpeg,image/png'
+    }
+});
+var $list = $('#fileList');
+var thumbnailWidth =200;
+var thumbnailHeight = 200;
+// 当有文件添加进来的时候
+uploader.on( 'fileQueued', function( file ) {
+    var $li = $(
+            '<div id="' + file.id + '" class="">' +
+                '<img>' +
+                '<br><a href="javascript:;" onclick="deleteImag(this);">删除</a>' +
+            '</div>'
+            ),
+        $img = $li.find('img');
+
+
+    // $list为容器jQuery实例
+    $list.append( $li );
+
+    // 创建缩略图
+    // 如果为非图片文件，可以不用调用此方法。
+    // thumbnailWidth x thumbnailHeight 为 100 x 100
+    uploader.makeThumb( file, function( error, src ) {
+        if ( error ) {
+            $img.replaceWith('<span>不能预览</span>');
+            return;
+        }
+
+        $img.attr( 'src', src );
+    }, thumbnailWidth, thumbnailHeight );
+});
+// 文件上传过程中创建进度条实时显示。
+uploader.on( 'uploadProgress', function( file, percentage ) {
+    var $li = $( '#'+file.id ),
+        $percent = $li.find('.progress span');
+
+    // 避免重复创建
+    if ( !$percent.length ) {
+        $percent = $('<p class="progress"><span></span></p>')
+                .appendTo( $li )
+                .find('span');
+    }
+
+    $percent.css( 'width', percentage * 100 + '%' );
+});
+
+// 文件上传成功，给item添加成功class, 用样式标记上传成功。
+uploader.on( 'uploadSuccess', function( file ,data) {
+    if(data.errno == 0){
+        $( '#'+file.id ).addClass('upload-state-done');
+        $( '#'+file.id ).attr('data-id',data.data);
+        $('#image').val(data.data);
+        $('#filePicker').hide();
+    }
+});
+
+// 文件上传失败，显示上传出错。
+uploader.on( 'uploadError', function( file ) {
+    var $li = $( '#'+file.id ),
+        $error = $li.find('div.error');
+
+    // 避免重复创建
+    if ( !$error.length ) {
+        $error = $('<div class="error"></div>').appendTo( $li );
+    }
+
+    $error.text('上传失败');
+});
+
+// 完成上传完了，成功或者失败，先删除进度条。
+uploader.on( 'uploadComplete', function( file ) {
+    $( '#'+file.id ).find('.progress').remove();
+});
+//删除图片
+function deleteImag(dom){
+    var _this = $(dom);
+    $.confirm({
+        title: '<strong style="color: #c7254e;font-size: 16px">温馨提示</strong>',
+        content: '<div class="text-center" style="border-top:1px solid #eee;padding-top: 20px">确定删除</div>',
+        confirmButton: '确定',
+        confirmButtonClass: 'btn btn-info',
+        cancelButton: '取消',
+        cancelButtonClass: 'btn btn-danger',
+        animation: 'scaleY',
+        theme: 'material',
+        confirm: function () {
+            $('#image').val('');
+            $('#filePicker').show();
+            _this.parent('div').remove();
+        }
+
+    });
+    
+}
+
+    </script>
+{/block}

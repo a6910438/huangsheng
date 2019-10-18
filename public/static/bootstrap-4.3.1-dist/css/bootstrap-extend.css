@@ -1,0 +1,172 @@
+/*红*/
+.bg-red-50{
+    background-color: #ffffee !important;
+}
+.bg-red-100{
+    background-color: #ffcdd2 !important;
+}
+.bg-red-200{
+    background-color: #ef9a9a !important;
+}
+.bg-red-300{
+    background-color: #e57373 !important;
+}
+.bg-red-400{
+    background-color: #ef5350 !important;
+}
+.bg-red-500{
+    background-color: #f44336 !important;
+}
+.bg-red-600{
+    background-color: #e53935 !important;
+}
+.bg-red-700{
+    background-color: #d32f2f !important;
+}
+.bg-red-800{
+    background-color: #c62828 !important;
+}
+.bg-red-900{
+    background-color: #b71c1c !important;
+}
+/*粉*/
+.bg-pink-50{
+    background-color: #fce4ec !important;
+}
+.bg-pink-100{
+    background-color: #f8bbd0 !important;
+}
+.bg-pink-200{
+    background-color: #f48fb1 !important;
+}
+.bg-pink-300{
+    background-color: #f06292 !important;
+}
+.bg-pink-400{
+    background-color: #ec407a !important;
+}
+.bg-pink-500{
+    background-color: #e91e63 !important;
+}
+.bg-pink-600{
+    background-color: #d81b60 !important;
+}
+.bg-pink-700{
+    background-color: #c2185b !important;
+}
+.bg-pink-800{
+    background-color: #ad1457 !important;
+}
+.bg-pink-900{
+    background-color: #880e4f !important;
+}
+/*紫*/
+.bg-purple{
+    background-color: #9c27b0 !important;
+}
+/*深紫*/
+.bg-deep-purple{
+    background-color: #673ab7 !important;
+}
+/*靛青*/
+.bg-indigo{
+    background-color: #3f51b5 !important;
+}
+/*蓝*/
+.bg-blue-50{
+    background-color: #e3f2fd !important;
+}
+.bg-blue-100{
+    background-color: #bbdefb !important;
+}
+.bg-blue-200{
+    background-color: #90caf9 !important;
+}
+.bg-blue-300{
+    background-color: #64b5f6 !important;
+}
+.bg-blue-400{
+    background-color: #42a5f5 !important;
+}
+.bg-blue-500{
+    background-color: #2196f3 !important;
+}
+.bg-blue-600{
+    background-color: #1e88e5 !important;
+}
+.bg-blue-700{
+    background-color: #1976d2 !important;
+}
+.bg-blue-800{
+    background-color: #1565c0 !important;
+}
+.bg-blue-900{
+    background-color: #0d47a1 !important;
+}
+/*浅蓝*/
+.bg-light-blue{
+    background-color: #03a9f4 !important;
+}
+/*青*/
+.bg-cyan{
+    background-color: #00bcd4 !important;
+}
+/*青蓝*/
+.bg-teal{
+    background-color: #009688 !important;
+}
+/*绿*/
+.bg-green{
+    background-color: #4caf50 !important;
+}
+/*浅绿*/
+.bg-light-green{
+    background-color: #8bc34a !important;
+}
+/*柠檬绿*/
+.bg-lime{
+    background-color: #cddc39 !important;
+}
+/*黄*/
+.bg-yellow{
+    background-color: #ffeb3b !important;
+}
+/*湖泊*/
+.bg-amber{
+    background-color: #ffc107 !important;
+}
+/*橙*/
+.bg-orange{
+    background-color: #ff9800 !important;
+}
+/*深橙*/
+.bg-deep-orange{
+    background-color: #ff5722 !important;
+}
+/*棕*/
+.bg-brown{
+    background-color: #795548 !important;
+}
+/*灰*/
+.bg-grey{
+    background-color: #9e9e9e !important;
+}
+/*蓝灰*/
+.bg-blue-grey{
+    background-color: #607d8b !important;
+}
+/*支付宝庚哥*/
+.bg-alipay{
+    background-color: rgb(65,126,206) !important;
+}
+/*媒体扩展-sm*/
+@media (min-width: 576px){
+    .border-sm-none{
+        border: none !important;
+    }
+}
+@media (min-width: 768px){
+    .border-lg-none{
+        border: none !important;
+    }
+}

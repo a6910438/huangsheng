@@ -1,0 +1,113 @@
+{extend name="layout/main" /}
+
+{block name="header"}
+
+{/block}
+
+{block name="content"}
+<section class="panel">
+    <header class="panel-heading">
+        <h4>提现申请审核列表</h4>
+    </header>
+    <div class="panel-body" style="padding-bottom: 50px">
+        <form class="form-horizontal" action="{:url('withdraw')}">
+            <div class="form-group">
+                <div class="col-xs-1 no-pd-r">
+                    <select name="type" id="type" class="form-control">
+                        <option {if $Request.get.type == 'email'} selected {/if} value="email">用户名</option>
+                        <option {if $Request.get.type == 'nick_name'} selected {/if} value="nick_name">ID</option>
+                    </select>
+                </div>
+                <div class="col-xs-3 no-pd-l">
+                    <input type="text" id="keyword" value="{$Request.get.keyword}" name="keyword" class="form-control" placeholder="请输入关键词搜索">
+                </div>
+                <button type="submit" class="btn btn-color">搜索</button>
+                <!--<a type="button" href="{:url('/admin/article/create')}" class="btn btn-info">添加文章</a>-->
+            </div>
+        </form>
+        <table class="table table-bordered table-striped no-margin">
+            <thead>
+            <tr>
+                <th class="text-center">ID</th>
+                <th class="text-center">用户名</th>
+                <th class="text-center">用户ID</th>
+                <th class="text-center">提现数额</th>
+                <th class="text-center">钱包类型</th>
+                <th class="text-center">钱包地址</th>
+                <th class="text-center">审核状态</th>
+                <th class="text-center">创建时间</th>
+                <th class="text-center">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            {if !empty($list)}
+            {foreach $list as $entity}
+            <tr>
+                <td class="text-center">{$entity->id}</td>
+                <td class="text-center">{$entity->email}</td>
+                <td class="text-center">{$entity->nick_name}</td>
+                <td class="text-center">{$entity->number}</td>
+
+                <td class="text-center">
+                    {if $entity->money_type == 1 }
+                    BTC
+                    {elseif $entity->money_type == 2 }
+                    ETH
+                    {elseif $entity->money_type == 3 }
+                    EOS
+                    {elseif $entity->money_type == 4 }
+                    余额
+                    {/if}
+                </td>
+                <td class="text-center">{$entity->money_address}</td>
+                <td class="text-center">
+                    {if $entity->status == 1}
+                    <a class="btn btn-xs btn-primary">申请成功,已提</a>
+                    {elseif $entity->status == 2 /}
+                    <a class="btn btn-xs btn-warning">拒绝申请</a>
+                    {elseif $entity->status == 0 /}
+                    <a class="btn btn-xs btn-default">申请中</a>
+                    {/if}
+                </td>
+                <td class="text-center">创建时间{$entity->create_time}<br>更新时间{$entity->update_time}</td>
+                <td class="text-center">
+                    {if $entity->status == 0}
+                    <a data-url="{:url('Yes',['id'=>$entity->id])}" onclick="main.ajaxDelete(this)"
+                       data-msg="确定通过该内容吗？" class="btn btn-xs btn-info">通过</a>
+                    <a data-url="{:url('No',['id'=>$entity->id])}" onclick="main.ajaxDelete(this)"
+                       data-msg="确定驳回该内容吗？" class="btn btn-xs btn-warning">不通过</a>
+                    {elseif $entity->status == 1}
+                    <a data-url="{:url('No',['id'=>$entity->id])}" onclick="main.ajaxDelete(this)"
+                       data-msg="确定驳回该内容吗？" class="btn btn-xs btn-warning">不通过</a>
+                    {elseif $entity->status == 2}
+                    <a data-url="{:url('Yes',['id'=>$entity->id])}" onclick="main.ajaxDelete(this)"
+                       data-msg="确定通过该内容吗？" class="btn btn-xs btn-info">通过</a>
+                    {/if}
+                </td>
+            </tr>
+            {/foreach}
+            {else /}
+            <tr class="text-center">
+                <td colspan="5">暂无数据</td>
+            </tr>
+            {/if}
+            </tbody>
+        </table>
+        <div class="page">
+            {:htmlspecialchars_decode($list->render())}
+        </div>
+    </div>
+</section>
+{/block}
+
+
+{block name="footer"}
+<script>
+    function showContent(e){
+        $.dialog({
+            title: '文章内容',
+            content: $(e).attr('data-content')
+        });
+    }
+</script>
+{/block}

@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+	<title>币币账户</title>
+	<script type="text/javascript" src="../build/flexible_css.js"></script>
+    <script type="text/javascript" src="../build/flexible.js"></script>
+    <script type="text/javascript" src="../js/jquery.js"></script>
+	<link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="../css/bb_account.css">
+</head>
+<body>
+	<header class="head">
+		<div class="goback"><img src="../images/goback.png"></div>
+		<span class="bb_account checkIt">币币账户</span><span class="gg_account">杠杆账户</span>
+		<!-- <div class="line"></div> -->
+	</header>
+	<div class="content">
+		<div class="bb_account_box">
+			<div class="valuation">
+				<img class="can_see" src="../images/can_see_w.png">
+				<div class="bb_valuation">币币资产估值</div>
+				<div class="bb_value_box">
+					<span class="bi">฿</span><span class="bb_value">0.00000696</span>
+				</div>
+				<div class="value_of_rmb">$≈0.26</div>
+			</div>
+			<div class="capital_box">
+				<div class="capital_transfer">
+					<img class="transfer_icon" src="../images/transfer.png"><br>
+					<span>资金划转</span>
+				</div>
+				<div class="bb_bill">
+					<img class="bill_icon" src="../images/bill@2x.png"><br>
+					<span>杠杆账单</span>
+				</div>
+			</div>
+			<div class="gay_block"></div>
+			<div class="item_box">
+				<div class="asset_detail">
+					<div>资产明细</div>
+					<div>
+						<span class="check_box"><img src=""></span><span>隐藏0余额</span>
+					</div>
+				</div>
+				<div class="item">
+					<span class="item_name">BTC</span>
+					<span class="item_value">0.00000000</span>
+					<span class="frozen_value">冻结 0.00000000</span>
+				</div>
+				<div class="item">
+					<span class="item_name">LTC</span>
+					<span class="item_value">0.00000000</span>
+					<span class="frozen_value">冻结 0.00000000</span>
+				</div>
+				<div class="item">
+					<span class="item_name">ETH</span>
+					<span class="item_value black_value">0.00009673</span>
+					<span class="frozen_value">冻结 0.00000000</span>
+				</div>
+				<div class="item">
+					<span class="item_name">OKB</span>
+					<span class="item_value">0.00000000</span>
+					<span class="frozen_value">冻结 0.00000000</span>
+				</div>
+				<div class="item">
+					<span class="item_name">ETC</span>
+					<span class="item_value">0.00000000</span>
+					<span class="frozen_value">冻结 0.00000000</span>
+				</div>
+				<div class="item">
+					<span class="item_name">BCH</span>
+					<span class="item_value">0.00000000</span>
+					<span class="frozen_value">冻结 0.00000000</span>
+				</div>
+				<div class="item">
+					<span class="item_name">USDT</span>
+					<span class="item_value black_value">0.00000000</span>
+					<span class="frozen_value">冻结 0.00000000</span>
+				</div>
+			</div>
+		</div>
+		<div class="gg_account_box">
+			<div class="valuation">
+				<img class="gg_can_see" src="../images/can_see_w.png">
+				<div class="gg_valuation">杠杆资产估值</div>
+				<div class="bb_value_box">
+					<span class="bi">฿</span><span class="gg_value">0.00000696</span>
+				</div>
+				<div class="gg_value_price">$≈0.26</div>
+			</div>
+			<div class="capital_box">
+				<div class="borrow_coin">
+					<img class="borrow_coin_icon" src="../images/borrow_coin.png"><br>
+					<span>借币</span>
+				</div>
+				<div class="capital_transfer">
+					<img class="transfer_icon" src="../images/transfer.png"><br>
+					<span>资金划转</span>
+				</div>
+				<div class="bb_bill">
+					<img class="bill_icon" src="../images/bill@2x.png"><br>
+					<span>币币账单</span>
+				</div>
+			</div>
+			<div class="gay_block"></div>
+			<div class="item_box">
+				<div class="asset_detail">
+					<div>资产明细</div>
+					<!-- <div>
+						<span class="check_box"><img src=""></span><span>隐藏0余额</span>
+					</div> -->
+				</div>
+				<div class="gg_item">
+					<div class="gg_item_top">
+						<span class="coin_type">ETH/BTC</span>
+						<span class="bcj_and_fxl">
+							<span class="bc_price">爆仓价<i class="bc_num">0.0000</i></span>
+							<span class="risk_rate">风险率<i class="risk_num">--</i></span>
+						</span>
+					</div>
+					<div class="coin_type_title">
+						<span>币种</span>
+						<span class="can_use">可用</span>
+						<span class="frozen">冻结</span>
+					</div>
+					<div class="coin_type_and_num">
+						<span class="coin_type">ETC</span>
+						<span class="coin_num">0.00000000</span>
+						<span class="frozen_num">0.00000000</span>
+					</div>
+					<div class="coin_type_and_num">
+						<span class="coin_type">ETC</span>
+						<span class="coin_num">0.00000000</span>
+						<span class="frozen_num">0.00000000</span>
+					</div>
+				</div>
+				<div class="gg_item">
+					<div class="gg_item_top">
+						<span class="coin_type">ETH/BTC</span>
+						<span class="bcj_and_fxl">
+							<span class="bc_price">爆仓价<i class="bc_num">0.0000</i></span>
+							<span class="risk_rate">风险率<i class="risk_num">--</i></span>
+						</span>
+					</div>
+					<div class="coin_type_title">
+						<span>币种</span>
+						<span class="can_use">可用</span>
+						<span class="frozen">冻结</span>
+					</div>
+					<div class="coin_type_and_num">
+						<span class="coin_type">ETC</span>
+						<span class="coin_num">0.00000000</span>
+						<span class="frozen_num">0.00000000</span>
+					</div>
+					<div class="coin_type_and_num">
+						<span class="coin_type">ETC</span>
+						<span class="coin_num">0.00000000</span>
+						<span class="frozen_num">0.00000000</span>
+					</div>
+				</div>
+				<div class="gg_item">
+					<div class="gg_item_top">
+						<span class="coin_type">ETH/BTC</span>
+						<span class="bcj_and_fxl">
+							<span class="bc_price">爆仓价<i class="bc_num">0.0000</i></span>
+							<span class="risk_rate">风险率<i class="risk_num">--</i></span>
+						</span>
+					</div>
+					<div class="coin_type_title">
+						<span>币种</span>
+						<span class="can_use">可用</span>
+						<span class="frozen">冻结</span>
+					</div>
+					<div class="coin_type_and_num">
+						<span class="coin_type">ETC</span>
+						<span class="coin_num">0.00000000</span>
+						<span class="frozen_num">0.00000000</span>
+					</div>
+					<div class="coin_type_and_num">
+						<span class="coin_type">ETC</span>
+						<span class="coin_num">0.00000000</span>
+						<span class="frozen_num">0.00000000</span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+<script type="text/javascript">
+	// 币币账户 账户余额右上角图标点击 显示/隐藏 账户币数量跟币价值
+	var bb_value = $('.bb_value').eq(0).text();
+	var value_of_rmb = $('.value_of_rmb').eq(0).text();
+	$('.can_see').click(function () {
+		if ($('.bb_value').eq(0).text() === '****') {
+			$('.can_see').attr('src','../images/can_see_w.png')
+			$('.bb_value').eq(0).text(bb_value);
+			$('.value_of_rmb').eq(0).text(value_of_rmb);
+		} else {
+			$('.can_see').attr('src','../images/hide_w@2x.png')
+			$('.bb_value').text('****');
+			$('.value_of_rmb').text('≈****');
+		}
+	})
+	// 杠杆账户 账户余额右上角图标点击 显示/隐藏 账户币数量跟币价值
+	var gg_value = $('.gg_value').eq(0).text();
+	var gg_value_price = $('.gg_value_price').eq(0).text();
+	$('.gg_can_see').click(function () {
+		if ($('.gg_value').eq(0).text() === '****') {
+			$('.gg_can_see').attr('src','../images/can_see_w.png')
+			$('.gg_value').eq(0).text(gg_value);
+			$('.gg_value_price').eq(0).text(gg_value_price);
+		} else {
+			$('.gg_can_see').attr('src','../images/hide_w@2x.png')
+			$('.gg_value').text('****');
+			$('.gg_value_price').text('≈****');
+		}
+	})
+	// 币币账户 资产明细 点击显示/隐藏
+	$('.check_box').click(function () {
+		var imgSrc = $(this).find('img').attr('src');
+		if (imgSrc === '') {
+			$(this).find('img').attr('src','../images/right@2x.png');
+			$('.item').hide();
+		} else {
+			$(this).find('img').attr('src','');
+			$('.item').show();
+		}
+	})
+
+	var bb_account_box = $('.bb_account_box').height() + 12;
+	$('.content').css('height', bb_account_box + 'px');
+	var bbAccountLeft = 0;
+	var ggAccountLeft = 100;
+	var timer = 
+	$('.bb_account').click(function () {
+		$(this).addClass('checkIt').siblings('span').removeClass('checkIt');
+		$('.bb_account_box').css({left: '0%'});
+		$('.gg_account_box').css({left: '100%'});
+		var bb_account_h = $('.bb_account_box').height() + 12;
+		$('.content').css('height', bb_account_h + 'px');
+	})
+	$('.gg_account').click(function () {
+		$(this).addClass('checkIt').siblings('span').removeClass('checkIt');
+		$('.bb_account_box').css({left: '-100%'});
+		$('.gg_account_box').css({left: '0%'});
+		var gg_account_h = $('.gg_account_box').height() + 12;
+		$('.content').css('height', gg_account_h + 'px');
+	})
+</script>
+</html>

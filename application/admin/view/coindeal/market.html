@@ -1,0 +1,92 @@
+{extend name="layout/main" /}
+
+{block name="header"}
+
+{/block}
+
+{block name="content"}
+
+
+<section class="panel">
+
+    <div class="panel-body" style="padding-bottom: 50px">
+        <form class="form-horizontal"  action="{:url('admin/coindeal/market')}" >
+
+            <div class="form-group">
+                <div class="col-xs-1 no-pd-r">
+                    <select name="cointype" class="form-control">
+                        <option  value="0">全部币种</option>
+                        <option {if $Request.get.cointype == 'BTC'} selected {/if} value="BTC">BTC</option>
+                        <option {if $Request.get.cointype == 2} selected {/if} value="2">交易成功</option>
+                    </select>
+                </div>
+              <!--   <div class="col-xs-3 no-pd-l">
+                    <input type="text" value="{$Request.get.cdsn}" name="cdsn" class="form-control" placeholder="请输入订单号">
+                </div>
+            
+                <div class="col-xs-3 no-pd-l">
+                    <input type="text" value="{$Request.get.keyword}" name="keyword" class="form-control" placeholder="请输入会员手机号">
+                </div> -->
+                <button type="submit" class="btn btn-color">搜索</button>
+            </div>
+        </form>
+        <table class="table table-bordered table-striped no-margin">
+            <thead>
+                <tr>
+                    <th class="text-center">ID</th>
+                    <th class="text-center">交易币类型</th>
+                    <th class="text-center">涨跌幅度</th>
+                    <th class="text-center">变动前市值</th>
+                    <th class="text-center">变动后市值</th>
+                    <th class="text-center">涨跌比例</th>
+                    <th class="text-center">变动时间</th>
+                </tr>
+            </thead>
+            <tbody>
+            {if $list}
+                {foreach $list as $order}
+    
+                    <tr>
+                        <td class="text-center">{$order->id}</td>
+                        <td class="text-center">{$order->cointype}</td>
+            
+                        <td class="text-center">
+                            {:number_format($order->amount,8)}
+                        </td>
+                        <td class="text-center">
+                            {:number_format($order->before,8)}
+                        </td>
+                        <td class="text-center">
+                            {:number_format($order->later,8)}
+                        </td>
+                         <td class="text-center">
+                            {:number_format($order->rate,8)}
+                        </td>
+
+                        <td class="text-center">
+                            {:date('Y-m-d H:i:s',$order->createtime) }
+                        </td>
+                    </tr>
+                {/foreach}
+            {else /}
+                <tr class="text-center">
+                    <td colspan="8">暂无数据</td>
+                </tr>
+            {/if}
+            </tbody>
+        </table>
+        <div class="page">
+            {:htmlspecialchars_decode($list->render())}
+        </div>
+    </div>
+</section>
+
+
+
+
+
+{/block}
+
+{block name="footer"}
+
+{/block}

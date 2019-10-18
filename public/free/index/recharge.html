@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Recharge</title>
+    <link rel="icon" href="free.ico" type="image/x-icon"/> 
+    <link rel="stylesheet" href="../css/public.css">
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <script src="../build/flexible.js"></script>
+    <script src="../build/flexible_css.js"></script>
+    <script src="../js/layer.js"></script>
+    <script src="../js/jquery.js"></script>
+    <script src="../js/clipboard.min.js"></script>
+    <script src="../js/template.js"></script>
+    <script src="../js/core.js"></script>
+    <style>
+        html, body {background: #F5F5F5;overflow-x: hidden}
+        input::-webkit-input-placeholder {color: #999;}
+        textarea::-webkit-input-placeholder {color: #999;}
+        .header {position: fixed;top: 0px;left: 0px;width: 100%;height: 1.173333rem;line-height: 1.173333rem;text-align: center;color: #fff;background: linear-gradient(to left, #2A3176, #0A0F3E);z-index: 99999;}
+        .header span {font-size: .48rem;font-weight: bold;}
+        .goback {position: absolute;top: 0;left: .106667rem;display: flex;align-items: center;height: inherit;}
+        .goback img {width: .586667rem;}
+        .main {padding: 1.173333rem .373333rem 1.333333rem;}
+        .item {padding-top: .213333rem}
+        .item-title {padding-left: .426667rem;height: .693333rem;line-height: .693333rem;font-size: .426667rem;font-weight: bold;color: #333;}
+        .item-content {position: relative;display: flex;justify-content: space-between;align-items: center;padding: 0rem .32rem 0rem .426667rem;height: 1.173333rem;border-radius: .266667rem;background: #191F58;box-shadow: 0rem 0rem .4rem 0rem rgba(25, 31, 88, 0.5);}
+        .item-value {height: inherit;border: none;font-size: .373333rem;color: #fff;width: 100%;background: transparent;color: #666;}
+        .btn-box {margin-top: 4rem;display: flex;justify-content: center;}
+        .confirm {padding: 0rem .8rem;min-width: 57.65%;height: 1.173333rem;line-height: 1.173333rem;text-align: center;font-size: .48rem;color: #fff;border: none;background: #262F86;border-radius: .133333rem;box-shadow: 0rem 0rem .666667rem rgba(38, 47, 134, 0.5);}
+        .item-content img {height: .586667rem;}
+        .set-file{
+            display: block;
+            position: absolute;
+            opacity: 0;
+            top: .3rem;
+            right: .3rem;
+            width: .586667rem;
+            height: .586667rem;
+                }
+        .img-box .img-item{text-align: center;margin-top: .6rem}
+        .img-box .img-item img{width: 4rem;}
+        .copy-btn {
+            padding: 0rem .106667rem;
+            height: inherit;
+            border: none;
+            font-size: .426667rem;
+            color: #fff;
+            font-weight: bold;
+            background: transparent;
+        }
+        .price-explain {
+                margin-top: .533333rem;
+                padding: .16rem .426667rem .32rem;
+                border-radius: .266667rem;
+                background: #fff;
+            }
+            .price-explain textarea {
+                display: block;
+                width: 100%;
+                resize: none;
+                font-size: .426667rem;
+                color: #333;
+                border: none;
+            }
+    </style>
+<body>
+    <header class="header">
+        <a href="javascript:history.back(-1);" class="goback">
+            <img src="../images/nav_arrow_icon@2x.png" alt="">
+        </a>
+        <span>Recharge</span>
+    </header>
+    <main class="main">
+            <div class="list" data-img="">
+                    <div class="item">
+                        <div class="item-title">Eagle Eye</div>
+                        <div class="item-content" id="select">
+                            <input type="text" id="option-value" class="item-value" placeholder="Eagle Eye" readonly>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="item-title">Amount</div>
+                        <div class="item-content">
+                            <input type="text" class="item-value purchase" placeholder="Extra Purchase">
+                        </div>
+                        <p class="purchase_error" style="display: none; margin-top:.1rem;color: #F24D4D;font-size: .32rem"><span class="tishi">!</span>Extra Purchase cannot be empty</p>
+                    </div>
+                    <div class="item">
+                            <div class="item-title">Payment Voucher</div>
+                            <div class="item-content">
+                                <input type="text" class="item-value" value="Select a Picture" readonly>
+                                <img id="img-file" src="../images/sc_img_icon@2x.png" alt=""><input type="file" accept="image/jpeg,image/jpg,image/png" id="upload" class="set-file">
+                            </div>
+                             <p class="img_error" style="display: none; margin-top:.1rem;color: #F24D4D;font-size: .32rem"><span class="tishi">!</span>Payment Voucher cannot be empty</p>                
+                        </div>
+                        <div class="img-box left clearfix"></div>
+                    <div class="item">
+                        <div class="item-title">Wallet Address</div>
+                        <div class="item-content">
+                            <input type="text" class="item-value" id="wallet-address"  readonly>
+                            <button class="copy-btn" style="cursor: pointer;" data-clipboard-action="copy" data-clipboard-target="#wallet-address">Copy</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="price-explain">
+                    <textarea  name="" id="" cols="30" rows="4" readonly placeholder="Price：1Eagle Eye ＝1usdt (Minimum 20) Member will be responsible for paying transfer fees, this fees will be based on total amount of all transfers."></textarea>
+                </div>
+                <div class="btn-box">
+                    <button class="confirm">Submit</button>
+                </div>
+    </main>
+</body>
+<script>
+    $(function () {
+        $('#upload').on('change', function(){
+                    $('.img_error').hide();
+		            var file = $(this)[0];
+		            var formData = new FormData();
+		            formData.append('file', file.files[0]);
+		            $.ajax({
+		                url: "../../index.php/index/Upload/uploadImg",
+		                type: 'POST',
+		                data: formData,
+		                contentType: false, // 注意这里应设为false
+		                processData: false,
+		                success: function(res){
+		                    console.log(res);
+		                    if(res.code==0){
+								var m_img=`
+		                        <div class="img-item">
+							        <img src="${res.data}" alt="">
+							    </div>`
+                                $('.img-box').append(m_img);
+                                $(".list").data("img",res.data);
+		                        var lenth = $('.img-box .img-item').length;
+		                        if(lenth>=1){
+		                            $('.set-file').hide();
+		                        } 
+		                        $('#img-total').html(lenth);
+		                        file.value = '';
+		                        layer.open({
+                                content: 'Upload success',
+                                skin: 'msg',
+                                time: 2
+                            });
+		                    }else{
+		                        layer.open({
+                                content: 'upload failed',
+                                skin: 'msg',
+                                time: 2
+                            });
+		                    }
+		                },
+		                error: function(XHR, textStatus, errorThrown) {
+		                    alert('Network Error！');
+		                }
+		            });
+		        });
+        $.ajax({
+                url: "../../index.php/index/Access/recharge",
+                type: 'GET',
+                dataType: 'json',
+                success: function(res){
+                    console.log(res)
+                    if(res.code=='0'){
+                          $('#wallet-address').val(res.info.address);  
+                        }
+                    else{
+                        layer.open({
+                            content: res.message,
+                            skin: 'msg',
+                            time: 2
+                        });
+                        }
+                },
+        })
+        $('.confirm').off().on('click',function(){
+            var money_address=$('#wallet-address').val();
+            var nums=$('.purchase').val();
+            var pic=$(".list").data("img");
+            if(!pic) return $('.img_error').show();
+            $.ajax({
+                url: "../../index.php/index/Access/recharge",
+                type: 'POST',
+                data: {
+                    money_address:money_address,nums:nums,pic:pic
+                },
+                dataType: 'json',
+                success: function(res){
+                    console.log(res)
+                    if(res.code=='0'){
+                            layer.open({
+                                    content: 'Submitted successfully',
+                                    skin: 'msg',
+                                    time: 2
+                                });
+                            setTimeout(function(){
+                                location.href="assets.html";
+                            }, 1000);
+                        }
+                    else{
+                        layer.open({
+                            content: res.message,
+                            skin: 'msg',
+                            time: 2
+                        });
+                        }
+                },
+        })
+        })
+    });
+</script>
+<script>
+    let itemContent = document.querySelectorAll('.item-content');
+    let itemValue = document.querySelectorAll('.item-value');
+    itemValue.forEach((item, index) => {
+        item.addEventListener('input', ()=> {
+            if (item.value.length > 0) {
+                itemContent[index].style.background = '#fff';
+                itemContent[index].style.boxShadow = 'none';
+            } else {
+                itemContent[index].style.background = '#191F58';
+                itemContent[index].style.boxShadow = '0rem 0rem .4rem 0rem rgba(25, 31, 88, 0.5)';
+            }
+        });
+    });
+     // 复制邀请码
+     let clipboard = new ClipboardJS('.copy-btn');
+    clipboard.on('success', function(e) {
+        layer.open({
+            content: "复制成功",
+            skin: 'msg',
+            time: 2
+        });
+    });
+    clipboard.on('error', function(e) {
+        layer.open({
+            content: "复制成功",
+            skin: 'msg',
+            time: 2
+        });
+    });
+</script>
+</html>

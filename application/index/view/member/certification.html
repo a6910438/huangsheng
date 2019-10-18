@@ -1,0 +1,48 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>实名认证</title>
+    <!--head-->
+    {include file="layout/head" /}</head>
+<body>
+<header class="mui-bar mui-bar-nav my-header">
+    <a href="/index/member/set" class="mui-icon mui-icon-left-nav mui-pull-left"></a>
+
+    <h1 id="title" class="mui-title">实名认证</h1>
+</header>
+<div class="mui-content container">
+        <div class="mui-input-row my-input-row">
+            <label>姓名</label>
+            <input type="text" id="real_name" class="mui-input" {if $list->is_certification == 1}readonly{/if} placeholder="请输入姓名" name="real_name" value="{$list->real_name}">
+        </div>
+        <div class="mui-input-row my-input-row">
+            <label>身份证</label>
+            <input type="text" id="card_id" class="mui-input" {if $list->is_certification == 1}readonly{/if} placeholder="请输入身份证" name="card_id" value="{$list->card_id}">
+        </div>
+        <p class="my-p" style="padding: 10px;">
+            注:茶源链团队重视保障用户的个人信息，用户的个<br>人信息将被严格保密。<br>
+            此实名认证系统仅限于茶源链团队认证身份信息，保<br>
+            证不对外公开或向第三方提供用户个人信息。
+        </p>
+        {if $list->is_certification == 2}
+        <p class="my-p" style="padding: 10px;">
+            认证失败原因：{$list->certification_fail}
+        </p>
+        {/if}
+    <button type="submit" class="mui-btn mui-btn-warning my-btn" id="next">下一步</button>
+</div>
+</body>
+{include file="layout/footer" /}
+<script>
+    $("#next").click(function(){
+        var real_name = $("#real_name").val();
+        var card_id = $("#card_id").val();
+        if(!card_id || !real_name)
+        {
+            mui.alert("姓名和身份证号不能为空！！");
+        }
+        window.location.href = "/index/member/lastreal?card_id="+card_id+"&real_name="+real_name;
+    })
+</script>
+</html>

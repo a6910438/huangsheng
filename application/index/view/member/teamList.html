@@ -1,0 +1,145 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>公会</title>
+    <!--head-->
+    {include file="layout/head" /}</head>
+<body>
+    <style type="text/css">
+        .my-btn{
+            position:static;
+            margin-top: 10px;
+            margin-left: 5%;
+        }
+        .team-title{
+            font-size: 16px;
+            font-weight: bold;
+        }
+        .team-des{
+            color:#c1c1c1;
+        }
+        .team-operate{
+            /*text-align: right;*/
+        }
+        .join-btn{
+            background: #67c4ff;
+            border: 1px solid #67c4ff;
+        }
+        .team-list-title{
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .border-bottom-2{
+            border-bottom: 1px solid #c1c1c1;
+        }
+        .border-top-2{
+            border-top: 1px solid #c1c1c1;
+        }
+        .team-uname{
+            margin-left: 0px!important;
+        }
+        .loadmore-title{
+            text-align: center;
+        }
+    </style>
+<header class="mui-bar mui-bar-nav my-header">
+    <a href="/index/member/index" class="mui-icon mui-icon-left-nav mui-pull-left"></a>
+
+    <h1 id="title" class="mui-title">公会</h1>
+</header>
+<div class="mui-content container">
+    <button type="submit" class="mui-btn mui-btn-warning my-btn" id="create_team">创建公会</button>
+    <ul class="mui-table-view my-view" style="margin-top: 10px;">
+        <li class="mui-table-view-cell mine-list-item border-bottom-2">
+            <div class="team-list-title">公会列表</div>
+        </li>
+        <m id="list-area-team">
+        
+        </m>
+        <li class="mui-table-view-cell mine-list-item border-top-2 border-bottom-2 loadmore" data-type="team" data-page="1">
+            <div class="loadmore-title">查看更多</div>
+        </li>
+    </ul>
+</div>
+</body>
+{include file="layout/footer" /}
+<script>
+    $("#create_team").click(function(){
+        window.location.href = "/index/member/teamCreate";
+    })
+    $('.loadmore').on('click', function () {
+        getDataList($(this).attr('data-type'));
+    })
+    var ajaxSending = false;
+    getDataList('team');
+    function getDataList(type) {
+        var loadDom = $('.loadmore[data-type=' + type + ']');
+        var page = loadDom.attr('data-page');
+        var listAreaDom = $('#list-area-' + type);
+        var url = "{:url('member/teamList')}";
+        if (ajaxSending) {
+            return false;
+        }
+        
+        ajaxSending = true;
+        $.post(url, {'page': page}, function (d) {
+            if (d.status === true) {
+                var data = d['data']['list'];
+                if (data == null || data.length == 0) {
+                    loadDom.remove();
+                } else {
+                    var html = '', tmpdata = '';
+                    if (type == 'team') {
+                        for (var k in data) {
+                            tmpdata = data[k];
+                            
+                            html += '<li class="mui-table-view-cell mine-list-item">';
+                            html += '<div class="team-title">' + tmpdata['name'] + '</div>';
+                            html += '<div class="team-des">' + tmpdata['declaration'] + '</div>';
+                            html += '<div class="team-operate"><span class="left team-uname">' + tmpdata['username'] + '</span>';
+                            html += '<button class="mui-btn mui-btn-warning join-btn right" data-tid="' + tmpdata['id'] + '">加入</button></div></li>';
+                        }
+                    }
+                    listAreaDom.append(html);
+                    $('.join-btn').click(function(){
+                        join($(this));
+                    })
+                    if (d['data']['nextPage'] == 0) {
+                        loadDom.remove();
+                    } else {
+                        loadDom.attr('data-page', d['data']['nextPage']);
+                    }
+                }
+            } else {
+                alert(d.info, 2);
+            }
+            ajaxSending = false;
+        })
+    }
+    $('.join-btn').click(function(){
+        join($(this));
+    })
+    function join(_this){
+        var tid = _this.data('tid');
+        var url = "{:url('member/joinTeam')}";
+        mui.confirm('确认加入这个公会？', '', ['取消', '加入'], function (e) {
+            if (e.index != 0) {
+                if (ajaxSending) {
+                    return false;
+                }
+                ajaxSending = true;
+                $.post(url, {'tid': tid}, function (d) {
+                    if (d.status == true) {
+                        window.location.reload();
+                    } else {
+                        mui.alert(d.info);
+                    }
+                    ajaxSending = false;
+                })
+            }
+        })
+    }
+</script>
+</html>

@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+	<title>发布交易单</title>
+	<script type="text/javascript" src="/static/build/flexible_css.js"></script>
+    <script type="text/javascript" src="/static/build/flexible.js"></script>
+    <script type="text/javascript" src="/static/js/jquery.js"></script>
+	{include file="layout/head" /}
+	<link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="/static/css/buy_and_sell.css">
+</head>
+<body>
+	<header class="head">
+		<div class="goback" onclick="javascript:window.history.back(-1);"><img src="/static/images/goback.png"></div>
+		<span class="fb_account">发布交易单 {$money_type}/CNY</span>
+		<div class="coin_price">￥6.67</div>
+	</header>
+	<div class="buy_or_sell">
+		<div class="want_to_buy check_buy" mytype = '1'>我要购买</div>
+		<div class="want_to_buy " mytype = '2'>我要出售</div>
+	</div>
+	<div class="content">
+		<form class="" action="{:url('legal/saleOrBuy')}" method="post" onsubmit="return false" id="buyForm">
+		<div class="buy_content">
+			<div class="item_title">
+				<span>交易设置</span>
+				<span class="now_price">当前盘口价格6.67CNY</span>
+			</div>
+			<div class="item item_one">
+				<div>定价方式</div>
+				<div class="pricing_mode">
+					<span class="pricing_modes">固定价格</span>
+					<span class="select_icon"><img src="/static/images/goback@2x.png" alt=""></span>
+					<input type="hidden" name="seltype" id="seltype" value="1">
+				</div>
+			</div>
+			
+			<div class="pricing_mode_box ">
+				<div class="pricing_mode_item now_pricing_mode" seltype = '1'>固定价格</div>
+				<div class="pricing_mode_item"  seltype = '2'>市场价格</div>
+			</div>
+			<input type="hidden" name="mytype" id="mytype" value="1">
+			<input type="hidden" name="money_type" id="motype" value="{$money_type}">
+			
+			<div class="item">
+				<div class="transaction_price">交易价格</div>
+				<div class="transaction_price_input">
+					<input class="buy_input buy_price" type="number" name="price" step="0.01" onkeyup="countPrice(this)" placeholder="请输入交易价格">
+				</div>
+			</div>
+			<div class="item_title"><span>交易数额</span></div>
+			<div class="item item_one">
+				<div class="coin_num">数量<span class="coin_type">({$money_type})</span></div>
+				<div>
+					<input class="buy_input buy_number" onkeyup="countPrice(this)" step="0.01"  type="number" name="number" placeholder="请输入购买数量">
+				</div>
+			</div>
+			<div class="item">
+				<div class="amount_of_money">金额<span class="rmb">(CNY)</span></div>
+				<div>
+					<input class="buy_input buy_totalprice" readonly type="number" name="totalprice" placeholder="最小交易额2000">
+				</div>
+			</div>
+			<div class="item_title"><span>交易限制</span></div>
+			<div class="quota">
+				<div>单笔限额</div>
+				<div><input class="buy_input" type="number" name="minbuy" placeholder="400"></div>
+				<div class="reduce">一</div>
+				<div class=""><input class="buy_input" type="number" name="maxbuy" value="1200" placeholder="总金额"></div>
+				<div>CNY</div>
+			</div>
+			<div class="terms_description">
+				<div>交易说明</div>
+				<div>
+					1.订单有效期为15分钟，请及时付款并点击「我已支付」按钮 2.币由系统锁定托管，请安心下单
+				</div>
+			</div>
+			<div class="btn_box">
+				<button class="release_trading" style="background:#5ACB9B;"  data-form="buyForm" onclick="ajaxPost(this)" type="submit">发布交易单</button>
+			</div>
+			<div class="item_end">
+				<div>买单保证金：0.5<span class="bond_type">ETH</span></div>
+				<div>平台服务费率0.0%</div>
+			</div>
+		</div>
+		</form>
+
+    	<!-- <form class="" action="{:url('legal/mysale')}" method="post" onsubmit="return false" id="saleForm">
+		<div class="sell_content">
+			<div class="item_title">
+				<span>交易设置</span>
+				<span class="now_price">当前盘口价格 6.67CNY</span>
+			</div>
+			<div class="item item_one">
+				<div>定价方式</div>
+				<div class="pricing_mode">
+					<span class="pricing_modes">固定价格</span>
+					<span class="select_icon"><img src="/static/images/goback@2x.png" alt=""></span>
+					<input type="hidden" name="seltype" id="seltype" value="1">
+				</div>
+			</div>
+			<div class="pricing_mode_box ">
+				<div class="pricing_mode_item now_pricing_mode" seltype = '1'>固定价格</div>
+				<div class="pricing_mode_item"  seltype = '2'>市场价格</div>
+			</div>
+			
+			<input type="hidden" name="money_type" value="{$money_type}">
+
+			<div class="item">
+				<div class="transaction_price">交易价格</div>
+				<div class="transaction_price_input">
+					<input class="sell_input" type="number" placeholder="请输入交易价格">
+				</div>
+			</div>
+			<div class="item_title"><span>交易数额</span></div>
+			<div class="item item_one">
+				<div class="coin_num">数量<span class="coin_type">(ETH)</span></div>
+				<div>
+					<input class="sell_input" type="number" placeholder="请输入购买数量">
+				</div>
+			</div>
+			<div class="item">
+				<div class="amount_of_money">金额<span class="rmb">(CNY)</span></div>
+				<div>
+					<input class="sell_input" type="number" placeholder="最小交易额2000">
+				</div>
+			</div>
+			<div class="item_title"><span>对手限制</span></div>
+			<div class="quota">
+				<div>单笔限额</div>
+				<div><input class="sell_input" type="number" name="minbuy" placeholder="400"></div>
+				<div class="reduce">一</div>
+				<div class=""><input class="sell_input" type="number" name="maxbuy" value="1200" placeholder="总金额"></div>
+				<div>CNY</div>
+			</div>
+			<div class="terms_description">
+				<div>交易说明</div>
+				<div>
+					1.订单有效期为15分钟，请及时付款并点击「我已支付」按钮 2.币由系统锁定托管，请安心下单
+				</div>
+			</div>
+			<div class="btn_box">
+				<button class="release_trading" style="background:#F56B61;" data-form="saleForm" onclick="ajaxPost(this)" type="submit">发布交易单</button>
+			</div>
+			<div class="item_end">
+				<div>买单保证金：0.5<span class="bond_type">ETH</span></div>
+				<div>平台服务费率0.0%</div>
+			</div>
+		</div>
+		</form> -->
+
+	</div>
+</body>
+{include file="layout/footer" /}
+<script type="text/javascript">
+	var pricingMode = 0;
+	$('.pricing_mode').click(function () {
+		if (pricingMode === 0) {
+			$('.pricing_mode_box').slideDown(200);
+			$(this).find('img').attr('src', '/static/images/goback_up@2x.png');
+			pricingMode++;
+		} else if (pricingMode === 1) {
+			$('.pricing_mode_box').slideUp(200);
+			$(this).find('img').attr('src', '/static/images/goback@2x.png');
+			pricingMode--;
+		}
+	})
+
+	$('.pricing_mode_box').click(function () {
+		if (pricingMode === 1) {
+			$('.pricing_mode_box').slideUp(200);
+			$('.pricing_mode').find('img').attr('src', '/static/images/goback@2x.png');
+			pricingMode--;
+		}
+	})
+
+	$('.pricing_mode_box .pricing_mode_item').click(function () {
+		$(this).addClass('now_pricing_mode').siblings().removeClass('now_pricing_mode');
+		var pricingModeText = $(this).text();
+		var seltype = $(this).attr('seltype');
+		$('#seltype').val(seltype);
+		$(this).parent().prev().find('.pricing_modes').text(pricingModeText);
+		if(seltype==2){
+			$('.buy_price').attr('readonly',true);
+			/*动态获取 市场价格*/
+			$('.buy_price').val(6.67);
+			countPrice($('.buy_price')[0]);
+
+		}else{
+			$('.buy_price').removeAttr('readonly');
+			$('.buy_price').val('');
+			countPrice($('.buy_price')[0]);
+		}
+		if (pricingMode === 1) {
+			$('.pricing_mode_box').slideUp(200);
+			$('.pricing_mode').find('img').attr('src', '/static/images/goback@2x.png');
+			pricingMode--;
+		}
+	})
+
+
+	function countPrice(e){
+		
+		e.value = e.value.replace(/[^\d.]/g,""); //清除"数字"和"."以外的字符
+		e.value = e.value.replace(/^\./g,""); //验证第一个字符是数字
+		e.value = e.value.replace(/\.{2,}/g,"."); //只保留第一个, 清除多余的
+		e.value = e.value.replace(".","$#$").replace(/\./g,"").replace("$#$",".");
+		e.value = e.value.replace(/^(\-)*(\d+)\.(\d\d).*$/,'$1$2.$3');
+
+		var price = $('.buy_price').val();
+		var number = $('.buy_number').val();
+		var totalprice = price*number;
+		totalprice = Math.floor(totalprice * 100) / 100;
+		if(totalprice>0){
+			$('.buy_totalprice').val(totalprice);
+		}else{
+			$('.buy_totalprice').val('');
+		}
+	}
+	
+	$('.want_to_buy').click(function () {
+		var mytype = $(this).attr('mytype');
+		$('#mytype').val(mytype);
+		if(mytype==1){
+			$(this).addClass('check_buy').next().removeClass('check_sell');
+			$('.buy_content .release_trading').css('background', '#5ACB9B');
+		}else if(mytype==2){
+			$(this).addClass('check_sell').prev().removeClass('check_buy');
+			$('.buy_content .release_trading').css('background', '#F56B61');
+		}
+		
+	})
+
+	// $('.buy_input').bind('input propertychange', function () {
+	// 	for (var i = 0; i < $('.buy_input').length; i++) {
+	// 		if ($('.buy_input').eq(0).val() != "" && $('.buy_input').eq(1).val() != "" && $('.buy_input').eq(2).val() != "" && $('.buy_input').eq(3).val() != "" && $('.buy_input').eq(4).val() != "") {
+	// 			$('.buy_content .release_trading').css('background', '#5ACB9B');
+	// 		}
+	// 		if ($('.buy_input').eq(i).val() == "") {
+	// 			$('.buy_content .release_trading').css('background', '#E0E5E6');
+	// 		}
+	// 	}
+	// })
+
+	// $('.sell_input').bind('input propertychange', function () {
+	// 	for (var i = 0; i < $('.sell_input').length; i++) {
+	// 		if ($('.sell_input').eq(0).val() != "" && $('.sell_input').eq(1).val() != "" && $('.sell_input').eq(2).val() != "" && $('.sell_input').eq(3).val() != "" && $('.sell_input').eq(4).val() != "") {
+	// 			$('.sell_content .release_trading').css('background', '#F56B61');
+	// 		}
+	// 		if ($('.sell_input').eq(i).val() == "") {
+	// 			$('.sell_content .release_trading').css('background', '#E0E5E6');
+	// 		}
+	// 	}
+	// })
+	
+</script>
+</html>

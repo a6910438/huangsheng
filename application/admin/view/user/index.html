@@ -1,0 +1,241 @@
+{extend name="layout/main" /}
+
+{block name="header"}
+
+{/block}
+
+{block name="content"}
+<style type="text/css">
+    .link-th {
+        color: blue;
+    }
+</style>
+<section class="panel">
+    <header class="panel-heading">
+        <h4>会员列表</h4>
+    </header>
+    <div class="panel-body" style="padding-bottom: 50px">
+        <form class="form-horizontal" action="{:url('admin/user/index')}" id="member_form">
+            <div class="form-group">
+                <div class="col-xs-1 no-pd-r">
+                    <select name="type" id="type" class="form-control">
+                        <option {if $Request.get.type==
+                        'nick_name'} selected {/if} value="nick_name">用户名</option>
+                        <option {if $Request.get.type==
+                        'mobile'} selected {/if} value="mobile">手机号</option>
+                        <option {if $Request.get.type==
+                        'ids'} selected {/if} value="ids">ID</option>
+                    </select>
+                </div>
+                <div class="col-xs-3 no-pd-l">
+                    <input type="text" id="keyword" value="{$Request.get.keyword}" name="keyword" class="form-control"
+                           placeholder="请输入关键词搜索">
+                </div>
+                <button type="submit" class="btn btn-color">搜索</button>
+                <!--<button type="button" class="btn btn-success" id="export">导出</button>-->
+                <!--<a type="button" href="/admin/user/create" class="btn btn-info">添加会员</a>-->
+            </div>
+        </form>
+        <table class="table table-bordered table-striped no-margin">
+            <thead>
+            <tr class="top_fixed">
+                <th class="text-center">会员ID 测试要看的</th>
+                <th class="text-center">ID</th>
+                <th class="text-center">会员昵称</th>
+                <th class="text-center">等级</th>
+                <th class="text-center">手机号</th>
+                <th class="text-center">上级信息</th>
+                <th class="text-center sortSelect" key="ZT" sort="{if condition="$queryMap.sort_type eq 'asc'"}asc{else /}desc{/if}">
+                    直推人数
+                    <!-- {if condition="$queryMap.sort_type eq 'asc'"}<i class="fa fa-sort-asc"></i></i>{else /}<i class="fa fa-sort-desc"></i>{/if} -->
+                </th>
+                <!-- <th class="text-center">直推人数</th> -->
+                <th class="text-center">团队总人数</th>
+                <th class="text-center">激活时间</th>
+                <th class="text-center">状态</th>
+                <!--                <th class="text-center">垃圾箱</th>-->
+                <th class="text-center sortSelect" key="NOW_GTC" sort="{if condition="$queryMap.sort_type eq 'asc'"}asc{else /}desc{/if}">
+                    现在GTC
+                </th>
+                <th class="text-center sortSelect" key="OLD_GTC" sort="{if condition="$queryMap.sort_type eq 'asc'"}asc{else /}desc{/if}">
+                    历史GTC
+                </th>
+                <!-- <th class="text-center">新增GTC</th> -->
+                <th class="text-center">消耗GTC</th>
+                <th class="text-center sortSelect" key="GC" sort="{if condition="$queryMap.sort_type eq 'asc'"}asc{else /}desc{/if}">
+                    GC
+                </th>
+                <th class="text-center sortSelect" key="PROFIT" sort="{if condition="$queryMap.sort_type eq 'asc'"}asc{else /}desc{/if}">
+                    收益
+                </th>
+                <th class="text-center sortSelect" key="now_prohibit_integral" sort="{if condition="$queryMap.sort_type eq 'asc'"}asc{else /}desc{/if}">
+                    推广收益
+                </th>
+                <th class="text-center sortSelect" key="now_team_integral" sort="{if condition="$queryMap.sort_type eq 'asc'"}asc{else /}desc{/if}">
+                    团队收益
+                </th>
+                <th class="text-center">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            {if !empty($list)}
+            {foreach $list as $entity}
+            <tr>
+                <td style="vertical-align: middle" class="text-center">
+                    {$entity->id}<br>
+                </td>
+                <td style="vertical-align: middle" class="text-center">
+                    <a href="{:url('user/userDetail',['id'=>$entity->id])}">{$entity->getInviteCode()}</a>
+                </td>
+                <td style="vertical-align: middle" class="text-center">
+                    <a href="{:url('user/userDetail',['id'=>$entity->id])}">{$entity->nick_name}</a>
+                </td>
+
+                <td style="vertical-align: middle" class="text-center">
+                    {$entity->lv|user_lv_status}<br>
+                </td>
+                <td style="vertical-align: middle" class="text-center">
+                    {$entity->mobile}<br>
+                </td>
+                <td style="vertical-align: middle" class="text-center">
+                    {$entity->getInviteCode($entity->pid)}
+
+                </td>
+                <td style="vertical-align: middle" class="text-center">{$entity->getZT}</td>
+
+                <td style="vertical-align: middle" class="text-center">
+                    {$entity->teamCount}
+                </td>
+                <td style="vertical-align: middle" class="text-center">
+                    {$entity->active_time}
+                </td>
+                <td style="vertical-align: middle" class="text-center">
+                    {if $entity->status == -1}
+                    <a class="btn btn-xs btn-danger">禁用</a>
+                    <span>禁用时间：{$entity->getForbiddenTime()}</span>
+                    {elseif $entity->status == 0/}
+                    <a class="btn btn-xs btn-success">未激活</a>
+                    {else/}
+                    <a class="btn btn-xs btn-success">激活</a>
+                    {/if}
+                </td>
+
+
+                <!--                    <td style="vertical-align: middle" class="text-center">-->
+                <!--                        {$entity->is_delete}<br>-->
+                <!--                    </td>-->
+                <td style="vertical-align: middle" class="text-center">
+                    {$entity->now}
+                </td>
+
+                <td style="vertical-align: middle" class="text-center">
+                    {$entity->old}
+                </td>
+                
+                <td style="vertical-align: middle" class="text-center">
+                    {$entity->get_consumep}
+                </td>
+                <td style="vertical-align: middle" class="text-center">
+                    {$entity->gc}
+                </td>
+                <td style="vertical-align: middle" class="text-center">
+                    {$entity->profit}
+                </td>
+                <td style="vertical-align: middle" class="text-center">
+                    {$entity->now_prohibit_integral}
+                    {if $entity->is_prohibit_extension == 1}
+                    <a class="btn btn-xs btn-danger">冻结</a>
+                    {/if}
+                </td>
+                <td style="vertical-align: middle" class="text-center">
+                    {$entity->now_team_integral}
+                    {if $entity->is_prohibitteam == 1}
+                    <a class="btn btn-xs btn-danger">冻结</a>
+                    {/if}
+                </td>
+                <td style="vertical-align: middle" style="vertical-align: middle" class="text-center">
+
+                    <a href="{:url('user/editUser',['id'=>$entity->id])}" class="btn btn-xs btn-info">修改</a>
+
+
+                    {if $entity->status == 0}
+                    <a data-url="{:url('user/activation',['id'=>$entity->id])}" onclick="main.ajaxDelete(this)"
+                       data-msg="确定要激活此会员吗？" class="btn btn-xs btn-success">激活</a>
+                    {elseif $entity->status == 1}
+                    <a href="{:url('user/block',['id'=>$entity->id])}" class="btn btn-xs btn-success">拉黑</a>
+                    {elseif $entity->status == -1}
+                    <a href="{:url('user/deblock',['id'=>$entity->id,'type'=>1])}" class="btn btn-xs btn-warning">解封</a>
+                    {/if}
+                    <a href="{:url('user/recharge_detail')}?id={$entity->id}" class="btn btn-xs btn-info">GTC详情</a>
+                    <a href="{:url('user/personal_detail')}?id={$entity->id}" class="btn btn-xs btn-info">个人资产</a>
+                    {if $entity->is_delete == 0}
+                    <a href="{:url('user/is_into_dustbin',['id'=>$entity->id,'is_delete'=>1,'type'=>'1'])}"
+                       class="btn btn-xs btn-info">托入垃圾箱</a>
+                    {else /}
+                    <a href="{:url('user/is_into_dustbin',['id'=>$entity->id,'is_delete'=>0,'type'=>'1'])}"
+                       class="btn btn-xs btn-info">丢出垃圾箱</a>
+                    {/if}
+                </td>
+            </tr>
+            {/foreach}
+            {else /}
+            <tr class="text-center">
+                <td colspan="9">暂无数据</td>
+            </tr>
+            {/if}
+            </tbody>
+        </table>
+        <div class="page">
+            {:htmlspecialchars_decode($list->render())}
+        </div>
+    </div>
+</section>
+<script>
+    /*$('.content-wrap ').scroll(function(){
+        var scroH = $('.content-wrap ').scrollTop();  //滚动高度
+        var viewH = $(window).height();  //可见高度
+        var contentH = $(document).height();  //内容高度
+        var hh = $(".panel").offset().top;
+
+        if(scroH >100){  //距离顶部大于100px时
+            $('.top_fixed').css({'position':'fixed','top':'50px','background':'#fff'})
+        }
+    })*/
+
+    $(function(){
+		/** 表头点击事件 */
+		$('.sortSelect').on('click', function(){
+            var sort_key = $(this).attr("key");
+            console.log(sort_key);
+			if ($(this).attr('sort') == 'desc') {
+				// 顺序排序
+				var sort_type = 'asc';
+			} else {
+                // 逆序排序
+				var sort_type = 'desc';
+            }
+            console.log(sort_type);
+            console.log();
+            formAppendSubmit(sort_key, sort_type);
+		});
+    });
+    
+    function formAppendSubmit(sort_key, sort_type){
+        var member_form=$('#member_form'); //得到form对象
+        var sort_key_input=$("<input type='hidden' name='sort_key'/>");
+        var sort_type_input=$("<input type='hidden' name='sort_type'/>");
+        sort_key_input.attr("value", sort_key);
+        sort_type_input.attr("value", sort_type);
+        member_form.append(sort_key_input);
+        member_form.append(sort_type_input);
+
+        $("select[name=type]").attr('disabled',true);
+        $("input[name=keyword]").attr('disabled',true);
+        member_form.submit();
+    }
+</script>
+{/block}
+{block name="footer"}
+
+
+{/block}

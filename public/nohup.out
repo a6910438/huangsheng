@@ -1,0 +1,179 @@
+Workerman[temp_lottery.php] start in DEBUG mode
+------------------------------------------- WORKERMAN --------------------------------------------
+Workerman version:3.5.16          PHP version:7.1.5
+-------------------------------------------- WORKERS ---------------------------------------------
+proto   user            worker          listen                      processes    status           
+tcp     root            none            websocket://0.0.0.0:2346    2             [OK]            
+--------------------------------------------------------------------------------------------------
+Press Ctrl+C to stop. Start success.
+Workerman[temp_remind1.php] start in DEBUG mode
+------------------------------------------- WORKERMAN --------------------------------------------
+Workerman version:3.5.16          PHP version:7.1.5
+-------------------------------------------- WORKERS ---------------------------------------------
+proto   user            worker          listen                      processes    status           
+tcp     root            none            websocket://0.0.0.0:2349    2             [OK]            
+--------------------------------------------------------------------------------------------------
+Press Ctrl+C to stop. Start success.
+Workerman[temp_remind.php] start in DEBUG mode
+------------------------------------------- WORKERMAN --------------------------------------------
+Workerman version:3.5.16          PHP version:7.1.5
+-------------------------------------------- WORKERS ---------------------------------------------
+proto   user            worker          listen                      processes    status           
+tcp     root            none            websocket://0.0.0.0:2347    2             [OK]            
+--------------------------------------------------------------------------------------------------
+Press Ctrl+C to stop. Start success.
+Workerman[temp_percent.php] start in DEBUG mode
+------------------------------------------- WORKERMAN --------------------------------------------
+Workerman version:3.5.16          PHP version:7.1.5
+-------------------------------------------- WORKERS ---------------------------------------------
+proto   user            worker          listen                      processes    status           
+tcp     root            none            websocket://0.0.0.0:2348    2             [OK]            
+--------------------------------------------------------------------------------------------------
+Press Ctrl+C to stop. Start success.
+Workerman[temp_lottery.php] stopping ...
+Workerman[temp_remind1.php] stopping ...
+Workerman[temp_remind.php] stopping ...
+Workerman[temp_percent.php] stopping ...
+Workerman[temp_lottery.php] has been stopped
+Workerman[temp_remind.php] has been stopped
+worker[23155] remains 2 connection(s)
+worker[23542] remains 2 connection(s)
+worker[23155] remains 1 connection(s)
+Workerman[temp_lottery.php] start in DEBUG mode
+------------------------------------------- WORKERMAN --------------------------------------------
+Workerman version:3.5.16          PHP version:7.1.5
+-------------------------------------------- WORKERS ---------------------------------------------
+proto   user            worker          listen                      processes    status           
+tcp     root            none            websocket://0.0.0.0:2346    2             [OK]            
+--------------------------------------------------------------------------------------------------
+Press Ctrl+C to stop. Start success.
+Workerman[temp_percent.php] start in DEBUG mode
+------------------------------------------- WORKERMAN --------------------------------------------
+Workerman version:3.5.16          PHP version:7.1.5
+-------------------------------------------- WORKERS ---------------------------------------------
+proto   user            worker          listen                      processes    status           
+tcp     root            none            websocket://0.0.0.0:2348    2             [OK]            
+--------------------------------------------------------------------------------------------------
+Press Ctrl+C to stop. Start success.
+Workerman[temp_remind.php] start in DEBUG mode
+------------------------------------------- WORKERMAN --------------------------------------------
+Workerman version:3.5.16          PHP version:7.1.5
+-------------------------------------------- WORKERS ---------------------------------------------
+proto   user            worker          listen                      processes    status           
+tcp     root            none            websocket://0.0.0.0:2347    2             [OK]            
+--------------------------------------------------------------------------------------------------
+Press Ctrl+C to stop. Start success.
+Workerman[temp_remind1.php] start in DEBUG mode
+------------------------------------------- WORKERMAN --------------------------------------------
+Workerman version:3.5.16          PHP version:7.1.5
+-------------------------------------------- WORKERS ---------------------------------------------
+proto   user            worker          listen                      processes    status           
+tcp     root            none            websocket://0.0.0.0:2349    2             [OK]            
+--------------------------------------------------------------------------------------------------
+Press Ctrl+C to stop. Start success.
+Workerman[temp_percent.php] stopping ...
+Workerman[temp_remind1.php] stopping ...
+Workerman[temp_lottery.php] stopping ...
+Workerman[temp_remind.php] stopping ...
+Workerman[temp_remind1.php] has been stopped
+Workerman[temp_percent.php] has been stopped
+Workerman[temp_lottery.php] start in DEBUG mode
+------------------------------------------- WORKERMAN --------------------------------------------
+Workerman version:3.5.16          PHP version:7.1.5
+-------------------------------------------- WORKERS ---------------------------------------------
+proto   user            worker          listen                      processes    status           
+tcp     root            none            websocket://0.0.0.0:2346    2             [OK]            
+--------------------------------------------------------------------------------------------------
+Press Ctrl+C to stop. Start success.
+Workerman[temp_lottery.php] stopping ...
+Workerman[temp_lottery.php] has been stopped
+Workerman[temp_lottery.php] start in DEBUG mode
+------------------------------------------- WORKERMAN --------------------------------------------
+Workerman version:3.5.16          PHP version:7.1.5
+-------------------------------------------- WORKERS ---------------------------------------------
+proto   user            worker          listen                      processes    status           
+tcp     root            none            websocket://0.0.0.0:2346    2             [OK]            
+--------------------------------------------------------------------------------------------------
+Press Ctrl+C to stop. Start success.
+Workerman[temp_percent.php] start in DEBUG mode
+------------------------------------------- WORKERMAN --------------------------------------------
+Workerman version:3.5.16          PHP version:7.1.5
+-------------------------------------------- WORKERS ---------------------------------------------
+proto   user            worker          listen                      processes    status           
+tcp     root            none            websocket://0.0.0.0:2348    2             [OK]            
+--------------------------------------------------------------------------------------------------
+Press Ctrl+C to stop. Start success.
+Workerman[temp_remind.php] start in DEBUG mode
+------------------------------------------- WORKERMAN --------------------------------------------
+Workerman version:3.5.16          PHP version:7.1.5
+-------------------------------------------- WORKERS ---------------------------------------------
+proto   user            worker          listen                      processes    status           
+tcp     root            none            websocket://0.0.0.0:2347    2             [OK]            
+--------------------------------------------------------------------------------------------------
+Press Ctrl+C to stop. Start success.
+Workerman[temp_remind1.php] start in DEBUG mode
+------------------------------------------- WORKERMAN --------------------------------------------
+Workerman version:3.5.16          PHP version:7.1.5
+-------------------------------------------- WORKERS ---------------------------------------------
+proto   user            worker          listen                      processes    status           
+tcp     root            none            websocket://0.0.0.0:2349    2             [OK]            
+--------------------------------------------------------------------------------------------------
+Press Ctrl+C to stop. Start success.
+Workerman[temp_remind.php] start in DEBUG mode
+------------------------------------------- WORKERMAN --------------------------------------------
+Workerman version:3.5.16          PHP version:7.2.13
+-------------------------------------------- WORKERS ---------------------------------------------
+proto   user            worker          listen                      processes    status           
+tcp     root            none            websocket://0.0.0.0:2347    2             [OK]            
+--------------------------------------------------------------------------------------------------
+Press Ctrl+C to stop. Start success.
+Workerman[temp_remind1.php] start in DEBUG mode
+------------------------------------------- WORKERMAN --------------------------------------------
+Workerman version:3.5.16          PHP version:7.2.13
+-------------------------------------------- WORKERS ---------------------------------------------
+proto   user            worker          listen                      processes    status           
+tcp     root            none            websocket://0.0.0.0:2349    2             [OK]            
+--------------------------------------------------------------------------------------------------
+Press Ctrl+C to stop. Start success.
+Workerman[temp_percent.php] start in DEBUG mode
+------------------------------------------- WORKERMAN --------------------------------------------
+Workerman version:3.5.16          PHP version:7.2.13
+-------------------------------------------- WORKERS ---------------------------------------------
+proto   user            worker          listen                      processes    status           
+tcp     root            none            websocket://0.0.0.0:2348    2             [OK]            
+--------------------------------------------------------------------------------------------------
+Press Ctrl+C to stop. Start success.
+Workerman[temp_lottery.php] start in DEBUG mode
+------------------------------------------- WORKERMAN --------------------------------------------
+Workerman version:3.5.16          PHP version:7.2.13
+-------------------------------------------- WORKERS ---------------------------------------------
+proto   user            worker          listen                      processes    status           
+tcp     root            none            websocket://0.0.0.0:2346    2             [OK]            
+--------------------------------------------------------------------------------------------------
+Press Ctrl+C to stop. Start success.
+PHP Notice:  Trying to get property 'uid' of non-object in /www/wwwroot/default/free_hawk/public/temp_remind.php on line 27
+
+Notice: Trying to get property 'uid' of non-object in /www/wwwroot/default/free_hawk/public/temp_remind.php on line 27
+PHP Notice:  Trying to get property 'list' of non-object in /www/wwwroot/default/free_hawk/public/temp_remind.php on line 28
+
+Notice: Trying to get property 'list' of non-object in /www/wwwroot/default/free_hawk/public/temp_remind.php on line 28
+PHP Notice:  Trying to get property 'uid' of non-object in /www/wwwroot/default/free_hawk/public/temp_remind.php on line 27
+
+Notice: Trying to get property 'uid' of non-object in /www/wwwroot/default/free_hawk/public/temp_remind.php on line 27
+PHP Notice:  Trying to get property 'list' of non-object in /www/wwwroot/default/free_hawk/public/temp_remind.php on line 28
+
+Notice: Trying to get property 'list' of non-object in /www/wwwroot/default/free_hawk/public/temp_remind.php on line 28
+PHP Notice:  Trying to get property 'uid' of non-object in /www/wwwroot/default/free_hawk/public/temp_remind.php on line 27
+
+Notice: Trying to get property 'uid' of non-object in /www/wwwroot/default/free_hawk/public/temp_remind.php on line 27
+PHP Notice:  Trying to get property 'list' of non-object in /www/wwwroot/default/free_hawk/public/temp_remind.php on line 28
+
+Notice: Trying to get property 'list' of non-object in /www/wwwroot/default/free_hawk/public/temp_remind.php on line 28
+Workerman[temp_remind.php] stopping ...
+Workerman[temp_remind1.php] stopping ...
+Workerman[temp_lottery.php] stopping ...
+Workerman[temp_percent.php] stopping ...
+Workerman[temp_lottery.php] has been stopped
+Workerman[temp_percent.php] has been stopped
+Workerman[temp_remind.php] has been stopped
+Workerman[temp_remind1.php] has been stopped

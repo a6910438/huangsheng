@@ -1,0 +1,22 @@
+{
+  "minimum-stability": "dev",
+  "require": {
+    "slim/slim": "^3.0",
+    "slim/php-view": "2.2.0",
+    "sc0vu/web3.php": "dev-master",
+    "web3p/ethereum-tx": "dev-master",
+    "endroid/qr-code": "^3.0@dev",
+    "alibabacloud/client": "dev-master",
+    "topthink/think-captcha": "dev-master",
+    "topthink/think-queue": "dev-master",
+    "workerman/gateway-worker": "dev-master",
+    "workerman/workerman-for-win": "dev-master",
+    "workerman/mysql": "dev-master",
+    "workerman/gatewayclient": "dev-master"
+  },
+  "autoload": {
+    "psr-4": {
+      "EthTool\\": "ethtool/src/"
+    }
+  }
+}

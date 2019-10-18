@@ -1,0 +1,54 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>发件箱</title>
+    {include file="layout/head" /}
+</head>
+
+<style type="text/css">
+    .cont {
+        background: white;
+        height: auto;
+    }
+
+    .ter {
+        background: white;
+        height: auto;
+    }
+</style>
+<body>
+<header class="mui-bar mui-bar-nav my-header">
+    <a href="/index/member/index" class="mui-icon mui-icon-left-nav mui-pull-left"
+       ></a>
+    <h1 id="title" class="mui-title">发件箱</h1>
+</header>
+<div class="mui-content cont" >
+    {foreach $list as $list}
+    <div style="text-align: center;color: gray;background: #f7f7f7;padding: 10px">
+        {$list->getCreateTime()}
+    </div>
+    <div class="mui-table-view ter">
+        <div class="mui-table-view-cell mui-media">
+
+            <a href="javascript:;">
+                {if $list->avatar}
+                    <img class="mui-media-object mui-pull-left" src="{$list->avatar}" style="width: 20%;">
+                    {else /}
+                    <img class="mui-media-object mui-pull-left" src="/static/img/headphoto.png" style="width: 20%;">
+                {/if}
+                <div class="mui-media-body" style="color: #8f8f94;margin-top: 2px;">
+                    {$list->nick_name}
+                    <p class='mui-ellipsis' style="margin-top: 5px;">{$list->content}</p>
+                </div>
+            </a>
+
+        </div>
+    </div>
+    {/foreach}
+</div>
+
+<!--footer-->
+{include file="layout/footer" /}
+</body>
+</html>

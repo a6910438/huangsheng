@@ -1,0 +1,108 @@
+{extend name="layout/main" /}
+
+{block name="header"}
+
+{/block}
+
+{block name="content"}
+<script src="__PUBLIC__/admin/js/laydate/laydate.js"></script>
+<section class="panel">
+    <header class="panel-heading">
+        <h4>实名审批</h4>
+    </header>
+    <div class="panel-body" style="padding-bottom: 50px">
+        <form class="form-horizontal" action="{:url('admin/User/verify')}" >
+            <div class="form-group">
+                <div class="col-xs-1 no-pd-r">
+                    <select name="type" class="form-control">
+                        <option {if $Request.get.type == 'nick_name'} selected {/if} value="nick_name">用户昵称</option>
+                        <option {if $Request.get.type == 'id_number'} selected {/if} value="id_number">身份证号码</option>
+                    </select>
+                </div>
+                <div class="col-xs-3 no-pd-l">
+                    <input type="text" value="{$Request.get.keyword}" name="keyword" class="form-control" placeholder="请输入关键词搜索">
+                </div>
+                <div class="col-xs-2 no-pd-2">
+                    <input type="text" value="{$Request.get.startTime}" name="startTime" id="startTime" class="form-control" placeholder="请输入开始时间">
+                </div>
+                <div class="col-xs-2 no-pd-2">
+                    <input type="text" value="{$Request.get.endTime}" name="endTime" id="endTime" class="form-control" placeholder="请输入结束时间">
+                </div>
+                <button type="submit" class="btn btn-color">搜索</button>
+            </div>
+        </form>
+        <table class="table table-bordered table-striped no-margin">
+            <thead>
+                <tr>
+                    <th class="text-center">ID</th>
+                    <th class="text-center">用户</th>
+                    <th class="text-center">真实姓名</th>
+                    <th class="text-center">身份证号码</th>
+                    <th class="text-center">状态</th>
+                    <th class="text-center">提交时间</th>
+                    <th class="text-center">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+            {if $list}
+                {foreach $list as $item}
+                    <tr>
+                        <td class="text-center">
+                            {$item.id}
+                        </td>
+                        <td class="text-center">
+                            (ID:{$item.uid}) {$item.nick_name}
+                        </td>
+                        <td class="text-center">
+                            {$item.id_name}
+                        </td>
+                        <td class="text-center">
+                            {$item.id_number}
+                        </td>
+                        <td class="text-center">
+                            {if $item.status==0}
+                            等待处理
+                            {elseif $item.status==1/}
+                            实名成功
+                            {else /}
+                            请求驳回
+                            {/if}
+                        </td>
+                        <td class="text-center">
+                            {$item.create_time}
+                        </td>
+                        <td class="text-center">
+                            {if $item.status==0}
+                            <a href="{:url('verify_review',['id'=>$item.id])}" class="btn btn-xs btn-info">处理</a>
+                            {/if}
+                        </td>
+                    </tr>
+                {/foreach}
+            {else /}
+                <tr class="text-center">
+                    <td colspan="7">暂无数据</td>
+                </tr>
+            {/if}
+            </tbody>
+        </table>
+        <div class="page">
+            {:htmlspecialchars_decode($list->render())}
+        </div>
+    </div>
+</section>
+<script>
+    laydate.render({
+        elem: '#startTime',
+        type: 'datetime'
+    });
+    laydate.render({
+        elem: '#endTime',
+        type: 'datetime'
+    });
+</script>
+{/block}
+
+
+{block name="footer"}
+
+{/block}

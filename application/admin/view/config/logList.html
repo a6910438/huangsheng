@@ -1,0 +1,80 @@
+{extend name="layout/main" /}
+
+{block name="header"}
+
+{/block}
+
+{block name="content"}
+<section class="panel">
+    <header class="panel-heading">
+        <h4>日志列表</h4>
+    </header>
+    <div class="panel-body" style="padding-bottom: 50px">
+        <form class="form-horizontal" action="{:url('admin/config/logList')}">
+            <div class="form-group">
+                <div class="col-xs-1 no-pd-r">
+                    <select name="type" class="form-control">
+                        <option value="">全部</option>
+                        <option {if $Request.get.type == 1} selected {/if} value="1">产品</option>
+                        <option {if $Request.get.type == 2} selected {/if} value="2">交易市场</option>
+                        <option {if $Request.get.type == 3} selected {/if} value="3">升级错误</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-color">搜索</button>
+            </div>
+        </form>
+        <table class="table table-bordered table-striped no-margin">
+            <thead>
+            <tr>
+                <th class="text-center">id</th>
+                <th class="text-center">类型</th>
+                <th class="text-center">详细</th>
+                <th class="text-center">描述</th>
+                <th class="text-center">发生时间</th>
+            </tr>
+            </thead>
+            <tbody>
+            {if !empty($list)}
+                {foreach $list as $entity}
+                <tr>
+                    <td style="vertical-align: middle" class="text-center">
+                        {$entity->id}
+                    </td>
+                    <td style="vertical-align: middle" class="text-center">
+                        {if $entity->type == 1}
+                            产品
+                            {elseif $entity->type == 2}
+                            交易市场
+                            {else /}
+                            升级错误
+                        {/if}
+                    </td>
+                    <td style="vertical-align: middle" class="text-center">
+                        {$entity->detail}
+                    </td>
+                    <td style="vertical-align: middle" class="text-center">
+                        {$entity->desc}
+                    </td>
+                    <td style="vertical-align: middle" class="text-center">
+                        {$entity->getCreateTime()}
+                    </td>
+                </tr>
+                {/foreach}
+            {else /}
+            <tr class="text-center">
+                <td colspan="5">暂无数据</td>
+            </tr>
+            {/if}
+            </tbody>
+        </table>
+        <div class="page">
+            {:htmlspecialchars_decode($list->render())}
+        </div>
+    </div>
+</section>
+{/block}
+
+
+{block name="footer"}
+
+{/block}

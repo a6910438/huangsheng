@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Social Number Binding</title>
+    <link rel="icon" href="free.ico" type="image/x-icon"/> 
+    <link rel="stylesheet" href="../css/public.css">
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <script src="../build/flexible.js"></script>
+    <script src="../build/flexible_css.js"></script>
+    <script src="../js/layer.js"></script>
+    <script src="../js/jquery.js"></script>
+    <style>
+        html, body {background: #F5F5F5;}
+        input::-webkit-input-placeholder {color: #999;}
+        .header {position: fixed;top: 0px;left: 0px;width: 100%;height: 1.173333rem;line-height: 1.173333rem;text-align: center;color: #fff;background: linear-gradient(to left, #2A3176, #0A0F3E);z-index: 99999;}
+        .header span {font-size: .48rem;font-weight: bold;}
+        .goback {position: absolute;top: 0;left: .106667rem;display: flex;align-items: center;height: inherit;}
+        .goback img {width: .586667rem;}
+        .main {padding: 1.173333rem .373333rem 1.333333rem;}
+        .box {position: relative;display: flex;align-items: center;margin-top: .373333rem;height: 1.173333rem;background: #fff;border-radius: .133333rem;}
+        .box label {margin: 0;width: 27%;height: 1.173333rem;line-height: 1.173333rem;font-size: .346667rem;color: #999;text-align: right;}
+        #social-media {padding-left: .586667rem;width: 73%;height: 1.173333rem;border: none;font-size: .346667rem;color: #333;background: transparent;}
+        .num {      
+            position: absolute;
+            top: 50%;
+            right: 0;
+            margin-top: -0.346667rem;
+            margin-right: 0.346667rem;
+            width: .5rem;
+            height: .5rem;
+            border-radius: 50%;
+            border: 1px solid #fff;
+            background: #FF3756;
+            font-size: .4rem;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            }
+        .btn-box {margin-top: 2rem;display: flex;justify-content: center;}
+        .confirm {padding: 0rem .8rem;min-width: 57.64%;height: 1.173333rem;line-height: 1.173333rem;text-align: center;font-size: .48rem;color: #fff;border: none;background: #262F86;border-radius: .133333rem;box-shadow: 0rem 0rem .666667rem 0rem rgba(38, 47, 134, 0.5)}
+        .ly{ position: fixed; height: 100%; width: 100%; background: rgba(0,0,0,0.3); top: 0; left: 0; display: none; }
+			.m-megess{ width: 70%;height: auto; background: #f5f5f5; position: fixed; display: none; z-index: 99; text-align: center; border-radius: 0.3rem; left: 15%; top: 30%; }
+			.m-megess .title{ height: 0.8rem; font-size: 0.4rem; line-height: 0.8rem; }
+			.m-megess .info{ font-size: 0.32rem; height: 0.8rem; }
+			.m-megess .megess{ padding: 0.3rem 0.8rem; }
+			.m-megess #password{ width: 100%; height: 0.8rem; padding: 0 0.2rem; border:1px solid #000; font-size: 0.35rem; }
+			.m-megess .m-btn{ width: 100%; height: 1rem; line-height: 1rem; border-top: 1px solid  #ccc; }
+			.m-megess .m-btn >.item{ width: 50%; float: left; border-right: 1px solid #ccc;  font-size: 0.4rem;  }
+			.m-megess .m-btn >.item:last-child{border: none;}
+    </style>
+<body>
+    <header class="header">
+        <a href="javascript:history.back(-1);" class="goback">
+            <img src="../images/nav_arrow_icon@2x.png" alt="">
+        </a>
+        <span>Social Number Binding</span>
+    </header>
+    <main class="main">
+        <div class="box">
+            <label for="social-media">Social Media:</label>
+            <input type="text" data-id="" id="social-media" placeholder="">
+            <div class="num">1</div>
+        </div>
+        <div class="btn-box">
+            <button class="confirm">Binding</button>
+        </div>
+        <div class="ly"></div>
+        <div class="m-megess">
+             <div class="megess">
+                 <div class="title">Answer the secret question</div>
+                   <div class="info info1"></div>
+                 <div class="info">answer:</div>
+                 <input class="get_pass1" type="text" placeholder="answer" id="password"  />
+             </div>
+             <div class="m-btn">
+                 <div class="item" id="cancel">cancel</div>
+                 <div class="item" id="submit">Submit</div>
+             </div>
+         </div>
+    </main>
+    <script>
+            $(function(){
+                $.ajax({
+                url: "../../index.php/index/Member/index",
+				type: 'POST',
+                dataType: 'json',
+                  success: function(res){
+                      console.log(res)
+                      if(res.code=='0'){
+                         $("#social-media").attr("placeholder",res.info.userInfo.chat_num);
+                        $("#social-media").data('id',res.info.question[1].id);
+                        $('.info1').html(res.info.question[1].title);
+                          }
+                      else{
+                          layer.open({
+                              content: res.msg,
+                              skin: 'msg',
+                              time: 2
+                          });
+                          }
+                  },
+              });
+              $("#cancel,.ly").click(function(){
+                $(".ly,.m-megess").hide();
+            })
+			$(".confirm").click(function(){
+              	$('.ly,.m-megess').show();
+            })
+			$("#submit").click(function(){
+                var chat_num=$('#social-media').val();
+                var qid= $("#social-media").data('id');
+				var answer=$('.get_pass1').val();
+                if(!chat_num){return layer.open({
+                                            content: 'social-media not be empty',
+                                            skin: 'msg',
+                                            time: 10
+                                        });}  
+             	$.ajax({
+                url: "../../index.php/index/Member/set",
+				type: 'POST',
+                data:{qid:qid,answer:answer},
+                dataType: 'json',
+                  success: function(res){
+                      console.log(res)
+                      if(res.code=='0'){
+                  		 
+                         $.ajax({
+                        url: "../../index.php/index/Member/editUser",
+                        type: 'POST',
+                        data: {chat_num:chat_num},
+                        dataType: 'json',
+                        success: function(res){
+                            if(res.code=='0'){
+                                        layer.open({
+                                            content: res.msg,
+                                            skin: 'msg',
+                                            time: 5
+                                        }); 
+                                setTimeout(() => {
+                                    window.location.href="my.html";
+                                }, 4000); 
+                                   
+                                }
+                            else{
+                                layer.open({
+                                    content: res.msg,
+                                    skin: 'msg',
+                                    time: 2
+                                });
+                                }
+                        },
+                });
+                          }
+                      else{
+                          layer.open({
+                              content: res.msg,
+                              skin: 'msg',
+                              time: 2
+                          });
+                          }
+                  },
+              });
+				
+			})
+		})
+    </script>
+    <script>
+        $('.num').off().on('click',function(){
+            $('#social-media').val('');
+        })
+    </script>
+</body>
+</html>

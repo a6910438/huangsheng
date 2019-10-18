@@ -1,0 +1,140 @@
+{extend name="layout/main" /}
+
+{block name="header"}
+
+{/block}
+
+{block name="content"}
+<script src="__PUBLIC__/admin/js/laydate/laydate.js"></script>
+<section class="panel">
+    <header class="panel-heading">
+        <h4>会员扣款充值明细</h4>
+    </header>
+    <div class="panel-body" style="padding-bottom: 50px">
+        <form class="form-horizontal" action="{:url('admin/Money/moneydisplay')}">
+            <div class="form-group">
+                <div class="col-xs-1 no-pd-r">
+                    <select id="select-type" name="type" class="form-control">
+                        <option value="1"  {if $Request.get.type==
+                                1} selected {/if}>GTC</option>
+                        <option value="5" {if $Request.get.type==
+                                5} selected {/if}>GC</option>
+                        <option value="2"  {if $Request.get.type==
+                                2} selected {/if}>推广收益</option>
+                        <option value="3"  {if $Request.get.type==
+                                3} selected {/if}>积分</option>
+                        <option value="4"  {if $Request.get.type==
+                                4} selected {/if}>积分和GTC</option>
+                    </select>
+                </div>
+                <div class="col-xs-1 no-pd-r">
+                    <select name="case" class="form-control">
+                        <option value="">所有</option>
+                        <option {if $Request.get.case==
+                        'userid'} selected {/if} value="userid">用户ID</option>
+                        <option {if $Request.get.case==
+                        'user_nick_name'} selected {/if} value="user_nick_name">用户昵称</option>
+                        <option {if $Request.get.case==
+                        'mobile'} selected {/if} value="mobile">手机号码</option>
+                    </select>
+                </div>
+                <div class="col-xs-3 no-pd-l">
+                    <input type="text" value="{$Request.get.keyword}" name="keyword" class="form-control"
+                           placeholder="请输入关键词搜索">
+                </div>
+                <div class="col-xs-2 no-pd-2">
+                    <input type="text" value="{$Request.get.startTime}" name="startTime" id="startTime"
+                           class="form-control" placeholder="请输入开始时间">
+                </div>
+                <div class="col-xs-2 no-pd-2">
+                    <input type="text" value="{$Request.get.endTime}" name="endTime" id="endTime" class="form-control"
+                           placeholder="请输入结束时间">
+                </div>
+
+                <button type="submit" class="btn btn-color">搜索</button>
+                <button type="button" class="btn btn-color" onclick="exportCsv()">导出</button>
+            </div>
+        </form>
+        <table class="table table-bordered table-striped no-margin table-center">
+            <thead>
+            <tr>
+                <th>用户</th>
+                <th>额度</th>
+                <th>支付类型</th>
+                <th>创建时间</th>
+                <th>类别</th>
+            </tr>
+            </thead>
+            <tbody>
+            {if $list}
+            {foreach $list as $v}
+            <tr>
+                <td>{$v['nick_name']} (ID:{$v['invite_code']})</td>
+                <td>{$v['number']}</td>
+
+                {if $Request.get.type == 2}
+                <td>{$v['type']|getPlogtatus}</td>
+                {else /}
+                <td>
+                    {if $v['remark'] == '抢酒订单收入'}
+                    抢购订单收入
+                    {elseif $v['remark'] == '品酒' /}
+                    装修
+                    {else /}
+                    {$v['remark']}
+                    {/if}
+                </td>
+                {/if}
+                <td>{:date('Y-m-d H:i:s',$v['createtime'])}</td>
+                <td>{if $v['type'] == 2}
+                    {if $v['number'] < 0}
+                    兑换GTC
+                    {else /}
+                    推广收益
+                    {/if}
+                    {elseif $v['type'] == 3 /}
+                    积分
+                    {elseif $v['type'] == 4 /}
+                    GC
+                    {else /}
+                    GTC
+                    {/if}
+                </td>
+            </tr>
+            {/foreach}
+            {else /}
+            <tr>
+                <td colspan="5">暂无数据</td>
+            </tr>
+            {/if}
+            </tbody>
+        </table>
+        <div class="page">
+            {:htmlspecialchars_decode($list->render())}
+        </div>
+    </div>
+</section>
+<script>
+    laydate.render({
+        elem: '#startTime',
+        type: 'datetime'
+    });
+    laydate.render({
+        elem: '#endTime',
+        type: 'datetime'
+    });
+</script>
+{/block}
+
+
+{block name="footer"}
+
+<script>
+    function exportCsv() {
+        window.open('/admin/export/export_moneydisplay?type=' + $('#select-type option:selected').val() +
+            "&case=" + $('select[name="case"] option:selected').val() + "&keyword=" + $("input[name='keyword']").val()
+            + "&startTime=" + $("input[name='startTime']").val() + "&endTime=" + $("input[name='endTime']").val())
+    }
+</script>
+{/block}
+

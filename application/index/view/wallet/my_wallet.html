@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+	<title>我的钱包</title>
+	<script type="text/javascript" src="/static/build/flexible_css.js"></script>
+    <script type="text/javascript" src="/static/build/flexible.js"></script>
+    <script type="text/javascript" src="/static/js/jquery.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="/static/css/my_wallet.css">
+</head>
+<body>
+	<header class="head">
+		<div class="goback"><img src="/static/images/goback.png"></div>
+		<span class="my_wallet">我的钱包</span>
+	</header>
+	<div class="content">
+		<div class="valuation">
+			<img class="can_see" src="/static/images/can_see_w.png">
+			<div class="wallet_valuation">钱包资产估值</div>
+			<div class="coin_value_box">
+				<span class="bi">฿</span><span class="coin_value">{$count}</span>
+			</div>
+			<div class="value_of_rmb">$≈5895.17</div>
+		</div>
+		<div class="capital_box">
+			<div class="recharge">
+				<img src="/static/images/recharge@2x.png" alt="" class="recharge_icon"><br>
+				<span>充值</span>
+			</div>
+			<div class="withdraw">
+				<img src="/static/images/withdraw@2x.png" alt="" class="withdraw_icon"><br>
+				<span>提现</span>
+			</div>
+			<div class="fb_bill">
+				<img class="transfer_icon" src="/static/images/transfer.png"><br>
+				<span>资金划转</span>
+			</div>
+			<div class="zj_record">
+				<img src="/static/images/bill@2x.png" alt="" class="zj_record_icon"><br>
+				<span>资金记录</span>
+			</div>
+		</div>
+		<div class="gay_block"></div>
+		<div class="item_box">
+			<div class="asset_detail">
+				<div>资产明细</div>
+				<div>
+					<span class="check_box"><img src=""></span><span>隐藏0余额</span>
+				</div>
+			</div>
+			{foreach $currency as $Curr}
+			<div class="item {$Curr['money']}">
+				<span class="item_name">{$Curr['title']}</span>
+				<span class="item_value">{if $Curr['money'] <> ''}{$Curr['money']}{else}0.00000000{/if}</span>
+				<span class="frozen_value">冻结 {if $Curr['freeze'] <> ''}{$Curr['freeze']}{else}0.00000000{/if}</span>
+			</div>
+			{/foreach}
+		</div>
+	</div>
+</body>
+<script type="text/javascript">
+	// 头部右上角图标点击 显示/隐藏 账户币数量跟币价值
+	var coin_value = $('.coin_value').eq(0).text();
+	var value_of_rmb = $('.value_of_rmb').eq(0).text();
+	$('.can_see').click(function () {
+		if ($('.coin_value').eq(0).text() === '****') {
+			$('.can_see').attr('src','/static/images/can_see_w.png')
+			$('.coin_value').eq(0).text(coin_value);
+			$('.value_of_rmb').eq(0).text(value_of_rmb);
+		} else {
+			$('.can_see').attr('src','/static/images/hide_w@2x.png')
+			$('.coin_value').text('****');
+			$('.value_of_rmb').text('≈****');
+		}
+	})
+	$('.check_box').click(function () {
+		var imgSrc = $(this).find('img').attr('src');
+		if (imgSrc === '') {
+			$(this).find('img').attr('src','/static/images/right@2x.png');
+			for (var i = 0; i < $('.item').length; i++) {
+				if ($('.item').eq(i).find('.item_value').text() === '0.00000000') {
+					$('.item').eq(i).hide();
+				}
+			}
+
+		} else {
+			$(this).find('img').attr('src','');
+			$('.item').show();
+		}
+
+	})
+</script>
+</html>

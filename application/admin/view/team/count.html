@@ -1,0 +1,113 @@
+{extend name="layout/main" /}
+
+{block name="header"}
+
+{/block}
+
+{block name="content"}
+<section class="panel">
+    <header class="panel-heading">
+        <h4>团队统计</h4>
+    </header>
+    <div class="panel-body" style="padding-bottom: 50px">
+        <form class="form-horizontal" action="{:url('admin/Team/leadersList')}" >
+            <div class="form-group">
+                <div class="col-xs-1 no-pd-r">
+                    <select name="type" class="form-control">
+                        <option {if $Request.get.type == 'nick_name'} selected {/if} value="nick_name">团队长昵称</option>
+                        <option {if $Request.get.type == 'ids'} selected {/if} value="ids">ID</option>
+
+                    </select>
+                </div>
+                <div class="col-xs-3 no-pd-l">
+                    <input type="text" value="{$Request.get.keyword}" name="keyword" class="form-control" placeholder="请输入关键词搜索">
+                </div>
+
+                <button type="submit" class="btn btn-color">搜索</button>
+            </div>
+        </form>
+        <table class="table table-bordered table-striped no-margin">
+            <thead>
+            <tr>
+                <th class="text-center">ID</th>
+                <th class="text-center">成员信息</th>
+                <th class="text-center">等级</th>
+                <th class="text-center">用户状态</th>
+                <th class="text-center">推荐人</th>
+                <th class="text-center">人数</th>
+                <th class="text-center">领取房产数</th>
+                <th class="text-center">消耗GTC</th>
+                <th class="text-center">现在GTC</th>
+                <th class="text-center">历史GTC</th>
+                <th class="text-center">收益</th>
+                <th class="text-center">推广收益</th>
+                <th class="text-center">团队收益</th>
+            </tr>
+            </thead>
+            <tbody>
+            {if $list}
+            {foreach $list as $order}
+            <tr>
+                <td class="text-center">{$order->invite_code}</td>
+                <td class="text-center">
+                    <a href="{:url('Team/leadersListDetail',['id'=>$order->id])}" {if $team->getChildCount($order->id)}onclick="return false;"{/if} class="btn btn-xs btn-info">{$order->nick_name}</a>
+                </td>
+                <td class="text-center">
+                    {$order->lv|user_lv_status}
+                </td>
+                <td class="text-center">
+                    {$query->getStatus($order->status)}
+                </td>
+                <td class="text-center">
+                    {$order->pname}
+                </td>
+                <td class="text-center">
+                    {$order->t_num}
+                </td>
+                <td class="text-center">
+                    {$order->adopt_num}
+                </td>
+                <td class="text-center">
+                    {$order->reducep_num}
+                </td>
+                <td class="text-center">
+                    {$order->now_num}
+                </td>
+                <td class="text-center">
+                    {$order->addp_num}
+                </td>
+                <td class="text-center">
+                    {$order->total_pro}
+                </td>
+                <td class="text-center">
+                    {$order->total_prohibit}
+                    {if $order->is_prohibit_extension == 1}
+                    <a class="btn btn-xs btn-danger">冻结</a>
+                    {/if}
+                </td>
+                <td class="text-center">
+                    {$order->total_team}
+                    {if $order->is_prohibitteam == 1}
+                    <a class="btn btn-xs btn-danger">冻结</a>
+                    {/if}
+                </td>
+            </tr>
+            {/foreach}
+            {else /}
+            <tr class="text-center">
+                <td colspan="8">暂无数据</td>
+            </tr>
+            {/if}
+            </tbody>
+        </table>
+        <div class="page">
+            {:htmlspecialchars_decode($list->render())}
+        </div>
+    </div>
+</section>
+{/block}
+
+
+{block name="footer"}
+
+{/block}

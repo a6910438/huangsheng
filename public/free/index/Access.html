@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>Transaction</title>
+		<link rel="icon" href="free.ico" type="image/x-icon"/>  
+		<link rel="stylesheet" href="../css/style.css" />
+		<script type="text/javascript" src="../js/jquery.js" ></script>
+		<script type="text/javascript" src="../build/flexible_css.js" ></script>
+		<script type="text/javascript" src="../build/flexible.js" ></script>
+		<script type="text/javascript" src="../js/template.js" ></script>
+		<script src="../js/layer.js"></script>
+		<script src="../js/login_error.js"></script>
+		<style>
+			html,body{ background: #F5F5F5;}
+			.tab{ width: 100%; height: 1.2rem; line-height: 1.2rem; background: #fff; }
+			.tab ul li{  width: 50%; float: left; text-align: center; font-size: 0.4rem; color: #999; }
+			.tab ul li.action{ color: #191F58; }
+			.tab ul li.action:after{ content: ""; display: block; width: 100%; border: 1px solid #191F58; }
+			.m-box{ padding: 0.3rem 0.25rem; }
+			.m-box .choice{width: 100%; background: #fff; border-radius: 0.2rem; border:1px solid #ccc; }
+			.m-box .choice .item{ height: 0.9rem; line-height: 0.9rem; padding: 0 0.25rem; font-size: 0.35rem; position: relative; color: #999; }
+			.m-box .choice .item:first-child{ border-bottom: 1px solid #E0E0E0; }
+			.m-box .choice .item.action{ color: #191F58; }
+			.m-box .choice .item em{ height: 0.5rem; width: 0.5rem; position: absolute; top: 0.2rem; right: 0.3rem; border-radius: 0.35rem; border:1px solid #191F58; display: block; }
+			.m-box .choice .item.action em:after{ content: ""; display: block; width: 0.3rem; margin: 0.085rem auto; height: 0.3rem; border-radius: 0.25rem; background: #191F58; }
+			.m-box .eagle{ background: #fff; margin: 0.3rem 0; text-align: center; border-radius: 0.2rem; padding: 0.1rem 0; }
+			.m-box .eagle p{ height: 0.8rem; line-height: 0.8rem; font-size: 0.4rem; color: #333; }
+			.m-box .Deposit{ width: 100%; margin: 0.2rem auto; }
+			.m-box .Deposit >.btn{ width: 100%; background: #191F58; margin-bottom: 0.2rem; color: #999; font-size: 0.45rem; border-radius: 0.3rem; padding: 0 0.35rem; height: 1.2rem; line-height: 1.2rem;-moz-box-shadow:0px 2px 17px #191F58; -webkit-box-shadow:0px 2px 17px #191F58; box-shadow:0px 2px 17px #191F58; }
+			.m-box .Deposit p{  text-align: right; line-height: 0.5rem; font-size: 0.32rem; color: #999;  }
+			.m-box .dep-btn{ width: 45%; text-align: center; height: 1.2rem; line-height: 1.2rem;  margin: 3rem auto 0.2rem; font-size: 0.45rem; background: #262F86; color: #fff; border-radius: 0.2rem; }
+			.m-box .According{ text-align: center; }
+			.m-box .According p{  height: 0.6rem; line-height: 0.6rem; color: #999; font-size: 0.35rem; }
+			.ly{ position: fixed; height: 100%; width: 100%; background: rgba(0,0,0,0.3); top: 0; left: 0; display: none; }
+			.m-megess{ width: 70%;height: auto; background: #f5f5f5; position: fixed; display: none; z-index: 99; text-align: center; border-radius: 0.3rem; left: 15%; top: 30%;  }
+			.m-megess .title{ height: 0.8rem; font-size: 0.4rem; line-height: 0.8rem; }
+			.m-megess .info{ font-size: 0.32rem; height: 0.8rem; }
+			.m-megess .megess{ padding: 0.3rem 0.8rem; }
+			.m-megess #password{ width: 100%; height: 0.8rem; padding: 0 0.2rem; border:1px solid #000; font-size: 0.35rem; }
+			.m-megess .m-btn{ width: 100%; height: 1rem; line-height: 1rem; border-top: 1px solid  #ccc; }
+			.m-megess .m-btn >.item{ width: 50%; float: left; border-right: 1px solid #ccc;  font-size: 0.4rem;  }
+			.m-megess .m-btn >.item:last-child{border: none;}
+			.item-value {
+				height: inherit;
+				border: none;
+				font-size: .426667rem;
+				color: #fff;
+				width: 100%;
+				background: transparent;
+			}
+						.item-content {
+				position: relative;
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				padding: 0rem .32rem 0rem .426667rem;
+				height: 1.173333rem;
+				border-radius: .266667rem;
+				background: #191F58;
+				box-shadow: 0rem 0rem 0.4rem 0rem rgba(25, 31, 88, 0.5);
+			}
+		</style>
+		
+	</head>
+	<body>
+		<div class="m-head">
+			<a href="Trading.html" class="return"></a>
+			<h3>Transaction</h3>
+		</div>
+		<div class="m-body">
+			<div class="tab clearfix">
+				<ul>
+					<li class="action">Deposit</li>
+					<li>Withdraw</li>
+				</ul>
+			</div>
+			
+			<div class="m-box">
+				<div class="box clearfix">
+					<div class="choice">
+						<div class="item accept action">
+							<span>Accept Multiple Orders</span>
+							<em></em>
+						</div>
+						<div class="reject item">
+							<span>Reject Multiple Orders</span>
+							<em></em>
+						</div>
+					</div>
+					
+					<div class="eagle">
+							<p></p>
+							<p></p>
+					</div>
+					
+					<div class="Deposit">
+						<div class="item-content">
+							<input type="text" class="item-value money_num" placeholder="Deposit is an integer multiple of $200">
+						</div>
+						<p>Each instant deposit service costs is (1%)</p>
+						<p>of the deposit amount</p>
+					</div>
+					
+					<div class="dep-btn deposit1">Deposit</div>
+					<div class="According">
+						
+					</div>
+					
+				</div>
+				<div class="box clearfix withdraw" style="display: none;">
+						<div class="choice" data-num1="" data-num2="">
+								<div class="fix_num item action">
+									<span></span>
+									<em></em>
+								</div>
+								<div class="cur_num item">
+									<span></span>
+									<em></em>
+								</div>
+							</div>
+							
+							<div class="Deposit">
+								<div class="item-content">
+									<input type="text" class="item-value with_num" placeholder="">
+								</div>
+								<p>Waiver: I am fully aware of the risks connected with the investment activity. I understand, accept, and agree to the rules and conditions that apply to my access.</p>
+							</div>
+							
+							<div class="dep-btn withdraw1">Withdraw</div>
+							<div class="According">
+								
+							</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="ly"></div>
+		<div class="m-megess m-megess1">
+			<div class="megess">
+				<div class="title">Safety Verification</div>
+				<div class="info">Level-2 Password:</div>
+				<input class="get_pass1" type="password" placeholder="Password" id="password"  />
+			</div>
+			<div class="m-btn">
+				<div class="item" id="cancel">cancel</div>
+				<div class="item" id="submit1">Submit</div>
+			</div>
+		</div>
+		<div class="m-megess m-megess2">
+				<div class="megess">
+					<div class="title">Safety Verification</div>
+					<div class="info">Level-2 Password:</div>
+					<input class="get_pass2" type="password" placeholder="Password" id="password"  />
+				</div>
+				<div class="m-btn">
+					<div class="item" id="cancel">cancel</div>
+					<div class="item" id="submit2">Submit</div>
+				</div>
+		</div>
+	</body>
+	<script type="text/html" id="according">
+		<p>According to your investment assessment, your</p>
+		<p>highest investment amount is:${{info.userInfo.score}}</p>
+	</script>
+	<script>
+		$(function () {
+			var num1=$('.money_num').val();
+			var num2=$('.with_num').val();
+			var trad_password=$('#password').val();
+			$.ajax({
+                url: "../../index.php/index/Member/index",
+				type: 'POST',
+                dataType: 'json',
+                success: function(res){
+                    if(res.code=='0'){
+						var eagle1='Freedom Class:'+res.info.userInfo.level;
+						$('.eagle p').eq(1).html(eagle1);
+						}
+					else if (res.code == 1 && res.url == "login") {
+						layer.open({
+							content: 'You are not logged in',
+							skin: 'msg',
+							time: 2
+						})
+						setTimeout(function(){
+							window.location.href='introduce.html';
+						},500)
+					}
+                    else{
+                        layer.open({
+                            content: res.msg,
+                            skin: 'msg',
+                            time: 2
+                        });
+                        }
+                },
+			});
+			$.ajax({
+							url: "../../index.php/index/Access/index",
+							type: 'GET',
+							dataType: 'json',
+							success: function(res){
+							if(res.code=='0'){
+								var eagle='Eagle Eye:'+res.info.number;
+								$('.eagle p').eq(0).html(eagle);
+									}
+								else{
+									layer.open({
+										content: res.msg,
+										skin: 'msg',
+										time: 2
+									});
+									}
+							},
+						});
+				$.ajax({
+							url: "../../index.php/index/Member/index",
+							type: 'GET',
+							dataType: 'json',
+							success: function(res){
+							if(res.code=='0'){
+								console.log(res)
+								$('.According').html(template("according",res));
+									}
+								else{
+									layer.open({
+										content: res.msg,
+										skin: 'msg',
+										time: 2
+									});
+									}
+							},
+						});
+			$.ajax({
+                 url: "../../index.php/index/Access/index",
+			 	 type: 'GET',
+                 dataType: 'json',
+                 success: function(res){
+                 if(res.code=='0'){
+					 console.log(res)
+						var fix_num=res.info.old;
+						var fix_num1='Fix Income($'+fix_num+')';
+						$('.fix_num span').html(fix_num1);
+						var cur_num=res.info.now;
+						var cur_num1='Current Balance($'+cur_num+')';
+						$('.cur_num span').html(cur_num1);
+						$(".choice").on('click','.item',function(){
+						$(this).addClass('action').siblings('').removeClass('action');
+					})
+						$(".withdraw1").click(function(){
+						$(".ly,.m-megess2").show();
+					})
+					$.ajax({
+							url: "../../index.php/index/Match/withdraw",
+							type: 'GET',
+							dataType: 'json',
+							success: function(res){
+							if(res.code=='0'){
+									var min_num1=res.info.nums[0].num;
+									var min_num2=res.info.nums[1].num;
+									$('.choice').data('num1',min_num1);
+									$('.choice').data('num2',min_num2);
+									var place1='$'+ min_num1 +'lifts, and is a multiple of $'+min_num1;
+									var place2='$'+ min_num2 +'lifts, and is a multiple of $'+min_num2;
+									$('.with_num').attr('placeholder',place1);
+									$('.cur_num').click(function(){
+										$('.with_num').attr('placeholder',place2);
+									})
+									$('.fix_num').click(function(){
+										$('.with_num').attr('placeholder',place1);
+									})
+									}
+								else{
+									layer.open({
+										content: res.msg,
+										skin: 'msg',
+										time: 2
+									});
+									}
+							},
+						});
+                         }
+                     else{
+                        layer.open({
+                             content: res.msg,
+                             skin: 'msg',
+                             time: 2
+                         });
+                         }
+                 },
+			 });
+			 var flag=true;
+			 if(flag){
+				flag=false;
+				$('#submit2').off().on('click',function(){
+				var num2=$('.with_num').val();
+				var min_num1=$('.choice').data('num1');
+				var min_num2=$('.choice').data('num2');
+				if(($('.fix_num')).hasClass('action')){
+				var types=1;
+				if(num2%min_num1!=0)return layer.open({
+                            content: 'The amount should be a multiple of '+min_num1,
+                            skin: 'msg',
+                            time: 5
+						});
+				}
+				else{types=2;
+					if(num2%min_num2!='0')return layer.open({
+                            content: 'The amount should be a multiple of '+min_num2,
+                            skin: 'msg',
+                            time: 5
+						});};
+				var trad_password=$('.get_pass2').val();
+				$(".ly,.m-megess2").hide();
+				$.ajax({
+                url: "../../index.php/index/Match/withdraw",
+				type: 'POST',
+				data:{types:types,num:num2,trad_password:trad_password},
+                dataType: 'json',
+                success: function(res){
+                    if(res.code=='0'){
+						layer.open({
+                            content: res.msg,
+                            skin: 'msg',
+                            time: 2
+                        });
+						
+                        }
+                    else{
+                        layer.open({
+                            content: res.msg,
+                            skin: 'msg',
+                            time: 2
+                        });
+                        }
+                },
+			});
+				setTimeout(function() {
+					flag= true;
+				}, 2000);
+			})
+			 }
+			$('#submit1').off().on('click',function(){
+				var num1=$('.money_num').val();
+				if(num1<200){return layer.open({
+                            content: 'The amount should be greater than 200',
+                            skin: 'msg',
+                            time: 5
+						});}
+				if(num1%200!=0){return layer.open({
+					content: 'The amount should be a multiple of 200',
+					skin: 'msg',
+					time: 5
+				});}
+				if(($('.accept')).hasClass('action')){
+				var types=1;
+				}
+				else{types=2};
+				var num1=$('.money_num').val();
+				var trad_password=$('.get_pass1').val();
+				$.ajax({
+                url: "../../index.php/index/Match/store",
+				type: 'POST',
+				data:{types:types,num:num1,trad_password:trad_password},
+                dataType: 'json',
+                success: function(res){
+                    if(res.code=='0'){
+						layer.open({
+                            content: res.msg,
+                            skin: 'msg',
+                            time: 2
+                        });
+						location.reload();
+                        }
+                    else{
+                        layer.open({
+                            content: res.msg,
+                            skin: 'msg',
+                            time: 2
+                        });
+                        }
+                },
+			});
+			})
+		});
+	</script>
+	<script>
+		$(function(){
+			$('.tab ul li').click(function(){
+				$('.tab ul li').removeClass("action");
+				$(this).addClass("action");
+				$(".box").hide();
+				$(".box").eq($('.tab ul li').index(this)).show();
+			});
+			$(".choice").on('click','.item',function(){
+				$(this).addClass('action').siblings('').removeClass('action');
+			})
+			//显示
+			$(".deposit1").click(function(){
+				$(".ly,.m-megess1").show();
+			})
+			
+			//隐藏
+			$("#cancel,.ly").click(function(){
+				$(".ly,.m-megess").hide();
+			})
+		})
+	</script>
+</html>

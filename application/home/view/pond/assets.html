@@ -1,0 +1,484 @@
+{extend name='main'}
+
+{block name='body'}
+
+<div class="box_center">
+    <div class="box_topp">
+      
+        <div @click="rightMax" class="right_X">
+            <a href="{:url('home/member/setting')}"></a>
+        </div>
+        <div class="top-img new_topImg">
+                <div style="width:12.46rem; height:12.18rem; overflow: hidden;border-radius: 50%;position:relative;">
+                    <img :src="info.avatar" alt="" style="width:12.46rem; height:12.18rem; border-radius: 50%; ">
+                    <input type="file" accept="image/*" id="upload" class="set-file" @change="upload()">
+               </div>
+             
+        </div>
+        <div>
+            <div class="top-name new_top-name">
+                <strong >{{info.nick_name}}</strong> 
+                <span>({{info.lv_name}})</span>
+             </div>
+            <div class="top-id new_id">
+                <div style="font-size:17px; color:#3A3026;font-weight:bold;font-family:Rubik;">ID : {{info.invite_code}}</div> 
+                <span class="span2_id" v-if="info.is_active==1">(已激活)</span> 
+               
+            </div>
+            <div class="new_phone">
+                <span v-else>(未激活)</span> 
+                手机 : {{info.mobile}}
+            </div>
+        </div>
+
+        <div class="hy">
+            <div class="hy_box">
+                <div style="font-size:27px; color:#fff;">商会成员</div>
+                <div >
+                    <img  style="width:3.68rem; height:3.96rem; margin-top:1rem" src="/fish/img/center99.png" alt="">
+                </div>
+                <div style="font-size:21px; colro:#fff;">X35</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="centerFooter">
+        <div class="center_content">
+            <div>
+                <a :href="(info.is_active==0||info.is_verify==1)?'javascript:;':'{:url('home/member/verifyid')}'">实名认证</a>
+            </div>
+            <div>商会管理</div>
+            <div>
+                <a href="{:url('home/member/inviteFriend')}">邀请好友</a>
+            </div>
+            <div>激活账户</div>
+            <div>
+                <a href="{:url('home/member/noticelist')}">系统公告</a>
+            </div>
+            <div>
+                <a href="{:url('home/member/customer')}">客服中心</a>
+            </div>
+            <div>
+                <a :href="info.is_active==0?'javascript:;':'{:url('home/member/wechat')}'">绑定微信</a>
+
+               
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+{include file='menu'}
+{/block}
+
+{block name='script'}
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            info: '',
+        },
+        computed: {
+            
+        },
+        methods: {
+            rightMax(){
+                window.location.href=("{:url('home/member/setting')}")
+            },
+          
+            profit: function(){
+                if(this.info.is_team==1){
+                    location.href="{:url('home/member/teamProfit')}"
+                }else{
+                    core.toast('您未绑定微信帐号或还不是团队长');
+                }
+            },
+            upload: function(){
+                var self = this;
+                var file = $('#upload')[0];
+                if (file.value == '' || file.value == null) {
+                    return core.toast("请上传图片");
+                }
+                if (!/\.(gif|jpg|jpeg|png|GIF|JPG|PNG)$/.test(file.value)) {
+                    file.value = "";
+                    return core.toast("图片类型必须是[.gif,jpeg,jpg,png]中的一种");
+                }
+                if (file.files[0].size > 2*1024*1024) {
+                    file.value = "";
+                    return core.toast("图片大小不能超过2M");
+                }
+                var formData = new FormData();
+                formData.append('file', file.files[0]);
+                formData.append('token', localStorage.uid);
+                var id = '';
+
+                $.ajax({
+                    url: "{:url('/index/upload/uploadimg')}",
+                    type: 'POST',
+                    data: formData,
+                    contentType: false, // 注意这里应设为false
+                    processData: false,
+                    beforeSend: function(){id=core.loading();},
+                    complete: function(){core.rmLoading(id);},
+                    success: function(res){
+                        
+                        if(res.code=='0'){
+                            file.value = '';
+                            core.load("{:url('index/setup/avatar_edit')}", { url: res.info.url }, function(data){
+                                
+                                if(data.code==0){
+                                    self.info.avatar = res.info.url;
+                                }
+                                core.toast(data.msg);
+                            })
+                        }
+                        core.toast(res.msg);
+                    },
+                    error: function(XHR, textStatus, errorThrown) {
+                        core.toast('网络错误！');
+                    }
+                });
+            },
+            member: function(){
+                var self = this;
+                core.load("{:url('/index/setup/index')}", {}, function(res){
+                    console.log(res)
+                    if(res.code==0){
+                        self.info=res.info;
+                    }else{
+                        core.toast(res.msg);
+                    }
+                })
+            }
+        },
+        mounted: function(){
+            this.member();
+        }
+    });
+</script>
+{/block}
+
+{block name="style"}
+<style>
+    .center_content{
+        width:75%;
+        height:65%;
+        display:flex;
+        flex-wrap: wrap;
+        text-align:center;
+        font-size:14px;
+        color:#fff;
+    }
+    .center_content a{
+        color:#fff;
+    }
+    .center_content div{
+        height:2.5rem;
+        line-height:2.5rem;
+        position:relative;
+        top:-1rem;
+    }
+    .center_content div:nth-child(1){
+        background:url("/fish/img/footer1.png") 0 0 no-repeat;
+        width:5.13rem;
+        height:2.5rem;
+        background-size: 100% 100%;
+       
+    }
+    .center_content div:nth-child(3n-1){
+        margin-left:1.8rem;
+    }
+    .center_content div:nth-child(3n){
+        margin-left:1.8rem;
+    }
+    .center_content div:nth-child(2){
+        background:url("/fish/img/footer2.png") 0 0 no-repeat;
+        width:5.13rem;
+        height:2.5rem;
+        background-size: 100% 100%;
+    }
+    .center_content div:nth-child(3){
+        background:url("/fish/img/footer3.png") 0 0 no-repeat;
+        width:5.13rem;
+        height:2.5rem;
+        background-size: 100% 100%;
+    }
+    .center_content div:nth-child(4){
+        background:url("/fish/img/footer4.png") 0 0 no-repeat;
+        width:5.13rem;
+        height:2.5rem;
+        background-size: 100% 100%;
+    }
+    .center_content div:nth-child(5){
+        background:url("/fish/img/footer5.png") 0 0 no-repeat;
+        width:5.13rem;
+        height:2.5rem;
+        background-size: 100% 100%;
+    }
+    .center_content div:nth-child(6){
+        background:url("/fish/img/footer6.png") 0 0 no-repeat;
+        width:5.13rem;
+        height:2.5rem;
+        background-size: 100% 100%;
+    }
+    .center_content div:nth-child(7){
+        background:url("/fish/img/footer7.png") 0 0 no-repeat;
+        width:5.13rem;
+        height:2.5rem;
+        background-size: 100% 100%;
+    }
+    .centerFooter{
+        background:url("/fish/img/center98.png") 0 0 no-repeat;
+        width:100%;
+        height:16.8rem;
+        background-size: 100% 100%;
+        display:flex;
+        justify-content: center;
+        align-items: center;
+
+    }
+    .hy_box{
+        width:16.46rem;
+        height:4.625rem;
+        background:url("/fish/img/center23.png") 0 0 no-repeat;
+        background-size: 100% 100%;
+        display:flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .hy{
+        width:100%;
+        height:4.625rem;
+        display:flex;
+        justify-content: center;
+        align-items: center;
+        margin-top:0.5rem;
+    }
+    .new_phone{
+        font-size:14px;
+        font-family:MF XingYan(Noncommercial);
+        font-weight:400;
+        color:#3A3026;
+    }
+    .span2_id{
+        font-size:11px;
+        font-family:MF XingYan(Noncommercial);
+        font-weight:400;
+        color:rgba(58,48,38,1);
+        margin-left:.5rem;
+        margin-top:0.3rem;
+    }
+    .new_phone{
+        display:flex;
+        justify-content: center;
+        align-content: center;
+    }
+    .new_id{
+        display:flex;
+        justify-content: center;
+        align-content: center;
+    }
+    .new_top-name{
+        display:flex;
+        justify-content: center;
+        align-content: center;
+    }
+    .new_top-name >strong{
+        font-size:26px;
+        font-family:Rubik;
+        font-weight:bold;color:rgba(255,255,255,1);
+        text-shadow:0px 4px 2px rgba(0, 0, 0, 0.42);
+        color:#F2E1C0;
+    }
+    .new_top-name >span{
+        margin-left:0.5rem;
+        color:#F2E1C0;
+        font-size:11px;
+        font-family:MF XingYan(Noncommercial);
+        text-shadow:0px 4px 2px rgba(0, 0, 0, 0.42);
+        margin-top:1rem;
+    }
+   
+    .new_topImg{
+        width:100%;
+        height:12.18rem;
+        display:flex;
+        justify-content: center;
+        align-items: center;
+        margin-top:6rem;
+    }
+    .right_X{
+        background:url("/fish/img/img3.png") 0 0 no-repeat;
+        background-size: 100% 100%;
+        width:3.1rem;
+        height:3.2rem;
+        position: relative;
+        top:5rem;
+        right:-21rem
+    }
+    .box_topp{
+        width:100%;
+        height:36.75rem;
+        background:url("/fish/img/center_img1.png") 0 0 no-repeat;
+        background-size: 100% 100%
+    }
+    .box_center{
+        width:100%;
+        height:56rem;;
+        background:url("/fish/img/center1.png") 0 0 no-repeat;
+        /* background-size: 100% 100%; */
+
+    }
+    .center_list{
+        margin-top:-2rem; 
+        width:100%; 
+        height:16.81rem;
+        background:url("/fish/img/fish11.png") 0 0 no-repeat;
+        background-size: 100% 100%;
+        z-index:999;
+
+
+    }
+    .img2{
+        width:100%;
+        height:100%;
+        
+    }
+    .img3{
+        width:8.5rem;
+        height:8.9rem;
+    }
+    .top_one{
+        width:90%;
+        height:90%;
+        margin:auto;
+
+    }
+    .center_top{
+        width:100%;
+        height:37rem;
+        z-index:99;
+        position:relative;
+        top:-3rem;
+      
+        
+      
+    }
+  .img1{
+      width:100%;
+      height:100%;
+      position:fixed;
+      left:0;
+      top:0;
+      right: 0;
+      bottom: 0;
+      background-size: 100%;
+  }
+    .fish-head{
+        background-color: rgba(50, 50, 50,0.9);
+    }
+    .head-tit{font-weight:bold;}
+    .center-info{
+        margin:12px 12px 1rem;
+        color: #c38e00;
+        /*
+        background:#182121;
+        border-radius:8px;
+        */
+    }
+    .center-info a{
+        color: #c38e00;
+    }
+
+    .info-top{
+        padding:12px;
+    }
+    .info-top .top-setting{
+        position: absolute;
+        right: 0;
+        top: 0;
+    }
+    .info-top .top-img{
+        position:relative;
+        overflow:hidden;
+        margin: 0rem 1rem;
+        /*
+        width: 60px;
+        height: 60px;
+        */
+    }
+    .info-top .top-img img{
+        margin:0 auto;
+        position:relative;
+        overflow:hidden;
+        border-width: 8px;
+        border-style: solid;
+        border-color: rgb(250, 250, 250);
+        border-radius: 50%;
+        background-color: rgb(255, 255, 255);
+        box-shadow: inset 0px 5px 6px 0px rgba(117, 100, 88, 0.3);
+        width:6rem;
+        height:6rem;
+        display:block;
+    }
+    .info-top .top-name{font-size:18px;margin-top:5px; text-align: center;}
+    .info-top .top-name strong{
+        font-size: 1.2rem;
+        font-weight: bold;
+    }
+    .info-top .top-name span{font-size:0.6rem;margin-left:10px;}
+    .info-top .top-id{font-size: 0.6rem; text-align: center;}
+
+    .info-member{
+        padding:0 0 1rem;
+        text-align:center;
+        font-weight: bold;
+    }
+    .info-member .member-num{font-size:16px;}
+    /*.info-member:nth-child(2) .member-num{color:#e1190d;font-size:14px;}*/
+    .info-member .member-text{
+        font-size: 0.7rem;
+    }
+    .icon-setting{background-image:url('/fish/img/icon-setting.png');width:22px;height:22px;}
+    .center-list{
+        text-align:center;
+        margin:12px;
+        padding: 12px;
+    }
+    /*
+    .center-list li{
+
+    }
+    */
+    .center-list li a{
+        display:block;margin:12px 0;border-left:1px solid rgb(202, 181, 166);color:#c4afa0
+    }
+    .center-list li:nth-child(1) a,
+    .center-list li:nth-child(4) a,
+    .center-list li:nth-child(7) a, 
+    .center-list li:nth-child(10) a,
+    .center-list li:nth-child(13) a{
+        border-left: none;
+    }
+    .center-list li a .icon{height:40px;width:40px;margin-bottom:8px;}
+    .center01-act{background-image:url('/fish/img/center01-act.png');}
+    .center02-act{background-image:url('/fish/img/center02-act.png');}
+    .center03-act{background-image:url('/fish/img/center03-act.png');}
+    .center04{background-image:url('/fish/img/center04.png');}
+    .center04-act{background-image:url('/fish/img/center04-act.png');}
+    .center05-act{background-image:url('/fish/img/center05-act.png');}
+    .center06{background-image:url('/fish/img/center06.png');}
+    .center06-act{background-image:url('/fish/img/center06-act.png');}
+    .center07-act{background-image:url('/fish/img/center07-act.png');}
+    .center08{background-image:url('/fish/img/center08.png');}
+    .center08-act{background-image:url('/fish/img/center08-act.png');}
+    .center09-act{background-image:url('/fish/img/center09-act.png');}
+    .center10-act{background-image:url('/fish/img/center10-act.png');}
+    .center11{background-image:url('/fish/img/center11.png');}
+    .center11-act{background-image:url('/fish/img/center11-act.png');}
+    .center12-act{background-image:url('/fish/img/center12-act.png');}
+    .set-file{position: absolute;left:0;right: 0;top:0;bottom: 0;opacity:0;}
+</style>
+{/block}

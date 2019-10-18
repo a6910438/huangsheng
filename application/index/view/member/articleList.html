@@ -1,0 +1,33 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>新手解答</title>
+	{include file="layout/head" /}
+</head>
+<body>
+<header class="mui-bar mui-bar-nav my-header">
+    <a href="/index/member/index" class="mui-icon mui-icon-left-nav mui-pull-left"></a>
+
+    <h1 id="title" class="mui-title">新手解答</h1>
+</header>
+<div class="mui-content">
+    <div class="mui-scroll-wrapper" style="top:44px">
+        <div class="mui-scroll">
+            <ul class="mui-table-view">
+            	{foreach $list as $list}
+                <li class="mui-table-view-cell mui-collapse help-list">
+                    <a class="mui-navigate-right" href="#">{$list->title}</a>
+                    <div class="mui-collapse-content">
+                        <p>{:htmlspecialchars_decode($list->content)}</p>
+                    </div>
+                </li>
+                {/foreach}
+            </ul>
+        </div>
+    </div>
+
+</div>
+</body>
+{include file="layout/footer" /}
+</html>

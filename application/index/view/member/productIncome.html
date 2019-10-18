@@ -1,0 +1,73 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>茶园收益</title>
+    <!--head-->
+    {include file="layout/head" /}
+</head>
+<style type="text/css">
+    .tips{
+        padding: 10px;
+        padding-left: 20px;
+        color:#000;
+        font-size: 16px;
+        background: #fff;
+    }
+    .list-area{
+        background:#fff;
+    }
+    .list-title{
+        background: #c1c1c1;
+    }
+    .list-title div{
+        height:50px;
+        line-height: 50px;
+    }
+    .list-area-ietm{
+        border-bottom: 1px solid #c1c1c1;
+    }
+    .list-area-ietm div{
+        padding: 15px 0px;
+        font-size: 14px;
+    }
+</style>
+<body>
+    
+<header class="mui-bar mui-bar-nav my-header">
+    <a href="/index/member/index" class="mui-icon mui-icon-left-nav mui-pull-left"></a>
+    <h1 class="mui-title">茶园收益</h1>
+    <a class="mui-icon mui-icon-contact mui-pull-right" href="{:url('member/index')}"><span id="user-title">{$Think.session.username}</span></a>
+</header>
+<div class="mui-content">
+    <div class="tips">24小时自动结算一次</div>
+    <div class="tabs mui-row list-title">
+        <div class="mui-col-sm-3 mui-col-xs-3 mui-text-center">茶园名称</div>
+        <div class="mui-col-sm-2 mui-col-xs-2 mui-text-center">茶园编号</div>
+        <div class="mui-col-sm-2 mui-col-xs-2 mui-text-center">状态</div>
+        <div class="mui-col-sm-2 mui-col-xs-2 mui-text-center" style="line-height: 20px;padding-top: 5px;">运行时间<br>（小时）</div>
+        <div class="mui-col-sm-3 mui-col-xs-3 mui-text-center" style="line-height: 20px;padding-top: 5px;">收入<br>（{$moneyName}）</div>
+    </div>
+    <div class="list-area">
+        {if !empty($lists)}
+        {foreach $lists as $info}
+            <div class="tabs mui-row list-area-ietm">
+                <div class="mui-col-sm-3 mui-col-xs-3 mui-text-center">{$info['product_name']}</div>
+                <div class="mui-col-sm-2 mui-col-xs-2 mui-text-center">{$info['product_number']}</div>
+                <div class="mui-col-sm-2 mui-col-xs-2 mui-text-center">{$info['statusTitle']}</div>
+                <div class="mui-col-sm-2 mui-col-xs-2 mui-text-center">{$info['hour']}</div>
+                <div class="mui-col-sm-3 mui-col-xs-3 mui-text-center">{$info['total']}</div>
+            </div>
+        {/foreach}
+        {else/}
+        <div class="mui-text-center" style="margin-top:10px;">暂无数据<div>
+        {/if}
+        
+    </div>
+    
+</div>
+</body>
+<script>
+    
+</script>
+</html>

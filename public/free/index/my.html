@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>My Profile</title>
+    <link rel="icon" href="free.ico" type="image/x-icon"/> 
+    <link rel="stylesheet" href="../css/public.css">
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <script src="../build/flexible.js"></script>
+    <script src="../build/flexible_css.js"></script>
+    <script src="../js/layer.js"></script>
+    <script src="../js/jquery.js"></script>
+    <script src="../js/clipboard.min.js"></script>
+    <script src="../js/logout.js"></script>
+    <style>
+        html, body {background: #F5F5F5;}
+        input::-webkit-input-placeholder {color: #999;}
+        textarea::-webkit-input-placeholder {color: #999;}
+        .header {position: fixed;top: 0px;left: 0px;width: 100%;height: 1.173333rem;line-height: 1.173333rem;text-align: center;color: #fff;background: linear-gradient(to left, #2A3176, #0A0F3E);z-index: 99999;}
+        .header span {font-size: .48rem;font-weight: bold;}
+        .more {position: absolute;top: 0;left: .373333rem;display: flex;align-items: center;height: inherit;}
+        .more img {width: .773333rem;}
+        .main {padding: 1.173333rem 0rem 1.333333rem;}
+        .balance-box {position: relative;}
+        .balance-box img {width: 100%;vertical-align: bottom;}
+        .balance-content {position: absolute;top: 50%;left: 40%;margin-top: -0.906667rem;}
+        .balance {height: 1.12rem;line-height: 1.12rem;font-size: .773333rem;color: #fff;font-weight: bold;}
+        .company {height: .693333rem;line-height: .693333rem;font-size: .48rem;color: #fff;}
+        .list {background: #fff;}
+        .item {display: flex;justify-content: space-between;align-items: center;padding: 0rem .213333rem 0rem .4rem;height: 1.173333rem;border-bottom: 1px solid #E0E0E0;font-size: .426667rem;color: #666;}
+        .more-icon {height: .586667rem;}
+        .btn-box {margin-top: 3.2rem;display: flex;justify-content: center;}
+        .confirm {padding: 0rem .8rem;min-width: 53.33%;height: 1.173333rem;line-height: 1.173333rem;text-align: center;font-size: .48rem;color: #fff;border: none;background: #262F86;border-radius: .133333rem;box-shadow: 0rem 0rem .666667rem rgba(38, 47, 134, 0.5);}
+        .nav-bg {position: fixed;top: 0;left: 0;width: 100%;height: 100%;background: rgba(27, 27, 27, .5);display: none;}
+        .nav-box {position: absolute;top: 0;left: -67.73%;width: 67.73%;height: 100%;padding-top: 1.173333rem;transition: ease left .4s;}
+        .nav-content {padding-top: .373333rem;width: 100%;height: 100%;background: #fff;border-radius: 0rem .133333rem .133333rem 0rem;}
+        .nav-item {height: 1.333333rem;display: flex;align-items: center;padding-left: .346667rem;}
+        .nav-icon img {height: .586667rem;vertical-align: bottom;}
+        .nav-name {margin-left: .72rem;font-size: .426667rem;color: #666;}
+        .nav-active .nav-name {color: #212121;}
+        .layout-btn {position: absolute;left: 0;bottom: 0;width: 100%;height: 1.333333rem;border-top: 1px solid #E0E0E0;display: flex;align-items: center;}
+        .layout {display: flex;align-items: center;padding-left: .346667rem;width: 100%;height: 100%;border: none;background: transparent;font-size: .426667rem;color: #999;}
+        .layout img {height: .586667rem;margin-right: .773333rem;}
+    </style>
+<body>
+    <header class="header">
+        <span class="more" data="0">
+            <img src="../images/home.png" alt="">
+        </span>
+        <span>My Profile</span>
+    </header>
+    <main class="main">
+        <div class="balance-box">
+            <img src="../images/mein_bj_img@2x.png" alt="">
+            <div class="balance-content">
+                <img style="height:1rem;width:1rem;margin-left: 1rem " src="../images/bird.png" alt="">
+                <div class="balance"></div>
+                <!-- <div class="company">Eagle Eye</div> -->
+            </div>
+        </div>
+        <div class="list">
+            <a href="extension.html" class="item">
+                <span class="item-name">Promotion</span>
+                <img src="../images/gengduo_icon@2x.png" alt="" class="more-icon">
+            </a>
+            <a href="ChangePassword.html" class="item">
+                <span class="item-name">Change Password</span>
+                <img src="../images/gengduo_icon@2x.png" alt="" class="more-icon">
+            </a>
+            <a href="ChangeLevel.html" class="item">
+                <span class="item-name">Change Level -2 Password</span>
+                <img src="../images/gengduo_icon@2x.png" alt="" class="more-icon">
+            </a>
+            <a href="wallet_address.html" class="item">
+                <span class="item-name">Wallet Address Binding</span>
+                <img src="../images/gengduo_icon@2x.png" alt="" class="more-icon">
+            </a>
+            <a href="social_binding.html" class="item">
+                <span class="item-name">Social Number Ninding</span>
+                <img src="../images/gengduo_icon@2x.png" alt="" class="more-icon">
+            </a>
+            <a href="Note.html" class="item">
+                <span class="item-name">Note</span>
+                <img src="../images/gengduo_icon@2x.png" alt="" class="more-icon">
+            </a>
+        </div>
+    </main>
+    <div class="nav-bg">
+        <div class="nav-box">
+            <div class="nav-content">
+                <div class="nav-list">
+                    <div class="nav-item" onclick="window.location.href='index.html'">
+                        <div class="nav-icon"><img src="../images/lab_2homei_icon@2x.png" alt=""></div>
+                        <div class="nav-name">Home</div>
+                    </div>
+                    <div class="nav-item" onclick="window.location.href='news.html'">
+                        <div class="nav-icon"><img src="../images/lab_2News_icon@2x.png" alt=""></div>
+                        <div class="nav-name">News</div>
+                    </div>
+                    <div class="nav-item" onclick="window.location.href='Trading.html'">
+                        <div class="nav-icon"><img src="../images/lab_transaction_icon@2x.png" alt=""></div>
+                        <div class="nav-name">Trading</div>
+                    </div>
+                    <div class="nav-item" onclick="window.location.href='assets.html'">
+                        <div class="nav-icon"><img src="../images/lab_assets_icon@2x.png" alt=""></div>
+                        <div class="nav-name">Transaction</div>
+                    </div>
+                    <div class="nav-item nav-active">
+                        <div class="nav-icon"><img src="../images/lab_1mein_icon@2x.png" alt=""></div>
+                        <div class="nav-name">My Profile</div>
+                    </div>
+                </div>
+                <div class="layout-btn">
+                    <button class="layout">
+                        <img src="../images/lab_Sidebar_icon@2x.png" alt="">
+                        <span>Logout</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    let more = document.querySelector('.more');
+    let navBg = document.querySelector('.nav-bg');
+    let navBox = document.querySelector('.nav-box');
+    $.ajax({
+                url: "../../index.php/index/Member/index",
+				type: 'POST',
+                dataType: 'json',
+                success: function(res){
+                    console.log(res)
+                    if(res.code=='0'){
+						$('.balance').html(res.info.userInfo.nick_name);
+                        }
+                    else{
+                        layer.open({
+                            content: res.msg,
+                            skin: 'msg',
+                            time: 2
+                        });
+                        }
+                },
+			});
+    more.addEventListener('click', function() {
+        if (this.getAttribute('data') == 0) {
+            navBg.style.display = 'block';
+            setTimeout(()=> {
+                navBox.style.left = '0%';
+            }, 10);
+            this.setAttribute('data', '1');
+        } else {
+            navBox.style.left = '-67.73%';
+            setTimeout(()=> {
+                navBg.style.display = 'none';
+            }, 400);
+            this.setAttribute('data', '0');
+        }
+    });
+    navBox.addEventListener('click', (e)=> {
+        if (e) {
+            e.stopPropagation();
+            e.preventDefault();
+        } else {
+            window.event.returnValue = false;
+            window.event.cancelBubble = true;
+        }
+    });
+    navBg.addEventListener('click', ()=> {
+        if (more.getAttribute('data') == 1) {
+            navBox.style.left = '-67.73%';
+            setTimeout(()=> {
+                navBg.style.display = 'none';
+            }, 400);
+            more.setAttribute('data', '0');
+        }
+    });
+</script>
+</html>

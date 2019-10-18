@@ -1,0 +1,44 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>客服</title>
+    {include file="layout/head" /}
+</head>
+
+<style type="text/css">
+    .cont {
+        background: white;
+        height: auto;
+    }
+
+    .ter {
+        background: white;
+        height: auto;
+    }
+</style>
+<body>
+<header class="mui-bar mui-bar-nav my-header">
+    <a href="/index/member/index" class="mui-icon mui-icon-left-nav mui-pull-left"
+       ></a>
+    <h1 id="title" class="mui-title">客服</h1>
+</header>
+<div class="mui-content cont" >
+    <p style="padding: 10px;background: #f7f7f7">问题留言</p>
+    <form action="{:url('member/submitMsg')}" style="height: 170px;padding: 0" method="post" onsubmit="return false" id="submitForm">
+        <textarea style="color:grey;border: none;height: 100px" name="content" id="content" placeholder="请您输入您的问题，我们将尽快回复您"></textarea>
+        <button data-form="submitForm" onclick="ajaxPost(this)" type="submit"
+                style="width: 25%;height: 30px;border: none;background: #ffd21f;float: right;margin-right: 10px">提交
+        </button>
+    </form>
+</div>
+{if isset($kfmobile)}
+<div style="background: #fff;margin-top: 10px;font-size: 16px;padding:10px;">
+    客服电话：<a href="tel:{$kfmobile}" style="font-size: 16px;">{$kfmobile}</a>
+</div>
+{/if}
+
+<!--footer-->
+{include file="layout/footer" /}
+</body>
+</html>

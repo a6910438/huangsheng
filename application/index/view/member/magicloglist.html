@@ -1,0 +1,101 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>账单</title>
+    {include file="layout/head" /}
+    <link href="/static/css/mescroll.css" rel="stylesheet">
+    <style type="text/css">
+        .loadmore{
+            margin: 0 auto;
+            margin-bottom: 10px;
+            width: 90%;
+            padding: 10px;
+            background: #ea6c41;
+            color:#fff;
+        }
+        .my-list-item{
+            padding: 10px 20px 10px 20px;
+            color: #999;
+            font-size: 14px;
+            background: #fff;
+        }
+        .my-list-item li span.left span:first-child {
+            width: 80px;
+            display: block;
+            float: left;
+        }
+        .my-list-item li span.value {
+            color: #666;
+            margin-left: 5px;
+        }
+    </style>
+</head>
+
+<body>
+<header class="mui-bar mui-bar-nav my-header">
+    <a href="/index/member/index" class="mui-icon mui-icon-left-nav mui-pull-left"></a>
+
+    <h1 id="title" class="mui-title">账单</h1>
+</header>
+<div style="top: 44px;z-index: 50;position: fixed"
+     class="mui-segmented-control mui-segmented-control-inverted mui-segmented-control-primary my-tabs">
+    <a href="/index/member/magicloglist?type=1"
+       class="mui-control-item {if $Request.get.type == 1 || !$Request.get.type}mui-active{/if}" id="income" did="1">
+        收入
+    </a>
+
+    <a href="/index/member/magicloglist?type=-1" class="mui-control-item {if $Request.get.type == -1}mui-active{/if}"
+       id="spend" did="-1">
+        支出
+    </a>
+</div>
+<div class="mui-content" style="padding-top: 84px;">
+    <div style="top: 94px;">
+        <div class="" id="data-box">
+            
+        </div>
+        <div class="loadmore mui-text-center">加载更多</div>
+    </div>
+</div>
+</body>
+{include file="layout/footer" /}
+<script>
+    getList();
+    $('.loadmore').click(function(){
+        getList();
+    })
+    var page = 1;
+    var limit = 20;
+    function getList() {
+        var loadDom = $('.loadmore');
+        $.get("{:url('member/magicloglist',['type'=>$type])}", {page: page, limit: limit}, function (response) {
+            if (response.code == 0) {
+                var data = response.data;
+                if (data.length > 0) {
+                    var content = "";
+                    for (var i = 0; i < data.length; i++) {
+                        content += '<ul class="my-list-item"><li class="clear"> <span class="left"> <span>类型:</span>' +
+                                '<span class="value">' + data[i].types + '</span></span></li><li class="clear"><span class="left">' +
+                                '<span>数量:</span><span class="value">' + data[i].magic + '金币</span></span> </li><li class="clear">' +
+                                '<span class="left"><span>时间:</span><span class="value">' + data[i].create_time + '</span></span></li></ul>';
+
+                    }
+
+                    $("#data-box").append(content);
+                    page++;
+                }else{
+                    loadDom.remove();
+                }
+            }else{
+                mui.toast('网络异常,请稍候再试');
+                loadDom.remove();
+            }
+        }, 'json')
+    }
+</script>
+<script>
+</script>
+
+</html>

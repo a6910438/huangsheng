@@ -1,0 +1,94 @@
+{extend name="layout/main" /}
+
+{block name="header"}
+
+{/block}
+
+{block name="content"}
+<script src="__PUBLIC__/admin/js/laydate/laydate.js"></script>
+<link rel="stylesheet" href="__PUBLIC__/static/webuploader/webuploader.css">
+<script type="text/javascript" src='__PUBLIC__/static/webuploader/webuploader.js'></script>
+<section class="panel">
+      {if isset($info)}
+    <header class="panel-heading">
+        <h4>黑名单</h4>
+    </header>
+    <div class="panel-body" style="padding-bottom: 50px">
+        <form class="form-horizontal" method="post" onsubmit="return false" role="form">
+
+
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">结束日期时间</label>
+                <div class="col-sm-5">
+                    <input type="text" value="<?php echo date('Y-m-d H:i:s') ?>" name="block_end_time" id="blockhostn" class="form-control" placeholder="请输入结束时间">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" onclick="main.ajaxPosts(this)" data-url="{:url('saveBlock',['id'=>$info->id])}"
+                            class="btn btn-primary">提交
+                    </button>
+                    &nbsp;
+                    <button type="button" onclick="javascript:history.back(-1);" class="btn btn-warning">返回
+                    </button>
+                </div>
+            </div>
+
+        </form>
+    </div>
+    {else /}
+    <header class="panel-heading">
+        <h4>修改黑名单</h4>
+    </header>
+    <div class="panel-body" style="padding-bottom: 50px">
+        <form class="form-horizontal" method="post" onsubmit="return false" role="form">
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">起始日期时间</label>
+                <div class="col-sm-5">
+                    <input type="text" value="" name="block_start_time" id="blockhosts" class="form-control" placeholder="请输入开始时间">
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">结束日期时间</label>
+                <div class="col-sm-5">
+                    <input type="text" value="<?php echo date('H:i:s') ?>" name="block_end_time" id="blockhostn" class="form-control" placeholder="请输入开始时间">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" onclick="main.ajaxPosts(this)" data-url="{:url('saveBlock',['id'=>$info->id])}"
+                            class="btn btn-primary">提交
+                    </button>
+                    &nbsp;
+                    <button type="button" onclick="javascript:history.back(-1);" class="btn btn-warning">返回
+                    </button>
+                </div>
+            </div>
+
+        </form>
+    </div>
+{/if}
+</section>
+{/block}
+
+{block name="footer"}
+<script src="/admin/vendor/fuelux/checkbox.js"></script>
+<script>
+    //时间选择器
+    laydate.render({
+        elem: '#blockhosts',
+        type:'datetime'
+    });
+
+    laydate.render({
+        elem: '#blockhostn',
+        type: 'datetime'
+    });
+</script>
+{/block}

@@ -1,0 +1,389 @@
+{extend name='main'}
+
+{block name='body'}
+<div class="fish-head" style="margin-top: 3%;">
+	<!--<a href="javascript:window.history.back();" class="head-back"><span>返回</span></a>
+    <h3 class="head-tit"><span> </span></h3>-->
+</div>
+<div class="fish-main">
+	<div class="logo-box">
+		<div class="logo-img"><img src="/fish/img/login-logo.png" alt="ICON"></div>
+		<!-- <div class="logo-text">免费注册</div> -->
+	</div>
+	<form class="don-form" action="" method="post" onsubmit="return false;">
+
+		<div class="input-box content-box">
+			<div class="input-item">
+				<span>用 户 名</span>
+				<input type="text" placeholder="请输入用户名" v-model="nick_name" autocomplete="off">
+			</div>
+			<div class="input-item">
+				<span>手 机 号</span>
+				<input type="text" placeholder="请输入手机号码" v-model="mobile" autocomplete="off">
+			</div>
+			<div class="input-item">
+				<span>验 证 码</span>
+				<input type="text" class="login-verify" placeholder="请输入验证码" v-model="phone_code" autocomplete="off">
+				<button class="getcode" @click="getcode()">发送验证码</button>
+			</div>
+			<div class="input-item">
+				<span>密   码</span>
+				<input type="password" placeholder="请输入密码" v-model="password" autocomplete="off">
+			</div>
+			<div class="input-item">
+				<span>确认密码</span>
+				<input type="password" placeholder="请重复输入登录密码" v-model="re_password" autocomplete="off">
+			</div>
+			<div class="input-item">
+				<span>邀 请 码</span>
+				<input type="text" placeholder="请输入推荐码" v-model="invite_code" autocomplete="off">
+			</div>
+			<div class="input-foot">
+				<div type="submit" class="foot-btn" @click="send()" :style="agreeType!=1 ? 'background:#999': ''"></div>
+			</div>
+		</div>
+		<div class="mtop">
+			<a href="{:url('home/publics/login')}" class="head-link"><span>已有账号？立即登录</span></a>
+		</div>
+		<div class="form-link clearfix">
+			<div class="act text-center">
+				<span @click="agree()">
+					<!-- <i :class="agreeType==1?'icon icon-agree01':'icon icon-agree'"></i> -->
+					*已阅读并同意协议</span><a href="#modal1" class="readColor">《用户协议》</a>
+			</div>
+		</div>
+	</form>
+	<div id="modal1" class="modal" style="color:#182121;">
+		<div class="modal-content" style="padding:12px;">
+			<div style="font-size:16px;text-align:center;padding-bottom:12px;" v-html="feed.title">能量源说明</div>
+			<div v-html="feed.content"></div>
+		</div>
+	</div>
+</div>
+<div id="fullscreen-bg"></div>
+{/block}
+
+{block name='script'}
+<script>
+	var app = new Vue({
+		el: '#app',
+		data: {
+			nick_name: '',
+			mobile: '',
+			phone_code: '',
+			password: '',
+			re_password: '',
+			invite_code: core.getParame('code') || '',
+			reg: /^[1][3-9][0-9]{9}$/,
+			agreeType: 1,
+			feed: '',
+		},
+		computed: {
+
+		},
+		methods: {
+			feedFun: function() {
+				var self = this;
+				core.load("{:url('index/publics/user_agreement')}", {}, function(res) {
+
+					if (res.code == 0) {
+						self.feed = res.info;
+					} else {
+						core.toast(res.msg);
+					}
+				})
+			},
+			send: function() {
+				if (this.agreeType != 1) return core.toast('请同意《用户协议》');
+				if (!this.nick_name) return core.toast('请输入用户名');
+				var regg1 = /^[\da-zA-Z\u4E00-\u9FA5]{1,8}$/;
+				if(!regg1.test(this.nick_name)){
+					return core.toast('请输入1-8位用户名');
+					return false;
+				}
+				if (!this.mobile) return core.toast('请输入手机号');
+				if (!this.reg.test(this.mobile)) return core.toast('请输入正确手机号');
+				if (!this.phone_code) return core.toast('请输入短信验证码');
+				var regg2 =/^\d{6}$/
+                  if(!regg2.test(this.phone_code)){
+                    return core.toast('请输入6位数字的验证码');
+                    return false;
+                  }
+				if (!this.password) return core.toast('请输入密码');
+				var regg3 = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,12}$/
+                if(!regg3.test(this.password)){
+                    return core.toast('请输入6-12位数字跟字母组成的密码');
+                    return false;
+                }
+				if (!this.re_password) return core.toast('请重新确认您的密码');
+				if (this.password !== this.re_password) return core.toast('输入的两次密码不一致');
+				if (!this.invite_code) return core.toast('输入您的推荐人邀请码');
+
+				core.load("{:url('/index/publics/register')}", {
+					nick_name: this.nick_name,
+					mobile: this.mobile,
+					phone_code: this.phone_code,
+					password: this.password,
+					re_password: this.re_password,
+					invite_code: this.invite_code,
+				}, function(res) {
+					if (res.code == '0') {
+						// 跳转
+						window.location.href = '/';
+						//setTimeout(function(){
+						//    window.location.href='login.html';
+						//}, 300);
+					}
+					core.toast(res.msg);
+				});
+			},
+			getcode: function() {
+				var that = $(event.currentTarget);
+				if (that.attr('disabled')) return;
+				if (!this.mobile) return core.toast('请输入手机号');
+				if (!this.reg.test(this.mobile)) return core.toast('请输入正确手机号');
+
+				core.load("{:url('/index/publics/send')}", {
+					mobile: this.mobile,
+					types: 0,
+				}, function(res) {
+
+					if (res.code == '0') {
+						that.html('60s').attr('disabled', true);
+						var timer = setInterval(function() {
+							var num = parseInt(that.text());
+							if (num <= 1) {
+								that.html('重新获取').removeAttr('disabled');
+								clearInterval(timer);
+							} else {
+								that.html(--num + 's');
+							}
+						}, 1000);
+					}
+					core.toast(res.msg);
+				});
+			},
+			agree: function() {
+				if (this.agreeType == 1) {
+					this.agreeType = 0;
+				} else {
+					this.agreeType = 1;
+				}
+			}
+		},
+		mounted: function() {
+			this.feedFun();
+			$('.modal').modal();
+		}
+	});
+</script>
+{/block}
+
+{block name="style"}
+<style>
+	.fish-head {
+		background-color: transparent;
+	}
+
+	.fish-main {
+		top: 0;
+		bottom: 0;
+	}
+
+	.form-link .icon {
+		height: 15px;
+		width: 15px;
+		margin-right: 5px;
+		vertical-align: -3px;
+	}
+
+	.icon-agree {
+		background-image: url('/fish/img/icon-agree.png');
+	}
+
+	.icon-agree01 {
+		background-image: url('/fish/img/icon-agree01.png');
+	}
+
+	.getcode {
+		position: absolute;
+		top: 5px;
+		right: 0;
+		background: url(/fish/img/getcode.png);
+		background-size: 100% 100%;
+		color: #886F5C;
+		padding: .2rem .5rem;
+		border-radius: 0.4rem;
+		font-family: fontset2;
+	}
+
+	/* login */
+	.logo-box {
+		text-align: center;
+		padding: 0 2rem;
+	}
+
+	.logo-box .logo-img {
+		width: 10rem;
+		border-radius: 20px;
+		overflow: hidden;
+		margin: 0 auto;
+		font-weight: bold;
+	}
+
+	.logo-box .logo-img img {
+		display: block;
+		width: 100%;
+		margin: auto;
+	}
+
+	.logo-box .logo-text {
+		font-size: 18px;
+	}
+
+	.don-form {
+		padding: 24px;
+		margin: 0 auto;
+		max-width: 24rem;
+		position: relative;
+	}
+
+	.don-form>.input-box {
+		position: relative;
+		padding: 1.5rem;
+		margin-bottom: 1rem;
+	}
+
+	.don-form .input-item {
+		position: relative;
+		margin-bottom: 15px;
+		background: url(/fish/img/input-bg.png);
+		background-size: 100% 100%;
+	}
+
+	.don-form .input-item .icon {
+		position: absolute;
+		top: 8px;
+		left: 0;
+	}
+
+	.don-form .input-item span {
+		display: inline-block;
+		width: 4.5rem;
+		color: #886F5C;
+		text-align: center;
+	}
+
+	.don-form .input-item input {
+		width: 70%;
+		padding: 0rem 1rem;
+		line-height: 2.1rem;
+		font-size: 1rem;
+		background-color: transparent;
+		background-repeat: no-repeat;
+		background-size: 100% 100%;
+	}
+
+	.don-form .input-foot {
+		position: absolute;
+		bottom: -1.5rem;
+		left: -.2rem;
+		width: 100%;
+	}
+
+	.don-form .foot-btn {
+		display: block;
+		width: 15rem;
+		margin: 0 auto;
+		height: 4rem;
+		line-height: 3rem;
+		color: #755f4e;
+		border-radius: 1.5rem;
+		font-size: 0.8rem;
+		background-image: url(/fish/img/login-zhuce-not-font.png);
+		background-repeat: no-repeat;
+		background-size: 100% 100%;
+	}
+
+	.don-form .form-link {
+		padding: 0 0 1rem 0;
+		color: #666;
+	}
+
+	.don-form .form-link a {
+		color: #999999;
+	}
+
+	.don-form .form-link .act a {
+		color: #3fffff;
+	}
+
+	input.login-user-name {
+		background-image: url('/fish/img/login-user.png');
+	}
+
+	input.login-pw {
+		background-image: url('/fish/img/login-pw.png');
+	}
+
+	input.login-verify {
+		background-image: url('/fish/img/login-verify.png');
+	}
+
+	input.login-share {
+		background-image: url('/fish/img/login-share.png');
+	}
+
+	input.login-email {
+		background-image: url('/fish/img/login-email.png');
+	}
+
+	input.login-phone {
+		background-image: url('/fish/img/login-phone.png');
+	}
+
+	.remen {
+		padding-left: 0px;
+		height: 20px;
+		line-height: 20px;
+	}
+
+	.remen .remen_icon {
+		width: 15px;
+		height: 15px;
+		background: url('/fish/img/unremember_icon.png');
+		background-size: cover;
+		float: left;
+		margin: 3px 7px 0 0;
+	}
+
+	.remen .remen_icon.remen_yes {
+		background: url('/fish/img/remember_icon.png');
+		background-size: cover;
+	}
+
+	.remen span {
+		color: #666;
+		float: left;
+	}
+
+	.head-link {
+		font-size: .7rem;
+		color: #fff;
+		display: block;
+		margin: 0 auto;
+		text-align: center;
+	}
+	.act{
+	font-size: 10px;
+	    color: #fff;
+		font-family: "microsoft yahei";
+	}
+	.readColor{
+		color: #5a88b9!important;
+	}
+	.mtop{
+		margin-top: 2rem;
+	}
+</style>
+{/block}

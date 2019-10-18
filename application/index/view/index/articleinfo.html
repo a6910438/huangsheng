@@ -1,0 +1,31 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>公告详情</title>
+    {include file="layout/head" /}
+</head>
+<style type="text/css">
+    .font {
+        width: 72%;
+        height: auto;
+        margin: 0 auto;
+    }
+</style>
+<body style="background:white;">
+<header class="mui-bar mui-bar-nav my-header" >
+    <a href="{:url('index/articlelist')}" class="mui-icon mui-icon-left-nav mui-pull-left"></a>
+
+    <h1 id="title" class="mui-title">公告详情</h1>
+</header>
+<div class="mui-content" style="background: white;">
+    <div class="img" style="text-align: center;">
+        <h3>{$articleinfo->title}</h3>
+    </div>
+    <div class="font">
+        {:htmlspecialchars_decode($articleinfo->content)}
+    </div>
+</div>
+{include file="layout/footer" /}
+</body>
+</html>

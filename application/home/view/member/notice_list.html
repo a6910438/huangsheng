@@ -1,0 +1,86 @@
+{extend name='main'}
+
+{block name='body'}
+<div class="fish-head">
+    <a href="javascript:window.history.back();" class="head-back"><span>返回</span></a>
+    <h3 class="head-tit"><span>公告</span></h3>
+    <!-- <a href="javascript:;" class="head-menu"><span>提交</span></a> -->
+</div>
+<div class="fish-main" v-cloak>
+    <div class="content-box">
+        <div class="content-list" v-if="list.length>0">
+            <a v-for="vo in list" :href="'{:url('home/member/article')}?id='+vo.id">
+                <label>{{vo.title}}</label>
+                <span>{{vo.create_time}}</span>
+                <i></i>
+            </a>
+        </div>
+        <div class="dialog-bottom"></div>
+    </div>
+</div>
+{include file='menu'}
+{/block}
+
+{block name='script'}
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            list: [],
+            page: 0,
+            status: true,
+        },
+        computed: {
+            
+        },
+        methods: {
+            loadList: function(){
+                var self = this;
+                var data = {
+                    page: this.page,
+                    limit: 12,
+                };
+                core.load("{:url('index/publics/get_notice_list')}", data, (res)=>{
+                    
+                    if( res.code==0 ){
+                        if( res.info.length>0 ) this.list = this.list.concat(res.info);
+                        if(!res.info || (res.info.length<data.limit)){
+                            self.status = false;
+                            $('.dialog-bottom').eq(0).html('已经加载全部数据');
+                        }else{
+                            $('.dialog-bottom').eq(0).html('<i class="loading"></i> 正在加载...');
+                        }
+                    }else{
+                        core.toast(res.msg);
+                    }
+                })
+
+            }
+        },
+        mounted: function(){
+            var self = this;
+            self.loadList();
+            // 下拉加载
+            $(window).off("scroll").on("scroll", function(e){
+                var totalheight = parseFloat($(this).height()) + parseFloat($(this).scrollTop());
+                if (($(document).height()<=totalheight) && self.status){
+                    self.page = ++self.page;
+                    self.loadList()
+                }
+            });
+        }
+    });
+</script>
+{/block}
+
+{block name="style"}
+<style>
+    .content-list>li>div:last-child{
+        margin-left: auto;
+        text-align: right;
+    }
+    .dialog-bottom{
+        color: #E02737;
+    }
+</style>
+{/block}

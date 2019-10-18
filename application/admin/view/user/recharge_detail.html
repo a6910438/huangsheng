@@ -1,0 +1,151 @@
+{extend name="layout/main" /}
+
+{block name="header"}
+
+{/block}
+
+{block name="content"}
+<style type="text/css">
+    .link-th {
+        color: blue;
+    }
+</style>
+<section class="panel">
+    <header class="panel-heading">
+        <h4>玩家GTC详情</h4>
+    </header>
+    <div class="panel-body" style="padding-bottom: 50px">
+
+        <form class="form-horizontal" action="{:url('recharge_detail')}">
+            <div class="form-group">
+
+                <div class="col-xs-1 no-pd-r">
+                    <span class="form-control">开始时间</span>
+                </div>
+                <div class="col-xs-2 no-pd-l">
+
+                    <input type="date" value="{$Request.get.stime}" name="stime" class="form-control">
+                </div>
+                <div class="col-xs-1 no-pd-r">
+                    <span class="form-control"> 结束时间</span>
+                </div>
+                <div class="col-xs-2 no-pd-l">
+                    <input type="date" value="{$Request.get.ntime}" name="ntime" class="form-control">
+                </div>
+                <button type="submit" class="btn btn-color">搜索</button>
+                <button type="button" class="btn btn-color" onclick="exportCsv()">导出</button>
+                <input type="hidden" name='id' value="{$Request.get.id}"/>
+            </div>
+        </form>
+
+
+        <table class="table table-bordered table-striped no-margin">
+            <thead>
+            <tr>
+                <th class="text-center">序号</th>
+                <th class="text-center">玩家ID</th>
+                <th class="text-center">玩家身份</th>
+                <th class="text-center">操作类型</th>
+                <th class="text-center">操作数量</th>
+                <th class="text-center">剩余数量</th>
+                <th class="text-center">转让对象ID</th>
+                <th class="text-center">时间</th>
+            </tr>
+            </thead>
+            <tbody>
+            {if !empty($list)}
+            {foreach $list as $key=>$entity}
+            <tr>
+                <td style="vertical-align: middle" class="text-center">
+                    {$key+1}
+                </td>
+                <td style="vertical-align: middle" class="text-center">
+                    {$entity.invite_code}
+                </td>
+                <td style="vertical-align: middle" class="text-center">
+                    {if $entity.lv == 3}
+                    高级节点
+                    {elseif $entity.lv == 2}
+                    中级节点
+                    {elseif $entity.lv == 1}
+                    初级节点
+                    {elseif $entity.lv == 0}
+                    普通会员
+                    {/if}
+                </td>
+                <td style="vertical-align: middle" class="text-center">
+                    {if $entity.types == 1}
+                    {if $entity.number > 0}
+                    平台充值
+                    {else /}
+                    平台扣款
+                    {/if}
+                    {elseif $entity.types == 2}
+                    装修
+                    {elseif $entity.types == 3}
+                    预约
+                    {elseif $entity.types == 4}
+                    抢房产失败返料
+                    {elseif $entity.types == 5}
+                    互转
+                    {elseif $entity.types == 6}
+                    即抢
+                    {elseif $entity.types == 7 || $entity.types == 9}
+                        {if $entity.remark == '抢酒订单收入'}
+                            抢购订单收入
+                        {else /}
+                            {$entity.remark}
+                        {/if}
+                    {elseif $entity.types == 8}
+                    兑换
+                    {/if}
+                </td>
+                <td style="vertical-align: middle" class="text-center">
+                    {$entity.number}
+                </td>
+                <td style="vertical-align: middle" class="text-center">
+                    {$entity.future}
+                </td>
+                <td style="vertical-align: middle" class="text-center">
+                    {$entity.from_user}
+                </td>
+                <td style="vertical-align: middle" class="text-center">
+                    {$entity.create_time|date="Y-m-d H:i:s",###}
+                </td>
+            </tr>
+            {/foreach}
+            {else /}
+            <tr class="text-center">
+                <td colspan="9">暂无数据</td>
+            </tr>
+            {/if}
+            </tbody>
+        </table>
+        <div class="page">
+            {:htmlspecialchars_decode($list->render())}
+        </div>
+    </div>
+</section>
+{/block}
+
+{block name="footer"}
+
+<script>
+    function getQueryVariable(variable) {
+        var query = window.location.search.substring(1);
+        var vars = query.split("&");
+        for (var i = 0; i < vars.length; i++) {
+            var pair = vars[i].split("=");
+            if (pair[0] == variable) {
+                return pair[1];
+            }
+        }
+        return (false);
+    }
+
+    function exportCsv() {
+        window.open('/admin/export/recharge_detail?id=' + getQueryVariable('id') + '&stime=' + $("input[name='stime']").val() + '&ntime=' + $("input[name='ntime']").val())
+    }
+</script>
+
+{/block}

@@ -1,0 +1,90 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>实名认证</title>
+    <!--head-->
+    {include file="layout/head" /}</head>
+</head>
+<body>
+<header class="mui-bar mui-bar-nav my-header">
+    <a href="/index/member/certification" class="mui-icon mui-icon-left-nav mui-pull-left"></a>
+
+    <h1 id="title" class="mui-title">实名认证</h1>
+</header>
+<div class="mui-content container">
+    <div class="mui-scroll-wrapper" style="top:44px">
+        <div class="mui-scroll">
+            <form class="mui-input-group" action="{:url('member/updateUser')}" method="post" onsubmit="return false" id="submitForm">
+                <input type="hidden" name="card_id" value="{$data.card_id}">
+                <input type="hidden" name="real_name" value="{$data.real_name}">
+                <input type="hidden" name="card_right" value="{$list->card_right}">
+                <input type="hidden" name="card_left" value="{$list->card_left}">
+                <input type="file" style="display: none;" id="card_right">
+                <div class="mui-input-row my-input-row">
+                    <label style="width: 70%">身份证正面</label>
+                    <button type="button" style="padding: 6px 12px" class="mui-btn mui-btn-warning send-code {if $list->is_certification != 1} upload {/if}" did="card_right">上传图片</button>
+                </div>
+                <div class="mui-row">
+                    <img {if $list->card_right != ''}src="{$list->card_right}"{else/}src="/static/img/z.jpg"{/if} style="width: 80%; max-height: 200px;margin: 10px auto;display: block;" id="card_right_img">
+                </div>
+                <input type="file" style="display: none;" id="card_left">
+                <div class="mui-input-row my-input-row">
+                    <label style="width: 70%">身份证反面</label>
+                    <button type="button"  style="padding: 6px 12px" class="mui-btn mui-btn-warning send-code {if $list->is_certification != 1} upload {/if}" did="card_left">上传图片</button>
+                </div>
+                <div class="mui-row">
+                    <img {if $list->card_left != ''}src="{$list->card_left}"{else/}src="/static/img/f.png"{/if} style="width: 80%; max-height: 200px;margin: 10px auto;display: block;" id="card_left_img">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{if $list->is_certification != 1}
+<button data-form="submitForm" onclick="ajaxPost(this)" type="submit" style="z-index:100;" class="mui-btn mui-btn-warning my-btn">确定</button>
+{/if}
+</body>
+{include file="layout/footer" /}
+<script>
+    $(".upload").click(function(){
+        var did = $(this).attr("did");
+        $("#"+did).click();
+    })
+    $("input[type = 'file']").change(function(){
+        var $this = $(this);
+        var file = this.files[0];
+        if(file.length == 0)
+        {
+            mui.alert("请选择要上传的图片");
+            return false;
+        }
+        var id = $(this).attr("id");
+        var data = new FormData();
+        data.append('image',file);
+        // console.log(data);return false;
+        mui.showLoading("正在上传...");
+        $.ajax({
+            url:"/index/upload/uploadEditor",
+            type:"post",
+            data:data,
+            processData:false,
+            contentType:false,
+            dataType:'json',
+            success:function(data){
+                var url = data.data[0];
+                if(data.errno == 0)
+                {
+                    mui.hideLoading();
+                    $("#"+id+"_img").attr("src", url);
+                    $("input[name = '"+id+"']").val(url);
+                }
+                else
+                {
+                    mui.alert(data.fail);
+                }
+            }
+        })
+    })
+</script>
+</html>

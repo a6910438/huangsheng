@@ -1,0 +1,38 @@
+{extend name="layout/main" /}
+
+{block name="header"}
+
+{/block}
+
+{block name="content"}
+<section class="panel">
+    <header class="panel-heading">
+        <h4>添加菜单</h4>
+    </header>
+    <div class="panel-body" style="padding-bottom: 50px">
+        <form class="form-horizontal" onsubmit="return false" role="form">
+            <div class="form-group">
+                <label class="col-sm-1 control-label">控制器名称</label>
+
+                <div class="col-sm-3">
+                    <input type="text" name="classname" class="form-control"
+                           placeholder="请输入控制器名称">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-1 col-sm-10">
+                    <button type="submit" onclick="main.ajaxPosts(this)" data-url="{:url('admin/Menu/createMenu')}"
+                            class="btn btn-primary">提交
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+</section>
+{/block}
+
+
+{block name="footer"}
+
+{/block}

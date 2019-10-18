@@ -1,0 +1,166 @@
+{extend name='main'}
+
+{block name='body'}
+<div class="fish-head">
+    <a href="javascript:window.history.back();" class="head-back"><span>返回</span></a>
+    <h3 class="head-tit"><span>注册</span></h3>
+    <!-- <a href="javascript:;" class="head-menu"><span>提交</span></a> -->
+</div>
+<div class="logo-box">
+    <div class="logo-img"><img src="/fish/img/login-logo.png" alt="ICON"></div>
+    <!-- <div class="logo-text">免费注册</div> -->
+</div>
+<form class="don-form" action="" method="post" onsubmit="return false;">
+    <div class="input-item">
+        <i class="icon login-user"></i>
+        <input type="text" placeholder="请输入用户名" v-model="nick_name">
+    </div>
+    <div class="input-item">
+        <i class="icon login-phone"></i>
+        <input type="text" placeholder="请输入手机号码" v-model="mobile">
+    </div>
+    <div class="input-item">
+        <i class="icon login-phone"></i>
+        <input type="text" placeholder="请输入验证码" v-model="phone_code">
+        <button class="getcode" @click="getcode()">发送验证码</button>
+    </div>
+    <div class="input-item">
+        <i class="icon login-pw"></i>
+        <input type="password" placeholder="请输入密码" v-model="password">
+    </div>
+    <div class="input-item">
+        <i class="icon login-pw"></i>
+        <input type="password" placeholder="请重复输入登录密码" v-model="re_password">
+    </div>
+    <div class="input-item">
+        <i class="icon login-email"></i>
+        <input type="text" placeholder="请输入推荐码" v-model="invite_code">
+    </div>
+    <div class="input-foot">
+        <button type="submit" class="foot-btn" @click="send()" :style="agreeType!=1 ? 'background:#999': ''">注册</button>
+    </div>
+    <div class="form-link clearfix">
+        <div class="act text-center"><span @click="agree()"><i :class="agreeType==1?'icon icon-agree01':'icon icon-agree'"></i>同意</span><a href="#modal1">《用户协议》</a></div>
+    </div>
+</form>
+<div id="modal1" class="modal" style="color:#182121;">
+    <div class="modal-content" style="padding:12px;">
+        <div style="font-size:16px;text-align:center;padding-bottom:12px;" v-html="feed.title">GTC说明</div>
+        <div v-html="feed.content"></div>
+    </div>
+</div>
+{/block}
+
+{block name='script'}
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            nick_name: '',
+            mobile: '',
+            phone_code: '',
+            password: '',
+            re_password: '',
+            invite_code: core.getParame('code') || '',
+            reg: /^[1,2,3,4,5,6,7,8,9][0-9]{10}$/,
+            agreeType: 1,
+            feed: '',
+        },
+        computed: {
+            
+        },
+        methods: {
+            feedFun: function(){
+                var self = this;
+                core.load("{:url('index/publics/user_agreement')}", {}, function(res){
+                    
+                    if(res.code==0){
+                        self.feed=res.info;
+                    }else{
+                        core.toast(res.msg);
+                    }
+                })
+            },
+            send: function(){
+                if(this.agreeType!=1) return core.toast('请同意《用户协议》');
+                if(!this.nick_name) return core.toast('请输入用户名');
+                if(!this.mobile) return core.toast('请输入手机号');
+                if(!this.reg.test(this.mobile)) return core.toast('请输入正确手机号');
+                if(!this.phone_code) return core.toast('请输入短信验证码');
+                if(!this.password) return core.toast('请输入密码');
+                if(!this.re_password) return core.toast('请重新确认您的密码');
+                if(this.password!==this.re_password) return core.toast('输入的两次密码不一致');
+                if(!this.invite_code) return core.toast('输入您的推荐人邀请码');
+
+                core.load("{:url('/index/publics/register')}", {
+                    nick_name: this.nick_name,
+                    mobile: this.mobile,
+                    phone_code: this.phone_code,
+                    password: this.password,
+                    re_password: this.re_password,
+                    invite_code: this.invite_code,
+                }, function(res){
+                    
+                    if(res.code=='0'){
+                        // 跳转
+                        window.location.href="{:url('/home/index/index')}";
+                        //setTimeout(function(){
+                        //    window.location.href='login.html';
+                        //}, 300);
+                    }
+                    core.toast(res.msg);
+                });
+            },
+            getcode: function(){
+                var that = $(event.currentTarget);
+                if(that.attr('disabled')) return;
+                if(!this.mobile) return core.toast('请输入手机号');
+                if(!this.reg.test(this.mobile)) return core.toast('请输入正确手机号');
+
+                core.load("{:url('/index/publics/send')}", {
+                    mobile: this.mobile,
+                    types: 0,
+                }, function(res){
+                    
+                    if (res.code=='0') {
+                        that.html('60s').attr('disabled', true);
+                        var timer = setInterval(function(){
+                            var num = parseInt(that.text());
+                            if (num <= 1) {
+                                that.html('重新获取').removeAttr('disabled');
+                                clearInterval(timer);
+                            } else {
+                                that.html(--num+'s');
+                            }
+                        }, 1000);
+                    }
+                    core.toast(res.msg);
+                });
+            },
+            agree: function(){
+                if(this.agreeType==1){
+                    this.agreeType=0;
+                }else{
+                    this.agreeType=1;
+                }
+            }
+        },
+        mounted: function(){
+            this.feedFun();
+            $('.modal').modal();
+        }
+    });
+</script>
+{/block}
+
+{block name="style"}
+<style>
+    body{background-color:#fff;color:#000;}
+    .fish-head{background-color:#fff;}
+    .fish-head .head-back{background-image: url('/fish/img/icon-back01.png')}
+    .form-link .icon{height:15px;width: 15px;margin-right: 5px;vertical-align:-3px;}
+    .icon-agree{background-image: url('/fish/img/icon-agree.png');}
+    .icon-agree01{background-image: url('/fish/img/icon-agree01.png');}
+    .getcode{position:absolute;top:-3px;right:0;background-color:#CF2B11;color:#fff;padding:5px 15px;border-radius:5px;}
+</style>
+{/block}

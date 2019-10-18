@@ -1,0 +1,4002 @@
+{extend name='main'}
+
+{block name='body'}
+<!-- <div class="fish-head">
+    <h3 class="head-tit"><span>{$title}</span></h3>
+    <div class="head-gtc">
+        <span v-text="mybait || '0.00'"></span>
+        <label>GTC</label>
+    </div>
+</div>
+<div class="fish-main" v-cloak>
+    <div class="page-title">
+        <span>资产列表</span>
+    </div>
+    <ul class="fish-list">
+        <li v-if="list.length>0" v-for="(vo,index) in list" @click="toDetail(vo.id)">
+            <div class="fish-img">
+                <img :src="vo.img" alt="">
+            </div>
+            <div class="fish-name">
+                <h3 class="info-title">{{vo.name}}</h3>
+                <div class="info-price"><span>{{vo.worth*1}} </span><small>GTC</small></div>
+            </div>
+            <div class="fish-info">
+                <div class="info-item">
+                    <label>收益 :</label>
+                    <span>{{Number(vo.over_profit).toFixed(2)*1}}%/{{vo.profit}}%</span>
+                </div>
+                <div class="info-item">
+                    <label>合约 :</label>
+                    <span>{{Math.ceil(vo.create_age/24)}}/{{Math.ceil(vo.contract_time/24)}}</span>
+                    <small>天</small>
+                </div>
+                <div class="info-item">
+                    <label>装修 :</label>
+                    <span>{{Math.ceil(vo.over_contract_day)}}/{{Math.ceil(vo.contract_day)}}</span>
+                    <small>天</small>
+                </div>
+            </div>
+            <div class="fish-btn">
+                <a href="javascript:;" v-if="vo.is_contract==0" class="list-btn" @click.stop="feed(vo.id,index)"><span>待装修</span></a>
+                <a href="javascript:;" v-else-if="(vo.over_contract_day<vo.contract_day) && !(vo.types == 3 && vo.is_feed == 1)" class="list-btn gray"><span>装修中</span></a>
+                <a href="javascript:;" v-else-if="vo.start_about || (vo.types == 3 && vo.is_feed == 1)" class="list-btn yellow"><span>即可<br>转让</span></a>
+                <a href="javascript:;" v-else class="list-btn yellow"><span>等待<br>转让</span></a>
+            </div>
+        </li>
+    </ul>
+    <div class="dialog-bottom"></div>
+</div> -->
+
+
+<div class="box_center">
+    <div class="box_topp">
+        <div class="assets_content">
+            <div class="assets_top">
+                <div>总资产：</div>
+                <div @click="detaiaMax()">
+                    <img src="/fish/img/assets2.png" alt="">
+                </div>
+            </div>
+            <div class="assets_num">
+                <div v-text="info.sumTotal || '0.00'"></div>
+                <!-- <div>96899.</div> -->
+                <!-- <div style="margin-top:1rem;">00</div> -->
+                <!-- <div style="margin-top:1rem;margin-left:0.3rem;">GTC</div> -->
+            </div>
+            <div class="profit">
+                <div class="profit_top">
+                    <div>房产利润</div>
+                    <div>
+                        <img src="/fish/img/assets3.png" alt="">
+                    </div>
+                    <div>X</div>
+                    <div v-text="parseInt(info.now_profit)+'.' || '0.'"></div>
+                    <div v-text="info.nowProfitFiexd"></div>
+                </div>
+                <div class="profit_center">
+                    <div>持有房产</div>
+                    <div>奖励收益</div>
+                </div>
+                <div class="profit_bottom">
+                    <div>
+                        <img src="/fish/img/assets4.png" alt="">
+                    </div>
+                    <div style="margin-left:0.2rem;">X</div>
+                    <div v-text="info.house_num"></div>
+                    <div>
+                        <img src="/fish/img/assets3.png" alt="">
+                    </div>
+                    <div style="margin-top:1rem;">x</div>
+                    <div v-text="parseInt(info.sumTeamProfit)+'.' || '0.'"></div>
+                    <div style="margin-top:1rem;" v-text="info.sumTeamProfitFiexd"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="contractMax">
+        <div @click="heyuezMax">
+            <img src="/fish/img/assets105.png" alt="" style="height:7.4rem;">
+        </div>
+        <div class="dcsMax" @click="dcyMax">
+            <img src="/fish/img/assets104.png" alt="" style="height:7.4rem;">
+        </div>
+    </div>
+
+    <div class="centerFooter">
+        <div class="center_content">
+            <div @click="AppointordBtn">预约记录</div>
+            <div @click="SnatchRecordBtn">抢购记录</div>
+            <div @click="ransferrecordBtn">转让记录</div>
+            <div @click="RewaredemptionBtn"> 奖励兑换</div>
+            <div @click="coinBtn">GC提币</div>
+            <div @click="WalletaaBtn">钱包充币</div>
+            <div @click="flashFlashBtn">闪兑</div>
+
+        </div>
+    </div>
+
+</div>
+
+
+<!-- 资产详情弹框 -->
+<div class="Asset_details" v-show="close2">
+    <div class="details_top">
+        <div class="detailsImg" @click="closeMax">
+            <img src="/fish/img/assets10.png" alt="">
+        </div>
+        <div class="details_content1">
+            <div class="detailsList">
+                <div @click="openGCDetail">
+                    <div class="detailsList_yu">
+                        <div>GC余额</div>
+                        <div class="detailsList_right">
+                            <img src="/fish/img/assets100.png" alt="">
+                        </div>
+                    </div>
+                    <div v-text="info.gc"></div>
+                </div>
+
+            </div>
+            <div class="detailsList">
+                <div @click="openGTCDetail">
+                    <div class="detailsList_yu">
+                        <div>GTC余额</div>
+                        <div class="detailsList_right">
+                            <img src="/fish/img/assets100.png" alt="">
+                        </div>
+                    </div>
+                    <div v-text="info.now_bait"></div>
+                </div>
+
+            </div>
+            <div class="detailsList">
+                <div @click="openIntegralDetail">
+                    <div class="detailsList_yu">
+                        <div>精粹余额</div>
+                        <div class="detailsList_right">
+                            <img src="/fish/img/assets100.png" alt="">
+                        </div>
+                    </div>
+                    <div v-text="info.now_integral"></div>
+                </div>
+
+            </div>
+            <div class="detailsList">
+                <div>
+                    <div class="detailsList_yu">
+                        <div>商会奖励</div>
+                        <div class="detailsList_right">
+                            <img src="/fish/img/assets100.png" alt="">
+                        </div>
+                    </div>
+                    <div v-text="info.now_team"></div>
+                </div>
+
+            </div>
+            <div class="detailsList">
+                <div>
+                    <div class="detailsList_yu">
+                        <div>招募奖励</div>
+                        <div class="detailsList_right">
+                            <img src="/fish/img/assets100.png" alt="">
+                        </div>
+                    </div>
+                    <div v-text="info.now_extension"></div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<!-- 房产信息弹框 -->
+<div class="Asset_details" v-show="close3">
+    <div class="details_top1">
+        <div class="detailsImg">
+            <img src="/fish/img/assets10.png" alt="">
+        </div>
+        <div class="details_content">
+            <div style="margin-left:0.8rem;">
+                <div class="a_icon">转让 ID</div>
+                <div class="b_icon">ID: 365248</div>
+            </div>
+            <div style="margin-left:1.5rem;">
+                <div class="a_icon">房产编号</div>
+                <div class="b_icon">028698876</div>
+            </div>
+            <div style="margin-left:1.5rem;">
+                <div class="a_icon">交易订单号</div>
+                <div class="b_icon">20190816103203</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- GC账单弹框 -->
+<div class="Asset_details" v-show="close4">
+    <div class="details_top2">
+        <div class="detailsImg" @click="gcMax">
+            <img src="/fish/img/assets10.png" alt="">
+        </div>
+        <div class="detailsImg_zr">
+            <img src="/fish/img/assets13.png" alt="">
+        </div>
+        <div class="gc_Bill">
+            <div class="gc_tab new_dgtab">
+                <div :class="tabid==1? 'active1' :'' " @click="max_list(1)">全部</div>
+                <div :class="tabid==2? 'active1' :'' " @click="max_list(2)">收入</div>
+                <div :class="tabid==3? 'active1' :'' " @click="max_list(3)">支出</div>
+            </div>
+
+        </div>
+        <div class="gc_content" v-show="tabid == 1">
+            <div class="gc_tabnew">
+                <div>
+                    <div>数量</div>
+                    <div>+2,000</div>
+                </div>
+                <div>
+                    <div>详情</div>
+                    <div>钱包充币</div>
+                </div>
+                <div>
+                    <div>时间</div>
+                    <div style="font-size:9px;">2019.09.10 12:30:30</div>
+                </div>
+            </div>
+            <div class="gc_tabnew">
+                <div>
+                    <div>数量</div>
+                    <div>+2,000</div>
+                </div>
+                <div>
+                    <div>详情</div>
+                    <div>钱包充币</div>
+                </div>
+                <div>
+                    <div>时间</div>
+                    <div style="font-size:9px;">2019.09.10 12:30:30</div>
+                </div>
+            </div>
+            <div class="gc_tabnew">
+                <div>
+                    <div>数量</div>
+                    <div style="margin-top:1rem;">+2,000</div>
+                </div>
+                <div>
+                    <div>详情</div>
+                    <div>钱包充币</div>
+                </div>
+                <div>
+                    <div>时间</div>
+                    <div style="font-size:9px;">2019.09.10 12:30:30</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- GTc转让 -->
+<div class="Asset_details" v-show="close5">
+    <div class="gczhuangrnang">
+        <div class="detailsImg detailsImg5" @click="FineTransferGc">
+            <img src="/fish/img/assets10.png" alt="">
+        </div>
+    </div>
+</div>
+
+<!-- 精隧转让 -->
+<div class="Asset_details" v-show="close6">
+    <div class="details_top6">
+        <div class="detailsImg detailsImg5" @click="FineTransfer">
+            <img src="/fish/img/assets10.png" alt="">
+        </div>
+    </div>
+</div>
+
+<!-- 精隧账单 -->
+<div class="Asset_details" v-show="close7">
+    <div class="details_topjs">
+        <div class="detailsImg" @click="gsMax">
+            <img src="/fish/img/assets10.png" alt="">
+        </div>
+        <!-- <div class="detailsImg_zr">
+                    <img src="/fish/img/assets13.png" alt="">
+                </div> -->
+        <div class="gc_Bill">
+            <div class="gc_tab jszhangdan">
+                <div :class="tabid==1? 'active1' :'' " @click="max_lista(1)">精粹收入</div>
+                <div :class="tabid==2? 'active1' :'' " @click="max_lista(2)">精粹支出</div>
+                <div :class="tabid==3? 'active1' :'' " @click="max_lista(3)">申诉</div>
+            </div>
+
+        </div>
+        <div class="gc_content" v-show="tabid == 1">
+            <div class="gc_tabnewjs">
+                <div>
+                    <div style="font-size:14px;">转让 ID</div>
+                    <div style="font-size:11px;">ID:123456</div>
+                </div>
+                <div style="margin-left:0.8rem;">
+                    <div style="font-size:14px;">转让数量</div>
+                    <div style="font-size:11px;">2,000</div>
+                </div>
+                <div style="margin-left:0.8rem;width:24%;">
+                    <div style="font-size:14px;">转让时间</div>
+                    <div style="font-size:11px;">2019.09.10 12.30.30</div>
+                </div>
+                <div style="margin-left:0.8rem;">
+                    <div style="font-size:14px;">转让状态</div>
+                    <div style="font-size:11px;">成功</div>
+                </div>
+            </div>
+            <div class="gc_tabnewjs">
+                <div>
+                    <div style="font-size:14px;">转让 ID</div>
+                    <div style="font-size:11px;">ID:123456</div>
+                </div>
+                <div style="margin-left:0.8rem;">
+                    <div style="font-size:14px;">转让数量</div>
+                    <div style="font-size:11px;">2,000</div>
+                </div>
+                <div style="margin-left:0.8rem;width:24%;">
+                    <div style="font-size:14px;">转让时间</div>
+                    <div style="font-size:11px;">2019.09.10 12.30.30</div>
+                </div>
+                <div style="margin-left:0.8rem;">
+                    <div style="font-size:14px;">转让状态</div>
+                    <div style="font-size:11px;">成功</div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+
+<!-- 奖励记录 -->
+<div class="Asset_details" v-show="close8">
+    <div class="details_top8">
+        <div class="detailsImg" @click="Rewardrecord">
+            <img src="/fish/img/assets10.png" alt="">
+        </div>
+        <div class="gc_Bill">
+            <div class="gc_tab jl_tab">
+                <div :class="tabid==1? 'active1' :'' " @click="max_list(1)">全部</div>
+                <div :class="tabid==2? 'active1' :'' " @click="max_list(2)">收入</div>
+                <div :class="tabid==3? 'active1' :'' " @click="max_list(3)">兑换</div>
+            </div>
+
+        </div>
+        <div class="gc_content" v-show="tabid == 1">
+            <div class="gc_tabnew">
+                <div>
+                    <div>数量</div>
+                    <div>+20</div>
+                </div>
+                <div>
+                    <div>详情</div>
+                    <div>兑换</div>
+                </div>
+                <div>
+                    <div>时间</div>
+                    <div style="font-size:9px;">2019.09.10 12:30:30</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- 合约中弹框 -->
+<div class="Asset_details" v-show="close9">
+    <div class="contract_title">
+        <img src="/fish/img/assets24.png" alt="" style="width:9.375rem; height:7.34rem;">
+    </div>
+    <div class="contract contract_list_table">
+        <div class="contract_list" v-for="(item,index) in ContractList">
+            <div v-show="item.is_contract==0 || ((item.over_contract_day<item.contract_day) && !(item.types == 3 && item.is_feed == 1))"
+                 class="contract_listcon newcontract_listcon">
+                <div class="li-con">
+                    <div class="contractlist_left">
+                        <img :src="item.img" alt="">
+                    </div>
+                    <div class="contractlist_center1">
+                        <div>{{item.name}}</div>
+                        <div style="word-wrap:break-word; width:4.8rem;">{{item.en_name}}</div>
+                    </div>
+                    <div class="contractlist_center2">
+                        <div>
+                            <span>合约收益：</span>
+                            <span style="font-size:18px;color:#E24E44;">{{item.profit}}%</span>
+                        </div>
+                        <div>
+                            <span>装修费用：</span>
+                            <span>{{item.bait}} GTC/天</span>
+                        </div>
+                        <div>
+                            <span>合约时间：</span>
+                            <span>{{item.over_contract_day}}天</span>
+                        </div>
+                        <div>
+                            <span>合约进度：</span>
+                            <span style="font-size:9px;color:#E24E44;">{{Math.ceil(item.over_contract_day)}}/{{Math.ceil(item.contract_day)}}%</span>
+                        </div>
+                    </div>
+                    <div class="contractlist_right">
+                        <img v-show="item.is_contract==0" src="/fish/img/assers21.png" alt=""
+                             @click="openTrimDetail(item.id)">
+                        <img v-show="((item.over_contract_day<item.contract_day) && !(item.types == 3 && item.is_feed == 1)) && !item.is_contract==0"
+                             src="/fish/img/assers203.png" alt="">
+                    </div>
+                </div>
+
+                <img class="line" src="/fish/img/assets23.png"/>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- 待出售弹框 -->
+<div class="Asset_details" v-show="close10">
+    <div class="contract_title">
+        <img src="/fish/img/assets22.png" alt="" style="width:9.28rem; height:4.56rem;">
+    </div>
+    <div class="contract">
+        <div class="contract contract_list_table">
+            <div class="contract_list" v-for="(item,index) in ContractList">
+                <div v-show="(item.start_about || (item.types == 3 && item.is_feed == 1)) || !(item.is_contract==0 || ((item.over_contract_day<item.contract_day) && !(item.types == 3 && item.is_feed == 1)))"
+                     class="contract_listcon newcontract_listcon">
+                    <div class="li-con">
+                        <div class="contractlist_left">
+                            <img :src="item.img" alt="">
+                        </div>
+                        <div class="contractlist_center1">
+                            <div>{{item.name}}</div>
+                            <div style="word-wrap:break-word; width:4.8rem;">{{item.en_name}}</div>
+                        </div>
+                        <div class="contractlist_center2">
+                            <div>
+                                <span>合约收益：</span>
+                                <span style="font-size:22px;color:#E24E44;">{{item.profit}}%</span>
+                            </div>
+                            <div>
+                                <span>装修费用：</span>
+                                <span>{{item.bait}} GTC/天</span>
+                            </div>
+                            <div>
+                                <span>合约时间：</span>
+                                <span>{{item.over_contract_day}}天</span>
+                            </div>
+                            <div>
+                                <span>合约进度：</span>
+                                <span style="font-size:9px;color:#E24E44;">{{Math.ceil(item.over_contract_day)}}/{{Math.ceil(item.contract_day)}}%</span>
+                            </div>
+                        </div>
+                        <div class="contractlist_right">
+                            <img src="/fish/img/assets99.png" alt="">
+                        </div>
+                    </div>
+
+                    <img class="line" src="/fish/img/assets23.png"/>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- 预约记录 -->
+<div class="Asset_details" v-show="close13">
+    <div class="details_topjl">
+        <div class="detailsImg" @click="reservationMax">
+            <img src="/fish/img/assets10.png" alt="">
+        </div>
+        <div class="details_content1">
+            <div class="detailsList">
+                <div>
+                    <div class="detailsList_yu">
+                        <div style="font-size:27px;">别墅</div>
+                        <div style="font-size:12px; margin-top:0.5rem;">-50 GTC</div>
+
+                    </div>
+                    <div class="yy_time">
+                        <div style="font-size:12px; margin-top:0.5rem">2019.09.10</div>
+                        <div style="font-size:12px; margin-top:0.5rem; margin-left:2.5rem;">16:30:10</div>
+                        <div style="font-size:17px; margin-left:2.5rem;">预约记录</div>
+                    </div>
+                </div>
+
+
+                <img class="line" src="/fish/img/assets23.png"/>
+            </div>
+            <div class="contract_listcon newcontract_listcon">
+                <div class="li-con">
+                    <div class="contractlist_left">
+                        <img src="/fish/img/assets10.png" alt="">
+                    </div>
+                    <div class="contractlist_center1">
+                        <div>草房</div>
+                        <div style="word-wrap:break-word; width:4.8rem;">ThatchedCottage</div>
+                        <div>
+                            <span>价格：</span>
+                            <span>100-300</span>
+                        </div>
+                    </div>
+                    <div class="contractlist_center2">
+                        <div>
+                            <span>合约收益：</span>
+                            <span style="font-size:22px;color:#E24E44;">15%</span>
+                        </div>
+                        <div>
+                            <span>装修费用：</span>
+                            <span>1 GTC/天</span>
+                        </div>
+                        <div>
+                            <span>合约时间：</span>
+                            <span>15 天</span>
+                        </div>
+                        <div>
+                            <span>合约进度：</span>
+                            <span style="font-size:9px;color:#E24E44;">10%</span>
+                        </div>
+                    </div>
+                    <div class="contractlist_right">
+                        <img src="/fish/img/assers21.png" alt="">
+                    </div>
+                </div>
+
+
+                <img class="line" src="/fish/img/assets99.png"/>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- 预约记录 -->
+<div class="Asset_details" v-show="close13">
+    <div class="details_topjl">
+        <div class="detailsImg" @click="reservationMax">
+            <img src="/fish/img/assets10.png" alt="">
+        </div>
+        <div class="details_content1  yueyueList" id="my1">
+            <div class="detailsList" v-for='item in list100'>
+                <div>
+                    <div class="detailsList_yu">
+                        <div style="font-size:27px;">{{item.name}}</div>
+                        <div style="font-size:12px; margin-top:0.5rem;">
+                            <span v-if="item.bait>0">+{{item.bait}}</span>
+                            <span v-else>{{item.bait}}</span>
+                        </div>
+
+                    </div>
+                    <div class="list_tab2">
+                        <div style="font-size:12px; margin-top:0.5rem"> {{item.create_time.split(' ')[0]}}</div>
+                        <div style="font-size:12px; margin-top:0.5rem;">{{item.create_time.split(' ')[1]}}</div>
+                        <div style=" text-align: right;font-size:12px; margin-top:0.5rem;">{{item.status}}</div>
+                    </div>
+                </div>
+
+            </div>
+            <div style="margin-top:0.5rem; text-align:center;" v-show="allLoad2">已全部加载</div>
+        </div>
+    </div>
+
+</div>
+
+
+<!-- 抢购记录 -->
+<div class="Asset_details" v-show="close14">
+    <div class="SnatchMax">
+        <div class="detailsImg" @click="SnatchMax">
+            <img src="/fish/img/assets10.png" alt="">
+        </div>
+        <div class="details_content1 yueyueList" id="my">
+            <div class="detailsList" v-for="item1 in list101">
+                <div>
+                    <div class="detailsList_yu">
+                        <div style="font-size:27px;">{{item1.name}}</div>
+                        <div style="font-size:12px; margin-top:0.5rem;">{{item1.worth}} GTC</div>
+                    </div>
+                    <div class="list_tab2">
+                        <!-- {{item1.over_time}} -->
+                        <div style="font-size:12px; margin-top:0.5rem">{{item1.over_time.split(' ')[0]}}</div>
+                        <div style="font-size:12px; margin-top:0.5rem">{{item1.over_time.split(' ')[1]}}</div>
+                        <!-- <div style="font-size:12px; margin-top:0.5rem; margin-left:2.5rem;">16:30:10</div> -->
+                        <div style=" text-align: right;font-size:17px; margin-left:0.5rem;">{{item1.status_name}}</div>
+                    </div>
+                </div>
+            </div>
+            <div v-show='allLoad' style="margin-top:0.5rem; text-align: center;">已全部加载</div>
+
+        </div>
+    </div>
+
+</div>
+
+
+<!-- 转让记录 -->
+<div class="Asset_details" v-show="close15">
+    <div class="Transfer_record">
+        <div class="detailsImg" @click="recordhMaxaaa">
+            <img src="/fish/img/assets10.png" alt="">
+        </div>
+        <div class="Transfer_content">
+            <div class="Transfer_title">
+                <div :class="tabid1==1? 'active2' :'' " @click="record_list(1)">已转让</div>
+                <div :class="tabid1==2? 'active2' :'' " @click="record_list(2)">申诉</div>
+            </div>
+            <div class="Transfer_listbox">
+                <div class="Transfer_list" v-for="(item, index) in listZr" :key="index">
+                    <div class="list_tab1">
+                        <div style="font-size:27px;">{{item.name}}</div>
+                        <div style="font-size:13px;">+{{item.worth}} GTC</div>
+                    </div>
+                    <div class="list_tab2">
+                        <div style="margin-top:0.5rem;">{{item.over_time.split(' ')[0]}}</div>
+                        <div style="margin-top:0.5rem;">{{item.over_time.split(' ')[1]}}</div>
+                        <div style="text-align: right; font-size:17px;">{{tabid1 == 1 ? '转让成功' : '申诉'}}</div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 奖励兑换 -->
+<div class="Asset_details" v-show="close16">
+    <div class="redemption">
+        <div class="Redeem_now Redeem_nowBb" @click="send5()">
+            <img src="/fish/img/assets32.png" alt="">
+        </div>
+        <div class="detailsImg" @click="detailsImghMax">
+            <img src="/fish/img/assets10.png" alt="">
+        </div>
+
+        <div class="redemption_content">
+            <div style="display:flex;">
+                <div :class="tab==1?'activ1': '' " @click="tabLstMax(1)">当前商会/</div>
+                <div :class="tab==2?'activ1': '' " @click="tabLstMax(2)">招募奖励</div>
+            </div>
+            <div class="redemption_top">
+                <div>
+                    <img src="/fish/img/assets31.png" alt="">
+                </div>
+                <div>X
+                    <input type="number" v-model="rednum"
+                           style="text-align:center;margin-left:0.5rem;border:1px solid #ccc;width:7rem;height:2rem;line-height:2rem; margin-top:1.7rem; outline: none; background:none; text-align: 2rem; font-size:27px; color:#fff;">
+                </div>
+
+            </div>
+            <div style="font-size:9px; opacity: 0.65;">注：商会及招募奖励兑换GTC，最小兑换额为300 GTC。</div>
+        </div>
+
+    </div>
+</div>
+
+
+<!-- 兑换成功 -->
+<div class="Asset_details" v-show="close17">
+    <div class="Successful_redemption">
+
+        <div class="detailsImg Successful" @click="SuccessfulRedemption">
+            <img src="/fish/img/assets10.png" alt="">
+        </div>
+
+
+    </div>
+</div>
+
+
+<!-- 闪兑 -->
+<div class="Asset_details" v-show="close18">
+    <div class="new_flash">
+        <div class="detailsImg" @click="flashMax">
+            <img src="/fish/img/assets10.png" alt="">
+        </div>
+        <div class="new_flashImg sdMax" @click="recordhMax">
+            <img src="/fish/img/assets35.png" alt="">
+        </div>
+        <div class="flash_box">
+            <div class="flash_content">
+                <div class="flash_content1">
+                    <div>当前{{form}}:{{gt_num}}</div>
+                    <div></div>
+                </div>
+                <div class="flash_content2">
+                    <div>{{form}}:</div>
+                    <input placeholder="兑换数量" type="number" step="0.01" autofocus v-model="eth">
+                </div>
+                <div class="flash_content3" @click="swap">
+                    <img src="/fish/img/assets37.png" alt="">
+                </div>
+                <div class="flash_content2 flash_content4">
+                    <div>{{to}}:</div>
+                    <input type="text" placeholder="收到数量" readonly v-bind:value="Number(eth*exchange_rate).toFixed(2)"/>
+                </div>
+                <div class="flash_content5">
+                    <div>当前汇率：</div>
+                    <div>{{exchange_rate || '0.00'}}</div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<!-- 闪兑成功弹框 -->
+<div class="Asset_details" v-show="close19">
+    <div class="flash_successful">
+        <div class="detailsImg flashsuccessfulMax" @click="flashsuccessfulMax">
+            <img src="/fish/img/assets10.png" alt="">
+        </div>
+    </div>
+</div>
+<!-- GC提币 -->
+<div class="Asset_details" v-show="close20">
+    <div class="gc_coin">
+        <div class="detailsImg" @click="gcflashMax">
+            <img src="/fish/img/assets10.png" alt="">
+        </div>
+        <div class="CoinBtn" @click="CoinBtnMax">
+            <img src="/fish/img/assets41.png" alt="">
+        </div>
+        <div class="Submit_review" @click="submitBtn1">
+            <img src="/fish/img/assets42.png" alt="">
+        </div>
+        <div class="gc_coinContent">
+            <div class="flash_content2 new_flash_content2">
+                <div class="gc_coinContentaa">钱包地址:</div>
+                <input style="color:#fff;" v-model="wallet_address" placeholder="请输入您的钱包地址">
+            </div>
+            <div class="flash_content2 new_flash_content2">
+                <div class="gc_coinContentaa">提币数量:</div>
+                <input type="number" style="color:#fff;" v-model="amount" placeholder="请输入您转出的数量">
+            </div>
+            <div class="flash_content2 new_flash_content2">
+                <div class="gc_coinContentaa">交易密码：</div>
+                <input style="color:#fff;" type="password" v-model="pay_pwd" placeholder="请输入您交易密码">
+            </div>
+            <div class="lase_flash">本次交易手续费：{{amount*commission_rate/100}}</div>
+        </div>
+    </div>
+
+</div>
+
+
+<!-- GC提币审核中 -->
+<div class="Asset_details" v-show="close21">
+    <div class="gC_review">
+        <div class="detailsImg gc_img" @click="reviewMax">
+            <img src="/fish/img/assets10.png" alt="">
+        </div>
+        <div class="review_content">
+            <div class="review_content_b">提币时间为每日上午09:00 - 22:00,您的提币审核会在您提交申请的两小时内得到处理</div>
+
+        </div>
+    </div>
+</div>
+
+<!-- 提币记录 -->
+<div class="Asset_details" v-show="close22">
+    <div class="MoneyRecord">
+        <div class="detailsImg" @click="oneyRecordMax">
+            <img src="/fish/img/assets10.png" alt="">
+        </div>
+        <div class="MoneyRecord_content">
+            <div class="MoneyRecord_tab">
+                <div :class="tabid2==1? 'active3':''" @click="MoneyRecordMax(1)">审核中</div>
+                <div :class="tabid2==2? 'active3':''" @click="MoneyRecordMax(2)">转出成功</div>
+                <div :class="tabid2==3? 'active3':''" @click="MoneyRecordMax(3)">转出失败</div>
+            </div>
+            <div>
+                <div class="Record_content" v-for="(item, index) in listTb" :key="index">
+                    <div>
+                        <div class="Record_a">提币时间</div>
+                        <div class="Record_b">{{item.create_time}}
+                        </div>
+                    </div>
+                    <div>
+                        <div class="Record_a">提币数量</div>
+                        <div class="Record_b">{{item.amount}}</div>
+                    </div>
+                    <div>
+                        <div class="Record_a">状态</div>
+                        <div class="Record_b">{{tabid2 == 1 ? '审核中' : (tabid2 == 2 ? '转出成功' : '转出失败')}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<!-- 钱包充币 -->
+<div class="Asset_details" v-show="close23">
+    <div class="Wallet">
+        <div class="detailsImg" @click="WalletMax">
+            <img src="/fish/img/assets10.png" alt="">
+        </div>
+        <div class="new_flashImg Walletbtn" @click="copyGcAddress">
+            <img src="/fish/img/assets53.png" alt="">
+        </div>
+        <div class="Wallet_content">
+            <div>GC-Wallet</div>
+            <div style="display: none;">{{info.gc_address || 'null'}}</div>
+            <input id="gc-address" type="text" readonly v-bind:value="info.gc_address" class="gc-address">
+            <div>
+                <!-- <img src="/fish/img/assets35.png" alt=""> -->
+                <img v-bind:src="info.gc_address ? '/home/tools/qrcode.html?code='+info.gc_address : '#'" alt="二维码"/>
+            </div>
+            <div>请转入GC</div>
+        </div>
+    </div>
+</div>
+
+
+<!-- 钱包充币复制地址 -->
+<div class="Asset_details" v-show="close24">
+    <div class="copy_address">
+        <div class="detailsImg gc_img" @click="copyAddress">
+            <img src="/fish/img/assets10.png" alt="">
+        </div>
+    </div>
+</div>
+
+<!-- 流拍提示 -->
+<div class="Asset_details" v-show="close11">
+    <div class="Streaming_tips">
+        <div class="detailsImg" @click="StreamingMax">
+            <img src="/fish/img/assets10.png" alt="">
+        </div>
+        <div class="Streaming_content" style="font-size:10px;">
+            <div>尊敬的大富豪玩家，由于此次抢购到您房产（编号：123123）的玩家（ID：368027）没能在规定时间内及时付款，导致您的该套房产流拍，我们深表歉意。
+            </div>
+            <div>对于玩家（ID：368027）系统将对其进行封禁24小时处罚。</div>
+            <div>关于此次流拍的房产（编号：123123）在您再次按照合约时间进行装修后，将自动进入下一轮抢购，在这个过程中，您的收益也将会按照合约收益进行累加，大富豪感谢您的支持与理解！</div>
+        </div>
+    </div>
+</div>
+
+<!-- 房产详情 -->
+<div class="Asset_details" v-show="close25">
+    <div class="Property_details">
+        <div class="PropertyImg_box">
+            <img src="/fish/img/assets102.png" alt="">
+        </div>
+        <div class="Property_box">
+            <div>
+                <div class="Propertyimg">
+                    <img :src="fish.img" alt="">
+                </div>
+                <div class="Property_tilte">
+                    <div v-text="fish.name"></div>
+                    <div style="font-size:9px; color:#F2E1C0; margin-top:1.3rem">Villa</div>
+                </div>
+            </div>
+            <div></div>
+            <div style="line-height:34px;">
+                <div style="color:#3A3026; font-size:14px;margin-left:2.2rem;">合约收益：</div>
+                <div style="font-size:34px; color:#E14F4F">{{fish.profit}}%</div>
+            </div>
+            <div style="color:#3A3026; font-size:14px;margin-top:0.3rem;">
+                <div style="margin-left:2.2rem;">装修费用：</div>
+                <div>{{fish.bait}} GTC/天</div>
+            </div>
+            <div style="color:#3A3026; font-size:14px; margin-top:0.3rem;">
+                <div style="margin-left:2.2rem;">合约时间：</div>
+                <div>{{Math.ceil(fish.contract_time/24)}} 天</div>
+            </div>
+            <div style="color:#E14F4F; font-size:14px; margin-top:0.3rem;">
+                <div style="margin-left:2.2rem;">合约进度：</div>
+                <div>{{Math.ceil(fish.contract_overtime)}}/{{Math.ceil(fish.contract_time)}}%</div>
+            </div>
+            <div class="PropertyTab">
+                <div style="display:flex;" @click="switchPayType(1)">
+                    <div class="PropertyTab1">
+                        <img src="/fish/img/assets3.png" alt="">
+                    </div>
+                    <div>GTC 装修</div>
+                </div>
+                <div style="display:flex;" @click="switchPayType(0)">
+                    <div class="PropertyTab2">
+                        <img src="/fish/img/assets92.png" alt="">
+                    </div>
+                    <div>精粹装修</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- 装修成功弹框 -->
+<div class="Asset_details" v-show="close26">
+    <div class="zh_success">
+        <div class="Property_box zh_Property_box">
+            <div>
+                <div class="Propertyimg">
+                    <img src="/fish/img/assets10.png" alt="">
+                </div>
+                <div class="Property_tilte">
+                    <div>别墅</div>
+                    <div style="font-size:9px; color:#F2E1C0; margin-top:1.3rem">Villa</div>
+                    <div style="font-size:9px; color:#F2E1C0;margin-top:0.3rem;">价格：3001-6000</div>
+                </div>
+            </div>
+            <div></div>
+            <div style="line-height:34px;">
+                <div style="margin-left:2.2rem;">合约收益：</div>
+                <div style="font-size:34px; color:#E14F4F">40%</div>
+            </div>
+            <div style="color:#3A3026; font-size:14px;margin-top:0.3rem;">
+                <div style="margin-left:2.2rem;">抢购时间：</div>
+                <div>17:30-17:40</div>
+            </div>
+            <div style="color:#3A3026; font-size:14px;margin-top:0.3rem;">
+                <div style="margin-left:2.2rem;">装修费用：</div>
+                <div>20 GTC/天</div>
+            </div>
+            <div style="color:#3A3026; font-size:14px; margin-top:0.3rem;">
+                <div style="margin-left:2.2rem;">合约时间：</div>
+                <div>21 天</div>
+            </div>
+            <div style="color:#E14F4F; font-size:14px; margin-top:0.3rem;">
+                <div style="margin-left:2.2rem;">合约进度：</div>
+                <div>60%</div>
+            </div>
+            <div class="PropertyTab">
+                <div style="display:flex;">
+                    <div class="PropertyTab1">
+                        <img src="/fish/img/assets91.png" alt="">
+                    </div>
+                    <div>GTC 装修</div>
+                </div>
+                <div style="display:flex;">
+                    <div class="PropertyTab2">
+                        <img src="/fish/img/assets92.png" alt="">
+                    </div>
+                    <div>精粹装修</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- GTC转让弹框 -->
+<div class="Asset_details" v-show="close27">
+    <div class="gtc_transfer">
+        <div class="detailsImg" @click="closeGCMax">
+            <img src="/fish/img/assets10.png" alt="">
+        </div>
+        <div class="transferSubmit">
+            <img src="/fish/img/assets95.png" alt="">
+        </div>
+        <div class="GTC_transferContent">
+            <div>
+                <div class="gtc_aa" style="letter-spacing: 5px;">对方ID:</div>
+                <input placeholder="请输入对方 ID">
+            </div>
+            <div>
+                <div class="gtc_aa">转出数量：</div>
+                <input placeholder="请输入转出数量">
+            </div>
+            <div>
+                <div class="gtc_aa" style="letter-spacing: 8px; width:13rem;">验证码</div>
+                <input placeholder="输入验证码" style="text-align: center;">
+                <div style="width:6.125rem; height:2.2rem;">
+                    <img src="/fish/img/assets65.png" alt="" style="width:6.125rem; height:2.2rem;">
+                </div>
+            </div>
+            <div>
+                <div class="gtc_aa">交易密码：</div>
+                <input placeholder="请输入您交易密码">
+            </div>
+            <div> 注：为确保账号安全，本次操作需要验证当前手机号</div>
+            <div> 当前绑定手机号为：136-6666-8888</div>
+            <div>已转让的GTC不可逆转，请核对并确认好友ID再进行转让</div>
+        </div>
+    </div>
+</div>
+
+<!-- 精粹转让弹框 -->
+<div class="Asset_details" v-show="close28">
+    <div class="Pristine_transfer">
+        <div class="detailsImg" @click="PristineMax">
+            <img src="/fish/img/assets10.png" alt="">
+        </div>
+        <div class="PristineImg">
+            <img src="/fish/img/assets98.png" alt="">
+        </div>
+        <div class="Pristine_content">
+            <div>
+                <div class="Pristine_bb" style="letter-spacing: 2px;">对 方 ID:</div>
+                <input style="margin-left:0.5rem;">
+            </div>
+            <div>
+                <div class="Pristine_bb">转出数量：</div>
+                <input>
+            </div>
+            <div>
+                <div class="Pristine_bb">支付密码：</div>
+                <input>
+            </div>
+            <div>
+                <div style="display:flex; justify-content: center;">
+                    <div style="width: 4.625rem; height:4.94rem;">
+                        <img src="/fish/img/assets97.png" alt="" style="width:4.625rem; height:9.49rem;">
+                    </div>
+                    <div style="font-size:27px;line-height:7.49rem;">X999.99</div>
+                </div>
+                <div style="text-align: center;margin-top:0.5rem; font-size:11px;">当前可用精粹</div>
+            </div>
+            <div>注：精粹可用与「激活」、「预约」、「装修」功能，不可转换为GTC或GC。</div>
+        </div>
+    </div>
+</div>
+
+
+<!-- 弹窗 -->
+<div id="myModal" class="modal2" v-show="popwin">
+
+    <!-- 弹窗内容 -->
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="closebtn" @click="closeWin">
+				<img style="width: 100%;" src="/fish/img/assets10.png">
+			</span>
+        </div>
+        <div class="modal-body don-form">
+            <div class="input-box content-box">
+                <div class="input-item"><span>对方 ID:</span> <input type="text" placeholder="请输入用户名" autocomplete="off">
+                </div>
+                <div class="input-item"><span>转出数量:</span> <input type="text" placeholder="请输入手机号码" autocomplete="off">
+                </div>
+                <div class="input-item"><span>验 证 码:</span> <input type="text" placeholder="请输入验证码" autocomplete="off"
+                                                                   class="login-verify">
+                    <button class="getcode">发送验证码</button>
+                </div>
+                <div class="input-item"><span>交易密码:</span> <input type="password" placeholder="请输入密码"
+                                                                  autocomplete="off"></div>
+                <p class="tip">
+                    注：为确保账号安全，本次操作需要验证当前手机号 <br>当前绑定手机号为：136-6666-8888
+                </p>
+                <p class="tip2">已转让的GTC不可逆转，请核对并确认好友ID再进行转让</p>
+                <div class="input-foot">
+                    <div type="submit" class="foot-btn"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+<div id="myModal2" class="modal2" v-show="popwin">
+    <!-- 弹窗内容2 -->
+    <div class="modal-content modal-content2">
+        <div class="modal-header">
+          <span class="closebtn" @click="closeWin">
+			  <img style="width: 100%;" src="/fish/img/assets10.png">
+		  </span>
+        </div>
+        <div class="modal-body don-form">
+            <div class="input-box content-box2">
+                <div class="input-item"><span>对方ID:</span> <input type="text" placeholder="请输入用户名" autocomplete="off">
+                </div>
+                <div class="input-item"><span>转出数量:</span> <input type="text" placeholder="请输入手机号码" autocomplete="off">
+                </div>
+                <div class="input-item"><span>支付密码:</span> <input type="password" placeholder="请输入密码"
+                                                                  autocomplete="off"></div>
+                <div class="essencebox">
+                    <i class="essence"></i><span class="essenceNum">x9999</span>
+                    <p>当前可用精粹</p>
+                </div>
+                <p class="tip">
+                    注：精粹可用与「激活」、「预约」、「装修」功能，不可转换为GTC或GC。
+                </p>
+                <div class="input-foot2">
+                    <div type="submit" class="foot-btn foot-btn2"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- gc账单明细 -->
+<div class="Asset_details" v-show="close29">
+    <div class="details_top12">
+        <div class="detailsImg" @click="closeGCDetail">
+            <img src="/fish/img/assets10.png" alt="">
+        </div>
+
+        <div class="gc_table">
+            <div class="Transfer_title">
+                <div :class="tabid3==1? 'active2' :'' " @click="loadGCList(0)">全部</div>
+                <div :class="tabid3==2? 'active2' :'' " @click="loadGCList(1)">收入</div>
+                <div :class="tabid3==3? 'active3' :'' " @click="loadGCList(2)">支出</div>
+            </div>
+            <div class="Transfer_listbox" v-for="(item,index) in GCList">
+                <div class="Transfer_list">
+                    <div class="list_tab1">
+                        <div style="font-size:15px;">数量</div>
+                        <div style="font-size:15px;">详情</div>
+                        <div style="font-size:15px;">时间</div>
+                    </div>
+                    <div class="list_tab2">
+                        <div style="margin-top:0.5rem;">{{item.type==1?'-':'+'}}{{parseFloat(item.amount).toFixed(2)}}
+                        </div>
+                        <div style="margin-top:0.5rem;margin-left:2.5rem;" v-text="item.remark"></div>
+                        <div style="margin-top:0.5rem;text-align: right; font-size:13px;"
+                             v-text="item.create_time"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- gtc账单明细 -->
+<div class="Asset_details" v-show="close30">
+    <div class="details_top13">
+        <div class="GTCOut">
+            <img src="/fish/img/assets131.png" alt="">
+        </div>
+        <div class="detailsImg" @click="closeGTCDetail">
+            <img src="/fish/img/assets10.png" alt="">
+        </div>
+
+        <div class="gc_table">
+            <div class="Transfer_title">
+                <div :class="tabid3==1? 'active2' :'' " @click="loadGTCList(0)">全部</div>
+                <div :class="tabid3==2? 'active2' :'' " @click="loadGTCList(1)">收入</div>
+                <div :class="tabid3==3? 'active3' :'' " @click="loadGTCList(2)">支出</div>
+            </div>
+            <div class="Transfer_listbox" v-for="(item,index) in GTCList">
+                <div class="Transfer_list">
+                    <div class="list_tab1">
+                        <div style="font-size:15px;">数量</div>
+                        <div style="font-size:15px;">详情</div>
+                        <div style="font-size:15px;">时间</div>
+                    </div>
+                    <div class="list_tab2">
+                        <div style="margin-top:0.5rem;">{{item.number>0?'+':''}}{{parseFloat(item.number).toFixed(2)}}
+                        </div>
+                        <div style="margin-top:0.5rem;margin-left:2.5rem;" v-text="item.name"></div>
+                        <div style="margin-top:0.5rem;text-align: right; font-size:13px;"
+                             v-text="item.create_time"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 精粹账单明细 -->
+<div class="Asset_details" v-show="close31">
+    <div class="details_top14">
+        <div class="detailsImg" @click="closeIntegralDetail">
+            <img src="/fish/img/assets10.png" alt="">
+        </div>
+
+        <div class="gc_table">
+            <div class="Transfer_title">
+                <div :class="tabid3==1? 'active2' :'' " @click="loadIntegralList(0)">全部</div>
+                <div :class="tabid3==2? 'active2' :'' " @click="loadIntegralList(1)">精粹收入</div>
+                <div :class="tabid3==3? 'active3' :'' " @click="loadIntegralList(2)">精粹支出</div>
+            </div>
+            <div class="Transfer_listbox" v-for="(item,index) in IntegralList">
+                <div class="Transfer_list">
+                    <div class="list_tab1">
+                        <div style="font-size:15px;">数量</div>
+                        <div style="font-size:15px;">详情</div>
+                        <div style="font-size:15px;">时间</div>
+                    </div>
+                    <div class="list_tab2">
+                        <div style="margin-top:0.5rem;">{{item.number>0?'+':''}}{{parseFloat(item.number).toFixed(2)}}
+                        </div>
+                        <div style="margin-top:0.5rem;margin-left:2.5rem;" v-text="item.name"></div>
+                        <div style="margin-top:0.5rem;text-align: right; font-size:13px;"
+                             v-text="item.create_time"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 打开弹窗按钮 -->
+<!-- <button id="myBtn">打开弹窗</button>
+ <button id="myBtn2">打开弹窗2</button> -->
+
+{include file='menu'}
+{/block}
+
+{block name='script'}
+<script>
+
+    var app = new Vue({
+        el: '#app',
+        data: {
+            list: [],
+            GCList: [],
+            GTCList: [],
+            IntegralList: [],
+            ContractList: [],
+            info: {},
+            fish: {},
+            page: 1,
+            allLoad2: false,
+            status: true,
+            mybait: '',
+            close2: false,  //资产详情弹框
+            close3: false,  //房产信息弹框
+            close4: false,  //GC账单弹框
+            tabid: 1,
+            close6: false,  //精粹转让弹框
+            close5: false,  //GTc转让弹框
+            close7: false,  //精粹账单弹框
+            close8: false,  //奖励记录弹框
+            close9: false,  //合约中弹框
+            close10: false,   //待出售弹框
+            close11: false, // 流拍提示弹框
+            popwin: false,
+            close13: false, //预约记录弹框
+            close14: false, //抢购记录弹框
+            close15: false,  //转让记录弹框
+            close16: false, //奖励兑换弹框
+            close17: false,  //兑换成功弹框
+            close18: false, //闪兑弹框
+            close19: false,  //闪兑成功弹框
+            close20: false,  //GC提币弹框
+            close21: false, //GC提币审核中弹框
+            close22: false,  //提币记录弹框
+            close23: false,  //钱包充币弹框
+            close24: false,  //钱包充币复制地址弹框
+            close25: false,  //房产详情弹框
+            close26: false,//装修成功弹框
+            close27: false,  //GTC转让弹框
+            close28: false, //GTC转让弹框
+            close29: false,  //GC余额明细弹框
+            close30: false,  //GTC余额明细弹框
+            close31: false,  //精粹余额明细弹框
+            tabid1: 1,
+            tabid2: 1,
+            tabid3: 1,
+            list100: [],
+            list101: [],
+            page2: 0,
+            isloding: false,
+            allLoad: false,
+            wallet_address: '',
+            amount: '',
+            pay_pwd: '',
+            commission_rate: 1,
+            listTb: [],
+            listZr: [],
+            tab: 1,
+            rednum: '',
+            /*闪兑*/
+            exchange_rate: 1.00,
+            exchange_rate_gc: 1.00,
+            eth: '',
+            form: 'GC',
+            to: 'GTC',
+            default_url: "{:url('/index/exchange/gc_to_gtc')}",
+            url_gc_to_gtc: "{:url('/index/exchange/gc_to_gtc')}",
+            url_gtc_to_gc: "{:url('/index/exchange/gtc_to_gc')}",
+            gc_num: '',
+            gtc_num: '',
+            gt_num: '',
+            info: ''
+        },
+        computed: {},
+        methods: {
+            tabLstMax(n) {
+                this.tab = n;
+            },
+            recordhMaxaaa() {
+                this.close15 = false;
+            },
+            getZr() {
+                var self = this;
+                var data = {
+                    type: this.tabid1 == 1 ? 1 : 2,
+                    page: 1,
+                    limit: 9999
+                };
+                core.load("{:url('index/my/turn')}", data, function (res) {
+
+                    if (res.code == '0') {
+                        self.listZr = res.info;
+                    } else {
+                        core.toast(res.msg);
+                    }
+                })
+            },
+            send5() {
+                var that = this;
+                var obj = {
+                    eth: this.rednum,
+                }
+
+                if (this.rednum < 300) {
+                    return core.toast('输入的值不能少于300');
+                }
+                core.load(that.tab == 1 ? "{:url('index/exchange/invite_profit_to_gtc')}" : "{:url('index/exchange/team_profit_to_gtc')}", obj, function (res) {
+                    console.log(res)
+                    if (res.code == 0) {
+                        that.close16 = false;
+                        that.close17 = true;
+
+                        // that.setclose20 = false;
+                        // that.setclose10 = true;
+
+                    }
+                    core.toast(res.msg);
+
+                })
+
+            },
+            sdrecordhMax() {
+
+            },
+            getTb() {
+                var self = this;
+                var data = {
+                    type: this.tabid2 - 1,
+                    page: 0,
+                    limit: 9999
+                }
+                core.load("{:url('index/withdraw/list')}", data, (res) => {
+                    if (res.code == 0) {
+                        console.log(res.info.data)
+                        self.listTb = res.info.data;
+                    } else {
+                        core.toast(res.msg);
+                    }
+
+                })
+            },
+            autoLoad: function () {
+                core.load("{:url('/index/withdraw/get_commission_rate')}", {}, (res) => {
+                    if (res.code == 666) {
+                        this.commission_rate = res.data;
+                    }
+                });
+                /*获取闪兑gc信息*/
+                core.load("{:url('/index/exchange/get_rate')}", {}, (res) => {
+                    if (res.code == 666) {
+                        this.exchange_rate = res.data.rate;
+                        this.exchange_rate_gc = res.data.rate;
+                        this.gt_num = res.data.gc_num;
+                        this.gc_num = res.data.gc_num;
+                        this.gtc_num = res.data.gtc_num;
+                    }
+                });
+            },
+
+
+            submitBtn1() {
+                if (!this.wallet_address) {
+                    return core.toast('请输入钱包地址');
+                }
+                ;
+                if (!this.amount) {
+                    return core.toast('请输入转出数量');
+                }
+                ;
+                if (!this.pay_pwd) {
+                    return core.toast('请输入支付密码');
+                }
+                ;
+                core.load("{:url('/index/withdraw/submit')}",
+                    {wallet_address: this.wallet_address, amount: this.amount, pay_pwd: this.pay_pwd},
+                    (res) => {
+                        if (res.code == 666) {
+                            this.close20 = false;
+                            this.close21 = true;
+                            this.wallet_address = '';
+                            this.amount = '';
+                            this.pay_pwd = '';
+                        }
+                        // core.toast(res.msg);
+                    });
+            },
+
+            loadList1: function () {  //预约记录
+                var self = this;
+                var data = {
+                    page: self.page,
+                    limit: 8,
+                };
+                self.isloding2 = true
+                core.load("{:url('index/my/make_record')}", data, function (res) {
+                    // console.log(res)
+                    self.isloding2 = false
+                    if (res.code == '0') {
+                        self.list100 = self.page == 0 ? res.info : self.list100.concat(res.info);
+                        if (res.info.length < 8) {
+                            self.allLoad2 = true;
+                        }
+                    } else {
+                        core.toast(res.message);
+                    }
+                })
+
+            },
+
+
+            loadList2: function () {  //抢购记录
+                var self = this;
+                var data = {
+                    page: self.page2,
+                    limit: 8,
+                };
+                self.isloding = true;
+                core.load("{:url('index/my/adopt')}", data, function (res) {
+                    self.isloding = false;
+                    if (res.code == '0') {
+                        self.list101 = self.page2 == 0 ? res.info : self.list101.concat(res.info);
+                        if (res.info.length < 8) {
+                            self.allLoad = true;
+                        }
+
+                    } else {
+                        core.toast(res.message);
+                    }
+                })
+
+            },
+
+            dcyMax() {
+                this.close10 = true;
+                this.loadContractList();
+            },
+            CoinBtnMax() {
+                this.close22 = true;
+            },
+            AppointordBtn() {
+                this.close13 = true;
+            },
+            SnatchRecordBtn() {
+                this.close14 = true;
+            },
+            flashFlashBtn() {
+                this.close18 = true;
+            },
+            WalletaaBtn() {
+                this.close23 = true;
+                core.load("{:url('/index/setup/index')}", {}, (res) => {
+                    if (res.code == 0) {
+                        this.info = res.info;
+                    } else {
+                        core.toast(res.msg);
+                    }
+                })
+            },
+            RewaredemptionBtn() {
+                this.close16 = true;
+            },
+            coinBtn() {
+                this.close20 = true;
+            },
+            ransferrecordBtn() {
+                this.close15 = true;
+            },
+            StreamingMax() {
+                this.close11 = false;
+            },
+            closeGCMax() {
+                this.close27 = false;
+            },
+            PristineMax() {
+                this.close28 = false;
+            },
+            flashsuccessfulMax() {
+                this.close19 = false;
+            },
+            reviewMax() {
+                this.close21 = false;
+            },
+            gcflashMax() {
+                this.close20 = false;
+            },
+            MoneyRecordMax(n) {
+
+                this.tabid2 = n;
+                this.getTb()
+            },
+            copyAddress() {
+                this.close24 = false;
+            },
+            WalletMax() {
+                this.close23 = false;
+            },
+            flashMax() {
+                this.close18 = false;
+            },
+            recordhMax() {
+                core.load(this.default_url, {eth: this.eth}, (res) => {
+                    if (res.code == 666) {
+                        this.eth = '';
+                        this.close19 = true;
+                    }
+                    core.toast(res.msg);
+                });
+            },
+            oneyRecordMax() {
+                this.close22 = false;
+            },
+            record_list(n) {
+                this.tabid1 = n;
+                this.getZr()
+            },
+            detailsImghMax() {
+                this.close16 = false;
+            },
+            SnatchMax() {
+                this.close14 = false;
+            },
+            SuccessfulRedemption() {
+                this.close17 = false;
+            },
+            reservationMax() {
+                this.close13 = false;
+            },
+            heyuezMax() {
+                this.close9 = true;
+                this.loadContractList();
+            },
+            detaiaMax() {
+                console.log(111)
+                this.close2 = true;
+            },
+            max_list(n) {
+                this.tabid = n;
+            },
+            max_lista(n) {
+                this.tabid = n;
+            },
+            transferMax() {
+                this.close5 = false;
+            },
+            closeMax() {
+                this.close2 = false;
+            },
+            gcMax() {
+                this.close4 = false;
+            },
+            Rewardrecord() {
+                this.close8 = false;
+            },
+            gsMax() {
+                this.close7 = false;
+            },
+            FineTransferGc() {
+                this.close5 = false;
+            },
+            FineTransfer() {
+                this.close6 = false;
+            },
+            openGCDetail() {
+                this.close29 = true;
+                this.loadGCList(0);
+            },
+            closeGCDetail() {
+                this.close29 = false;
+            },
+            openGTCDetail() {
+                this.close30 = true;
+                this.loadGTCList(0);
+            },
+            closeGTCDetail() {
+                this.close30 = false;
+            },
+            openIntegralDetail() {
+                this.close31 = true;
+                this.loadIntegralList(0);
+            },
+            closeIntegralDetail() {
+                this.close31 = false;
+            },
+            openTrimDetail(id) {
+                this.close25 = true;
+                this.loadFish(id);
+            },
+            closeTrimDetail() {
+                this.close25 = false;
+            },
+            switchPayType(type) {
+                if (type == 0) {
+                    $(".PropertyTab1 img").attr("src", "/fish/img/assets204.png");
+                    $(".PropertyTab2 img").attr("src", "/fish/img/assets97.png");
+                } else {
+                    $(".PropertyTab1 img").attr("src", "/fish/img/assets3.png");
+                    $(".PropertyTab2 img").attr("src", "/fish/img/assets92.png");
+                }
+            },
+            toDetail: function (id) {
+                id && (location.href = "{:url('home/pond/detail')}?type=3&id=" + id);
+            },
+            feed: function (id, index) {
+                var self = this;
+                core.load("{:url('/index/fish/feed')}", {fid: id}, function (res) {
+                    if (res.code == 0) {
+                        window.location.reload();
+                        // self.list[index].is_contract=1;
+                    }
+                    core.toast(res.msg);
+                })
+            },
+            loadList: function () {
+                var self = this;
+                var data = {
+                    page: self.page,
+                    limit: 12,
+                };
+
+                core.load("{:url('/index/fish/index')}", data, function (res) {
+                    if (res.code == '0') {
+                        if (!self.mybait) self.mybait = res.info.mybait;
+                        if (res.info.list.length > 0) self.list = self.list.concat(res.info.list);
+                        if (!res.info.list || (res.info.list.length < data.limit)) {
+                            self.status = false;
+                            $('.dialog-bottom').text('已经加载全部数据');
+                        } else {
+                            $('.dialog-bottom').text('正在加载...');
+                        }
+                    } else {
+                        core.toast(res.msg)
+                    }
+                })
+            },
+            closeWin: function () {
+                this.popwin = false;
+            },
+            /*············闪兑···············*/
+            swap: function () {
+                if (this.form == 'GC') {
+                    this.exchange_rate = Number(1 / this.exchange_rate_gc).toFixed(4);
+                    this.default_url = this.url_gtc_to_gc;
+                    this.form = "GTC";
+                    this.to = "GC";
+                    this.gt_num = this.gtc_num;
+                } else {
+                    this.exchange_rate = this.exchange_rate_gc;
+                    this.default_url = this.url_gc_to_gtc;
+                    this.form = "GC";
+                    this.to = "GTC";
+                    this.gt_num = this.gc_num;
+                }
+            },
+            exchange: function () {
+                core.load(this.default_url, {eth: this.eth}, (res) => {
+                    if (res.code == 666) {
+                        this.eth = '';
+                    }
+                    core.toast(res.msg);
+                });
+            },
+            copyGcAddress: function () {
+                if (!this.info.gc_address) {
+                    core.toast('未获取到钱包地址');
+                    return;
+                }
+                ;
+                var input = document.getElementById('gc-address');
+                const len = input.value.length;
+                if (input.createTextRange) {
+                    //ie
+                    const range = input.createTextRange();
+                    range.collapse(true);
+                    range.moveStart('character', 0);//起始光标
+                    range.moveEnd('character', len);//结束光标
+                    range.select();//不兼容苹果
+                } else {
+                    //firefox/chrome
+                    input.setSelectionRange(0, len);
+                    input.focus();
+                }
+                //input.select();
+                if (document.execCommand("copy")) {
+                    this.close24 = true;
+                    core.toast('复制钱包地址成功');
+                } else {
+                    core.toast('复制钱包地址失败');
+                }
+                ;
+            },
+            member: function () {
+                var self = this;
+                core.load("{:url('/index/setup/index')}", {}, function (res) {
+                    console.log(res)
+                    if (res.code == 0) {
+                        self.info = res.info;
+                        self.info.nowProfitFiexd = res.info.now_profit.split('.')[1];
+
+                        self.info.sumTeamProfit = parseFloat(res.info.now_extension) + parseFloat(res.info.now_team);
+                        self.info.sumTeamProfitFiexd = self.info.sumTeamProfit.toString().split('.')[1];
+                        self.info.sumTotal = parseFloat(res.info.now_extension) + parseFloat(res.info.now_team) + parseFloat(res.info.now_bait) + parseFloat(res.info.now_integral) + parseFloat(res.info.gc)
+                    } else {
+                        core.toast(res.msg);
+                    }
+                })
+            },
+            loadGCList: function (type) {
+                this.tabid3 = type + 1;
+                var page = '';
+                var self = this;
+                var data = {
+                    type: type,
+                    limit: 200,
+                    page: page
+                };
+                core.load("{:url('index/gc/list')}", data, (res) => {
+                    if (res.code == '0') {
+                        self.GCList = res.info.data;
+                    } else {
+                        core.toast(res.msg);
+                    }
+                })
+            },
+            loadGTCList: function (type) {
+                this.tabid3 = type + 1;
+                var self = this;
+                var page = '';
+                var data = {
+                    type: type,
+                    limit: 1000,
+                    page: page,
+                };
+
+                core.load("{:url('index/my/bait_list')}", data, function (res) {
+
+                    if (res.code == '0') {
+                        self.GTCList = res.info;
+                    } else {
+                        core.toast(res.msg);
+                    }
+                })
+            },
+            loadIntegralList: function (type) {
+                this.tabid3 = type + 1;
+                var self = this;
+                var page = '';
+                var data = {
+                    type: type,
+                    limit: 1000,
+                    page: page,
+                };
+
+                core.load("{:url('index/my/integral_list')}", data, function (res) {
+
+                    if (res.code == '0') {
+                        self.IntegralList = res.info;
+                    } else {
+                        core.toast(res.msg);
+                    }
+                })
+            },
+            loadContractList: function () {
+                var self = this;
+                var data = {
+                    page: self.page,
+                    limit: 1000,
+                };
+
+                core.load("{:url('/index/fish/index')}", data, function (res) {
+
+                    if (res.code == '0') {
+                        self.ContractList = res.info.list;
+                    } else {
+                        core.toast(res.msg)
+                    }
+                })
+            },
+            loadFish: function (id) {
+                var self = this;
+                var data = {
+                    fid: id,
+                };
+
+                core.load("{:url('/index/my/turn_msg')}", data, function (res) {
+
+                    if (res.code == '0') {
+                        self.fish = res.info.fish_msg;
+                    } else {
+                        core.toast(res.msg)
+                    }
+                })
+            }
+        },
+        mounted: function () {
+            var self = this;
+            self.member();
+            self.loadList();
+            self.loadList1();
+            self.loadList2();
+            this.autoLoad();
+            this.getTb();
+            this.getZr();
+            // 下拉加载
+            $(window).off("scroll").on("scroll", function (e) {
+                var totalheight = parseFloat($(this).height()) + parseFloat($(this).scrollTop());
+                if (($(document).height() - 100 <= totalheight) && self.status) {
+                    self.page = ++self.page;
+                    self.loadList()
+                }
+            });
+            $('#my').on('scroll', function () {
+                if (self.isloding || self.allLoad) {
+                    return false;
+                }
+                var scrollTop = $(this).scrollTop()
+                var ks_area = $(this).innerHeight();
+                var nScrollHight = 0;
+                nScrollHight = $(this)[0].scrollHeight;
+                if (scrollTop + ks_area >= nScrollHight) {
+
+                    self.page2 = ++self.page2;
+                    self.loadList2()
+                }
+            });
+            $('#my1').on('scroll', function () {
+                if (self.isloding2 || self.allLoad2) {
+                    return false;
+                }
+                var scrollTop = $(this).scrollTop()
+                var ks_area = $(this).innerHeight();
+                var nScrollHight = 0;
+                nScrollHight = $(this)[0].scrollHeight;
+                if (scrollTop + ks_area >= nScrollHight) {
+
+                    self.page = ++self.page;
+                    self.loadList1()
+                }
+            });
+        }
+    });
+
+
+</script>
+{/block}
+
+{block name="style"}
+<style>
+    .GTC_transferContent {
+        padding: 3.5rem 1.5rem 0 1.5rem;
+    }
+
+    /* .dcsMax{
+    width:9.625rem;
+    height:7.4rem;
+}
+.dcsMax img{
+    width:9.625rem;
+    height:7.4rem;
+} */
+
+    .Redeem_nowBb {
+        left: 9.8rem !important;
+    }
+
+    .yueyueList {
+        height: 80%;
+        overflow: auto;
+    }
+
+    .sdMax {
+        left: 9rem !important;
+    }
+
+    .sdMax {
+        left: 9.5rem !important;
+    }
+
+    .Transfer_content {
+        height: 80%;
+        overflow-y: scroll;
+        -webkit-overflow-scrolling: touch;
+        overflow-x: hidden;
+    }
+
+    .yueyueList > div:nth-last-child(1) {
+        border-bottom: 0 !important;
+    }
+
+    .Pristine_content > div:nth-child(5) {
+        font-family: PingFang SC;
+        font-weight: 400;
+        color: rgba(255, 255, 255, 1);
+        font-size: 10px;
+        line-height: 27px;
+        margin-top: 2rem;
+    }
+
+    .Pristine_content > div:nth-child(4) {
+        margin-top: 2rem;
+    }
+
+    .PristineImg {
+        width: 7.125rem;
+        height: 4.22rem;
+        position: fixed;
+        left: 9.5rem;
+        top: 40rem;
+    }
+
+    .PristineImg img {
+        width: 7.125rem;
+        height: 4.22rem;
+    }
+
+    .Pristine_bb {
+        font-size: 17px;
+        text-indent: 10px;
+        letter-spacing: 1px;
+    }
+
+    .Pristine_content {
+        padding: 3.5rem 1.5rem 0 1.5rem;
+    }
+
+    .Pristine_content input {
+        outline: none;
+        background: none;
+    }
+
+    .gtc_aa {
+        width: 7.8rem;
+        font-size: 22px;
+        color: #fff;
+        text-indent: 6px;
+    }
+
+    .GTC_transferContent input {
+        background: none;
+        outline: none;
+        width: 50%;
+        font-size: 17px;
+    }
+
+    .GTC_transferContent > div:nth-child(1) {
+        background: url("/fish/img/assets61.png") 0 0 no-repeat;
+        background-size: 100% 100%;
+        width: 19rem;
+        height: 2.5rem;
+        display: flex;
+    }
+
+    .Pristine_content > div:nth-child(1) {
+        background: url("/fish/img/assets61.png") 0 0 no-repeat;
+        background-size: 100% 100%;
+        width: 19rem;
+        height: 2.5rem;
+        display: flex;
+        line-height: 2.5rem;
+    }
+
+    .Pristine_content > div:nth-child(2) {
+        background: url("/fish/img/assets61.png") 0 0 no-repeat;
+        background-size: 100% 100%;
+        width: 19rem;
+        height: 2.5rem;
+        display: flex;
+        margin-top: 0.5rem;
+        line-height: 2.5rem;
+    }
+
+    .Pristine_content > div:nth-child(3) {
+        background: url("/fish/img/assets61.png") 0 0 no-repeat;
+        background-size: 100% 100%;
+        width: 19rem;
+        height: 2.5rem;
+        display: flex;
+        margin-top: 0.5rem;
+        line-height: 2.5rem;
+    }
+
+    .GTC_transferContent > div:nth-child(2) {
+        background: url("/fish/img/assets61.png") 0 0 no-repeat;
+        background-size: 100% 100%;
+        width: 19rem;
+        height: 2.5rem;
+        display: flex;
+        margin-top: 0.5rem;
+    }
+
+    .GTC_transferContent > div:nth-child(3) {
+        background: url("/fish/img/assets61.png") 0 0 no-repeat;
+        background-size: 100% 100%;
+        width: 19rem;
+        height: 2.5rem;
+        display: flex;
+        margin-top: 0.5rem;
+    }
+
+    .GTC_transferContent > div:nth-child(4) {
+        background: url("/fish/img/assets61.png") 0 0 no-repeat;
+        background-size: 100% 100%;
+        width: 19rem;
+        height: 2.5rem;
+        display: flex;
+        margin-top: 0.5rem;
+    }
+
+    .GTC_transferContent > div:nth-child(5) {
+        font-family: PingFang SC;
+        font-weight: 400;
+        color: rgba(255, 255, 255, 1);
+        line-height: 35px;
+        font-size: 12px;
+        margin-top: 2rem;
+    }
+
+    .GTC_transferContent > div:nth-child(6) {
+        font-family: PingFang SC;
+        font-weight: 400;
+        color: rgba(255, 255, 255, 1);
+        line-height: 35px;
+        font-size: 10px;
+    }
+
+    .GTC_transferContent > div:nth-child(7) {
+        font-family: PingFang SC;
+        font-weight: 400;
+        color: rgba(255, 255, 255, 1);
+        line-height: 35px;
+        font-size: 10px;
+        margin-top: 2.5rem;
+        text-align: center;
+    }
+
+    .contractlist_right {
+        display: flex;
+        flex: 1;
+        justify-content: center;
+        align-items: center;
+
+    }
+
+    .transferSubmit {
+        width: 7.125rem;
+        height: 4.22rem;
+        position: fixed;
+        top: 40rem;
+        left: 9.5rem;
+    }
+
+    .transferSubmit img {
+        width: 7.125rem;
+        height: 4.22rem;
+    }
+
+    .PropertyTab {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 1rem;
+        font-size: 13px;
+        line-height: 2.967rem;
+        color: rgba(58, 48, 38, 0.6);
+    }
+
+    .PropertyTab1 {
+        width: 2.78rem;
+        height: 2.68rem;
+    }
+
+    .PropertyTab1 img {
+        width: 2.78rem;
+        height: 2.68rem;
+        vertical-align: middle;
+    }
+
+    .PropertyTab2 {
+        width: 2.93rem;
+        height: 2.967rem;
+    }
+
+    .PropertyTab2 img {
+        width: 2.93rem;
+        height: 2.967rem;
+        vertical-align: middle;
+    }
+
+    .Propertyimg img {
+        width: 5.75rem;
+        height: 4.5rem;
+    }
+
+    .Property_tilte {
+        margin-left: 1.9rem;
+    }
+
+    .Property_tilte div:nth-child(1) {
+        font-size: 37px;
+        font-family: MF XingYan(Noncommercial);
+        font-weight: 400;
+        color: rgba(136, 111, 92, 1);
+        line-height: 22px;
+        text-shadow: 0px 4px 2px rgba(0, 0, 0, 0.42);
+        color: #F2E1C0;
+
+        /* background-color:linear-gradient(0deg,rgba(242,225,192,1) 0%, rgba(255,255,255,1) 100%); */
+
+    }
+
+    .Property_box {
+        padding-left: 6.1rem;
+        padding-right: 7.2rem;
+        padding-top: 8.4rem;
+    }
+
+    .zh_Property_box {
+        padding-top: 14.4rem !important;
+    }
+
+    .Property_box > div {
+        display: flex;
+    }
+
+    .Streaming_content {
+        padding: 1rem 2.2rem 0 2.59rem;
+        font-family: PingFang SC;
+        font-weight: 400;
+        color: rgba(255, 255, 255, 1);
+        line-height: 20px;
+        font-size: 14px;
+
+    }
+
+    .Wallet_content {
+        padding-left: 1.81rem;
+        padding-right: 1.81rem;
+        padding-top: 2rem;
+        text-align: center;
+    }
+
+    .Wallet_content div:nth-child(1) {
+        font-family: Rubik;
+        font-weight: bold;
+        color: rgba(255, 255, 255, 1);
+        font-size: 17px;
+    }
+
+    .Wallet_content div:nth-child(2) {
+        font-family: Rubik;
+        font-weight: 400;
+        color: rgba(255, 255, 255, 1);
+        font-size: 11px;
+        margin-top: 1.5rem;
+    }
+
+    .Wallet_content div:nth-child(3) {
+        width: 16.56rem;
+        height: 15.93rem;
+        background: rgba(255, 255, 255, 1);
+        border-radius: 15px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 2rem;
+        margin: 2rem auto;
+
+
+    }
+
+    .Wallet_content div:nth-child(3) img {
+        width: 13.75rem;
+        height: 13.75rem;
+    }
+
+    .Wallet_content div:nth-child(4) {
+        font-family: MF XingYan(Noncommercial);
+        font-weight: 400;
+        color: rgba(255, 255, 255, 1);
+        font-size: 27px;
+        margin-top: 1.28rem;
+    }
+
+    .Record_a {
+        font-size: 14px;
+        font-family: MF XingYan(Noncommercial);
+        font-weight: 400;
+        color: rgba(255, 255, 255, 1);
+        margin-top: 0.5rem;
+    }
+
+    .Walletbtn {
+        left: 9.5rem !important;
+    }
+
+    .Record_b {
+        font-family: Rubik;
+        font-weight: 400;
+        color: rgba(255, 255, 255, 1);
+        font-size: 12px;
+        margin-top: 0.5rem;
+    }
+
+    .Record_content {
+        height: 5.125rem;
+        border-bottom: 1px solid #6D6D6D;
+        display: flex;
+    }
+
+    .Record_content div:nth-child(1) {
+        flex: 1;
+    }
+
+    .Record_content div:nth-child(2) {
+        flex: 1;
+    }
+
+    .Record_content div:nth-child(3) {
+        flex: 1;
+    }
+
+    .MoneyRecord_tab {
+        display: flex;
+        font-family: MF XingYan(Noncommercial);
+        font-weight: 400;
+        color: rgba(91, 86, 83, 1);
+        font-size: 17px;
+    }
+
+    .MoneyRecord_tab div:nth-child(2) {
+        margin-left: 3.5rem;
+    }
+
+    .MoneyRecord_tab div:nth-child(3) {
+        margin-left: 2.2rem;
+    }
+
+    .active3 {
+        color: #fff;
+        border-bottom: 4px solid #0092C5;
+    }
+
+    .MoneyRecord_content {
+        padding-left: 1.68rem;
+        padding-right: 1.28rem;
+        padding-top: 3.53rem;
+    }
+
+    .CoinBtn {
+        width: 7.125rem;
+        height: 4.21rem;
+        position: fixed;
+        left: 4rem;
+        top: 40rem;
+    }
+
+    .review_content_b {
+        font-family: PingFang SC;
+        font-weight: 400;
+        color: rgba(255, 255, 255, 1);
+        font-size: 14px;
+        position: relative;
+        left: 0;
+        top: 32rem;
+        text-indent: 2.5rem;
+        line-height: 27px;
+    }
+
+    .review_content {
+        padding-left: 3.93rem;
+        padding-right: 3.78rem;
+        padding-bottom: 4.47rem;
+    }
+
+    .PropertyImg_box {
+        width: 10.6rem;
+        height: 6.28rem;
+        position: fixed;
+        top: 32rem;
+        left: 7.5rem;
+    }
+
+    .PropertyImg_box img {
+        width: 10.6rem;
+        height: 6.28rem;
+    }
+
+    .GTCOut {
+        width: 10.6rem;
+        height: 6.28rem;
+        position: fixed;
+        top: 34rem;
+    }
+
+    .GTCOut img {
+        width: 7.6rem;
+        height: 4.28rem;
+    }
+
+
+    .flashsuccessfulMax {
+        top: 7.2rem !important;
+        left: 20.5rem !important;
+    }
+
+    .gc_img {
+        top: 7rem !important;
+        left: 21.5rem !important;
+    }
+
+    .gc_coinContent {
+        padding-top: 1rem;
+        padding-left: 1.7rem;
+        padding-right: 1.7rem;
+    }
+
+    .lase_flash {
+        font-size: 14px;
+        margin: 1rem;
+        text-align: center;
+        color: rgba(255, 255, 255, 1);
+        font-family: PingFang SC;
+    }
+
+    .Submit_review {
+        width: 7.125rem;
+        height: 4.21rem;
+        position: fixed;
+        top: 40rem;
+        left: 14.5rem;
+    }
+
+    .Submit_review img {
+        width: 7.125rem;
+        height: 4.21rem;
+    }
+
+    .CoinBtn img {
+        width: 7.125rem;
+        height: 4.21rem;
+    }
+
+    .flash_content5 {
+        font-size: 27px;
+        margin-top: 1.5rem;
+        justify-content: center;
+    }
+
+    .flash_content3 img {
+        width: 4.46rem;
+        height: 4.46rem;
+        margin: 0.4rem auto;
+    }
+
+    .flash_content3 {
+        margin-top: 0.2rem;
+    }
+
+    .flash_content4 {
+        margin-top: 0.2rem !important;
+    }
+
+    .flash_content > div {
+        display: flex;
+    }
+
+    .flash_content1 div:nth-child(1) {
+        font-size: 27px;
+    }
+
+    .flash_content1 div:nth-child(2) {
+        font-size: 32px;
+
+    }
+
+    .flash_content2 {
+        text-indent: 8px;
+        width: 19rem;
+        height: 2.43rem;
+        font-size: 22px;
+        background: url("/fish/img/asets36.png") 0 0 no-repeat;
+        background-size: 100% 100%;
+        margin-top: 1.5em;
+        line-height: 2.43rem;
+
+    }
+
+    .Property_details {
+        background: url("/fish/img/assets90.png") 0 0 no-repeat;
+        background-size: 100% 100%;
+        width: 27rem;
+        height: 27.75rem;
+        position: relative;
+        top: 4.2rem;
+    }
+
+    .zh_success {
+        background: url("/fish/img/assets93.png") 0 0 no-repeat;
+        background-size: 100% 100%;
+        width: 26rem;
+        height: 38.53rem;
+        position: relative;
+        top: 4.2rem;
+    }
+
+    .new_flash_content2 {
+        display: flex;
+    }
+
+    /* .new_flash_content2 div{
+    font-size:15px !important;
+} */
+    .new_flash_content2 input {
+        margin-left: 0.1rem !important;
+        width: 50%;
+    }
+
+    .new_flash_content2 div {
+        font-size: 22px;
+    }
+
+    .flash_content2 input {
+        outline: none;
+        background: none;
+        font-size: 17px;
+        margin-left: 0.1rem;
+    }
+
+    .flash_box {
+        padding-left: 1.7rem;
+        padding-right: 1.7rem;
+        padding-top: 4rem;
+    }
+
+    .new_flashImg {
+        width: 7.4rem;
+        height: 4.21rem;
+        position: fixed;
+        left: 11rem;
+        top: 40rem;
+    }
+
+    .new_flashImg img {
+        width: 7.1rem;
+        height: 4.21rem;
+    }
+
+    .Redeem_now {
+        width: 7.125rem;
+        height: 4.22rem;
+        position: fixed;
+        left: 10.5rem;
+        top: 22rem;
+    }
+
+    .Successful {
+        top: 6.5rem !important;
+        left: 18rem !important;
+    }
+
+    .Redeem_now img {
+        width: 7.125rem;
+        height: 4.22rem;
+
+    }
+
+    .redemption_top {
+        height: 5.375rem;
+        line-height: 5.375rem;
+    }
+
+    .redemption_content {
+        padding-top: 2.5rem;
+        padding-left: 4.0rem;
+        padding-right: 4.0rem;
+    }
+
+    .redemption_content div:nth-child(1) {
+        color: #fff;
+        font-size: 25px;
+    }
+
+    .redemption_content div:nth-child(2) {
+        display: flex;
+        font-size: 27px;
+        /* line-height:5.375rem; */
+    }
+
+    .gc_coinContentaa {
+        width: 7.5rem;
+        font-size: 22px !important;
+    }
+
+    .redemption_content div:nth-child(2) img {
+        width: 4.625rem;
+        height: 5.375rem;
+    }
+
+    .Transfer_title {
+        display: flex;
+        font-size: 17px;
+        color: #5B5653;
+        font-weight: 400;
+        justify-content: space-between;
+    }
+
+    .Transfer_list {
+        height: 5.1rem;
+        border-bottom: 1px solid #6D6D6D;
+        margin-top: 1rem;
+    }
+
+    .list_tab1 {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .list_tab2 {
+        display: flex;
+        font-size: 13px;
+    }
+
+    .list_tab2 div {
+        flex: 1;
+    }
+
+    .active2 {
+        color: #fff;
+        border-bottom: 0.12rem solid rgba(158, 224, 248, 1);
+        border-radius: 3px;
+    }
+
+    .Transfer_content {
+        padding: 1.5rem 1.625rem 2rem 1.75rem;
+    }
+
+    .gc_table {
+        padding: 1.5rem 1.625rem 2rem 1.75rem;
+        height: 30rem;
+        overflow-y: auto;
+    }
+
+    .contract_list_table {
+        height: 35rem;
+        overflow-y: auto;
+        margin-top: -2rem;
+    }
+
+    .yy_time {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .new_dgtab div:nth-child(2) {
+        margin-left: 5.2rem !important;
+    }
+
+    .new_dgtab div:nth-child(3) {
+        margin-left: 5.2rem !important;
+    }
+
+    .jl_tab div:nth-child(2) {
+        margin-left: 5.2rem !important;
+    }
+
+    .jl_tab div:nth-child(3) {
+        margin-left: 5.2rem !important;
+    }
+
+    .newcontract_listcon {
+        margin-top: 1.8rem !important;
+    }
+
+    .jszhangdan div:nth-child(2) {
+        margin-left: 3.8rem !important;
+    }
+
+    .jszhangdan div:nth-child(3) {
+        margin-left: 3.8rem !important;
+    }
+
+    .contractlist_right img {
+        width: 3.43rem;
+        height: 3.43rem;
+    }
+
+    .detailsImg {
+        width: 3.8rem;
+        height: 3.9rem;
+        position: relative;
+        left: 19.5rem;
+        top: 1.5rem;
+    }
+
+    .contractlist_center2 {
+        font-size: 9px;
+        font-family: MF XingYan(Noncommercial);
+        font-weight: 400;
+        color: rgba(136, 111, 92, 1);
+        /* margin-left:1rem; */
+    }
+
+    .contractlist_center2 {
+        margin-left: 0.1rem;
+    }
+
+    .contractlist_center2 div:nth-child(2) {
+        margin-top: 0.2rem;
+    }
+
+    .contractlist_center2 div:nth-child(3) {
+        margin-top: 0.2rem;
+    }
+
+    .contractlist_center2 div:nth-child(4) {
+        margin-top: 0.2rem;
+    }
+
+    .contractlist_center2 div:nth-child(1) {
+        margin-top: 0.2rem;
+    }
+
+    .contractlist_left {
+        width: 7.59rem;
+        height: 8.28rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .contractlist_left img {
+        width: 5.75rem;
+        height: 4.625rem;
+    }
+
+    .contractlist_center1 div:nth-child(1) {
+        font-size: 26px;
+        font-family: MF XingYan(Noncommercial);
+        font-weight: 400;
+        color: rgba(136, 111, 92, 1);
+        margin-top: 0.5rem;
+    }
+
+    .contractlist_center1 div:nth-child(2) {
+        font-size: 9px;
+        font-family: Rubik;
+        font-weight: bold;
+        color: rgba(136, 111, 92, 1);
+        width: 3rem;
+    }
+
+    .contractlist_center1 div:nth-child(3) {
+        font-size: 7px;
+        font-family: MF XingYan(Noncommercial);
+        font-weight: 400;
+        color: rgba(136, 111, 92, 1);
+        margin-top: 0.2rem;
+    }
+
+    .contract_listcon {
+        width: 24.8rem;
+        height: 8.28rem;
+        background: url("/fish/img/assets20.png") 0 0 no-repeat;
+        background-size: 100% 100%;
+        margin: auto;
+        display: flex;
+        margin-top: 0.29rem;
+        position: relative;
+
+    }
+
+    .li-con {
+        width: 24.8rem;
+        height: 8.28rem;
+        background: url("/fish/img/assets20.png") 0 0 no-repeat;
+        background-size: 100% 100%;
+        margin: auto;
+        display: flex;
+        position: absolute;
+        left: 0;
+        top: 0;
+        z-index: 1
+    }
+
+    .contract_listcon:last-child .line {
+        display: none;
+    }
+
+    .line {
+        position: absolute;
+        z-index: 10;
+        width: 17.59rem;
+        height: 3.65rem;
+        top: 8rem;
+        left: 3rem;
+    }
+
+    .contract_list {
+        width: 100%;
+        /*position: relative;*/
+        /*top: -1.5rem;*/
+
+
+    }
+
+    .contract_title img {
+        width: 9.125rem;
+        height: 7.34rem;
+        /*margin-top: 4.9rem;*/
+        margin-left: 8.3125rem;
+    }
+
+    .detailsImg5 {
+        top: 6.5rem !important;
+        left: 18rem !important;
+    }
+
+    .detailsImg_zr img {
+        width: 7.125rem;
+        height: 4.2rem;
+        position: fixed;
+        top: 40rem;
+        left: 10rem;
+    }
+
+    .detailsImg_new {
+        width: 3.8rem;
+        height: 3.9rem;
+        position: relative;
+        left: 19.5rem;
+        top: -4rem;
+    }
+
+    .detailsImg_new > img {
+        width: 3.8rem;
+        height: 3.9rem;
+    }
+
+    .gc_content {
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+        padding-bottom: 1.5rem;
+    }
+
+    .gc_list {
+        display: flex;
+    }
+
+    .gc_tabnew {
+        font-size: 14px;
+        display: flex;
+        height: 4.58rem;
+        border-bottom: 1px solid #6D6D6D;
+        padding-top: 0.5rem;
+    }
+
+    .gc_tabnewjs {
+        font-size: 14px;
+        display: flex;
+        height: 4.58rem;
+        border-bottom: 1px solid #6D6D6D;
+        padding-top: 0.5rem;
+    }
+
+    .gc_tabnew > div:nth-child(1) {
+        width: 30%;
+    }
+
+    .gc_tabnew > div:nth-child(2) {
+        width: 30%;
+        margin-left: 2.8rem;
+    }
+
+    .gc_tabnew > div:nth-child(3) {
+        width: 30%;
+        margin-left: 2.8rem;
+    }
+
+    .active1 {
+
+        color: #fff;
+        border-bottom: 3px solid #F8D99E;
+    }
+
+    .gc_Bill {
+        padding-left: 1.5rem;
+        padding-top: 1.5rem;
+        padding-right: 1.5rem;
+        padding-bottom: 0.5;
+    }
+
+    .gc_tab {
+        display: flex;
+        font-size: 17px;
+        color: #5B5653;
+    }
+
+    .gc_tab div:nth-child(1) {
+        /* width:30%; */
+    }
+
+    .gc_tab div:nth-child(2) {
+        margin-left: 2.8rem;
+        /* width:30%; */
+    }
+
+    .gc_tab div:nth-child(3) {
+        margin-left: 2.8rem;
+        /* width:30%; */
+    }
+
+    .details_content {
+        display: flex;
+        padding: 1.2rem;
+    }
+
+    .details_content1 {
+        padding: 1.2rem;
+    }
+
+    .a_icon {
+        color: #fff;
+        font-size: 13px;
+    }
+
+    .b_icon {
+        font-size: 11px;
+    }
+
+    .detailsList_yu {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 0.5rem;
+    }
+
+    .detailsList_yu div:nth-child(1) {
+        font-size: 22px;
+        color: #fff;
+    }
+
+    .detailsList_yu div:nth-child(2) {
+        font-size: 27px;
+        color: #fff;
+        margin-top: 0.5rem;
+    }
+
+    .detailsList_right img {
+        width: 1.5rem;
+        height: 1.5rem;
+    }
+
+    .detailsList {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        /* padding-top:2rem; */
+    }
+
+    .detailsList > div {
+        width: 80%;
+        height: 5.7rem;
+        border-bottom: 1px solid #6D6D6D;
+    }
+
+    .detailsImg > img {
+        width: 3.8rem;
+        height: 3.9rem;
+    }
+
+    .Asset_details {
+        position: fixed;
+        left: 0px;
+        top: 0px;
+        background: rgba(0, 0, 0, 0.8);
+        width: 100%; /*宽度设置为100%，这样才能使隐藏背景层覆盖原页面*/
+        height: 100%;
+        filter: alpha(opacity=60); /*设置透明度为60%*/
+        /* opacity:0.8;  非IE浏览器下设置透明度为60% */
+        z-index: 999;
+
+    }
+
+    .details_top1 {
+        width: 22.3rem;
+        height: 18rem;
+        position: relative;;
+        top: 6.5rem;
+        background: url("/fish/img/assets11.png") 0 0 no-repeat;
+        background-size: 100%;
+        margin: auto;
+    }
+
+    .details_top5 {
+        width: 22.3rem;
+        height: 42.56 .5rem;
+        position: relative;;
+        /* background:url("/fish/img/assets14.png") 0 0 no-repeat; */
+        background: url("/fish/img/assets15.png") 0 0 no-repeat;
+        background-size: 100%;
+        margin: auto;
+    }
+
+    .gczhuangrnang {
+        width: 22.3rem;
+        height: 42.5rem;
+        position: relative;;
+        /* top:6.5rem; */
+        background: url("/fish/img/assets14.png") 0 0 no-repeat;
+        background-size: 100%;
+        margin: auto;
+    }
+
+    .details_top6 {
+        width: 22.3rem;
+        height: 43.5rem;
+        position: relative;;
+        /* top:6.5rem; */
+        background: url("/fish/img/assets15.png") 0 0 no-repeat;
+        background-size: 100%;
+        margin: auto;
+    }
+
+    .details_top {
+        width: 22.3rem;
+        height: 36rem;
+        position: relative;;
+        top: 6.5rem;
+        background: url("/fish/img/assets9.png") 0 0 no-repeat;
+        background-size: 100%;
+        margin: auto;
+    }
+
+    .gtc_transfer {
+        width: 22.3rem;
+        height: 36rem;
+        position: relative;;
+        top: 6.5rem;
+        background: url("/fish/img/assets94.png") 0 0 no-repeat;
+        background-size: 100%;
+        margin: auto;
+    }
+
+    .Pristine_transfer {
+        width: 22.3rem;
+        height: 36rem;
+        position: relative;;
+        top: 6.5rem;
+        background: url("/fish/img/assets96.png") 0 0 no-repeat;
+        background-size: 100%;
+        margin: auto;
+    }
+
+    .details_topjl {
+        width: 22.3rem;
+        height: 36rem;
+        position: relative;;
+        top: 6.5rem;
+        background: url("/fish/img/assets26.png") 0 0 no-repeat;
+        background-size: 100% 100%;
+        margin: auto;
+    }
+
+    .SnatchMax {
+        width: 22.3rem;
+        height: 36rem;
+        position: relative;;
+        top: 6.5rem;
+        background: url("/fish/img/assets28.png") 0 0 no-repeat;
+        background-size: 100% 100%;
+        margin: auto;
+    }
+
+    .Transfer_record {
+        width: 22.3rem;
+        height: 36rem;
+        position: relative;;
+        top: 6.5rem;
+        background: url("/fish/img/assets29.png") 0 0 no-repeat;
+        background-size: 100% 100%;
+        margin: auto;
+    }
+
+    .MoneyRecord {
+        width: 22.3rem;
+        height: 36rem;
+        position: relative;;
+        top: 6.5rem;
+        background: url("/fish/img/assets51.png") 0 0 no-repeat;
+        background-size: 100% 100%;
+        margin: auto;
+    }
+
+    .Wallet {
+        width: 22.3rem;
+        height: 36rem;
+        position: relative;;
+        top: 6.5rem;
+        background: url("/fish/img/assets52.png") 0 0 no-repeat;
+        background-size: 100% 100%;
+        margin: auto;
+    }
+
+    .Streaming_tips {
+        width: 22.3rem;
+        height: 18.3rem;
+        position: relative;;
+        top: 6.5rem;
+        background: url("/fish/img/assets55.png") 0 0 no-repeat;
+        background-size: 100% 100%;
+        margin: auto;
+    }
+
+    .copy_address {
+        height: 43.4rem;
+        background: url("/fish/img/assets54.png") 0 0 no-repeat;
+        background-size: 100% 100%;
+        margin: auto;
+    }
+
+    .gc_coin {
+        width: 22.3rem;
+        height: 36rem;
+        position: relative;;
+        top: 6.5rem;
+        background: url("/fish/img/assets39.png") 0 0 no-repeat;
+        background-size: 100% 100%;
+        margin: auto;
+    }
+
+    .gC_review {
+        /* width:100%; */
+        height: 43rem;
+        background: url("/fish/img/assets50.png") 0 0 no-repeat;
+        background-size: 100% 100%;
+        margin: auto;
+    }
+
+    .redemption {
+        width: 22.3rem;
+        height: 18.2rem;
+        position: relative;;
+        top: 6.5rem;
+        background: url("/fish/img/assets30.png") 0 0 no-repeat;
+        background-size: 100%;
+        margin: auto;
+    }
+
+    .Successful_redemption {
+        width: 22.3rem;
+        height: 31.96rem;
+        /* position: relative;;
+    top:6.5rem; */
+        background: url("/fish/img/assets33.png") 0 0 no-repeat;
+        background-size: 100%;
+        margin: auto;
+    }
+
+    .details_top2 {
+        width: 22.3rem;
+        height: 36rem;
+        position: relative;;
+        top: 6.5rem;
+        background: url("/fish/img/assets12.png") 0 0 no-repeat;
+        background-size: 100%;
+        margin: auto;
+        /* padding-top:5rem; */
+    }
+
+    .details_top8 {
+        width: 22.3rem;
+        height: 36rem;
+        position: relative;;
+        top: 6.5rem;
+        background: url("/fish/img/assets17.png") 0 0 no-repeat;
+        background-size: 100%;
+        margin: auto;
+        /* padding-top:5rem; */
+    }
+
+    .details_topjs {
+        width: 22.3rem;
+        height: 36rem;
+        position: relative;;
+        top: 6.5rem;
+        background: url("/fish/img/assets16.png") 0 0 no-repeat;
+        background-size: 100%;
+        margin: auto;
+        /* padding-top:5rem; */
+    }
+
+    .new_flash {
+        width: 22.3rem;
+        height: 36rem;
+        position: relative;;
+        top: 6.5rem;
+        background: url("/fish/img/assets34.png") 0 0 no-repeat;
+        background-size: 100%;
+        margin: auto;
+    }
+
+    .flash_successful {
+        width: 100%;
+        width: 25.3rem;
+        height: 43.4rem;
+        /* position: relative;;
+    top:6.5rem; */
+        background: url("/fish/img/assets38.png") 0 0 no-repeat;
+        background-size: 100%;
+        margin: auto;
+    }
+
+    .profit_top div:nth-child(1) {
+        font-size: 27px;
+        color: #fff;
+    }
+
+    .contractMax {
+        display: flex;
+        width: 26rem;
+        height: 1rem;
+        /* margin-left:1.8rem; */
+        justify-content: space-around;
+        height: 5.0rem;
+        margin: auto;
+    }
+
+    .contractMax img {
+        width: 9.3rem;
+        height: 5.3rem;
+
+    }
+
+    .contract {
+        /* display:flex; */
+    }
+
+    .profit_center {
+        display: flex;
+        font-size: 27px;
+        color: #fff;
+    }
+
+    .profit_center div:nth-child(2) {
+        margin-left: 3.2rem;
+    }
+
+    .profit_top div:nth-child(2) img {
+        width: 3.75rem;
+        height: 3.4rem;
+        margin-left: 0.5rem;
+    }
+
+    .profit_top div:nth-child(3) {
+        font-size: 9px;
+        margin-top: 1rem;
+    }
+
+    .profit_top div:nth-child(4) {
+        margin-left: 0.8rem;
+        font-size: 27px;
+    }
+
+    .profit_top div:nth-child(5) {
+        margin-left: 0.2rem;
+        margin-top: 1rem;
+    }
+
+    .profit div {
+        display: flex;
+    }
+
+    .profit {
+        padding-top: 1rem;
+        width: 19rem;
+        height: 12.9rem;
+        margin-top: 1.7rem;
+
+        box-shadow: 0px 7px 12px 0px rgba(106, 55, 28, 0.44);
+        border-radius: 26px;
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+        background: #7E594B;
+    }
+
+    .assets_num {
+        display: flex;
+        margin-top: 0.8rem;
+    }
+
+    .profit_bottom {
+        margin-top: 0.5rem;
+    }
+
+    .profit_bottom div:nth-child(2) {
+        margin-top: 1rem;
+    }
+
+    .profit_bottom div:nth-child(3) {
+        font-size: 27px;
+    }
+
+    .profit_bottom div:nth-child(6) {
+        font-size: 27px;
+        margin-left: 0.8rem;
+    }
+
+    .profit_bottom div:nth-child(1) img {
+        width: 4.625rem;
+        height: 3.96rem;
+    }
+
+    .profit_bottom div:nth-child(4) img {
+        width: 3.75rem;
+        height: 3.4rem;
+        margin-left: 1.7rem;
+    }
+
+    .assets_num div:nth-child(1) {
+        margin-left: 2rem;
+        font-size: 48px;
+        font-family: MF XingYan(Noncommercial);
+        font-weight: 400;
+        color: #F2E1C0;
+        line-height: 9px;
+        text-shadow: 0px 4px 2px rgba(0, 0, 0, 0.42);
+
+    }
+
+    .assets_num div {
+        font-family: MF XingYan(Noncommercial);
+        font-weight: 400;
+        color: #F2E1C0;
+        line-height: 9px;
+        text-shadow: 0px 4px 2px rgba(0, 0, 0, 0.42);
+    }
+
+    .assets_top {
+        display: flex;
+        padding: 0.5rem;
+        justify-content: space-around;
+    }
+
+    .assets_top div:nth-child(2) > img {
+        width: 4.2rem;
+        height: 1.68rem;
+    }
+
+    .assets_top div:nth-child(1) {
+        font-size: 27px;
+        font-family: MF XingYan(Noncommercial);
+        font-weight: 400;
+        color: #F2E1C0;
+        line-height: 9px;
+        text-shadow: 0px 4px 2px rgba(0, 0, 0, 0.42);
+
+
+    }
+
+    .box_topp {
+        display: flex;
+        justify-content: center;
+        /* align-items: center; */
+    }
+
+    .assets_content {
+        width: 80%;
+        height: 60%;
+        position: relative;
+        top: 12.5rem;
+    }
+
+    .center_content {
+        width: 75%;
+        height: 65%;
+        display: flex;
+        flex-wrap: wrap;
+        text-align: center;
+        font-size: 14px;
+        color: #fff;
+    }
+
+    .center_content a {
+        color: #fff;
+    }
+
+    .center_content div {
+        height: 2.5rem;
+        line-height: 2.5rem;
+        position: relative;
+        top: -1rem;
+    }
+
+    .center_content div:nth-child(1) {
+        background: url("/fish/img/assets6.png") 0 0 no-repeat;
+        width: 5.13rem;
+        height: 2.5rem;
+        background-size: 100% 100%;
+
+    }
+
+    .center_content div:nth-child(3n-1) {
+        margin-left: 1.8rem;
+    }
+
+    .center_content div:nth-child(3n) {
+        margin-left: 1.8rem;
+    }
+
+    .center_content div:nth-child(2) {
+        background: url("/fish/img/assets6.png") 0 0 no-repeat;
+        width: 5.13rem;
+        height: 2.5rem;
+        background-size: 100% 100%;
+    }
+
+    .center_content div:nth-child(3) {
+        background: url("/fish/img/assets6.png") 0 0 no-repeat;
+        width: 5.13rem;
+        height: 2.5rem;
+        background-size: 100% 100%;
+    }
+
+    .center_content div:nth-child(4) {
+        background: url("/fish/img/assets7.png") 0 0 no-repeat;
+        width: 5.13rem;
+        height: 2.5rem;
+        background-size: 100% 100%;
+    }
+
+    .center_content div:nth-child(5) {
+        background: url("/fish/img/assets8.png") 0 0 no-repeat;
+        width: 5.13rem;
+        height: 2.5rem;
+        background-size: 100% 100%;
+    }
+
+    .center_content div:nth-child(6) {
+        background: url("/fish/img/assets8.png") 0 0 no-repeat;
+        width: 5.13rem;
+        height: 2.5rem;
+        background-size: 100% 100%;
+    }
+
+    .center_content div:nth-child(7) {
+        background: url("/fish/img/assets8.png") 0 0 no-repeat;
+        width: 5.13rem;
+        height: 2.5rem;
+        background-size: 100% 100%;
+    }
+
+    .centerFooter {
+        background: url("/fish/img/center98.png") 0 0 no-repeat;
+        width: 25.9rem;
+        height: 16.8rem;
+        background-size: 100% 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 2rem auto 2rem;
+
+    }
+
+    .hy_box {
+        width: 16.46rem;
+        height: 4.625rem;
+        background: url("/fish/img/center23.png") 0 0 no-repeat;
+        background-size: 100% 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .hy {
+        width: 100%;
+        height: 4.625rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 0.5rem;
+    }
+
+    .new_phone {
+        font-size: 14px;
+        font-family: MF XingYan(Noncommercial);
+        font-weight: 400;
+        color: #3A3026;
+    }
+
+    .span2_id {
+        font-size: 11px;
+        font-family: MF XingYan(Noncommercial);
+        font-weight: 400;
+        color: rgba(58, 48, 38, 1);
+        margin-left: .5rem;
+        margin-top: 0.3rem;
+    }
+
+    .new_phone {
+        display: flex;
+        justify-content: center;
+        align-content: center;
+    }
+
+    .new_id {
+        display: flex;
+        justify-content: center;
+        align-content: center;
+    }
+
+    .new_top-name {
+        display: flex;
+        justify-content: center;
+        align-content: center;
+    }
+
+    .new_top-name > strong {
+        font-size: 26px;
+        font-family: Rubik;
+        font-weight: bold;
+        color: rgba(255, 255, 255, 1);
+        text-shadow: 0px 4px 2px rgba(0, 0, 0, 0.42);
+        color: #F2E1C0;
+    }
+
+    .new_top-name > span {
+        margin-left: 0.5rem;
+        color: #F2E1C0;
+        font-size: 11px;
+        font-family: MF XingYan(Noncommercial);
+        text-shadow: 0px 4px 2px rgba(0, 0, 0, 0.42);
+        margin-top: 1rem;
+    }
+
+    .new_topImg {
+        width: 100%;
+        height: 12.18rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 6rem;
+    }
+
+    .right_X {
+        background: url("/fish/img/img3.png") 0 0 no-repeat;
+        background-size: 100% 100%;
+        width: 3.1rem;
+        height: 3.2rem;
+        position: relative;
+        top: 5rem;
+        right: -21rem
+    }
+
+    .box_topp {
+        /* width:100%; */
+        height: 36.75rem;
+        background: url("/fish/img/assets1.png") 0 0 no-repeat;
+        background-size: 100% 100%;
+        width: 24rem;
+        margin: 0 auto;
+    }
+
+    .box_center {
+        width: 100%;
+        height: 56rem;;
+        background: url("/fish/img/center1.png") 0 0 no-repeat;
+        /* background-size: 100% 100%; */
+
+    }
+
+    .center_list {
+        margin-top: -2rem;
+        width: 100%;
+        height: 16.81rem;
+        background: url("/fish/img/fish11.png") 0 0 no-repeat;
+        background-size: 100% 100%;
+        z-index: 999;
+
+
+    }
+
+    .img2 {
+        width: 100%;
+        height: 100%;
+
+    }
+
+    .img3 {
+        width: 8.5rem;
+        height: 8.9rem;
+    }
+
+    .top_one {
+        width: 90%;
+        height: 90%;
+        margin: auto;
+
+    }
+
+    .center_top {
+        width: 100%;
+        height: 37rem;
+        z-index: 99;
+        position: relative;
+        top: -3rem;
+
+
+    }
+
+    .img1 {
+        width: 100%;
+        height: 100%;
+        position: fixed;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        background-size: 100%;
+    }
+
+
+    .fish-head {
+        background-color: transparent;
+        background-image: url('/fish/img/pond-title-bg.png');
+        background-repeat: no-repeat;
+        background-size: 100%;
+        background-position: bottom;
+        height: 10rem;
+    }
+
+    .head-tit {
+        font-weight: bold;
+    }
+
+    .fish-head > .head-gtc > span {
+        font-size: 2.5rem;
+    }
+
+    .fish-head > .head-gtc > label {
+        font-size: 1.2rem;
+        margin-left: 6px;
+    }
+
+    .fish-list {
+        position: relative;
+    }
+
+    .fish-list > li {
+        margin: 0 0.5rem 0.4rem;
+        overflow: hidden;
+        background-image: url('/fish/img/index-item-bg.png');
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+        color: #e8aa02;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 0.5rem 0;
+    }
+
+    .fish-list > li .fish-img {
+        background-image: url('/fish/img/index-item-img-border-right.png');
+        background-repeat: no-repeat;
+        background-position-x: 100%;
+        background-size: auto 100%;
+        margin-right: 0.5rem;
+    }
+
+    .fish-list > li .fish-img img {
+        width: 7rem;
+        height: 4rem;
+        display: block;
+        padding: 0 0.8rem;
+    }
+
+    .fish-list > li > .fish-name {
+        width: 4rem;
+        height: 3rem;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+    }
+
+    .fish-list > li > .fish-name > .info-title {
+        font-size: 1rem;
+        font-weight: bold;
+        line-height: 1rem;
+    }
+
+    .fish-list > li > .fish-name > .info-title:first-child {
+        font-style: italic;
+        text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3);
+    }
+
+    .fish-list > li > .fish-name > .info-price {
+        font-size: 0.7rem;
+        margin-top: auto;
+        font-weight: bold;
+    }
+
+    .fish-list > li > .fish-name > .info-price > small {
+        font-size: 0.6rem;
+    }
+
+    .fish-list > li > .fish-info {
+        margin: 0 auto;
+        line-height: 1rem;
+        font-weight: bold;
+    }
+
+    .fish-list > li > .fish-info > .info-item:first-child {
+        /*line-height: 1rem;*/
+    }
+
+    .fish-list > li > .fish-info > .info-item > label {
+        font-size: 0.6rem;
+    }
+
+    .fish-list > li > .fish-info > .info-item > strong {
+        font-size: 1rem;
+        text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3);
+        font-weight: 900
+    }
+
+    .fish-list > li > .fish-info > .info-item > small {
+        font-size: 0.5rem;
+    }
+
+    .fish-list > li > .fish-info > .info-item span {
+        font-size: 0.75rem;
+    }
+
+    .fish-list > li > .fish-btn {
+        margin-right: 0.5rem
+    }
+
+    .fish-list > li > .fish-btn > .list-btn {
+        display: block;
+        text-align: center;
+        margin: auto auto 0.3rem;
+        font-size: 0.6rem;
+        font-weight: bold;
+        line-height: 0.8rem;
+        color: white;
+        width: 3rem;
+        height: 3rem;
+        background-image: url('/fish/img/pond-btn-green.png');
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+        display: flex;
+        justify-content: center;
+        align-content: center;
+        align-items: center;
+        text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
+    }
+
+    .fish-list > li > .fish-btn > .info-item {
+        line-height: 0.8rem;
+        font-weight: bold;
+        font-size: 0.6rem;
+    }
+
+    .fish-list > li > .fish-btn > .info-item > small {
+        font-size: 0.6rem;
+    }
+
+    .fish-list > li > .fish-btn > .info-item > span {
+        font-size: 0.8rem
+    }
+
+    .fish-list > li > .fish-btn > .info-btn {
+        font-size: 0.8rem;
+    }
+
+    .fish-list > li .list-btn.gray {
+        background-image: url('/fish/img/pond-btn-gray.png');
+    }
+
+    .fish-list > li .list-btn.yellow {
+        background-image: url('/fish/img/pond-btn-yellow.png');
+    }
+
+
+    /* 弹窗 (background) */
+    .modal2 {
+        /* display: block; */
+        /* 默认隐藏 */
+        position: fixed;
+        z-index: 101;
+        padding-top: 4rem;
+        left: 0;
+        top: 0 !important;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgb(0, 0, 0);
+        background-color: rgba(0, 0, 0, 0.4);
+        bottom: 0 !important;
+        max-width: initial;
+        max-height: initial;
+    }
+
+    /* 弹窗内容 */
+    .modal-content {
+        position: relative;
+        background: url('/fish/img/tc-gtc.png');
+        background-size: 100% 100%;
+        margin: auto;
+        padding: 0;
+        width: 20.25rem;
+        height: 32.4rem;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        -webkit-animation-name: animatetop;
+        -webkit-animation-duration: 0.4s;
+        animation-name: animatetop;
+        animation-duration: 0.4s
+    }
+
+    .modal-content2 {
+        background: url('/fish/img/givebg.png');
+        background-size: 100% 100%;
+    }
+
+    /* 添加动画 */
+    @-webkit-keyframes animatetop {
+        from {
+            top: -300px;
+            opacity: 0
+        }
+
+        to {
+            top: 0;
+            opacity: 1
+        }
+    }
+
+    @keyframes animatetop {
+        from {
+            top: -300px;
+            opacity: 0
+        }
+
+        to {
+            top: 0;
+            opacity: 1
+        }
+    }
+
+    /* 关闭按钮 */
+    .closebtn {
+        right: 0;
+        color: white;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        width: 3rem;
+        height: 3rem;
+        display: block;
+        position: absolute;
+        background: url(/fish/img/assets10.png);
+        top: 1rem;
+    }
+
+    .closebtnimg {
+        width: 100%;
+        height: 100%;
+        display: block;
+    }
+
+    .close:hover,
+    .close:focus {
+        color: #000;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    .modal-header {
+        padding: 2px 16px;
+        color: white;
+        position: relative;
+    }
+
+    .modal-body {
+        padding: 2px 16px;
+    }
+
+    .modal-footer {
+        padding: 2px 16px;
+        color: white;
+    }
+
+    .content-box {
+        background: transparent;
+        color: #fff;
+        padding: 3rem 0 0;
+        margin: 0.5rem 0.3rem;
+    }
+
+    .content-box2 {
+        background: transparent;
+        color: #fff;
+        padding: 6rem 0 0;
+        margin: 0.5rem 0.3rem;
+    }
+
+    .don-form .input-item input {
+        width: 70%;
+        padding: 0rem 1rem;
+        line-height: 2rem;
+        font-size: 1rem;
+        background-color: transparent;
+        /* background-image: url(/fish/img/login-input-bg.png); */
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+        color: #fff;
+        font-family: fontset2;
+    }
+
+    .don-form .input-item {
+        position: relative;
+        margin-bottom: 14px;
+        background: #2a2c2b;
+        background-size: 100% 100%;
+        border-radius: .3rem;
+    }
+
+    .don-form .input-item span {
+        display: inline-block;
+        width: 6rem;
+        color: #fff;
+        text-align: center;
+        font-size: 1.25rem;
+    }
+
+    .don-form .input-item input {
+        width: 60%;
+        padding: 0rem 1rem;
+        line-height: 2rem;
+        font-size: 1rem;
+        background-color: transparent;
+        /* background-image: url(/fish/img/login-input-bg.png); */
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+        color: #fff;
+        font-family: fontset2;
+    }
+
+    .don-form .input-foot {
+        /* padding: 2rem 0; */
+        position: relative;
+        top: 8.5rem;
+    }
+
+    .don-form .input-foot2 {
+        /* padding: 2rem 0; */
+        position: relative;
+        top: 5.5rem;
+    }
+
+    .don-form .foot-btn {
+        display: block;
+        padding: 0 3rem;
+        margin: 0 auto;
+        line-height: 4rem;
+        color: #755f4e;
+        border-radius: 1.5rem;
+        font-size: 1rem;
+        background-image: url('/fish/img/Bt_select.png');
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+        text-align: center;
+        width: 6.4rem;
+        height: 3.75rem;
+    }
+
+    .don-form .foot-btn2 {
+        background-image: url('/fish/img/nowgive.png') !important;
+        background-size: 100% 100%;
+    }
+
+    .getcode {
+        position: absolute;
+        right: 0;
+        background: #0181AD;
+        background-size: 100% 100%;
+        color: #FFE9C9;
+        padding: .5rem .5rem;
+        border-radius: 0.4rem;
+        font-family: fontset2;
+    }
+
+    .tip {
+        font-family: "microsoft yahei";
+        color: #fff;
+        font-size: .5rem
+    }
+
+    .tip2 {
+        margin: 2rem;
+        text-align: center;
+        color: #fff;
+        font-size: .5rem
+    }
+
+    .essence {
+        width: 4.2rem;
+        height: 4.4rem;
+        display: inline-block;
+        background: url('/fish/img/essence.png');
+        background-size: 100% 100%;
+        vertical-align: middle;
+    }
+
+    .essenceNum {
+        display: inline-block;
+        vertical-align: middle;
+        font-size: 1.5rem
+    }
+
+    .essencebox {
+        text-align: center;
+        margin-bottom: 3rem;
+    }
+
+    .essencebox p {
+        font-size: .8rem;
+
+    }
+
+    .flash_box input {
+        font-size: 1.5rem;
+        text-indent: 1rem;
+        background: transparent;
+        color: #fff;
+    }
+
+    .gc-address {
+        width: 100%;
+        font-size: .75rem;
+        text-align: center;
+        background: transparent;
+        color: #fff;
+    }
+
+    .details_top12 {
+        width: 22.3rem;
+        height: 38rem;
+        position: relative;;
+        top: 6.5rem;
+        background: url("/fish/img/assets12.png") 0 0 no-repeat;
+        background-size: 100%;
+        margin: auto;
+    }
+
+    .details_top13 {
+        width: 22.3rem;
+        height: 38rem;
+        position: relative;;
+        top: 2.5rem;
+        background: url("/fish/img/assets200.png") 0 0 no-repeat;
+        background-size: 100%;
+        margin: auto;
+    }
+
+    .details_top14 {
+        width: 22.3rem;
+        height: 38rem;
+        position: relative;;
+        top: 6.5rem;
+        background: url("/fish/img/assets201.png") 0 0 no-repeat;
+        background-size: 100%;
+        margin: auto;
+    }
+</style>
+{/block}

@@ -1,0 +1,22 @@
+<footer class="footer">
+		<div class="footer_nav" onclick="window.location.href='index.html'">
+			<img src="/static/images/home@2x.png"><br>
+			<span>首页</span>
+		</div>
+		<div class="footer_nav" onclick="window.location.href='quotation.html'">
+			<img src="/static/images/hq@2x.png"><br>
+			<span>行情</span>
+		</div>
+		<div class="footer_nav" onclick="window.location.href='{:url('index/Legal/index')}'">
+			<img src="/static/images/fabi{if request()->controller()=='Legal'}_bl{/if}@2x.png"><br>
+			<span>法币</span>
+		</div>
+		<div class="footer_nav {if request()->controller()=='Coindeal'}now_page{/if}"  onclick="window.location.href='{:url('index/coindeal/index')}'">
+			<img src="/static/images/bibi{if request()->controller()=='Coindeal'}_bl{/if}@2x.png"><br>
+			<span>币币</span>
+		</div>
+		<div class="footer_nav">
+			<img src="/static/images/hy@2x.png"><br>
+			<span>合约</span>
+		</div>
+</footer>

@@ -1,0 +1,147 @@
+{extend name="layout/main" /}
+
+{block name="header"}
+
+{/block}
+
+{block name="content"}
+<style>
+    .myteam{
+        text-align: center;
+    }
+</style>
+<section class="panel">
+    <header class="panel-heading">
+        <h4>游戏列表</h4>
+    </header>
+    <div class="panel-body" style="padding-bottom: 50px">
+        <form class="form-horizontal" action="{:url('fomo/index')}">
+            <div class="form-group">
+                <div class="col-xs-3">
+                    <input type="text" id="keyword" value="{$keyword}" name="id" class="form-control" placeholder="请输入游戏期数">
+                </div>
+                <button type="submit" class="btn btn-color">搜索</button>
+                {if empty($list[0]['id'])}
+                <a type="button" href="{:url('/admin/fomo/gameedit')}" class="btn btn-info">添加新一期</a>
+                {/if}
+            </div>
+        </form>
+        <table class="table table-bordered table-striped no-margin">
+            <thead>
+            <tr>
+                <th class="text-center">ID</th>
+                <th class="text-center">持续时间</th>
+                <th class="text-center">赢家比例</th>
+                <th class="text-center">团队比例</th>
+                <th class="text-center">分红比例</th>
+                <th class="text-center">队伍信息</th>
+                <th class="text-center">添加时间</th>
+                <th class="text-center">状态</th>
+                <th class="text-center">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            {if !empty($list)}
+                {foreach $list as $entity}
+                <tr>
+                    <td style="vertical-align: middle" class="text-center">
+                        {$entity->id}期
+                    </td>
+                
+                    <td style="vertical-align: middle" class="text-center">
+                        {$entity->time}
+                    </td>
+                     <td style="vertical-align: middle" class="text-center">
+                        {$entity->play_scale} %
+                    </td>
+                    <td style="vertical-align: middle" class="text-center">
+                        {$entity->team_scale} %
+                    </td>
+                    <td style="vertical-align: middle" class="text-center">
+                        {$entity->bonus_scale}%
+                    </td>
+                    <td style="vertical-align: middle" class="text-center">
+                        <a data-id="{$entity->id}" data-status="{$entity->status}" class="btn btn-xs btn-info look">查看</a>
+                        <!-- {if $entity->status==0}
+                        <a href="{:url('fomo/teamedit',['id'=>$entity->id])}" class="btn btn-xs btn-success">添加</a>
+                        {/if} -->
+                    </td>
+                    <td style="vertical-align: middle" class="text-center">
+                        {$entity->createtime()}
+                    </td>
+                     <td style="vertical-align: middle" class="text-center">
+                        {$entity->status()}
+                    </td>
+                    <td style="vertical-align: middle" class="text-center">
+                        {if $entity->status==0}
+                        <a data-url="{:url('fomo/startgame',['id'=>$entity->id])}" onclick="main.ajaxDelete(this)"
+                       data-msg="确定要开启该期游戏吗？"  class="btn btn-xs btn-success">开启</a>
+                        <a href="{:url('fomo/gameedit',['id'=>$entity->id])}" class="btn btn-xs btn-info">编辑</a>
+                        <a data-url="{:url('fomo/delete',['id'=>$entity->id])}" onclick="main.ajaxDelete(this)"
+                       data-msg="确定要删除该期游戏吗？" class="btn btn-xs btn-danger">删除</a>
+                       {/if}
+                        {if $entity->status==1}
+                        <a data-url="{:url('fomo/endgame',['id'=>$entity->id])}" onclick="main.ajaxDelete(this)"
+                       data-msg="确定要停止该期游戏吗？"  class="btn btn-xs btn-warning">停止</a>
+                       {/if}
+                       {if $entity->status ==-1}
+                        <a href="{:url('fomo/gameresult',['id'=>$entity->id])}" class="btn btn-xs btn-success">开奖结果</a>
+                       {/if}
+                    </td>
+                </tr>
+                {/foreach}
+            {else /}
+            <tr class="text-center">
+                <td colspan="5">暂无数据</td>
+            </tr>
+            {/if}
+            </tbody>
+        </table>
+       
+        <div class="page">
+            {:htmlspecialchars_decode($list->render())}
+        </div>
+    </div>
+</section>
+
+ <script>
+        $(function(){
+            $(".look").click(function(){
+                var id = $(this).attr('data-id');
+                var status = $(this).attr('data-status');
+                $.post("/zhao/index.php/admin/fomo/getTeamInfo",{id:id},function(data){
+                        if(data.code==0){
+                            var team = data.team;
+                            var keys= Object.keys(team);
+                            var content = '';
+                            for (var i = 0; i < keys.length; i++) {
+                                var j = keys[i];
+                                var item = team[j];
+                                content += "<div class='myteam'><ul>";
+                                content += "<li><img src = "+item.image+" style='width:50px'></li>";
+                                content += "<li>队伍名称 : "+item.title+"</li>";
+                                content += "<li>奖池比例："+item.pond_scale+" %</li>";
+                                content += "<li>分红比例："+item.bonus_scale+"%</li>";
+                                if(status==0){
+                                    content += "<a data-url={:url('fomo/deleteteam')}?id="+id+"&teamid="+item.teamid+" onclick= main.ajaxDelete(this) data-msg='确定要删除该队伍吗？' class='btn btn-xs btn-danger'>删除</a>";
+                                }
+
+                                content += "</ul></div>";
+                            }
+
+
+                        }else{
+                            var content = "<div>"+data.message+"</div>";
+                        }
+                        $.dialog({
+                            closeIcon: true,
+                            title: '队伍信息',
+                            height: 200,
+                            width: 350,
+                            content: content
+                        });
+                })
+            })
+        })
+    </script>
+{/block}

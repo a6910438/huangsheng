@@ -1,0 +1,151 @@
+{extend name="layout/main" /}
+
+{block name="header"}
+
+{/block}
+
+{block name="content"}
+<style>
+    .listli{
+           background-color: #fff;
+    }
+    .select {
+        color: #ffffff;
+        background-color: #1ec3c8;
+        border-color: #1ec3c8;
+    }
+    .select:hover{
+        color: #fff;
+    }
+</style>
+
+<script src="__PUBLIC__/admin/js/laydate/laydate.js"></script>
+<section class="panel">
+    <header class="panel-heading">
+        <h4>百分彩投注明细</h4>
+    </header>
+    <div class="panel-body" style="padding-bottom: 50px">
+        <form class="form-horizontal" action="{:url('admin/Percent/buy_log')}">
+            <div class="form-group">
+                <div class="col-xs-1 no-pd-r">
+                    <select name="status" class="form-control">
+                        <option  value="0">全部状态</option>
+                        <option {if $Request.get.status == 1} selected {/if} value="1">待开奖</option>
+                        <option {if $Request.get.status == 2} selected {/if} value="2">已开奖</option>
+                        <!-- <option {if $Request.get.status == 3} selected {/if} value="3">未中奖</option> -->
+                    </select>
+                </div>
+                <div class="col-xs-1 no-pd-r">
+                    <select name="type" class="form-control">
+                        <option {if $Request.get.type == 'periods'} selected {/if} value="periods">期号</option>
+                        <option {if $Request.get.type == 'email'} selected {/if} value="email">用户名</option>
+                    </select>
+                </div>
+                
+                <div class="col-xs-3 no-pd-l">
+                    <input type="text" value="{$Request.get.keyword}" name="keyword" class="form-control" placeholder="请输入相应搜索关键词">
+                </div>
+
+                <div class="col-xs-2 no-pd-2">
+                    <input type="text" value="{$Request.get.startTime}" name="startTime" id="startTime" class="form-control" placeholder="请输入开始时间">
+                </div>
+                <div class="col-xs-2 no-pd-2">
+                    <input type="text" value="{$Request.get.endTime}" name="endTime" id="endTime" class="form-control" placeholder="请输入结束时间">
+                </div>
+                <button type="submit" class="btn btn-color">搜索</button>
+            </div>
+        </form>
+        <table class="table table-bordered table-striped no-margin">
+            <thead>
+                <tr>
+                    <!-- <th class="text-center">序号</th> -->
+                    <th class="text-center">期数</th>
+
+                    <th class="text-center">用户ID</th>
+                    <th class="text-center">用户名</th>
+                    <th class="text-center">投注数量</th>
+                    
+                    <th class="text-center">投注序列号</th>
+                    <th class="text-center">投注金额</th>
+                    
+                    <th class="text-center">开奖状态</th>
+                    <th class="text-center">中奖金额</th>
+                  
+                    <th class="text-center">投注时间</th>
+                </tr>
+            </thead>
+            <tbody>
+            {if $list}
+                {foreach $list as $order}
+                    <tr>
+                        <!-- <td class="text-center">{$order->id}</td> -->
+                        <td class="text-center">H{$order->periods}</td>
+
+                        <td class="text-center">
+                            {$order->nick_name}
+                           
+                        </td>
+                        <td class="text-center">
+                        
+                            {$order->email}
+                        </td>
+                        <td class="text-center">{$order->total}</td>
+
+                        <td class="text-center" style="width: 300px;word-break: break-all;">{$order->prize_number}</td>
+                        <td class="text-center">{$order->price}{$order->money_type}</td>
+
+                        <td class="text-center">
+                            {if $order->status == 1}
+                                待开奖
+                            {elseif $order->status == 2}
+                                已开奖
+                            
+                            {else /}
+                                未知
+                            {/if}
+                        </td>
+                        <td class="text-center">{$order->award}{$order->money_type}</td>
+                   
+
+                        <td class="text-center">
+                            {$order->create_time}
+                        </td>
+
+                    </tr>
+                {/foreach}
+            {else /}
+                <tr class="text-center">
+                    <td colspan="8">暂无数据</td>
+                </tr>
+            {/if}
+            </tbody>
+        </table>
+        <div class="page">
+            {:htmlspecialchars_decode($list->render())}
+        </div>
+    </div>
+</section>
+<script>
+laydate.render({
+  elem: '#startTime',
+  type: 'datetime'
+});
+laydate.render({
+  elem: '#endTime',
+  type: 'datetime'
+});
+
+$(".myTit").each(function(){
+    var len=$(this).text().length;   //当前HTML对象text的长度
+    if(len>30){
+        var str="";
+        str=$(this).text().substring(0,30)+"......";  //使用字符串截取，获取前30个字符，多余的字符使用“......”代替
+        $(this).html(str);                   //将替换的值赋值给当前对象
+    }
+});
+</script>
+
+{/block}
+{block name="footer"}
+
+{/block}

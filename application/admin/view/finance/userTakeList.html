@@ -1,0 +1,110 @@
+{extend name="layout/main" /}
+
+{block name="header"}
+
+{/block}
+
+{block name="content"}
+<script src="__PUBLIC__/admin/js/laydate/laydate.js"></script>
+<section class="panel">
+    <header class="panel-heading">
+        <h4>{$nick_name}--取款列表</h4>
+        <a href="{:url('admin/Finance/manage')}" class="btn btn-success ">返回</a>
+    </header>
+    <div class="panel-body" style="padding-bottom: 50px">
+        <form class="form-horizontal" action="{:url('admin/Finance/usertakelist')}" >
+            <div class="form-group">
+                <input type="hidden"name="id" value="{$uid}">
+                <div class="col-xs-2 no-pd-2">
+                    存单剩余金额
+                    <input type="text" value="{$Request.get.storeMin}" name="storeMin" class="form-control" placeholder="请输入存单剩余金额最小金额">
+                    <input type="text" value="{$Request.get.storeMax}" name="storeMax" class="form-control" placeholder="请输入存单剩余金额最大金额">
+                </div>
+                <div class="col-xs-2 no-pd-2">
+                    <input type="text" value="{$Request.get.startTime}" name="startTime" id="startTime" class="form-control" placeholder="请输入开始时间">
+                </div>
+                <div class="col-xs-2 no-pd-2">
+                    <input type="text" value="{$Request.get.endTime}" name="endTime" id="endTime" class="form-control" placeholder="请输入结束时间">
+                </div>
+                <button type="submit" class="btn btn-color">搜索</button>
+            </div>
+        </form>
+        <table class="table table-bordered table-striped no-margin">
+            <thead>
+                <tr>
+                    <th class="text-center">ID</th>
+                    <th class="text-center">用户昵称</th>
+                    <th class="text-center">用户状态</th>
+                    <th class="text-center">金额</th>
+                    <th class="text-center">剩余金额</th>
+                    <th class="text-center">类型</th>
+                    <th class="text-center">状态</th>
+                    <th class="text-center">添加时间</th>
+                    <th class="text-center">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+            {if $list}
+                {foreach $list as $order}
+                    <tr>
+                        <td class="text-center">{$order->id}</td>
+                        <td class="text-center">
+                            {$order->nick_name}
+                        </td>
+                        <td class="text-center">
+                            {$query->getStatus($order->ustatus)}
+                        </td>
+                        <td class="text-center">
+                            {$order->total}
+                        </td>
+                        <td class="text-center">
+                            {$order->overplus}
+                        </td>
+                        <td class="text-center">
+                            {$order->getType($order->types)}
+                        </td>
+                        <td class="text-center">
+                            {$order->getStatus($order->status)}
+                        </td>
+                        <td class="text-center">
+                           {$order->create_time}
+                        </td>
+                        <td class="text-center">
+                            <a  href="{:url('Finance/marry',['id'=>$order->id,'uid'=>$uid])}" class="btn btn-xs btn-success">
+                                存款
+                            </a>
+                            <a data-url="{:url('Finance/delmarry',['id'=>$order->id,'uid'=>$uid])}" onclick="main.ajaxDelete(this)" data-msg="确定要删除此订单吗？" class="btn btn-xs btn-warning">
+                                删除
+                            </a>
+
+                        </td>
+                    </tr>
+                {/foreach}
+            {else /}
+                <tr class="text-center">
+                    <td colspan="8">暂无数据</td>
+                </tr>
+            {/if}
+            </tbody>
+        </table>
+        <div class="page">
+            {:htmlspecialchars_decode($list->render())}
+        </div>
+    </div>
+</section>
+<script>
+    laydate.render({
+        elem: '#startTime',
+        type: 'datetime'
+    });
+    laydate.render({
+        elem: '#endTime',
+        type: 'datetime'
+    });
+</script>
+{/block}
+
+
+{block name="footer"}
+
+{/block}
