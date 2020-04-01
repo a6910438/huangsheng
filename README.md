@@ -127,3 +127,11 @@ All rights reserved。
 ThinkPHP® 商标和著作权所有者为上海顶想信息科技有限公司。
 
 更多细节参阅 [LICENSE.txt](LICENSE.txt)
+
+
+
+捐赠支持
+
+BTC：33rRXUjsuTE4tocm6iWBr989eYEXTmur68
+
+ETH：0x89794e5F052Ee91CCf322280d03FF73d37F270d5
